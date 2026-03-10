@@ -15,26 +15,10 @@ class DocsCatalog
         ]
       ),
       Section.new(
-        id: "rails",
-        title: "Rails integration",
+        id: "shipping",
+        title: "Shipping",
         entries: [
-          entry("rails-overview", "Ruflet Layer Overview", "How the Ruflet layer maps onto the protocol and serialization model.", SOURCE_ROOT.join("ruflet_layer/INDEX.md"), "Rails integration"),
-          entry("rails-protocol", "Ruflet Layer Protocol", "Transport, frames, serialization, patch flow, and invoke-method handling.", SOURCE_ROOT.join("ruflet_layer/PROTOCOL.md"), "Rails integration")
-        ]
-      ),
-      Section.new(
-        id: "protocol",
-        title: "Protocol reference",
-        entries: [
-          entry("python-index", "Python Layer Index", "Reference index for the extracted control surface and component model.", SOURCE_ROOT.join("flet_python_protocol/INDEX.md"), "Protocol reference"),
-          entry("python-protocol", "Python Protocol Shape", "Envelope and extraction rules for the Python protocol shape.", SOURCE_ROOT.join("flet_python_protocol/PROTOCOL.md"), "Protocol reference")
-        ]
-      ),
-      Section.new(
-        id: "roadmap",
-        title: "Roadmap",
-        entries: [
-          entry("roadmap", "Ruflet Roadmap", "Parity snapshot, gaps, and delivery phases for the runtime.", SOURCE_ROOT.join("RUFLET_ROADMAP.md"), "Roadmap")
+          entry("roadmap", "Ruflet Roadmap", "Current platform coverage, priorities, and the path toward broader Ruflet support.", SOURCE_ROOT.join("RUFLET_ROADMAP.md"), "Shipping")
         ]
       )
     ]

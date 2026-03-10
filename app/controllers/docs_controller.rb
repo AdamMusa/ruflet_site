@@ -6,6 +6,11 @@ class DocsController < ApplicationController
 
   def show
     load_doc(params[:slug])
+
+    respond_to do |format|
+      format.html
+      format.md { render markdown: File.read(@doc.source) }
+    end
   end
 
   private
@@ -13,8 +18,5 @@ class DocsController < ApplicationController
   def load_doc(slug)
     @sections = DocsCatalog.sections
     @doc = DocsCatalog.find(slug)
-    rendered = MarkdownRenderer.render(File.read(@doc.source))
-    @content_html = rendered.html
-    @toc = rendered.headings.select { |heading| heading.level <= 3 }
   end
 end

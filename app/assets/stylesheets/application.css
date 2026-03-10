@@ -89,25 +89,25 @@
 }
 
 .docs-markdown h1 {
-  margin: 0 0 1.5rem;
-  font-size: 2.4rem;
+  margin: 0 0 1.25rem;
+  font-size: 2rem;
 }
 
 .docs-markdown h2 {
-  margin: 2.5rem 0 1rem;
-  font-size: 1.7rem;
+  margin: 2rem 0 0.85rem;
+  font-size: 1.45rem;
 }
 
 .docs-markdown h3 {
-  margin: 1.8rem 0 0.85rem;
-  font-size: 1.2rem;
+  margin: 1.5rem 0 0.7rem;
+  font-size: 1.05rem;
 }
 
 .docs-markdown p,
 .docs-markdown li {
   color: #cbd5e1;
-  font-size: 1rem;
-  line-height: 1.95;
+  font-size: 0.95rem;
+  line-height: 1.8;
 }
 
 .docs-markdown a {
@@ -121,6 +121,10 @@
 .docs-markdown ul,
 .docs-markdown ol {
   padding-left: 1.4rem;
+}
+
+.docs-markdown li + li {
+  margin-top: 0.4rem;
 }
 
 .docs-markdown blockquote {
@@ -138,10 +142,10 @@
 
 .docs-code-block {
   overflow-x: auto;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
   border-radius: 1rem;
   background: #020617;
-  padding: 1rem 1.2rem;
+  padding: 0.9rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -149,5 +153,6 @@
   background: transparent;
   padding: 0;
   color: #dbeafe;
-  line-height: 1.75;
+  font-size: 0.88rem;
+  line-height: 1.7;
 }
