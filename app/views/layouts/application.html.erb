@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Ruflet | Build multi-platform apps in Ruby" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Ruflet is a Ruby UI framework for building realtime web, mobile, and desktop apps from one codebase.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Ruflet">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-slate-950 text-slate-100 antialiased">
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>
