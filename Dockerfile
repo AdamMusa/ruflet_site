@@ -75,4 +75,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 # Start server via Thruster by default, this can be overwritten at runtime
 # Expose ports for HTTP and HTTPS
 EXPOSE 443 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["./bin/thrust", "./bin/rails","-p 4000", "server"]
