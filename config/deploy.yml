@@ -23,7 +23,7 @@ servers:
 proxy:
   ssl: true
   host: ruflet.dev
-  app_port: 4000
+  app_port: 3000
   healthcheck:
     path: /up
 
