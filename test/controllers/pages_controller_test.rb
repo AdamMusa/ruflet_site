@@ -7,5 +7,6 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Build multi-platform apps in Ruby", response.body
     assert_match "Everything you need to build with Ruflet", response.body
+    assert_match "Docs", response.body
   end
 end

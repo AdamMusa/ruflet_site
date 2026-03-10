@@ -1,0 +1,75 @@
+<section class="min-h-screen bg-slate-950 text-slate-100" data-controller="docs-nav">
+  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+    <%= link_to "ruflet", root_path, class: "text-xl font-black lowercase tracking-[0.22em] text-white" %>
+    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+      <%= link_to "Docs", docs_path, class: "text-white" %>
+      <a href="https://github.com/AdamMusa/Ruflet" target="_blank" rel="noreferrer" class="transition hover:text-white" aria-label="GitHub"><%= github_icon %></a>
+    </nav>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6 pb-16 pt-8 lg:px-8">
+    <div class="mb-6 flex items-center justify-between lg:hidden">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-300"><%= @doc.section %></p>
+        <h1 class="mt-2 text-2xl font-black tracking-[-0.04em] text-white"><%= @doc.title %></h1>
+      </div>
+      <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-11 items-center justify-center rounded-xl border border-white/10 px-4 text-sm font-semibold text-slate-200">
+        Browse
+      </button>
+    </div>
+
+    <div data-docs-nav-target="backdrop" data-action="click->docs-nav#closeSidebar" class="fixed inset-0 z-30 hidden bg-slate-950/70 lg:hidden"></div>
+
+    <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)_220px]">
+      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[86vw] max-w-[320px] overflow-y-auto border-r border-white/10 bg-slate-950 px-5 py-6 lg:static lg:block lg:w-auto lg:max-w-none lg:border lg:border-white/10 lg:bg-white/3 lg:rounded-3xl lg:p-6">
+        <div class="mb-6 flex items-center justify-between lg:hidden">
+          <span class="text-sm font-semibold text-white">Docs</span>
+          <button type="button" data-action="docs-nav#closeSidebar" class="rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-slate-300">Close</button>
+        </div>
+
+        <% @sections.each do |section| %>
+          <div class="mb-8">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-sky-300"><%= section.title %></h2>
+            <ul class="mt-3 space-y-2">
+              <% section.entries.each do |entry| %>
+                <li>
+                  <%= link_to doc_path(entry.slug), class: "block rounded-2xl px-4 py-3 transition #{entry.slug == @doc.slug ? 'bg-sky-400/10 text-white ring-1 ring-sky-400/20' : 'text-slate-300 hover:bg-white/5 hover:text-white'}", data: { action: "click->docs-nav#closeSidebar" } do %>
+                    <span class="block text-sm font-semibold"><%= entry.title %></span>
+                    <span class="mt-1 block text-xs leading-5 text-slate-400"><%= entry.summary %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </aside>
+
+      <article class="min-w-0 rounded-3xl border border-white/10 bg-white/3 p-6 lg:p-8">
+        <div class="border-b border-white/10 pb-6">
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-300"><%= @doc.section %></p>
+          <h1 class="mt-3 text-4xl font-black tracking-[-0.05em] text-white"><%= @doc.title %></h1>
+          <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-300"><%= @doc.summary %></p>
+        </div>
+
+        <div class="docs-markdown mt-8">
+          <%= @content_html %>
+        </div>
+      </article>
+
+      <aside class="hidden xl:block">
+        <div class="sticky top-6 rounded-3xl border border-white/10 bg-white/3 p-5">
+          <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-sky-300">On this page</h2>
+          <ul class="mt-4 space-y-3">
+            <% @toc.each do |heading| %>
+              <li>
+                <a href="#<%= heading.id %>" data-docs-nav-target="tocLink" data-heading-id="<%= heading.id %>" class="block text-sm leading-6 text-slate-400 transition hover:text-white" style="padding-left: <%= (heading.level - 1) * 0.65 %>rem;">
+                  <%= heading.text %>
+                </a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

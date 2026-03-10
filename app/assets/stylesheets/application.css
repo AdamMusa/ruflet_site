@@ -79,3 +79,75 @@
   background: rgba(148, 163, 184, 0.35);
   border-radius: 999px;
 }
+
+.docs-markdown h1,
+.docs-markdown h2,
+.docs-markdown h3,
+.docs-markdown h4 {
+  color: #fff;
+  letter-spacing: -0.04em;
+}
+
+.docs-markdown h1 {
+  margin: 0 0 1.5rem;
+  font-size: 2.4rem;
+}
+
+.docs-markdown h2 {
+  margin: 2.5rem 0 1rem;
+  font-size: 1.7rem;
+}
+
+.docs-markdown h3 {
+  margin: 1.8rem 0 0.85rem;
+  font-size: 1.2rem;
+}
+
+.docs-markdown p,
+.docs-markdown li {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.95;
+}
+
+.docs-markdown a {
+  color: #7dd3fc;
+}
+
+.docs-markdown strong {
+  color: #fff;
+}
+
+.docs-markdown ul,
+.docs-markdown ol {
+  padding-left: 1.4rem;
+}
+
+.docs-markdown blockquote {
+  margin: 1.5rem 0;
+  border-left: 3px solid rgba(125, 211, 252, 0.35);
+  padding-left: 1rem;
+}
+
+.docs-markdown code {
+  border-radius: 0.45rem;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0.15rem 0.35rem;
+  color: #e2e8f0;
+}
+
+.docs-code-block {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 1rem;
+  background: #020617;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.docs-code-block code {
+  background: transparent;
+  padding: 0;
+  color: #dbeafe;
+  line-height: 1.75;
+}
