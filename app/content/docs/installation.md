@@ -8,13 +8,6 @@ Ruflet is installed from RubyGems.
 gem install ruflet
 ```
 
-## Important package rename
-
-If you have older notes or examples, the install command changed:
-
-- old: `gem install ruflet_cli`
-- current: `gem install ruflet`
-
 The app projects created by Ruflet still use runtime gems inside the generated `Gemfile`, but the command-line entrypoint you install globally is now `ruflet`.
 
 ## Verify the install

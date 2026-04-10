@@ -153,7 +153,7 @@ task_controls = if filtered_tasks.empty?
   [
     container(
       padding: 16,
-      content: text(value: "No tasks")
+      content: text("No tasks")
     )
   ]
 else

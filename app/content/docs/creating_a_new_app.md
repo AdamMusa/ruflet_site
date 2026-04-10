@@ -10,7 +10,9 @@ cd my_app
 bundle install
 ```
 
-## Generated files
+## What happens next
+
+This is the important part many frameworks skip: after generating the app, you should understand the structure before jumping into features.
 
 Ruflet writes a practical starter structure:
 
@@ -19,24 +21,20 @@ Ruflet writes a practical starter structure:
 - `README.md`
 - `ruflet.yaml`
 
-## What `ruflet.yaml` is for
+## Read the app structure first
 
-`ruflet.yaml` is the source of truth for app metadata and client build configuration.
+Right after scaffolding, the next thing you should learn is what each generated file is for:
 
-It includes:
+- `main.rb` is your app entry point
+- `Gemfile` defines the runtime dependencies
+- `ruflet.yaml` controls metadata, assets, and client build behavior
+- `README.md` gives the local project commands
 
-- app name and display name
-- package name and organization
-- version
-- description
-- backend URL for server-driven builds
-- enabled services/extensions
-- icon and splash assets
-- basic theming values
+That is why the next recommended page is [`/docs/app-structure`](/docs/app-structure).
 
-## Default starter app
+## The generated starter app
 
-The generated app starts with the current Ruflet scaffold style:
+The scaffold uses the current Ruflet style:
 
 ```ruby
 require "ruflet"
@@ -70,6 +68,14 @@ Ruflet.run do |page|
 end
 ```
 
-## What to do next
+## Why this starter is useful
 
-Run the app and connect a target client.
+The starter app already teaches the core Ruflet mental model:
+
+- controls are built with helper methods like `text`, `column`, and `container`
+- `page` handles runtime behavior
+- button events mutate state and then update the page
+
+## Recommended next step
+
+Continue to [`/docs/app-structure`](/docs/app-structure) before moving to run targets or tutorials.

@@ -1,16 +1,20 @@
-<section class="min-h-screen bg-[#020617] text-slate-100" data-controller="docs-nav">
+<section class="min-h-screen bg-slate-950 text-slate-100" data-controller="docs-nav">
   <% intro_entry = DocsCatalog.find("introduction") %>
   <% nav_sections = @sections.map do |section|
        filtered_entries = section.entries.reject { |entry| entry.slug == "introduction" }
        section.entries == filtered_entries ? section : DocsCatalog::Section.new(id: section.id, title: section.title, entries: filtered_entries)
      end.reject { |section| section.entries.empty? } %>
-  <header class="sticky top-0 z-30 border-b border-slate-800 bg-[#141922]/90 backdrop-blur">
-    <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 py-4 lg:px-8">
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-slate-950/95 backdrop-blur">
+    <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-4 lg:px-8">
       <div class="flex items-center gap-4">
         <%= link_to "ruflet", root_path, class: "text-xl font-black lowercase tracking-[0.22em] text-white" %>
       </div>
 
-      <nav class="flex items-center gap-6 text-sm font-medium text-slate-400">
+      <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-200 md:hidden" aria-label="Open documentation menu">
+        <span class="text-base leading-none">≡</span>
+      </button>
+
+      <nav class="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
         <%= link_to "Learn", doc_path("introduction"), class: "transition hover:text-white" %>
         <%= link_to "Tutorials", doc_path("tutorial-calculator"), class: "transition hover:text-white" %>
         <%= link_to "Reference", doc_path("controls-and-layout"), class: "transition hover:text-white" %>
@@ -19,8 +23,8 @@
     </div>
   </header>
 
-  <div class="mx-auto max-w-[1500px] px-0 pb-16 pt-0">
-    <div class="mb-5 flex items-center justify-between lg:hidden">
+  <div class="mx-auto max-w-[1500px] px-0 pb-12 pt-0 lg:pb-16">
+    <div class="mb-5 flex items-center justify-between border-b border-white/10 px-4 py-4 lg:hidden">
       <div>
         <p class="text-xs font-bold uppercase tracking-[0.18em] text-sky-700"><%= @doc.section %></p>
         <h1 class="mt-2 text-2xl font-black tracking-[-0.04em] text-white"><%= @doc.title %></h1>
@@ -30,13 +34,13 @@
       </button>
     </div>
 
-    <div data-docs-nav-target="backdrop" data-action="click->docs-nav#closeSidebar" class="fixed inset-0 z-30 hidden bg-slate-950/30 lg:hidden"></div>
+    <div data-docs-nav-target="backdrop" data-action="click->docs-nav#closeSidebar" class="fixed inset-0 z-30 hidden bg-slate-950/70 lg:hidden"></div>
 
     <div class="grid gap-0 lg:grid-cols-[320px_minmax(0,1fr)_250px]">
-      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[84vw] max-w-[300px] overflow-y-auto border-r border-slate-700 bg-[#171b23] px-4 py-5 shadow-2xl lg:sticky lg:top-[4.7rem] lg:block lg:max-h-[calc(100vh-4.7rem)] lg:w-auto lg:max-w-none lg:border-r lg:border-slate-700 lg:px-5 lg:py-5">
+      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[84vw] max-w-[300px] overflow-y-auto border-r border-white/10 bg-slate-950 px-4 py-5 shadow-2xl lg:sticky lg:top-[4.7rem] lg:block lg:max-h-[calc(100vh-4.7rem)] lg:w-auto lg:max-w-none lg:border-r lg:border-white/10 lg:px-5 lg:py-5">
         <div class="mb-6 flex items-center justify-between lg:hidden">
           <span class="text-sm font-semibold text-white">Documentation</span>
-          <button type="button" data-action="docs-nav#closeSidebar" class="border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300">Close</button>
+          <button type="button" data-action="docs-nav#closeSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-300" aria-label="Close documentation menu">×</button>
         </div>
 
         <nav class="docs-sidebar-nav">
@@ -66,25 +70,23 @@
         </nav>
       </aside>
 
-      <article class="min-w-0 border-r border-slate-700 px-6 py-6 lg:px-6 lg:py-6">
-        <div class="pb-4">
-          <div class="flex flex-wrap items-center gap-3 text-[0.98rem] text-slate-500">
+      <article class="min-w-0 px-4 py-6 sm:px-6 lg:border-r lg:border-white/10 lg:px-6 lg:py-6">
+        <div class="pb-2">
+          <div class="hidden flex-wrap items-center gap-3 text-[0.98rem] text-slate-500 sm:flex">
             <span class="text-slate-300">⌂</span>
             <span>›</span>
             <span><%= @doc.section %></span>
             <span>›</span>
-            <span class="border border-slate-800 bg-slate-800 px-3 py-1 text-sky-400"><%= @doc.title %></span>
+            <span class="border border-white/10 bg-white/5 px-3 py-1 text-sky-400"><%= @doc.title %></span>
           </div>
-          <h1 class="mt-6 text-[3.5rem] font-black tracking-[-0.06em] text-slate-100"><%= @doc.title %></h1>
-          <p class="mt-5 max-w-3xl text-[1.03rem] leading-8 text-slate-300"><%= @doc.summary %></p>
         </div>
 
-        <div class="docs-markdown mt-10 max-w-4xl">
+        <div class="docs-markdown mt-6 max-w-4xl">
           <%= @rendered_doc.html %>
         </div>
 
         <% if @previous_doc || @next_doc %>
-          <div class="mt-12 grid gap-4 border-t border-slate-800 pt-8 md:grid-cols-2">
+          <div class="mt-12 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-2">
             <% if @previous_doc %>
               <%= link_to doc_path(@previous_doc.slug), class: "docs-pagination-card" do %>
                 <span class="docs-pagination-label">Previous</span>

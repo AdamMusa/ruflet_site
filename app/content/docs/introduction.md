@@ -19,7 +19,7 @@ gem install ruflet
 ruflet new my_app
 cd my_app
 bundle install
-ruflet run main.rb
+ruflet run main
 ```
 
 ## Ruflet app example
@@ -31,7 +31,7 @@ Ruflet.run do |page|
   page.title = "Ruflet counter example"
   page.vertical_alignment = Ruflet::MainAxisAlignment::CENTER
 
-  counter = text(value: "0", style: { size: 32 })
+  counter = text("0", style: { size: 32 })
 
   page.add(
     row(

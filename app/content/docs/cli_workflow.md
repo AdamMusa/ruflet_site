@@ -46,10 +46,10 @@ What `ruflet.yaml` controls:
 This is the fastest way to develop a Ruflet app:
 
 ```bash
-ruflet run main.rb
-ruflet run main.rb --web
-ruflet run main.rb --desktop
-ruflet run main.rb --port 9000
+ruflet run main
+ruflet run main --web
+ruflet run main --desktop
+ruflet run main --port 9000
 ```
 
 Important behavior:
@@ -133,6 +133,6 @@ Use these commands to inspect your local toolchain:
 1. `ruflet new my_app`
 2. `cd my_app`
 3. `bundle install`
-4. `ruflet run main.rb`
+4. `ruflet run main`
 5. Iterate on controls and page updates
 6. `ruflet build ...` when you are ready to package

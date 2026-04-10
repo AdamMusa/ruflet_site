@@ -24,5 +24,5 @@ ruflet build linux
 
 ## Related commands
 
-- `ruflet run main.rb --desktop`
+- `ruflet run main --desktop`
 - `ruflet update desktop`

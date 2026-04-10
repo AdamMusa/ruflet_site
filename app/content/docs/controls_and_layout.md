@@ -119,13 +119,13 @@ page.add(
     content: column(
       spacing: 16,
       children: [
-        text(value: "Profile", style: { size: 28, weight: "w700" }),
+        text("Profile", style: { size: 28, weight: "w700" }),
         text_field(label: "Display name"),
         row(
           spacing: 12,
           children: [
-            filled_button(content: text(value: "Save")),
-            outlined_button(content: text(value: "Cancel"))
+            filled_button(content: text("Save")),
+            outlined_button(content: text("Cancel"))
           ]
         )
       ]

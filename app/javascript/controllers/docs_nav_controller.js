@@ -46,4 +46,4 @@ export default class extends Controller {
 
     this.headingElements.forEach((heading) => this.observer.observe(heading))
   }
-end
+}

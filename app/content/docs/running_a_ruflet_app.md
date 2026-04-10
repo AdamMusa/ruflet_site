@@ -5,7 +5,7 @@ Ruflet's default development loop is intentionally simple.
 ## Default run command
 
 ```bash
-ruflet run main.rb
+ruflet run main
 ```
 
 This starts the Ruflet backend in mobile mode by default.
@@ -13,8 +13,8 @@ This starts the Ruflet backend in mobile mode by default.
 ## Targeting web or desktop
 
 ```bash
-ruflet run main.rb --web
-ruflet run main.rb --desktop
+ruflet run main --web
+ruflet run main --desktop
 ```
 
 ## What Ruflet does for you
@@ -31,7 +31,7 @@ ruflet run main.rb --desktop
 You can override the default port:
 
 ```bash
-ruflet run main.rb --port 9000
+ruflet run main --port 9000
 ```
 
 If the requested port is busy, Ruflet will choose another available one and tell you which port it used.

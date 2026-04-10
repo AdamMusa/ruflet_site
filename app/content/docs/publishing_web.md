@@ -5,7 +5,7 @@ Ruflet can run and ship the same app as a web experience.
 ## Run locally
 
 ```bash
-ruflet run main.rb --web
+ruflet run main --web
 ```
 
 The CLI starts the backend, serves the web client locally, and opens the browser when possible.

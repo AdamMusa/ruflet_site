@@ -13,9 +13,10 @@ class DocsCatalog
           entry("introduction", "Introduction", "What Ruflet is, why it exists, and what the current platform and feature story looks like.", SOURCE_ROOT.join("introduction.md"), "Learn"),
           entry("installation", "Installation", "Install Ruflet, understand the package rename, and prepare your local Ruby workflow.", SOURCE_ROOT.join("installation.md"), "Learn"),
           entry("creating-a-new-app", "Creating a New Ruflet App", "Scaffold a new project, inspect the generated files, and understand `ruflet.yaml`.", SOURCE_ROOT.join("creating_a_new_app.md"), "Learn"),
+          entry("app-structure", "App Structure", "Understand the generated files, the role of `main.rb`, `Gemfile`, and `ruflet.yaml`, and how Ruflet apps are organized.", SOURCE_ROOT.join("app_structure.md"), "Learn"),
           entry("running-a-ruflet-app", "Running a Ruflet App", "Run Ruflet for mobile, web, and desktop, and understand the core development loop.", SOURCE_ROOT.join("running_a_ruflet_app.md"), "Learn"),
           entry("testing-on-mobile", "Testing on Mobile", "Connect to the Ruflet mobile client and verify your app on real devices.", SOURCE_ROOT.join("testing_on_mobile.md"), "Learn"),
-          entry("app-structure", "App Structure", "Use `Ruflet.run`, `Ruflet::App`, page updates, routes, dialogs, and shared state patterns.", SOURCE_ROOT.join("app_structure.md"), "Learn")
+          entry("examples-overview", "Examples Overview", "See how the example apps build on the fundamentals and where to go next.", SOURCE_ROOT.join("examples_overview.md"), "Learn")
         ]
       ),
       Section.new(
@@ -25,7 +26,7 @@ class DocsCatalog
           entry("tutorial-calculator", "Calculator", "Build a small Ruflet calculator and learn buttons, layout, and state updates.", SOURCE_ROOT.join("tutorial_calculator.md"), "Tutorials"),
           entry("tutorial-todo", "ToDo", "Build a task list with filters, mutations, and realistic view composition.", SOURCE_ROOT.join("tutorial_todo.md"), "Tutorials"),
           entry("tutorial-solitaire", "Solitaire", "Study a larger interactive Ruflet app with richer state and custom presentation.", SOURCE_ROOT.join("tutorial_solitaire.md"), "Tutorials"),
-          entry("examples", "Examples Overview", "A guided tour of the shipped demos and the fastest way to learn Ruflet by running code.", SOURCE_ROOT.join("examples.md"), "Tutorials")
+          entry("examples", "Example Gallery", "A guided tour of the shipped demos and the fastest way to learn Ruflet by running code.", SOURCE_ROOT.join("examples.md"), "Tutorials")
         ]
       ),
       Section.new(

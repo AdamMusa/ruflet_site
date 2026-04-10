@@ -15,17 +15,13 @@ Ruflet is a Ruby-first UI framework for building web, desktop, and mobile apps f
 gem install ruflet
 ```
 
-If you are coming from older examples, note the package rename:
-
-- Old install command: `gem install ruflet_cli`
-- Current install command: `gem install ruflet`
-
 ## Create a new app
 
 ```bash
 ruflet new my_app
 cd my_app
 bundle install
+ruflet run main
 ```
 
 `ruflet new` creates:
@@ -40,19 +36,13 @@ The generated app `Gemfile` includes the runtime gems you need to execute your a
 - `gem "ruflet_core"`
 - `gem "ruflet_server"`
 
-## Run your first app
-
-```bash
-ruflet run main.rb
-```
-
 By default Ruflet runs in mobile mode. The local backend starts first, then you connect a Ruflet client.
 
 You can also target web or desktop directly:
 
 ```bash
-ruflet run main.rb --web
-ruflet run main.rb --desktop
+ruflet run main --web
+ruflet run main --desktop
 ```
 
 ## Connect from the client

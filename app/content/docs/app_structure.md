@@ -1,170 +1,270 @@
 # App Structure
 
-Ruflet supports two authoring styles:
+After creating a Ruflet app, this is the first page you should read.
 
-- `Ruflet.run do |page| ... end`
-- class-based apps built on `Ruflet::App`
+The most useful thing to understand early is the real project structure Ruflet gives you and what each file is responsible for.
 
-Both styles are used in the repo today, but the current scaffold starts with `Ruflet.run`.
+## The generated project structure
 
-## `Ruflet.run`
+A newly generated Ruflet app starts with a small Ruby-side structure:
 
-This is the shortest path from idea to UI:
+```text
+my_app/
+  Gemfile
+  README.md
+  main.rb
+  ruflet.yaml
+```
+
+Over time, you will usually add your own folders, for example:
+
+```text
+my_app/
+  Gemfile
+  README.md
+  main.rb
+  ruflet.yaml
+  assets/
+    icon.png
+    splash.png
+  views/
+  components/
+  services/
+```
+
+Ruflet also manages a Flutter client workspace behind the scenes for builds and platform packaging. In normal Ruflet app development, you should not need to edit Flutter files directly.
+
+## The Ruby-side files
+
+### `main.rb`
+
+This is the application entry point.
+
+It is the first file you run and the first place you write UI code.
+
+The scaffold currently generates a starter counter app like this:
 
 ```ruby
 require "ruflet"
 
 Ruflet.run do |page|
-  page.title = "Hello"
+  page.title = "Counter Demo"
+  count = 0
+  count_text = text(count.to_s, style: {size: 40})
+
   page.add(
-    column(
+    container(
+      expand: true,
       alignment: Ruflet::MainAxisAlignment::CENTER,
-      horizontal_alignment: Ruflet::CrossAxisAlignment::CENTER,
-      children: [
-        text(value: "Hello Ruflet"),
-        elevated_button(text: "Press me")
-      ]
+      content: column(
+        alignment: Ruflet::MainAxisAlignment::CENTER,
+        horizontal_alignment: Ruflet::CrossAxisAlignment::CENTER,
+        children: [
+          text("You have pushed the button this many times:"),
+          count_text
+        ]
+      )
+    ),
+    floating_action_button: fab(
+      icon: Ruflet::MaterialIcons::ADD,
+      on_click: ->(_e) do
+        count += 1
+        page.update(count_text, value: count.to_s)
+      end
     )
   )
 end
 ```
 
-Use it when:
+What belongs here:
 
-- you are prototyping
-- you want a single-file app
-- your state is simple enough to keep in local variables
+- app entry logic
+- first screen composition
+- state for small apps
+- route/view setup for early prototypes
 
-## `Ruflet::App`
+As the app grows, you can split code into more files and keep `main.rb` focused on bootstrapping.
 
-Class-based apps are better when the app grows:
+### `Gemfile`
+
+This defines the Ruby dependencies for the app.
+
+The current scaffold generates:
 
 ```ruby
-class CounterApp < Ruflet::App
-  def initialize
-    super
-    @count = 0
-  end
+source "https://rubygems.org"
 
-  def view(page)
-    counter = text(value: @count.to_s, style: { size: 48 })
-
-    page.add(
-      column(
-        horizontal_alignment: Ruflet::CrossAxisAlignment::CENTER,
-        children: [
-          text(value: "You clicked:"),
-          counter
-        ]
-      ),
-      floating_action_button: fab(
-        icon: Ruflet::MaterialIcons::ADD,
-        on_click: ->(e) do
-          @count += 1
-          e.page.update(counter, value: @count.to_s)
-        end
-      )
-    )
-  end
-end
-
-CounterApp.new.run
+gem "ruflet_core", ">= 0.0.10"
+gem "ruflet_server", ">= 0.0.10"
 ```
 
-Use it when:
+What this means:
 
-- you want reusable methods
-- you have longer-lived state
-- the app has multiple views or helper objects
-- you want cleaner organization for complex demos
+- `ruflet_core` contains the core UI/runtime pieces
+- `ruflet_server` provides the server-driven runtime/backend side
 
-## Page responsibilities
+This file is where you add normal Ruby gems for your app as well.
 
-The `page` object is where runtime and host interaction happens. Common page responsibilities include:
+### `README.md`
 
-- setting title, route, background, and alignment
-- mounting UI with `page.add(...)`
-- mutating controls with `page.update(...)`
-- navigation with routes and views
-- showing and closing dialogs
-- registering or retrieving services
-- calling platform APIs such as file picker, clipboard, or URL launch
+This gives the local project workflow.
 
-## Control builders
+The generated README includes the basic setup, run, and build commands:
 
-Most UI is built with free helper functions such as:
+```bash
+bundle install
+bundle exec ruflet run main
+bundle exec ruflet build apk
+bundle exec ruflet build ios
+```
+
+Treat it as the first local “how to work on this app” note for your project.
+
+### `ruflet.yaml`
+
+This file is one of the most important parts of the app structure.
+
+It is the configuration layer for app identity, assets, enabled services, and build settings.
+
+The generated structure includes sections like:
+
+```yaml
+app:
+  name: my_app
+  display_name: My App
+  package_name: my_app
+  organization: com.example
+  version: 1.0.0+1
+  description: A new Ruflet app.
+  backend_url: ""
+
+services: []
+
+assets:
+  dir: assets
+  splash_screen: assets/splash.png
+  icon_launcher: assets/icon.png
+
+build:
+  splash_color: "#FFFFFF"
+  splash_dark_color: "#0B0B0B"
+  icon_background: "#FFFFFF"
+  theme_color: "#FFFFFF"
+```
+
+What each section means:
+
+- `app`: the identity and metadata of your application
+- `services`: optional client extensions such as camera, video, or webview
+- `assets`: where Ruflet should find branding assets
+- `build`: build-time appearance settings
+
+## The managed Flutter client side
+
+Ruflet is Ruby-first, but packaging still relies on a Flutter client.
+
+That client is usually managed for you and bootstrapped from the Ruflet template. In practice, Ruflet can keep or create a client workspace under managed build paths instead of making you hand-author Dart code for the app layer.
+
+The template contains the platform projects and Flutter configuration needed for:
+
+- Android
+- iOS
+- macOS
+- Windows
+- Linux
+- web
+
+The important point is this:
+
+- your day-to-day app code lives in Ruby
+- the Flutter side is managed infrastructure for hosting and packaging
+- Ruflet users should not need to work in Flutter files for normal app development
+
+## How to organize your own app after generation
+
+The scaffold is intentionally small, but most real apps will eventually grow into something like:
+
+```text
+my_app/
+  main.rb
+  Gemfile
+  ruflet.yaml
+  assets/
+  views/
+  components/
+  models/
+  services/
+```
+
+A practical split looks like this:
+
+- `main.rb`: app entry and boot
+- `views/`: full screens or route-level UI
+- `components/`: reusable UI pieces
+- `models/`: Ruby domain objects or state objects
+- `services/`: wrappers around app logic, APIs, or platform interactions
+
+Ruflet does not force one folder convention, which is useful, but it also means you should choose a structure early once the app grows beyond one file.
+
+## Two authoring styles inside that structure
+
+### Small app style
+
+Use `Ruflet.run do |page| ... end` when:
+
+- the app is small
+- you are prototyping
+- you want to keep everything in `main.rb`
+
+### Larger app style
+
+Use `Ruflet::App` when:
+
+- the app has state that lives longer
+- you want helper methods
+- you want multiple views or more structure
+
+## How the runtime responsibilities are split
+
+### Builder helpers
+
+Helpers like these create controls:
 
 - `text`
 - `row`
 - `column`
 - `container`
-- `stack`
 - `image`
 - `text_field`
-- `button`, `elevated_button`, `filled_button`, `text_button`
-- `tabs`, `tab_bar`, `tab_bar_view`
-- `navigation_bar`, `navigation_rail`
+- `tabs`
+- `navigation_bar`
 
-This separation keeps the code easy to scan:
+### `page`
 
-- builders create controls
-- `page` manages lifecycle, events, and runtime communication
+`page` handles runtime behavior:
 
-## Updating UI
+- `page.add(...)`
+- `page.update(...)`
+- page title and layout properties
+- dialogs
+- navigation
+- host/device APIs
 
-The usual Ruflet update flow is:
+This split is one of the main structural ideas in Ruflet:
 
-1. Create a control and keep a reference to it.
-2. Handle an event.
-3. Call `page.update(control, ...)` with the changed properties.
+- builders define UI
+- `page` manages runtime interaction
 
-```ruby
-name = text(value: "Anonymous")
+## What to understand before moving on
 
-page.add(
-  column(
-    children: [
-      name,
-      text_button(
-        content: text(value: "Rename"),
-        on_click: ->(_e) { page.update(name, value: "Ruflet User") }
-      )
-    ]
-  )
-)
-```
+Before you leave this page, make sure these things are clear:
 
-## Views, routes, and navigation
+1. `main.rb` is the real app entry point
+2. `Gemfile` controls Ruby dependencies
+3. `ruflet.yaml` controls app identity, services, and build behavior
+4. the Flutter client side is mostly packaging/runtime infrastructure
+5. your actual product code starts in Ruby
 
-Ruflet already uses view-driven navigation in the repo:
+## Recommended next step
 
-- `page.route`
-- `page.views`
-- navigation bars and rails
-- tabs and tab views
-
-This makes it practical to build multi-screen apps and shell layouts without leaving the Ruby layer.
-
-## Dialogs and transient UI
-
-Ruflet examples and Ruflet Studio use:
-
-- `page.show_dialog(control)`
-- `page.pop_dialog`
-
-Combined with alert dialogs, bottom sheets, Cupertino sheets, banners, and snack bars, this gives you a good range of feedback and decision flows.
-
-## Services and platform APIs
-
-When a feature belongs to the host platform instead of a normal widget, the code usually goes through `page`:
-
-- `page.service(:battery)`
-- `page.service(:camera)`
-- `page.service(:connectivity)`
-- `page.pick_files`
-- `page.save_file`
-- `page.get_directory_path`
-- `page.launch_url`
-- `page.set_clipboard`
-
-The full capability map is covered in [`/docs/services-and-plugins`](/docs/services-and-plugins).
+Now move to [`/docs/running-a-ruflet-app`](/docs/running-a-ruflet-app) and run the generated app with the structure in mind.

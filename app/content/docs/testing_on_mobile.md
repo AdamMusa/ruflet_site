@@ -9,7 +9,7 @@ Get the latest client from the [Ruflet releases page](https://github.com/AdamMus
 ## Run your app
 
 ```bash
-ruflet run main.rb
+ruflet run main
 ```
 
 The terminal output includes:

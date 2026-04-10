@@ -78,17 +78,17 @@ top_tabs = tabs(
     children: [
       tab_bar(
         tabs: [
-          tab(label: text(value: "Home")),
-          tab(label: text(value: "Play")),
-          tab(label: text(value: "About"))
+          tab(label: text("Home")),
+          tab(label: text("Play")),
+          tab(label: text("About"))
         ]
       ),
       tab_bar_view(
         expand: 1,
         children: [
-          container(expand: true, content: text(value: "Home tab")),
-          container(expand: true, content: text(value: "Play tab")),
-          container(expand: true, content: text(value: "About tab"))
+          container(expand: true, content: text("Home tab")),
+          container(expand: true, content: text("Play tab")),
+          container(expand: true, content: text("About tab"))
         ]
       )
     ]
