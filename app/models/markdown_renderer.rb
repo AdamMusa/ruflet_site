@@ -33,7 +33,7 @@ class MarkdownRenderer
           index += 1
         end
         classes = ["docs-code-block", ("language-#{language}" unless language.empty?)].compact.join(" ")
-        html << %(<pre class="#{classes}"><code>#{ERB::Util.html_escape(code.join("\n"))}</code></pre>)
+        html << %(<pre class="#{classes}"><code>#{highlight_code(code.join("\n"), language)}</code></pre>)
         index += 1
         next
       end
@@ -118,6 +118,70 @@ class MarkdownRenderer
     end
     html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{ERB::Util.html_escape(Regexp.last_match(1))}</strong>" }
     html = html.gsub(/`([^`]+)`/) { "<code>#{ERB::Util.html_escape(Regexp.last_match(1))}</code>" }
+    html
+  end
+
+  def highlight_code(code, language)
+    escaped = ERB::Util.html_escape(code)
+    case language.to_s.downcase
+    when "ruby", "rb"
+      highlight_ruby(escaped)
+    when "bash", "sh", "zsh", "shell"
+      highlight_bash(escaped)
+    when "yaml", "yml"
+      highlight_yaml(escaped)
+    else
+      escaped
+    end
+  end
+
+  def highlight_ruby(code)
+    highlight_with_placeholders(code) do |html|
+      html.gsub!(/\b(require|class|module|def|do|end|if|elsif|else|when|case|while|until|return|super|private|protected|public|rescue|begin)\b/, '<span class="tok-keyword">\1</span>')
+      html.gsub!(/\b(true|false|nil)\b/, '<span class="tok-atom">\1</span>')
+      html.gsub!(/\b([A-Z][A-Za-z0-9_:]*)\b/, '<span class="tok-constant">\1</span>')
+      html.gsub!(/(\b\d+(?:\.\d+)?\b)/, '<span class="tok-number">\1</span>')
+      html
+    end
+  end
+
+  def highlight_bash(code)
+    highlight_with_placeholders(code) do |html|
+      html.gsub!(/\b(gem|bundle|ruflet|cd|bin\/rails|rails|puts)\b/, '<span class="tok-function">\1</span>')
+      html.gsub!(/(\-\-[a-z0-9_-]+|\-[a-zA-Z])/, '<span class="tok-flag">\1</span>')
+      html
+    end
+  end
+
+  def highlight_yaml(code)
+    highlight_with_placeholders(code) do |html|
+      html.gsub!(/^([a-zA-Z0-9_-]+:)/, '<span class="tok-key">\1</span>')
+      html.gsub!(/\b(true|false|null)\b/, '<span class="tok-atom">\1</span>')
+      html.gsub!(/(\b\d+(?:\.\d+)?\b)/, '<span class="tok-number">\1</span>')
+      html
+    end
+  end
+
+  def highlight_with_placeholders(code)
+    html = code.dup
+    placeholders = []
+
+    html.gsub!(/(&quot;[^&\n]*&quot;|&#39;[^&\n]*&#39;)/) do
+      placeholders << %(<span class="tok-string">#{Regexp.last_match(1)}</span>)
+      "__TOK_#{placeholders.length - 1}__"
+    end
+
+    html.gsub!(/(#.*)$/) do
+      placeholders << %(<span class="tok-comment">#{Regexp.last_match(1)}</span>)
+      "__TOK_#{placeholders.length - 1}__"
+    end
+
+    html = yield(html)
+
+    placeholders.each_with_index do |token, index|
+      html.gsub!("__TOK_#{index}__", token)
+    end
+
     html
   end
 end
