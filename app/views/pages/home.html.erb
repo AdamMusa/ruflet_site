@@ -2,7 +2,7 @@
   <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
     <%= link_to "ruflet", root_path, class: "text-xl font-black lowercase tracking-[0.22em] text-white" %>
     <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
-      <%#= link_to "Docs", docs_path, class: "transition hover:text-white" %>
+      <%= link_to "Docs", docs_path, class: "transition hover:text-white" %>
       <a href="https://github.com/AdamMusa/Ruflet" target="_blank" rel="noreferrer" class="transition hover:text-white" aria-label="GitHub"><%= github_icon %></a>
     </nav>
   </div>
@@ -13,7 +13,7 @@
       <h1 class="max-w-[9ch] text-5xl font-black tracking-[-0.06em] text-sky-400 sm:text-6xl lg:text-7xl">Build multi-platform apps in Ruby</h1>
       <p class="mt-8 max-w-xl text-2xl leading-[1.8] text-slate-300">Easily build realtime web, mobile, and desktop apps in pure Ruby. No frontend framework switch required.</p>
       <div class="mt-10 flex flex-wrap gap-4">
-        <%= link_to "Get Started", "https://github.com/AdamMusa/Ruflet", target: "_", class: "inline-flex min-h-14 items-center justify-center rounded-2xl bg-[#cc342d] px-10 text-xl font-bold text-white shadow-[0_18px_40px_rgba(204,52,45,0.32)] transition hover:-translate-y-0.5 hover:bg-[#b22d27]" %>
+        <%= link_to "Get Started", docs_path, class: "inline-flex min-h-14 items-center justify-center rounded-2xl bg-[#cc342d] px-10 text-xl font-bold text-white shadow-[0_18px_40px_rgba(204,52,45,0.32)] transition hover:-translate-y-0.5 hover:bg-[#b22d27]" %>
       </div>
     </div>
   </div>
@@ -36,5 +36,17 @@
         </article>
       <% end %>
     </div>
+  </div>
+</section>
+
+<section id="newsletter" class="bg-slate-950 px-6 pb-24 text-slate-100 lg:px-8">
+  <div class="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-white/5 px-6 py-10 text-center sm:px-10">
+    <p class="text-sm font-bold uppercase tracking-[0.24em] text-sky-300">Newsletter</p>
+    <h2 class="mt-4 text-3xl font-black tracking-[-0.05em] text-white sm:text-4xl">Get Ruflet updates in your inbox</h2>
+
+    <%= form_with scope: :newsletter_subscription, url: newsletter_subscriptions_path, class: "mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row" do |form| %>
+      <%= form.email_field :email, required: true, autocomplete: "email", placeholder: "Enter your email", class: "min-h-14 flex-1 rounded-2xl border border-white/10 bg-slate-950 px-5 text-base text-white placeholder:text-slate-500 focus:border-sky-400/50 focus:outline-none" %>
+      <%= form.submit "Subscribe", class: "inline-flex min-h-14 items-center justify-center rounded-2xl bg-[#cc342d] px-8 text-base font-bold text-white transition hover:bg-[#b22d27]" %>
+    <% end %>
   </div>
 </section>

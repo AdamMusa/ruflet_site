@@ -7,7 +7,7 @@ image: ruflet
 # Deploy to these servers.
 servers:
   web:
-    - IP
+    - 65.21.247.35
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -22,7 +22,10 @@ servers:
 #
 proxy:
   ssl: true
-  host: ruflet.dev
+  hosts: 
+    - ruflet.dev
+    - www.ruflet.dev
+    
   app_port: 3000
   healthcheck:
     path: /up

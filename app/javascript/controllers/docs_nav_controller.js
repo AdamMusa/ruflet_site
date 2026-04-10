@@ -13,17 +13,19 @@ export default class extends Controller {
   }
 
   toggleSidebar() {
+    if (!this.hasSidebarTarget || !this.hasBackdropTarget) return
+
     this.sidebarTarget.classList.toggle("hidden")
     this.backdropTarget.classList.toggle("hidden")
   }
 
   closeSidebar() {
-    this.sidebarTarget.classList.add("hidden")
-    this.backdropTarget.classList.add("hidden")
+    if (this.hasSidebarTarget) this.sidebarTarget.classList.add("hidden")
+    if (this.hasBackdropTarget) this.backdropTarget.classList.add("hidden")
   }
 
   observeHeadings() {
-    if (this.headingElements.length === 0) return
+    if (this.headingElements.length === 0 || !this.hasTocLinkTarget) return
 
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -36,9 +38,7 @@ export default class extends Controller {
         const id = activeEntry.target.dataset.docsHeading
         this.tocLinkTargets.forEach((link) => {
           const active = link.dataset.headingId === id
-          link.classList.toggle("text-sky-300", active)
-          link.classList.toggle("font-semibold", active)
-          link.classList.toggle("text-slate-400", !active)
+          link.classList.toggle("docs-toc-link-active", active)
         })
       },
       { rootMargin: "-15% 0px -70% 0px", threshold: [0, 1] }
