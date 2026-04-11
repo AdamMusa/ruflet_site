@@ -2,7 +2,7 @@
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/admin'
+  config.root_path = "/admin"
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 
@@ -126,16 +126,16 @@ Avo.configure do |config|
   # config.model_generator_hook = true
 
   ## == Branding ==
-  config.branding = {
-    colors: {
-      background: "2 6 23",
-      100 => "#fecaca",
-      400 => "#f87171",
-      500 => "#cc342d",
-      600 => "#b22d27"
-    },
-    chart_colors: ["#cc342d", "#7dd3fc", "#38bdf8", "#fb7185"]
-  }
+  # config.branding = {
+  #   colors: {
+  #     background: "2 6 23",
+  #     100 => "#fecaca",
+  #     400 => "#f87171",
+  #     500 => "#cc342d",
+  #     600 => "#b22d27"
+  #   },
+  #   chart_colors: ["#cc342d", "#7dd3fc", "#38bdf8", "#fb7185"]
+  # }
 
   ## == Breadcrumbs ==
   # config.display_breadcrumbs = true
