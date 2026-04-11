@@ -176,12 +176,20 @@ class MarkdownRenderer
       "__TOK_#{placeholders.length - 1}__"
     end
 
-    html = yield(html)
+    html = yield(protect_tokens(html, placeholders))
 
     placeholders.each_with_index do |token, index|
       html.gsub!("__TOK_#{index}__", token)
     end
 
     html
+  end
+
+  def protect_tokens(html, placeholders)
+    protected_html = html.dup
+    placeholders.each_with_index do |token, index|
+      protected_html.gsub!("__TOK_#{index}__", "TOKPLACEHOLDER#{index}TOKEN")
+    end
+    protected_html
   end
 end
