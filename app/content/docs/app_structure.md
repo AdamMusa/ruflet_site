@@ -6,19 +6,9 @@ The most useful thing to understand early is the real project structure Ruflet g
 
 ## The generated project structure
 
-A newly generated Ruflet app starts with a small Ruby-side structure:
+A newly generated Ruflet app starts with this Ruby-side structure:
 
-```text
-my_app/
-  Gemfile
-  README.md
-  main.rb
-  ruflet.yaml
-```
-
-Over time, you will usually add your own folders, for example:
-
-```text
+```tree
 my_app/
   Gemfile
   README.md
@@ -27,9 +17,6 @@ my_app/
   assets/
     icon.png
     splash.png
-  views/
-  components/
-  services/
 ```
 
 Ruflet also manages a Flutter client workspace behind the scenes for builds and platform packaging. In normal Ruflet app development, you should not need to edit Flutter files directly.
@@ -113,9 +100,9 @@ The generated README includes the basic setup, run, and build commands:
 
 ```bash
 bundle install
-bundle exec ruflet run main
-bundle exec ruflet build apk
-bundle exec ruflet build ios
+ruflet run main
+ruflet build apk
+ruflet build ios
 ```
 
 Treat it as the first local “how to work on this app” note for your project.
@@ -184,12 +171,14 @@ The important point is this:
 
 The scaffold is intentionally small, but most real apps will eventually grow into something like:
 
-```text
+```tree
 my_app/
   main.rb
   Gemfile
   ruflet.yaml
   assets/
+    icon.png
+    splash.png
   views/
   components/
   models/

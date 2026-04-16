@@ -130,6 +130,8 @@ class MarkdownRenderer
       highlight_bash(escaped)
     when "yaml", "yml"
       highlight_yaml(escaped)
+    when "tree"
+      highlight_tree(escaped)
     else
       escaped
     end
@@ -147,8 +149,8 @@ class MarkdownRenderer
 
   def highlight_bash(code)
     highlight_with_placeholders(code) do |html|
-      html.gsub!(/\b(gem|bundle|ruflet|cd|bin\/rails|rails|puts)\b/, '<span class="tok-function">\1</span>')
       html.gsub!(/(\-\-[a-z0-9_-]+|\-[a-zA-Z])/, '<span class="tok-flag">\1</span>')
+      html.gsub!(/\b(gem|bundle|ruflet|cd|bin\/rails|rails|puts)\b/, '<span class="tok-function">\1</span>')
       html
     end
   end
@@ -162,34 +164,45 @@ class MarkdownRenderer
     end
   end
 
+  def highlight_tree(code)
+    code.gsub(/^(\s*)(.+\/)$/) { "#{$1}<span class=\"tok-folder\">#{$2}</span>" }
+      .gsub(/^(\s*)([^<\s].*)$/) { "#{$1}<span class=\"tok-file\">#{$2}</span>" }
+  end
+
   def highlight_with_placeholders(code)
     html = code.dup
     placeholders = []
 
     html.gsub!(/(&quot;[^&\n]*&quot;|&#39;[^&\n]*&#39;)/) do
       placeholders << %(<span class="tok-string">#{Regexp.last_match(1)}</span>)
-      "__TOK_#{placeholders.length - 1}__"
+      placeholder_token(placeholders.length - 1)
     end
 
     html.gsub!(/(#.*)$/) do
       placeholders << %(<span class="tok-comment">#{Regexp.last_match(1)}</span>)
-      "__TOK_#{placeholders.length - 1}__"
+      placeholder_token(placeholders.length - 1)
     end
 
-    html = yield(protect_tokens(html, placeholders))
+    html = yield(html)
 
     placeholders.each_with_index do |token, index|
-      html.gsub!("__TOK_#{index}__", token)
+      html.gsub!(placeholder_token(index), token)
     end
 
     html
   end
 
-  def protect_tokens(html, placeholders)
-    protected_html = html.dup
-    placeholders.each_with_index do |token, index|
-      protected_html.gsub!("__TOK_#{index}__", "TOKPLACEHOLDER#{index}TOKEN")
+  def placeholder_token(index)
+    alphabet = ("a".."z").to_a
+    token = +""
+    current = index
+
+    loop do
+      token.prepend(alphabet[current % alphabet.length])
+      current = (current / alphabet.length) - 1
+      break if current.negative?
     end
-    protected_html
+
+    "{{{tok_#{token}}}}"
   end
 end

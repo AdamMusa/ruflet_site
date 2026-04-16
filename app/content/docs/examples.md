@@ -8,12 +8,12 @@ From the examples folder:
 
 ```bash
 bundle install
-bundle exec ruflet run main
-bundle exec ruflet run calculator
-bundle exec ruflet run solitaire
-bundle exec ruflet run todo
-bundle exec ruflet run dialog
-bundle exec ruflet run image_gallery
+ruflet run main
+ruflet run calculator
+ruflet run solitaire
+ruflet run todo
+ruflet run dialog
+ruflet run image_gallery
 ```
 
 ## Starter examples

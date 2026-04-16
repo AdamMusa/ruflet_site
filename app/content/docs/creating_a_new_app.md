@@ -16,10 +16,16 @@ This is the important part many frameworks skip: after generating the app, you s
 
 Ruflet writes a practical starter structure:
 
-- `main.rb`
-- `Gemfile`
-- `README.md`
-- `ruflet.yaml`
+```tree
+my_app/
+  Gemfile
+  README.md
+  main.rb
+  ruflet.yaml
+  assets/
+    icon.png
+    splash.png
+```
 
 ## Read the app structure first
 

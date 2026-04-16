@@ -260,7 +260,7 @@ Those are polish layers you can add after the core flow works.
 ```bash
 cd examples
 bundle install
-bundle exec ruflet run todo
+ruflet run todo
 ```
 
 ## What you learned

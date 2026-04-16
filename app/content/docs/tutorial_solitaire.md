@@ -206,7 +206,7 @@ That order makes the example far easier to absorb.
 ```bash
 cd examples
 bundle install
-bundle exec ruflet run solitaire
+ruflet run solitaire
 ```
 
 ## What you learned

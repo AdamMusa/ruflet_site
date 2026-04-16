@@ -7,7 +7,10 @@
   <header class="sticky top-0 z-30 border-b border-white/10 bg-slate-950/95 backdrop-blur">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-4 lg:px-8">
       <div class="flex items-center gap-4">
-        <%= link_to "ruflet", root_path, class: "text-xl font-black lowercase tracking-[0.22em] text-white" %>
+        <%= link_to root_path, class: "inline-flex items-center gap-0" do %>
+          <%= image_tag "icon.png", alt: "R", class: "h-12 w-10 object-cover object-center" %>
+          <span class="-ml-1 text-3xl font-semibold tracking-normal text-slate-200">uflet</span>
+        <% end %>
       </div>
 
       <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-200 md:hidden" aria-label="Open documentation menu">
@@ -37,7 +40,7 @@
     <div data-docs-nav-target="backdrop" data-action="click->docs-nav#closeSidebar" class="fixed inset-0 z-30 hidden bg-slate-950/70 lg:hidden"></div>
 
     <div class="grid gap-0 lg:grid-cols-[320px_minmax(0,1fr)_250px]">
-      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[84vw] max-w-[300px] overflow-y-auto border-r border-white/10 bg-slate-950 px-4 py-5 shadow-2xl lg:sticky lg:top-[4.7rem] lg:block lg:max-h-[calc(100vh-4.7rem)] lg:w-auto lg:max-w-none lg:border-r lg:border-white/10 lg:px-5 lg:py-5">
+      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[84vw] max-w-[300px] overflow-y-auto border-r border-white/10 bg-slate-950 px-4 py-5 lg:sticky lg:top-[4.7rem] lg:block lg:max-h-[calc(100vh-4.7rem)] lg:w-auto lg:max-w-none lg:border-r lg:border-white/10 lg:px-5 lg:py-5">
         <div class="mb-6 flex items-center justify-between lg:hidden">
           <span class="text-sm font-semibold text-white">Documentation</span>
           <button type="button" data-action="docs-nav#closeSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-300" aria-label="Close documentation menu">×</button>

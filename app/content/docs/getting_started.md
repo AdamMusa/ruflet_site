@@ -26,10 +26,16 @@ ruflet run main
 
 `ruflet new` creates:
 
-- `main.rb`
-- `Gemfile`
-- `README.md`
-- `ruflet.yaml`
+```tree
+my_app/
+  Gemfile
+  README.md
+  main.rb
+  ruflet.yaml
+  assets/
+    icon.png
+    splash.png
+```
 
 The generated app `Gemfile` includes the runtime gems you need to execute your app:
 
