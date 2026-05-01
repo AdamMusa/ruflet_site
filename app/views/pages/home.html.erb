@@ -6,6 +6,7 @@
     <% end %>
     <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
       <%= link_to "Docs", docs_path, class: "transition hover:text-white" %>
+      <%= link_to "Privacy", privacy_path, class: "transition hover:text-white" %>
       <a href="https://github.com/AdamMusa/Ruflet" target="_blank" rel="noreferrer" class="transition hover:text-white" aria-label="GitHub"><%= github_icon %></a>
     </nav>
   </div>
@@ -52,3 +53,13 @@
     <% end %>
   </div>
 </section>
+
+<footer class="border-t border-white/10 bg-slate-950 px-6 py-8 text-sm text-slate-400 lg:px-8">
+  <div class="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <p>&copy; <%= Time.current.year %> Ruflet.</p>
+    <div class="flex gap-6">
+      <%= link_to "Privacy Policy", privacy_path, class: "transition hover:text-white" %>
+      <%= link_to "Docs", docs_path, class: "transition hover:text-white" %>
+    </div>
+  </div>
+</footer>

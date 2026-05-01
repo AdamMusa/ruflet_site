@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: :home
+  allow_unauthenticated_access only: [:home, :privacy]
 
   def home
     @features = [
@@ -80,5 +80,8 @@ class PagesController < ApplicationController
       ['  )', ''],
       ['end', '']
     ]
+  end
+
+  def privacy
   end
 end

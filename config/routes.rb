@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :session
   get "docs", to: "docs#index", as: :docs
   get "docs/:slug", to: "docs#show", as: :doc
+  get "privacy", to: "pages#privacy", as: :privacy
   get "up" => "rails/health#show", as: :rails_health_check
   root "pages#home"
 end
