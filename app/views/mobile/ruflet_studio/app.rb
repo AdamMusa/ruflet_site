@@ -25,7 +25,7 @@ module RufletStudio
       page.title = "Gallery"
       page.scroll = "auto"
       page.bgcolor = color_bg(page)
-      page.theme_mode = theme_mode
+      page.theme_mode = theme_mode(page)
 
       page.on_route_change = ->(_e) { render(page) }
       page.on_platform_brightness_change = ->(_e) { render(page) }
@@ -39,7 +39,7 @@ module RufletStudio
       route = route_path(page.route)
       route = "/gallery" if route == "/"
       page.bgcolor = color_bg(page)
-      page.theme_mode = theme_mode
+      page.theme_mode = theme_mode(page)
 
       case route
       when "/home"

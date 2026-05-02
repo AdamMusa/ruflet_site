@@ -28,13 +28,14 @@ module RufletStudio
       )
     end
 
-    def calculator_state
-      @calculator_state ||= { display: "0", operand: nil, operator: nil, start_new_value: false }
+    def calculator_state(page)
+      page.instance_variable_get(:@calculator_state) ||
+        page.instance_variable_set(:@calculator_state, { display: "0", operand: nil, operator: nil, start_new_value: false })
     end
 
     def calculator_display(page)
-      @calculator_display = text(
-        value: calculator_state[:display],
+      text(
+        value: calculator_state(page)[:display],
         text_align: "right",
         style: { size: 84, color: color_text(page) }
       )
@@ -67,113 +68,121 @@ module RufletStudio
 
     def calculator_handle_input(label, event, page, display, status)
       if DIGITS.include?(label)
-        calculator_on_digit(label)
+        calculator_on_digit(page, label)
       elsif label == "."
-        calculator_on_decimal
+        calculator_on_decimal(page)
       elsif %w[x / - +].include?(label)
-        calculator_on_operator(label)
+        calculator_on_operator(page, label)
       elsif label == "="
-        calculator_on_equals
+        calculator_on_equals(page)
       elsif label == "AC"
-        calculator_reset
+        calculator_reset(page)
       elsif label == "+/-"
-        calculator_on_toggle_sign
+        calculator_on_toggle_sign(page)
       elsif label == "%"
-        calculator_on_percent
+        calculator_on_percent(page)
       elsif label == "BS"
-        calculator_on_backspace
+        calculator_on_backspace(page)
       end
 
-      page.update(display, value: calculator_state[:display])
-      page.update(status, value: "Calculator result: #{calculator_state[:display]}") if label == "="
+      page.update(display, value: calculator_state(page)[:display])
+      page.update(status, value: "Calculator result: #{calculator_state(page)[:display]}") if label == "="
       event
     end
 
-    def calculator_on_digit(digit)
-      if calculator_state[:start_new_value] || calculator_state[:display] == "Error"
-        calculator_state[:display] = digit
-        calculator_state[:start_new_value] = false
+    def calculator_on_digit(page, digit)
+      state = calculator_state(page)
+      if state[:start_new_value] || state[:display] == "Error"
+        state[:display] = digit
+        state[:start_new_value] = false
         return
       end
 
-      calculator_state[:display] = (calculator_state[:display] == "0" ? digit : "#{calculator_state[:display]}#{digit}")
+      state[:display] = (state[:display] == "0" ? digit : "#{state[:display]}#{digit}")
     end
 
-    def calculator_on_decimal
-      if calculator_state[:start_new_value] || calculator_state[:display] == "Error"
-        calculator_state[:display] = "0."
-        calculator_state[:start_new_value] = false
+    def calculator_on_decimal(page)
+      state = calculator_state(page)
+      if state[:start_new_value] || state[:display] == "Error"
+        state[:display] = "0."
+        state[:start_new_value] = false
         return
       end
 
-      calculator_state[:display] += "." unless calculator_state[:display].include?(".")
+      state[:display] += "." unless state[:display].include?(".")
     end
 
-    def calculator_on_operator(next_operator)
-      if calculator_state[:operator] && !calculator_state[:start_new_value]
-        calculator_apply_calculation
-        return if calculator_state[:display] == "Error"
+    def calculator_on_operator(page, next_operator)
+      state = calculator_state(page)
+      if state[:operator] && !state[:start_new_value]
+        calculator_apply_calculation(page)
+        return if state[:display] == "Error"
       else
-        calculator_state[:operand] = calculator_to_number(calculator_state[:display])
+        state[:operand] = calculator_to_number(state[:display])
       end
 
-      calculator_state[:operator] = next_operator
-      calculator_state[:start_new_value] = true
+      state[:operator] = next_operator
+      state[:start_new_value] = true
     end
 
-    def calculator_on_equals
-      return unless calculator_state[:operator]
+    def calculator_on_equals(page)
+      state = calculator_state(page)
+      return unless state[:operator]
 
-      calculator_apply_calculation
-      calculator_state[:operator] = nil if calculator_state[:display] != "Error"
+      calculator_apply_calculation(page)
+      state[:operator] = nil if state[:display] != "Error"
     end
 
-    def calculator_on_toggle_sign
-      return if calculator_state[:display] == "0" || calculator_state[:display] == "Error"
+    def calculator_on_toggle_sign(page)
+      state = calculator_state(page)
+      return if state[:display] == "0" || state[:display] == "Error"
 
-      calculator_state[:display] = if calculator_state[:display].start_with?("-")
-                                     calculator_state[:display][1..]
-                                   else
-                                     "-#{calculator_state[:display]}"
-                                   end
+      state[:display] = if state[:display].start_with?("-")
+                           state[:display][1..]
+                         else
+                           "-#{state[:display]}"
+                         end
     end
 
-    def calculator_on_percent
-      return if calculator_state[:display] == "Error"
+    def calculator_on_percent(page)
+      state = calculator_state(page)
+      return if state[:display] == "Error"
 
-      calculator_state[:display] = calculator_format_number(calculator_to_number(calculator_state[:display]) / 100.0)
-      calculator_state[:start_new_value] = true
+      state[:display] = calculator_format_number(calculator_to_number(state[:display]) / 100.0)
+      state[:start_new_value] = true
     end
 
-    def calculator_on_backspace
-      return if calculator_state[:display] == "Error"
+    def calculator_on_backspace(page)
+      state = calculator_state(page)
+      return if state[:display] == "Error"
 
-      if calculator_state[:display].length <= 1 || (calculator_state[:display].length == 2 && calculator_state[:display].start_with?("-"))
-        calculator_state[:display] = "0"
+      if state[:display].length <= 1 || (state[:display].length == 2 && state[:display].start_with?("-"))
+        state[:display] = "0"
         return
       end
 
-      calculator_state[:display] = calculator_state[:display][0...-1]
+      state[:display] = state[:display][0...-1]
     end
 
-    def calculator_apply_calculation
-      right = calculator_to_number(calculator_state[:display])
-      result = case calculator_state[:operator]
+    def calculator_apply_calculation(page)
+      state = calculator_state(page)
+      right = calculator_to_number(state[:display])
+      result = case state[:operator]
                when "+"
-                 calculator_state[:operand] + right
+                 state[:operand] + right
                when "-"
-                 calculator_state[:operand] - right
+                 state[:operand] - right
                when "x"
-                 calculator_state[:operand] * right
+                 state[:operand] * right
                when "/"
-                 return calculator_show_error if right.zero?
+                 return calculator_show_error(page) if right.zero?
 
-                 calculator_state[:operand] / right
+                 state[:operand] / right
                end
 
-      calculator_state[:display] = calculator_format_number(result)
-      calculator_state[:operand] = calculator_to_number(calculator_state[:display])
-      calculator_state[:start_new_value] = true
+      state[:display] = calculator_format_number(result)
+      state[:operand] = calculator_to_number(state[:display])
+      state[:start_new_value] = true
     end
 
     def calculator_to_number(value)
@@ -189,18 +198,20 @@ module RufletStudio
       number.to_s.sub(/\.?0+\z/, "")
     end
 
-    def calculator_show_error
-      calculator_state[:display] = "Error"
-      calculator_state[:operator] = nil
-      calculator_state[:operand] = nil
-      calculator_state[:start_new_value] = true
+    def calculator_show_error(page)
+      state = calculator_state(page)
+      state[:display] = "Error"
+      state[:operator] = nil
+      state[:operand] = nil
+      state[:start_new_value] = true
     end
 
-    def calculator_reset
-      calculator_state[:display] = "0"
-      calculator_state[:operand] = nil
-      calculator_state[:operator] = nil
-      calculator_state[:start_new_value] = false
+    def calculator_reset(page)
+      state = calculator_state(page)
+      state[:display] = "0"
+      state[:operand] = nil
+      state[:operator] = nil
+      state[:start_new_value] = false
     end
   end
 end

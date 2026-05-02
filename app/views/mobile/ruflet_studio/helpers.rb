@@ -44,12 +44,14 @@ module RufletStudio
       )
     end
 
-    def theme_mode
-      @theme_mode ||= "system"
+    def theme_mode(page)
+      page.instance_variable_get(:@theme_mode) ||
+        page.instance_variable_set(:@theme_mode, "system")
     end
 
     def effective_theme(page)
-      return theme_mode unless theme_mode == "system"
+      mode = theme_mode(page)
+      return mode unless mode == "system"
 
       brightness = page.client_details&.dig("platform_brightness") || page.client_details&.dig(:platform_brightness)
       brightness == "dark" ? "dark" : "light"
@@ -59,7 +61,7 @@ module RufletStudio
       normalized = mode.to_s.strip.downcase
       return unless %w[system light dark].include?(normalized)
 
-      @theme_mode = normalized
+      page.instance_variable_set(:@theme_mode, normalized)
       page.theme_mode = normalized
       page.go(page.route || "/settings")
     end

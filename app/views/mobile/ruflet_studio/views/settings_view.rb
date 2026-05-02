@@ -112,7 +112,7 @@ module RufletStudio
     end
 
     def theme_option_row(page, icon_value, title, subtitle, value)
-      selected = theme_mode == value
+      selected = theme_mode(page) == value
 
       container(
         bgcolor: selected ? color_panel(page) : color_bg(page),
