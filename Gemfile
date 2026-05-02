@@ -68,3 +68,5 @@ group :test do
 end
 
 gem "avo", "~> 3.30"
+
+gem "ruflet_rails", "~> 0.0.6"
