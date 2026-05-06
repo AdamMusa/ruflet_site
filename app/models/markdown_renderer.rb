@@ -32,8 +32,7 @@ class MarkdownRenderer
           code << @lines[index]
           index += 1
         end
-        classes = ["docs-code-block", ("language-#{language}" unless language.empty?)].compact.join(" ")
-        html << %(<pre class="#{classes}"><code>#{highlight_code(code.join("\n"), language)}</code></pre>)
+        html << render_code_block(code.join("\n"), language)
         index += 1
         next
       end
@@ -119,6 +118,17 @@ class MarkdownRenderer
     html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{ERB::Util.html_escape(Regexp.last_match(1))}</strong>" }
     html = html.gsub(/`([^`]+)`/) { "<code>#{ERB::Util.html_escape(Regexp.last_match(1))}</code>" }
     html
+  end
+
+  def render_code_block(code, language)
+    classes = ["docs-code-block", ("language-#{language}" unless language.empty?)].compact.join(" ")
+
+    <<~HTML.chomp
+      <div class="docs-code-block-wrap" data-controller="copy-code" style="position: relative; margin: 1.5rem 0 1.75rem;">
+        <button type="button" class="docs-code-copy-button" data-copy-code-target="button" data-action="click->copy-code#copy" style="position: absolute; top: 0.7rem; right: 0.75rem; z-index: 1; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(15, 23, 42, 0.96); color: #cbd5e1; padding: 0.35rem 0.6rem; font-size: 0.75rem; font-weight: 700; line-height: 1; cursor: pointer;">Copy</button>
+        <pre class="#{classes}" style="margin: 0; padding-top: 2.7rem;"><code data-copy-code-target="code">#{highlight_code(code, language)}</code></pre>
+      </div>
+    HTML
   end
 
   def highlight_code(code, language)

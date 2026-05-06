@@ -86,7 +86,7 @@ Next, place the input beside an Add button.
 ```ruby
 def add_row(page, input)
   add_button = elevated_button(
-    content: text("Add"),
+    content: text(value: "Add"),
     on_click: ->(e) { add_task(e.page) }
   )
 
@@ -138,7 +138,7 @@ def task_row(page, task)
         on_change: ->(e) { toggle_task(task[:id], e.page) }
       ),
       text_button(
-        content: text("Delete"),
+        content: text(value: "Delete"),
         on_click: ->(e) { delete_task(task[:id], e.page) }
       )
     ]
@@ -153,7 +153,7 @@ task_controls = if filtered_tasks.empty?
   [
     container(
       padding: 16,
-      content: text("No tasks")
+      content: text(value: "No tasks")
     )
   ]
 else

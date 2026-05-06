@@ -63,7 +63,7 @@ require "ruflet"
 Ruflet.run do |page|
   page.title = "Counter Demo"
   count = 0
-  count_text = text(count.to_s, style: { size: 40 })
+  count_text = text(count.to_s, style: {size: 40})
 
   page.add(
     container(
@@ -79,7 +79,7 @@ Ruflet.run do |page|
       )
     ),
     floating_action_button: fab(
-      icon: Ruflet::MaterialIcons::ADD,
+      icon: "add",
       on_click: ->(_e) do
         count += 1
         page.update(count_text, value: count.to_s)
@@ -89,9 +89,9 @@ Ruflet.run do |page|
 end
 ```
 
-This is the current Ruflet style used in the scaffold:
+This is the current Ruflet scaffold template:
 
-- Widget builders such as `text`, `row`, `column`, `container`, and `fab` are free helpers.
+- Widget builders such as `text`, `column`, `container`, and `fab` are free helpers.
 - `page` is used for runtime operations such as `add`, `update`, navigation, dialogs, services, and platform interaction.
 
 ## Learn the framework in the right order

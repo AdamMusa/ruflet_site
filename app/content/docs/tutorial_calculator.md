@@ -37,7 +37,7 @@ class CalculatorApp < Ruflet::App
         width: 420,
         padding: 16,
         border_radius: 16,
-        content: text("Calculator coming next...")
+        content: text(value: "Calculator coming next...")
       )
     )
   end
@@ -126,7 +126,7 @@ def keypad_row(page, *labels)
     spacing: 6,
     children: labels.map do |label|
       elevated_button(
-        content: text(label),
+        content: text(value: label),
         width: 78,
         height: 65,
         on_click: ->(e) { handle_input(label, e.page) }

@@ -16,6 +16,10 @@ class MarkdownRendererTest < ActiveSupport::TestCase
 
     assert_includes html, %(<span class="tok-function">gem</span> install)
     assert_includes html, %(<span class="tok-function">ruflet</span> new my_app)
+    assert_includes html, %(class="docs-code-copy-button")
+    assert_includes html, %(data-controller="copy-code")
+    assert_includes html, %(data-action="click->copy-code#copy")
+    assert_includes html, %(data-copy-code-target="code")
     refute_includes html, "TOKPLACEHOLDER"
     refute_includes html, "tok<span"
     refute_includes html, %(tok<span class="tok-flag">-f</span>unction)

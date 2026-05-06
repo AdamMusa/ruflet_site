@@ -23,7 +23,6 @@ export default class extends Controller {
     if (this.hasSidebarTarget) this.sidebarTarget.classList.add("hidden")
     if (this.hasBackdropTarget) this.backdropTarget.classList.add("hidden")
   }
-
   observeHeadings() {
     if (this.headingElements.length === 0 || !this.hasTocLinkTarget) return
 
@@ -46,4 +45,5 @@ export default class extends Controller {
 
     this.headingElements.forEach((heading) => this.observer.observe(heading))
   }
+
 }

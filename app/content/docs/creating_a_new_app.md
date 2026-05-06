@@ -40,7 +40,7 @@ That is why the next recommended page is [`/docs/app-structure`](/docs/app-struc
 
 ## The generated starter app
 
-The scaffold uses the current Ruflet style:
+This is the current Ruflet scaffold template:
 
 ```ruby
 require "ruflet"
@@ -48,7 +48,7 @@ require "ruflet"
 Ruflet.run do |page|
   page.title = "Counter Demo"
   count = 0
-  count_text = text(count.to_s, style: { size: 40 })
+  count_text = text(count.to_s, style: {size: 40})
 
   page.add(
     container(
@@ -64,7 +64,7 @@ Ruflet.run do |page|
       )
     ),
     floating_action_button: fab(
-      icon: Ruflet::MaterialIcons::ADD,
+      icon: "add",
       on_click: ->(_e) do
         count += 1
         page.update(count_text, value: count.to_s)

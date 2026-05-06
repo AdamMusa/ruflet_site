@@ -61,7 +61,7 @@ require "ruflet"
 
 Ruflet.run do |page|
   page.title = "Hello"
-  page.add(text("Hello Ruflet"))
+  page.add(text(value: "Hello Ruflet"))
 end
 ```
 
