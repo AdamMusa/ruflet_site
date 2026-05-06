@@ -286,6 +286,45 @@
   font-weight: 700;
 }
 
+.docs-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.docs-control-card {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 92px;
+  padding: 1rem 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: #f8fafc;
+  text-decoration: none;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.docs-control-card:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.docs-control-card-title {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: normal;
+  color: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+
 .docs-sidebar-nav {
   display: flex;
   flex-direction: column;

@@ -20,7 +20,7 @@
       <nav class="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
         <%= link_to "Learn", doc_path("introduction"), class: "transition hover:text-white" %>
         <%= link_to "Tutorials", doc_path("tutorial-calculator"), class: "transition hover:text-white" %>
-        <%= link_to "Reference", doc_path("controls-and-layout"), class: "transition hover:text-white" %>
+        <%= link_to "Reference", doc_path("reference"), class: "transition hover:text-white" %>
         <a href="https://github.com/AdamMusa/Ruflet" target="_blank" rel="noreferrer" class="transition hover:text-white" aria-label="GitHub"><%= github_icon %></a>
       </nav>
     </div>
@@ -84,9 +84,19 @@
           </div>
         </div>
 
-        <div class="docs-markdown mt-6 max-w-4xl">
+        <div class="docs-markdown mt-6 max-w-5xl">
           <%= @rendered_doc.html %>
         </div>
+
+        <% if @doc.slug == "component-reference" && @control_catalog.any? %>
+          <div class="docs-controls-grid" aria-label="Controls catalog">
+            <% @control_catalog.each do |control| %>
+              <%= link_to doc_path(control[:slug]), class: "docs-control-card" do %>
+                <span class="docs-control-card-title"><%= control[:title] %></span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
 
         <% if @previous_doc || @next_doc %>
           <div class="mt-12 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-2">

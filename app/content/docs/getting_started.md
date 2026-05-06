@@ -98,7 +98,7 @@ This is the current Ruflet scaffold template:
 
 1. Start with [`/docs/cli-workflow`](/docs/cli-workflow) to understand the developer loop.
 2. Continue with [`/docs/app-structure`](/docs/app-structure) to learn how Ruflet apps are composed.
-3. Browse [`/docs/controls-and-layout`](/docs/controls-and-layout) and [`/docs/navigation-feedback`](/docs/navigation-feedback) for the most common APIs.
+3. Browse [`/docs/component-reference`](/docs/component-reference) to move through the component reference one control at a time.
 4. Use [`/docs/examples`](/docs/examples) when you want runnable patterns from the repo.
 
 ## Where Ruflet is strongest today
