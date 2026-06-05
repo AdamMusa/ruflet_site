@@ -19,11 +19,11 @@ The current repo demonstrates these page-level capabilities:
 - Camera: `page.service(:camera)`
 - Flashlight: `page.service(:flashlight)`
 - Storage paths: `page.service(:storage_paths)`
-- Share: demonstrated in Ruflet Studio
+- Share: demonstrated in Showcase
 
 ## Media and embedded experiences
 
-Ruflet Studio also demonstrates control/service-driven integrations for:
+Showcase also demonstrates control/service-driven integrations for:
 
 - audio
 - video

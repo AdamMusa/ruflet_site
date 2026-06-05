@@ -37,11 +37,11 @@ ruflet run image_gallery
 ## Showcase examples
 
 - `solitaire.rb`: a larger interactive app with richer state and composition
-- Ruflet Studio: an internal gallery app covering controls, charts, services, media, and utilities
+- Showcase: an internal gallery app covering controls, charts, services, media, and utilities
 
-## What Ruflet Studio demonstrates
+## What Showcase demonstrates
 
-Ruflet Studio is especially valuable because it exercises features beyond the smallest demos:
+Showcase is especially valuable because it exercises features beyond the smallest demos:
 
 - Material controls
 - Cupertino controls
@@ -57,7 +57,7 @@ Ruflet Studio is especially valuable because it exercises features beyond the sm
 1. Run `counter.rb` or `hello_world.rb`.
 2. Move to `dialog.rb` and `tabs.rb`.
 3. Open `todo.rb` for a realistic stateful example.
-4. Browse Ruflet Studio when you want to see broader feature coverage.
+4. Browse Showcase when you want to see broader feature coverage.
 
 ## Use examples as documentation
 

@@ -13,10 +13,10 @@ Instead of jumping straight to the finished code, we will build the app in layer
 
 ## Before you start
 
-The production calculator logic in this repo lives in Ruflet Studio under:
+The production calculator logic in this repo lives in Showcase under:
 
 ```text
-ruflet_studio/sections_controls/calculator.rb
+showcase/sections_controls/calculator.rb
 ```
 
 This tutorial teaches the same ideas in a smaller step-by-step flow.
@@ -340,7 +340,7 @@ ruflet run main
 After finishing your version, compare it with the real calculator logic in:
 
 ```text
-ruflet_studio/sections_controls/calculator.rb
+showcase/sections_controls/calculator.rb
 ```
 
 That comparison is useful because you will see the same structure at a slightly more polished level.

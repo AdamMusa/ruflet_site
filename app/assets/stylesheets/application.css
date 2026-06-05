@@ -136,6 +136,14 @@
   color: #ffffff;
 }
 
+.docs-inline-image {
+  display: inline-block;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin-right: 0.45rem;
+  vertical-align: -0.42rem;
+}
+
 .docs-markdown ul,
 .docs-markdown ol {
   margin: 1rem 0 1.25rem;

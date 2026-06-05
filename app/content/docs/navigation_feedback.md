@@ -96,9 +96,9 @@ top_tabs = tabs(
 )
 ```
 
-## Where Ruflet Studio is especially useful
+## Where Showcase is especially useful
 
-Ruflet Studio demonstrates:
+Showcase demonstrates:
 
 - dialog presentation
 - sheets and pickers

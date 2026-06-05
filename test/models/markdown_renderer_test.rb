@@ -57,4 +57,12 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     assert_includes html, %(  <span class="tok-folder">assets/</span>)
     assert_includes html, %(    <span class="tok-file">icon.png</span>)
   end
+
+  test "renders inline markdown images" do
+    html = MarkdownRenderer.render("![iOS](/assets/platform_ios.svg) **iOS**").html
+    src = ActionController::Base.helpers.asset_path("platform_ios.svg")
+
+    assert_includes html, %(<img src="#{src}" alt="iOS" class="docs-inline-image">)
+    assert_includes html, %(<strong>iOS</strong>)
+  end
 end

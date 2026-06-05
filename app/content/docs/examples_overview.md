@@ -21,7 +21,7 @@ They show:
 2. ToDo
 3. Tabs and dialog examples
 4. Solitaire
-5. Ruflet Studio
+5. Showcase
 
 ## What to do next
 

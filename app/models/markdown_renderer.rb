@@ -108,6 +108,11 @@ class MarkdownRenderer
 
   def inline_markup(text)
     html = ERB::Util.html_escape(text)
+    html = html.gsub(/!\[([^\]]*)\]\(([^)]+)\)/) do
+      alt = ERB::Util.html_escape(Regexp.last_match(1))
+      src = ERB::Util.html_escape(resolve_image_src(Regexp.last_match(2)))
+      %(<img src="#{src}" alt="#{alt}" class="docs-inline-image">)
+    end
     html = html.gsub(/\[([^\]]+)\]\(([^)]+)\)/) do
       label = ERB::Util.html_escape(Regexp.last_match(1))
       href = ERB::Util.html_escape(Regexp.last_match(2))
@@ -118,6 +123,12 @@ class MarkdownRenderer
     html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{ERB::Util.html_escape(Regexp.last_match(1))}</strong>" }
     html = html.gsub(/`([^`]+)`/) { "<code>#{ERB::Util.html_escape(Regexp.last_match(1))}</code>" }
     html
+  end
+
+  def resolve_image_src(src)
+    return src unless src.start_with?("/assets/")
+
+    ActionController::Base.helpers.asset_path(src.delete_prefix("/assets/"))
   end
 
   def render_code_block(code, language)

@@ -4,7 +4,7 @@ Ruflet already reaches beyond basic forms and CRUD screens. The current demo sur
 
 ## Chart controls already present
 
-Ruflet Studio exercises several chart types:
+Showcase exercises several chart types:
 
 - `bar_chart`
 - `line_chart`
@@ -58,7 +58,7 @@ This makes Ruflet viable for:
 
 ## Example direction
 
-Ruflet Studio's chart section shows that the framework can already express:
+Showcase's chart section shows that the framework can already express:
 
 - configured axes
 - labels

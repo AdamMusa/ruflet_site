@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "ruflet_studio/app"
+require_relative "showcase/app"
 
-RufletStudio::App.new.run
+Showcase::App.new.run

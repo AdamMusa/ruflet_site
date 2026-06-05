@@ -139,4 +139,4 @@ page.add(
 - Use builder helpers for normal controls.
 - Use `page.update(...)` to mutate existing controls.
 - Reach for `responsive_row`, `grid_view`, or `navigation_rail` when the app needs to scale to larger screens.
-- When in doubt, study Ruflet Studio and the examples folder for the current preferred calling style.
+- When in doubt, study Showcase and the examples folder for the current preferred calling style.

@@ -4,7 +4,8 @@ Mobile is Ruflet's default target for local development.
 
 ## Install the Ruflet mobile client
 
-Get the latest client from the [Ruflet releases page](https://github.com/AdamMusa/Ruflet/releases).
+- ![iOS](/assets/platform_ios.svg) **iOS:** download [Ruflet Explorer on the App Store](https://apps.apple.com/us/app/ruflet-explorer/id6762528151).
+- ![Android](/assets/platform_android.svg) **Android:** Google Play is coming soon. For now, download the Android build from the [Ruflet GitHub releases page](https://github.com/AdamMusa/Ruflet/releases).
 
 ## Run your app
 

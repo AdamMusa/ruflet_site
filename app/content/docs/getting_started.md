@@ -7,7 +7,7 @@ Ruflet is a Ruby-first UI framework for building web, desktop, and mobile apps f
 - One Ruby app can run against mobile, web, and desktop clients.
 - You can start with a tiny `Ruflet.run do |page| ... end` app and grow into class-based apps with `Ruflet::App`.
 - The CLI can scaffold projects, run local servers, launch web and desktop clients, install builds, and package apps for multiple targets.
-- Ruflet already ships demos for counters, dialogs, tabs, todo apps, calculators, image galleries, navigation patterns, and larger showcase apps like solitaire and Ruflet Studio.
+- Ruflet already ships demos for counters, dialogs, tabs, todo apps, calculators, image galleries, navigation patterns, solitaire, and Showcase.
 
 ## Install Ruflet
 
@@ -53,7 +53,12 @@ ruflet run main --desktop
 
 ## Connect from the client
 
-For mobile, install the Ruflet client from the [Ruflet releases page](https://github.com/AdamMusa/Ruflet/releases). The terminal output from `ruflet run` includes the connection URL, WebSocket endpoint, and QR code hints used by the mobile client.
+For mobile, install Ruflet Explorer:
+
+- ![iOS](/assets/platform_ios.svg) **iOS:** download [Ruflet Explorer on the App Store](https://apps.apple.com/us/app/ruflet-explorer/id6762528151).
+- ![Android](/assets/platform_android.svg) **Android:** Google Play is coming soon. For now, download the Android build from the [Ruflet GitHub releases page](https://github.com/AdamMusa/Ruflet/releases).
+
+The terminal output from `ruflet run` includes the connection URL, WebSocket endpoint, and QR code hints used by the mobile client.
 
 ## Your first app
 

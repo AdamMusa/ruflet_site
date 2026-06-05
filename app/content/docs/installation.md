@@ -2,6 +2,13 @@
 
 Ruflet is installed from RubyGems.
 
+## Install Ruflet Explorer
+
+Ruflet Explorer is the mobile companion app used to connect to a local or hosted Ruflet app while you are developing.
+
+- ![iOS](/assets/platform_ios.svg) **iOS:** download [Ruflet Explorer on the App Store](https://apps.apple.com/us/app/ruflet-explorer/id6762528151).
+- ![Android](/assets/platform_android.svg) **Android:** Google Play is coming soon. For now, download the Android build from the [Ruflet GitHub releases page](https://github.com/AdamMusa/Ruflet/releases).
+
 ## Install the CLI
 
 ```bash
