@@ -7,12 +7,11 @@ module Showcase
       map_control = map(
         [
           tile_layer(
-            url_template: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            user_agent_package_name: "com.example.showcase"
+            url_template: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+            user_agent_package_name: "com.izeesoft.rufletexplorer"
           ),
           simple_attribution(
-            text: "OpenStreetMap contributors",
-            alignment: "bottom_right"
+            text: "OpenStreetMap contributors, CARTO"
           ),
           marker_layer(
             [
