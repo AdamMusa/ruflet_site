@@ -48,7 +48,11 @@ class DocsCatalog
         id: "integrations",
         title: "Integrations",
         entries: [
-          entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
+          entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
+          entry("rails-scaffolding", "Scaffolding", "Generate a full CRUD resource as a single mountable Ruflet component.", SOURCE_ROOT.join("rails_scaffolding.md"), "Integrations"),
+          entry("rails-navigation", "Navigation", "Flet-style routed view-stack navigation with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
+          entry("rails-assets", "Assets and URLs", "Display Rails assets as images with `asset_url`, the always-resolved `backend_url`, and the `ruflet_frame` ERB helper.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
+          entry("rails-webview-apps", "Webview Apps", "Wrap your website in a native shell with `webview_app` and the Hotwire Native-style `native_app`, plus the full WebView control.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
           entry("services-and-plugins", "Services and Plugins", "Built-in device APIs plus optional client extensions configured through `ruflet.yaml`.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
         ]
       ),
