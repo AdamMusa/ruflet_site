@@ -11,7 +11,7 @@ card(
     padding: 16,
     content: column(
       spacing: 8,
-      controls: [
+      children: [
         text("Monthly report", size: 18, weight: "bold"),
         text("Revenue is up 12% over last month."),
         filled_button(content: text("Open"), on_click: ->(_e) { open_report })

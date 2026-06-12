@@ -29,11 +29,11 @@ progress_ring(value: 0.6, stroke_width: 4)
 Show a spinner while loading, then swap in content:
 
 ```ruby
-body = column(controls: [progress_ring()])
+body = column(children: [progress_ring()])
 page.add(body)
 
 records = load_records          # slow work
-page.update(body, controls: records.map { |r| text(r.name) })
+page.update(body, children: records.map { |r| text(r.name) })
 ```
 
 For a horizontal bar, `progress_bar(value: 0.6)`.

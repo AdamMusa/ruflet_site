@@ -34,5 +34,5 @@ list_tile(
 [`column`](/docs/control-column):
 
 ```ruby
-column(controls: people.map { |p| list_tile(title: text(p.name)) })
+column(children: people.map { |p| list_tile(title: text(p.name)) })
 ```

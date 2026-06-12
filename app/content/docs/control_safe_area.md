@@ -10,7 +10,7 @@ safe_area(
   container(
     expand: true,
     padding: 16,
-    content: column(controls: [text("Hello"), filled_button(content: text("Go"))])
+    content: column(children: [text("Hello"), filled_button(content: text("Go"))])
   ),
   expand: true
 )

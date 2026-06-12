@@ -7,7 +7,7 @@ vertical rule inside a `row`.
 
 ```ruby
 column(
-  controls: [
+  children: [
     text("Account"),
     divider(),
     text("Notifications")

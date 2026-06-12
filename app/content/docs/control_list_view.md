@@ -10,13 +10,13 @@ list_view(
   expand: true,
   spacing: 4,
   padding: 8,
-  controls: messages.map { |m| list_tile(title: text(m.subject), subtitle: text(m.preview)) }
+  children: messages.map { |m| list_tile(title: text(m.subject), subtitle: text(m.preview)) }
 )
 ```
 
 ## Common properties
 
-- `controls` — the list items
+- `children` — the list items
 - `horizontal` — scroll horizontally instead of vertically
 - `spacing`
 - `padding`

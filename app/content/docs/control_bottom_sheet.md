@@ -14,7 +14,7 @@ sheet = bottom_sheet(
     content: column(
       tight: true,
       spacing: 12,
-      controls: [
+      children: [
         text("Share", size: 18, weight: "bold"),
         filled_button(content: text("Copy link"), on_click: ->(_e) { copy_link })
       ]

@@ -8,7 +8,7 @@ in a `row` and can be selectable or deletable.
 ```ruby
 row(
   spacing: 8,
-  controls: %w[All Open Closed].map do |label|
+  children: %w[All Open Closed].map do |label|
     chip(
       label: text(label),
       selected: label == "Open",
