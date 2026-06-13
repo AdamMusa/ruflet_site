@@ -149,6 +149,44 @@ class DocsCatalog
     open expand width height
   ].freeze
 
+  PROPERTY_DESCRIPTIONS_PATH = Rails.root.join("config/property_descriptions.json")
+
+  # Shared descriptions for properties/events that recur across controls, so
+  # every page explains what each attribute does (not just its name).
+  def self.attribute_descriptions
+    @attribute_descriptions ||=
+      if PROPERTY_DESCRIPTIONS_PATH.exist?
+        JSON.parse(PROPERTY_DESCRIPTIONS_PATH.read)
+      else
+        { "properties" => {}, "events" => {} }
+      end
+  end
+
+  def self.describe(name, kind)
+    desc = attribute_descriptions[kind]&.[](name.to_s) || heuristic_description(name.to_s, kind)
+    desc ? "- `#{name}` — #{desc}" : "- `#{name}`"
+  end
+
+  # Derive a description for common naming patterns so more attributes are
+  # explained without an explicit entry.
+  def self.heuristic_description(name, kind)
+    if kind == "events" && name.start_with?("on_")
+      return "Fired on #{name.sub(/\Aon_/, '').tr('_', ' ')}."
+    end
+
+    return "Animates #{Regexp.last_match(1).tr('_', ' ')} changes." if name =~ /\Aanimate_(.+)/
+
+    %w[color text style icon radius padding alignment width height bgcolor].each do |suffix|
+      next unless name =~ /\A(.+)_#{suffix}\z/
+
+      prefix = Regexp.last_match(1).tr("_", " ")
+      word = suffix == "bgcolor" ? "background color" : suffix
+      return "#{prefix.capitalize} #{word}."
+    end
+
+    nil
+  end
+
   def self.generated_control_markdown(control)
     helper = preferred_helper(control)
     props = Array(control[:properties]).map(&:to_s)
@@ -174,13 +212,13 @@ class DocsCatalog
     lines << "## Properties"
     lines << ""
     if specific.any?
-      specific.each { |property| lines << "- `#{property}`" }
+      specific.each { |property| lines << describe(property, "properties") }
       lines << ""
       lines << "Plus the common layout and animation properties shared by most " \
                "controls (`expand`, `visible`, `disabled`, `opacity`, `width`, " \
                "`height`, `align`, `tooltip`, `animate_*`, …)."
     elsif props.any?
-      props.each { |property| lines << "- `#{property}`" }
+      props.each { |property| lines << describe(property, "properties") }
     else
       lines << "- See the control definition for the full property list."
     end
@@ -190,7 +228,7 @@ class DocsCatalog
     if events.any?
       lines << "## Events"
       lines << ""
-      events.each { |event| lines << "- `#{event}`" }
+      events.each { |event| lines << describe(event, "events") }
       lines << ""
     end
 
@@ -267,5 +305,6 @@ class DocsCatalog
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
-                       :example_property_lines, :sample_value_for, :common_properties
+                       :example_property_lines, :sample_value_for, :common_properties,
+                       :attribute_descriptions, :describe, :heuristic_description
 end
