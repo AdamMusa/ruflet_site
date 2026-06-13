@@ -90,7 +90,7 @@ module Showcase
 
       source_path = path.to_s.sub(%r{^/}, "")
       source_path = source_path.sub(%r{\Ashowcase/}, "")
-      source_path = File.join("ruflet_studio", source_path)
+      source_path = File.join("showcase", source_path)
       github_repo_base + source_path
     end
 
