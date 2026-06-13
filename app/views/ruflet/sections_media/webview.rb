@@ -10,18 +10,15 @@ module Showcase
       # is ruflet.dev in production and the local host in development, and
       # same-origin always frames. Native loads ruflet.dev directly (no iframe
       # restriction).
-      url = "https://rubyonrails.org/"
-       
 
       column(
         expand: true,
         spacing: 8,
         children: [
-          text("WebView showing #{url}"),
           container(
             expand: true,
             border_radius: 8,
-            content: web_view(url: url, expand: true)
+            content: web_view(url: "https://rubyonrails.org", expand: true)
           )
         ]
       )
