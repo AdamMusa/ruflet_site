@@ -129,47 +129,77 @@ class DocsCatalog
     "#{family} control available in the current Ruflet packages."
   end
 
+  COMMON_PROPERTIES_PATH = Rails.root.join("config/control_common_properties.json")
+
+  # Layout/animation properties shared by most controls — listed once as a note
+  # rather than repeated on every page.
+  def self.common_properties
+    @common_properties ||=
+      if COMMON_PROPERTIES_PATH.exist?
+        JSON.parse(COMMON_PROPERTIES_PATH.read)
+      else
+        []
+      end
+  end
+
+  # Ordered list of meaningful properties to reach for when building a sample.
+  EXAMPLE_PROPERTY_PRIORITY = %w[
+    value label text content title subtitle src url icon leading trailing
+    options selected checked min max divisions password multiline color bgcolor
+    open expand width height
+  ].freeze
+
   def self.generated_control_markdown(control)
     helper = preferred_helper(control)
+    props = Array(control[:properties]).map(&:to_s)
+    events = Array(control[:events]).map(&:to_s)
+    specific = props - common_properties
+
     lines = []
     lines << "# #{control[:title]}"
     lines << ""
-    lines << "#{control[:title]} is available in the current Ruflet packages."
+    lines << "#{control[:title]} control. " +
+             (helper ? "Build it with the `#{helper}` helper." : "Build it with `control(:#{control[:widget_type]}, ...)`.")
     lines << ""
-    lines << "## Control Type"
-    lines << ""
-    lines << "- Family: `#{control[:family]}`"
-    lines << "- Widget type: `#{control[:widget_type]}`"
-    if helper
-      lines << "- Preferred helper: `#{helper}`"
-    else
-      lines << "- Use through `control(:#{control[:widget_type]}, ...)`"
-    end
-    lines << ""
-    lines << "## Common properties"
-    lines << ""
-    if control[:properties].any?
-      control[:properties].each do |property|
-        lines << "- `#{property}`"
-      end
-    else
-      lines << "- Refer to the package control definition for the full property list."
-    end
-    lines << ""
-    lines << "## Usage"
+
+    # --- Example ----------------------------------------------------------
+    lines << "## Example"
     lines << ""
     lines << "```ruby"
     lines.concat(generated_control_example(control, helper))
     lines << "```"
     lines << ""
-    lines << "## Notes"
+
+    # --- Properties -------------------------------------------------------
+    lines << "## Properties"
     lines << ""
-    if helper
-      lines << "- This control is supported through the `#{helper}` helper."
+    if specific.any?
+      specific.each { |property| lines << "- `#{property}`" }
+      lines << ""
+      lines << "Plus the common layout and animation properties shared by most " \
+               "controls (`expand`, `visible`, `disabled`, `opacity`, `width`, " \
+               "`height`, `align`, `tooltip`, `animate_*`, …)."
+    elsif props.any?
+      props.each { |property| lines << "- `#{property}`" }
     else
-      lines << "- This control is supported in Ruflet even though there is no dedicated helper in the current DSL."
+      lines << "- See the control definition for the full property list."
     end
-    lines << "- This page is generated from the current package snapshot used by the docs app."
+    lines << ""
+
+    # --- Events -----------------------------------------------------------
+    if events.any?
+      lines << "## Events"
+      lines << ""
+      events.each { |event| lines << "- `#{event}`" }
+      lines << ""
+    end
+
+    # --- Reference --------------------------------------------------------
+    lines << "## Reference"
+    lines << ""
+    lines << "- Family: `#{control[:family]}`"
+    lines << "- Widget type: `#{control[:widget_type]}`"
+    lines << "- Helper: #{helper ? "`#{helper}`" : "`control(:#{control[:widget_type]}, ...)`"}"
     lines.join("\n")
   end
 
@@ -181,65 +211,61 @@ class DocsCatalog
   end
 
   def self.generated_control_example(control, helper)
-    method_call = helper || "control(:#{control[:widget_type]})"
     prop_lines = example_property_lines(control)
 
-    if helper
-      if prop_lines.empty?
-        ["#{helper}"]
-      else
-        ["#{helper}(", *prop_lines.map { |line| "  #{line}" }, ")"]
-      end
-    else
-      if prop_lines.empty?
-        ["control(:#{control[:widget_type]})"]
-      else
-        ["control(:#{control[:widget_type]},", *prop_lines.map { |line| "  #{line}" }, ")"]
-      end
+    return [helper || "control(:#{control[:widget_type]})"] if prop_lines.empty?
+
+    open = helper ? "#{helper}(" : "control(:#{control[:widget_type]},"
+    body = prop_lines.each_with_index.map do |line, index|
+      "  #{line}#{index < prop_lines.length - 1 ? ',' : ''}"
     end
+    [open, *body, ")"]
   end
 
   def self.example_property_lines(control)
-    props = Array(control[:properties]).first(4)
-    props.filter_map do |property|
-      sample_value_for(property, control[:title])
-    end
+    props = Array(control[:properties]).map(&:to_s)
+    chosen = EXAMPLE_PROPERTY_PRIORITY.select { |p| props.include?(p) }.first(4)
+    lines = chosen.filter_map { |property| sample_value_for(property, control[:title]) }
+
+    # Add one representative event handler if the control has any.
+    events = Array(control[:events]).map(&:to_s)
+    event = %w[on_click on_change on_tap on_submit].find { |e| events.include?(e) } || events.first
+    lines << "#{event}: ->(event) {}" if event
+
+    lines
   end
 
   def self.sample_value_for(property, title)
     case property
-    when "title"
-      'title: text(value: "Title")'
-    when "content"
-      "content: text(value: \"#{title}\")"
-    when "controls", "children", "actions", "tabs", "destinations"
+    when "title"        then 'title: text("Title")'
+    when "subtitle"     then 'subtitle: text("Subtitle")'
+    when "content"      then "content: text(#{title.inspect})"
+    when "controls", "children", "actions", "tabs", "destinations", "options"
       "#{property}: []"
     when "icon", "leading_icon", "trailing_icon", "selected_trailing_icon", "select_icon"
       "#{property}: \"add\""
+    when "leading"      then 'leading: icon("menu")'
+    when "trailing"     then 'trailing: icon("chevron_right")'
     when "label", "hint_text", "helper_text", "cancel_text", "confirm_text"
-      "#{property}: \"#{property.tr('_', ' ')}\""
-    when "value"
-      'value: "Sample"'
-    when "text"
-      'text: "Sample"'
-    when "url"
-      'url: "https://example.com"'
-    when "open"
-      "open: true"
-    when "bgcolor"
-      'bgcolor: "#111827"'
-    when "width"
-      "width: 240"
-    when "height"
-      "height: 120"
-    when "expand"
-      "expand: true"
-    else
-      nil
+      "#{property}: #{property.tr('_', ' ').capitalize.inspect}"
+    when "value"        then 'value: "Sample"'
+    when "text"         then 'text: "Sample"'
+    when "src"          then 'src: "https://example.com/image.png"'
+    when "url"          then 'url: "https://example.com"'
+    when "selected", "checked", "open" then "#{property}: true"
+    when "password", "multiline"       then "#{property}: true"
+    when "min"          then "min: 0"
+    when "max"          then "max: 100"
+    when "divisions"    then "divisions: 10"
+    when "color"        then 'color: "#2563eb"'
+    when "bgcolor"      then 'bgcolor: "#111827"'
+    when "width"        then "width: 240"
+    when "height"       then "height: 120"
+    when "expand"       then "expand: true"
     end
   end
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
-                       :example_property_lines, :sample_value_for
+                       :example_property_lines, :sample_value_for, :common_properties
 end

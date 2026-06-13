@@ -4,7 +4,9 @@
     "slug": "control-cupertino-action-sheet",
     "family": "cupertinos",
     "widget_type": "cupertinoactionsheet",
-    "helpers": [],
+    "helpers": [
+      "cupertino_action_sheet"
+    ],
     "properties": [
       "actions",
       "align",
@@ -19,7 +21,33 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "cancel"
+      "cancel",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "message",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "title",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -27,7 +55,9 @@
     "slug": "control-cupertino-action-sheet-action",
     "family": "cupertinos",
     "widget_type": "cupertinoactionsheetaction",
-    "helpers": [],
+    "helpers": [
+      "cupertino_action_sheet_action"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -42,7 +72,34 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "default",
+      "destructive",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_size_change"
     ]
   },
   {
@@ -50,7 +107,9 @@
     "slug": "control-cupertino-activity-indicator",
     "family": "cupertinos",
     "widget_type": "cupertinoactivityindicator",
-    "helpers": [],
+    "helpers": [
+      "cupertino_activity_indicator"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -65,7 +124,33 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "col"
+      "col",
+      "color",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "progress",
+      "radius",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -73,7 +158,9 @@
     "slug": "control-cupertino-alert-dialog",
     "family": "cupertinos",
     "widget_type": "cupertinoalertdialog",
-    "helpers": [],
+    "helpers": [
+      "cupertino_alert_dialog"
+    ],
     "properties": [
       "actions",
       "adaptive",
@@ -88,7 +175,15 @@
       "inset_animation",
       "key",
       "modal",
-      "opacity"
+      "opacity",
+      "open",
+      "rtl",
+      "title",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss"
     ]
   },
   {
@@ -96,7 +191,9 @@
     "slug": "control-cupertino-app-bar",
     "family": "cupertinos",
     "widget_type": "cupertinoappbar",
-    "helpers": [],
+    "helpers": [
+      "cupertino_app_bar"
+    ],
     "properties": [
       "automatic_background_visibility",
       "automatically_imply_leading",
@@ -111,15 +208,29 @@
       "enable_background_filter_blur",
       "expand",
       "expand_loose",
-      "key"
-    ]
+      "key",
+      "large",
+      "leading",
+      "opacity",
+      "padding",
+      "previous_page_title",
+      "rtl",
+      "title",
+      "tooltip",
+      "trailing",
+      "transition_between_routes",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "CupertinoBottomSheet",
     "slug": "control-cupertino-bottom-sheet",
     "family": "cupertinos",
     "widget_type": "cupertinobottomsheet",
-    "helpers": [],
+    "helpers": [
+      "cupertino_bottom_sheet"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -134,7 +245,14 @@
       "key",
       "modal",
       "opacity",
-      "open"
+      "open",
+      "padding",
+      "rtl",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss"
     ]
   },
   {
@@ -142,7 +260,9 @@
     "slug": "control-cupertino-button",
     "family": "cupertinos",
     "widget_type": "cupertinobutton",
-    "helpers": [],
+    "helpers": [
+      "cupertino_button"
+    ],
     "properties": [
       "align",
       "alignment",
@@ -157,7 +277,49 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "border_radius",
+      "bottom",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "disabled_bgcolor",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "min_size",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "opacity_on_click",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -165,7 +327,9 @@
     "slug": "control-cupertino-checkbox",
     "family": "cupertinos",
     "widget_type": "cupertinocheckbox",
-    "helpers": [],
+    "helpers": [
+      "cupertino_checkbox"
+    ],
     "properties": [
       "active_color",
       "align",
@@ -180,7 +344,46 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "border_side"
+      "border_side",
+      "bottom",
+      "check_color",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "focus_color",
+      "height",
+      "key",
+      "label",
+      "label_position",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantics_label",
+      "shape",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "tristate",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -188,7 +391,9 @@
     "slug": "control-cupertino-context-menu",
     "family": "cupertinos",
     "widget_type": "cupertinocontextmenu",
-    "helpers": [],
+    "helpers": [
+      "cupertino_context_menu"
+    ],
     "properties": [
       "actions",
       "adaptive",
@@ -203,15 +408,19 @@
       "key",
       "opacity",
       "rtl",
-      "tooltip"
-    ]
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "CupertinoContextMenuAction",
     "slug": "control-cupertino-context-menu-action",
     "family": "cupertinos",
     "widget_type": "cupertinocontextmenuaction",
-    "helpers": [],
+    "helpers": [
+      "cupertino_context_menu_action"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -226,7 +435,12 @@
       "key",
       "opacity",
       "rtl",
-      "tooltip"
+      "tooltip",
+      "trailing_icon",
+      "visible"
+    ],
+    "events": [
+      "on_click"
     ]
   },
   {
@@ -234,7 +448,9 @@
     "slug": "control-cupertino-date-picker",
     "family": "cupertinos",
     "widget_type": "cupertinodatepicker",
-    "helpers": [],
+    "helpers": [
+      "cupertino_date_picker"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -249,7 +465,43 @@
       "badge",
       "bgcolor",
       "bottom",
-      "col"
+      "col",
+      "data",
+      "date_order",
+      "date_picker_mode",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "first_date",
+      "height",
+      "item_extent",
+      "key",
+      "last_date",
+      "left",
+      "locale",
+      "margin",
+      "maximum_year",
+      "minimum_year",
+      "minute_interval",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "show_day_of_week",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "use_24h_format",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -257,7 +509,9 @@
     "slug": "control-cupertino-dialog-action",
     "family": "cupertinos",
     "widget_type": "cupertinodialogaction",
-    "helpers": [],
+    "helpers": [
+      "cupertino_dialog_action"
+    ],
     "properties": [
       "badge",
       "col",
@@ -272,7 +526,11 @@
       "opacity",
       "rtl",
       "text_style",
-      "tooltip"
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_click"
     ]
   },
   {
@@ -280,7 +538,9 @@
     "slug": "control-cupertino-filled-button",
     "family": "cupertinos",
     "widget_type": "cupertinofilledbutton",
-    "helpers": [],
+    "helpers": [
+      "cupertino_filled_button"
+    ],
     "properties": [
       "align",
       "alignment",
@@ -295,7 +555,49 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "border_radius",
+      "bottom",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "disabled_bgcolor",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "min_size",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "opacity_on_click",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -303,7 +605,9 @@
     "slug": "control-cupertino-list-tile",
     "family": "cupertinos",
     "widget_type": "cupertinolisttile",
-    "helpers": [],
+    "helpers": [
+      "cupertino_list_tile"
+    ],
     "properties": [
       "additional_info",
       "align",
@@ -318,7 +622,43 @@
       "aspect_ratio",
       "badge",
       "bgcolor",
-      "bgcolor_activated"
+      "bgcolor_activated",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "leading",
+      "leading_size",
+      "leading_to_title",
+      "left",
+      "margin",
+      "notched",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "subtitle",
+      "title",
+      "toggle_inputs",
+      "tooltip",
+      "top",
+      "trailing",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_size_change"
     ]
   },
   {
@@ -326,7 +666,9 @@
     "slug": "control-cupertino-navigation-bar",
     "family": "cupertinos",
     "widget_type": "cupertinonavigationbar",
-    "helpers": [],
+    "helpers": [
+      "cupertino_navigation_bar"
+    ],
     "properties": [
       "active_color",
       "align",
@@ -341,7 +683,37 @@
       "aspect_ratio",
       "badge",
       "bgcolor",
-      "border"
+      "border",
+      "bottom",
+      "col",
+      "data",
+      "destinations",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon_size",
+      "inactive_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -349,7 +721,9 @@
     "slug": "control-cupertino-picker",
     "family": "cupertinos",
     "widget_type": "cupertinopicker",
-    "helpers": [],
+    "helpers": [
+      "cupertino_picker"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -364,7 +738,42 @@
       "badge",
       "bgcolor",
       "bottom",
-      "col"
+      "col",
+      "controls",
+      "data",
+      "default_selection_overlay_bgcolor",
+      "diameter_ratio",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "item_extent",
+      "key",
+      "left",
+      "looping",
+      "magnification",
+      "margin",
+      "off_axis_fraction",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "selection_overlay",
+      "size_change_interval",
+      "squeeze",
+      "tooltip",
+      "top",
+      "use_magnifier",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -372,7 +781,9 @@
     "slug": "control-cupertino-radio",
     "family": "cupertinos",
     "widget_type": "cupertinoradio",
-    "helpers": [],
+    "helpers": [
+      "cupertino_radio"
+    ],
     "properties": [
       "active_color",
       "align",
@@ -387,7 +798,42 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bottom"
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "focus_color",
+      "height",
+      "inactive_color",
+      "key",
+      "label",
+      "label_position",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "toggleable",
+      "tooltip",
+      "top",
+      "use_checkmark_style",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -395,7 +841,9 @@
     "slug": "control-cupertino-segmented-button",
     "family": "cupertinos",
     "widget_type": "cupertinosegmentedbutton",
-    "helpers": [],
+    "helpers": [
+      "cupertino_segmented_button"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -410,7 +858,39 @@
       "badge",
       "border_color",
       "bottom",
-      "click_color"
+      "click_color",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "disabled_color",
+      "disabled_text_color",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_color",
+      "selected_index",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "unselected_color",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -418,7 +898,9 @@
     "slug": "control-cupertino-slider",
     "family": "cupertinos",
     "widget_type": "cupertinoslider",
-    "helpers": [],
+    "helpers": [
+      "cupertino_slider"
+    ],
     "properties": [
       "active_color",
       "align",
@@ -433,7 +915,40 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "col"
+      "col",
+      "data",
+      "disabled",
+      "divisions",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "max",
+      "min",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "thumb_color",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_change_end",
+      "on_change_start",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -441,7 +956,9 @@
     "slug": "control-cupertino-sliding-segmented-button",
     "family": "cupertinos",
     "widget_type": "cupertinoslidingsegmentedbutton",
-    "helpers": [],
+    "helpers": [
+      "cupertino_sliding_segmented_button"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -456,7 +973,36 @@
       "badge",
       "bgcolor",
       "bottom",
-      "col"
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "proportional_width",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "size_change_interval",
+      "thumb_color",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -464,8 +1010,11 @@
     "slug": "control-cupertino-switch",
     "family": "cupertinos",
     "widget_type": "cupertinoswitch",
-    "helpers": [],
+    "helpers": [
+      "cupertino_switch"
+    ],
     "properties": [
+      "active_thumb_image",
       "active_thumb_image_src",
       "active_track_color",
       "align",
@@ -479,7 +1028,50 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "inactive_thumb_color",
+      "inactive_thumb_image",
+      "inactive_thumb_image_src",
+      "inactive_track_color",
+      "key",
+      "label",
+      "label_position",
+      "left",
+      "margin",
+      "off_label_color",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "thumb_color",
+      "thumb_icon",
+      "tooltip",
+      "top",
+      "track_outline_color",
+      "track_outline_width",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_image_error",
+      "on_label_color",
+      "on_size_change"
     ]
   },
   {
@@ -487,7 +1079,9 @@
     "slug": "control-cupertino-text-field",
     "family": "cupertinos",
     "widget_type": "cupertinotextfield",
-    "helpers": [],
+    "helpers": [
+      "cupertino_text_field"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -502,7 +1096,135 @@
       "animate_rotation",
       "animate_scale",
       "animate_size",
-      "aspect_ratio"
+      "aspect_ratio",
+      "autocorrect",
+      "autofill_hints",
+      "autofocus",
+      "badge",
+      "bgcolor",
+      "blend_mode",
+      "border",
+      "border_color",
+      "border_radius",
+      "border_width",
+      "bottom",
+      "can_request_focus",
+      "can_reveal_password",
+      "capitalization",
+      "clear_button_semantics_label",
+      "clear_button_visibility_mode",
+      "clip_behavior",
+      "col",
+      "collapsed",
+      "color",
+      "content_padding",
+      "counter",
+      "counter_style",
+      "cursor_color",
+      "cursor_error_color",
+      "cursor_height",
+      "cursor_radius",
+      "cursor_width",
+      "data",
+      "dense",
+      "disabled",
+      "enable_ime_personalized_learning",
+      "enable_interactive_selection",
+      "enable_stylus_handwriting",
+      "enable_suggestions",
+      "error",
+      "error_max_lines",
+      "error_style",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "filled",
+      "fit_parent_size",
+      "focus_color",
+      "focused_bgcolor",
+      "focused_border_color",
+      "focused_border_width",
+      "focused_color",
+      "gradient",
+      "height",
+      "helper",
+      "helper_max_lines",
+      "helper_style",
+      "hint_fade_duration",
+      "hint_max_lines",
+      "hint_style",
+      "hint_text",
+      "hover_color",
+      "icon",
+      "ignore_pointers",
+      "ignore_up_down_keys",
+      "image",
+      "input_filter",
+      "key",
+      "keyboard_brightness",
+      "keyboard_type",
+      "label",
+      "label_style",
+      "left",
+      "margin",
+      "max_length",
+      "max_lines",
+      "min_lines",
+      "mouse_cursor",
+      "multiline",
+      "obscuring_character",
+      "offset",
+      "opacity",
+      "padding",
+      "password",
+      "placeholder_style",
+      "placeholder_text",
+      "prefix",
+      "prefix_icon",
+      "prefix_icon_size_constraints",
+      "prefix_style",
+      "prefix_visibility_mode",
+      "read_only",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scroll_padding",
+      "selection",
+      "selection_color",
+      "shadows",
+      "shift_enter",
+      "show_cursor",
+      "size_change_interval",
+      "size_constraints",
+      "smart_dashes_type",
+      "smart_quotes_type",
+      "strut_style",
+      "suffix",
+      "suffix_icon",
+      "suffix_icon_size_constraints",
+      "suffix_style",
+      "suffix_visibility_mode",
+      "text_align",
+      "text_size",
+      "text_style",
+      "text_vertical_align",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_click",
+      "on_focus",
+      "on_selection_change",
+      "on_size_change",
+      "on_submit",
+      "on_tap_outside"
     ]
   },
   {
@@ -510,7 +1232,9 @@
     "slug": "control-cupertino-timer-picker",
     "family": "cupertinos",
     "widget_type": "cupertinotimerpicker",
-    "helpers": [],
+    "helpers": [
+      "cupertino_timer_picker"
+    ],
     "properties": [
       "align",
       "alignment",
@@ -525,7 +1249,37 @@
       "aspect_ratio",
       "badge",
       "bgcolor",
-      "bottom"
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "item_extent",
+      "key",
+      "left",
+      "margin",
+      "minute_interval",
+      "mode",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "second_interval",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -533,7 +1287,9 @@
     "slug": "control-cupertino-tinted-button",
     "family": "cupertinos",
     "widget_type": "cupertinotintedbutton",
-    "helpers": [],
+    "helpers": [
+      "cupertino_tinted_button"
+    ],
     "properties": [
       "align",
       "alignment",
@@ -548,7 +1304,49 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "border_radius",
+      "bottom",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "disabled_bgcolor",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "min_size",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "opacity_on_click",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -573,7 +1371,34 @@
       "clip_behavior",
       "col",
       "content",
-      "content_padding"
+      "content_padding",
+      "content_text_style",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "icon",
+      "icon_color",
+      "icon_padding",
+      "inset_padding",
+      "key",
+      "modal",
+      "opacity",
+      "open",
+      "rtl",
+      "scrollable",
+      "semantics_label",
+      "shadow_color",
+      "shape",
+      "title",
+      "title_padding",
+      "title_text_style",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss"
     ]
   },
   {
@@ -598,30 +1423,60 @@
       "data",
       "disabled",
       "elevation",
-      "elevation_on_scroll"
-    ]
+      "elevation_on_scroll",
+      "exclude_header_semantics",
+      "expand",
+      "expand_loose",
+      "force_material_transparency",
+      "key",
+      "leading",
+      "leading_width",
+      "opacity",
+      "rtl",
+      "secondary",
+      "shadow_color",
+      "shape",
+      "title",
+      "title_spacing",
+      "title_text_style",
+      "toolbar_height",
+      "toolbar_opacity",
+      "toolbar_text_style",
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "Audio",
     "slug": "control-audio",
     "family": "materials",
     "widget_type": "audio",
-    "helpers": [],
+    "helpers": [
+      "audio"
+    ],
     "properties": [
       "autoplay",
       "balance",
       "data",
       "key",
       "opacity",
+      "playback_rate",
       "release_mode",
       "rtl",
       "src",
+      "src_base64",
       "tooltip",
       "visible",
-      "volume",
+      "volume"
+    ],
+    "events": [
       "on_duration_change",
       "on_error",
-      "on_loaded"
+      "on_loaded",
+      "on_position_change",
+      "on_seek_complete",
+      "on_state_change"
     ]
   },
   {
@@ -629,7 +1484,9 @@
     "slug": "control-auto-complete",
     "family": "materials",
     "widget_type": "autocomplete",
-    "helpers": [],
+    "helpers": [
+      "auto_complete"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -644,7 +1501,34 @@
       "badge",
       "bottom",
       "col",
-      "data"
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "suggestions",
+      "suggestions_max_height",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_select",
+      "on_size_change"
     ]
   },
   {
@@ -652,7 +1536,9 @@
     "slug": "control-badge",
     "family": "materials",
     "widget_type": "badge",
-    "helpers": [],
+    "helpers": [
+      "badge"
+    ],
     "properties": [
       "alignment",
       "bgcolor",
@@ -666,14 +1552,17 @@
       "small_size",
       "text_color",
       "text_style"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Banner",
     "slug": "control-banner",
     "family": "materials",
     "widget_type": "banner",
-    "helpers": [],
+    "helpers": [
+      "banner"
+    ],
     "properties": [
       "actions",
       "adaptive",
@@ -688,7 +1577,24 @@
       "divider_color",
       "elevation",
       "expand",
-      "expand_loose"
+      "expand_loose",
+      "force_actions_below",
+      "key",
+      "leading",
+      "leading_padding",
+      "margin",
+      "min_action_bar_height",
+      "opacity",
+      "open",
+      "rtl",
+      "shadow_color",
+      "surface_tint_color",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss",
+      "on_visible"
     ]
   },
   {
@@ -696,7 +1602,9 @@
     "slug": "control-bottom-app-bar",
     "family": "materials",
     "widget_type": "bottomappbar",
-    "helpers": [],
+    "helpers": [
+      "bottom_app_bar"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -711,7 +1619,38 @@
       "badge",
       "bgcolor",
       "border_radius",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "notch_margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shadow_color",
+      "shape",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -736,7 +1675,24 @@
       "dismissible",
       "draggable",
       "elevation",
-      "expand"
+      "expand",
+      "expand_loose",
+      "fullscreen",
+      "key",
+      "maintain_bottom_view_insets_padding",
+      "opacity",
+      "open",
+      "rtl",
+      "scrollable",
+      "shape",
+      "show_drag_handle",
+      "size_constraints",
+      "tooltip",
+      "use_safe_area",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss"
     ]
   },
   {
@@ -762,7 +1718,45 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -770,7 +1764,9 @@
     "slug": "control-card",
     "family": "materials",
     "widget_type": "card",
-    "helpers": [],
+    "helpers": [
+      "card"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -785,7 +1781,39 @@
       "aspect_ratio",
       "badge",
       "bgcolor",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantic_container",
+      "shadow_color",
+      "shape",
+      "show_border_on_foreground",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "variant",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -810,7 +1838,52 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "border_side",
+      "bottom",
+      "check_color",
+      "col",
+      "data",
+      "disabled",
+      "error",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "focus_color",
+      "height",
+      "hover_color",
+      "key",
+      "label",
+      "label_position",
+      "label_style",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantics_label",
+      "shape",
+      "size_change_interval",
+      "splash_radius",
+      "tooltip",
+      "top",
+      "tristate",
+      "value",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -818,7 +1891,9 @@
     "slug": "control-chip",
     "family": "materials",
     "widget_type": "chip",
-    "helpers": [],
+    "helpers": [
+      "chip"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -833,7 +1908,64 @@
       "autofocus",
       "badge",
       "bgcolor",
-      "border_side"
+      "border_side",
+      "bottom",
+      "check_color",
+      "clip_behavior",
+      "col",
+      "color",
+      "data",
+      "delete_drawer_animation_style",
+      "delete_icon",
+      "delete_icon_color",
+      "delete_icon_size_constraints",
+      "delete_icon_tooltip",
+      "disabled",
+      "disabled_color",
+      "elevation",
+      "elevation_on_click",
+      "enable_animation_style",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "label",
+      "label_padding",
+      "label_text_style",
+      "leading",
+      "leading_drawer_animation_style",
+      "leading_size_constraints",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "select_animation_style",
+      "selected",
+      "selected_color",
+      "selected_shadow_color",
+      "shadow_color",
+      "shape",
+      "show_checkmark",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_delete",
+      "on_focus",
+      "on_select",
+      "on_size_change"
     ]
   },
   {
@@ -841,7 +1973,9 @@
     "slug": "control-circle-avatar",
     "family": "materials",
     "widget_type": "circleavatar",
-    "helpers": [],
+    "helpers": [
+      "circle_avatar"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -856,7 +1990,38 @@
       "background_image_src",
       "badge",
       "bgcolor",
-      "bottom"
+      "bottom",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "foreground_image_src",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "max_radius",
+      "min_radius",
+      "offset",
+      "opacity",
+      "radius",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_image_error",
+      "on_size_change"
     ]
   },
   {
@@ -881,7 +2046,57 @@
       "animate_scale",
       "animate_size",
       "aspect_ratio",
-      "badge"
+      "badge",
+      "bgcolor",
+      "blend_mode",
+      "blur",
+      "border",
+      "border_radius",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "color_filter",
+      "content",
+      "dark_theme",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "foreground_decoration",
+      "gradient",
+      "height",
+      "ignore_interactions",
+      "image",
+      "ink",
+      "ink_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shadow",
+      "shape",
+      "size_change_interval",
+      "theme",
+      "theme_mode",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_hover",
+      "on_long_press",
+      "on_size_change",
+      "on_tap_down"
     ]
   },
   {
@@ -889,7 +2104,9 @@
     "slug": "control-context-menu",
     "family": "materials",
     "widget_type": "contextmenu",
-    "helpers": [],
+    "helpers": [
+      "context_menu"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -904,7 +2121,39 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "items",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "primary_items",
+      "primary_trigger",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "secondary_items",
+      "secondary_trigger",
+      "size_change_interval",
+      "tertiary_items",
+      "tertiary_trigger",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_dismiss",
+      "on_select",
+      "on_size_change"
     ]
   },
   {
@@ -912,7 +2161,9 @@
     "slug": "control-data-cell",
     "family": "materials",
     "widget_type": "datacell",
-    "helpers": [],
+    "helpers": [
+      "data_cell"
+    ],
     "properties": [
       "badge",
       "col",
@@ -928,6 +2179,13 @@
       "show_edit_icon",
       "tooltip",
       "visible"
+    ],
+    "events": [
+      "on_double_tap",
+      "on_long_press",
+      "on_tap",
+      "on_tap_cancel",
+      "on_tap_down"
     ]
   },
   {
@@ -935,7 +2193,9 @@
     "slug": "control-data-column",
     "family": "materials",
     "widget_type": "datacolumn",
-    "helpers": [],
+    "helpers": [
+      "data_column"
+    ],
     "properties": [
       "badge",
       "col",
@@ -951,6 +2211,9 @@
       "rtl",
       "tooltip",
       "visible"
+    ],
+    "events": [
+      "on_sort"
     ]
   },
   {
@@ -958,7 +2221,9 @@
     "slug": "control-data-row",
     "family": "materials",
     "widget_type": "datarow",
-    "helpers": [],
+    "helpers": [
+      "data_row"
+    ],
     "properties": [
       "badge",
       "cells",
@@ -974,6 +2239,10 @@
       "selected",
       "tooltip",
       "visible"
+    ],
+    "events": [
+      "on_long_press",
+      "on_select_change"
     ]
   },
   {
@@ -981,7 +2250,9 @@
     "slug": "control-data-table",
     "family": "materials",
     "widget_type": "datatable",
-    "helpers": [],
+    "helpers": [
+      "data_table"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -996,7 +2267,54 @@
       "badge",
       "bgcolor",
       "border",
-      "border_radius"
+      "border_radius",
+      "bottom",
+      "checkbox_horizontal_margin",
+      "clip_behavior",
+      "col",
+      "column_spacing",
+      "columns",
+      "data",
+      "data_row_color",
+      "data_row_max_height",
+      "data_row_min_height",
+      "data_text_style",
+      "disabled",
+      "divider_thickness",
+      "expand",
+      "expand_loose",
+      "gradient",
+      "heading_row_color",
+      "heading_row_height",
+      "heading_text_style",
+      "height",
+      "horizontal_lines",
+      "horizontal_margin",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rows",
+      "rtl",
+      "scale",
+      "show_bottom_border",
+      "show_checkbox_column",
+      "size_change_interval",
+      "sort_ascending",
+      "sort_column_index",
+      "tooltip",
+      "top",
+      "vertical_lines",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_select_all",
+      "on_size_change"
     ]
   },
   {
@@ -1004,7 +2322,9 @@
     "slug": "control-date-picker",
     "family": "materials",
     "widget_type": "datepicker",
-    "helpers": [],
+    "helpers": [
+      "date_picker"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -1019,7 +2339,31 @@
       "entry_mode",
       "error_format_text",
       "error_invalid_text",
-      "expand"
+      "expand",
+      "expand_loose",
+      "field_hint_text",
+      "field_label_text",
+      "first_date",
+      "help_text",
+      "inset_padding",
+      "key",
+      "keyboard_type",
+      "last_date",
+      "locale",
+      "modal",
+      "opacity",
+      "open",
+      "rtl",
+      "switch_to_calendar_icon",
+      "switch_to_input_icon",
+      "tooltip",
+      "value",
+      "visible"
+    ],
+    "events": [
+      "on_change",
+      "on_dismiss",
+      "on_entry_mode_change"
     ]
   },
   {
@@ -1027,7 +2371,9 @@
     "slug": "control-date-range-picker",
     "family": "materials",
     "widget_type": "daterangepicker",
-    "helpers": [],
+    "helpers": [
+      "date_range_picker"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -1042,7 +2388,33 @@
       "entry_mode",
       "error_format_text",
       "error_invalid_range_text",
-      "error_invalid_text"
+      "error_invalid_text",
+      "expand",
+      "expand_loose",
+      "field_end_hint_text",
+      "field_end_label_text",
+      "field_start_hint_text",
+      "field_start_label_text",
+      "first_date",
+      "help_text",
+      "key",
+      "keyboard_type",
+      "last_date",
+      "locale",
+      "modal",
+      "opacity",
+      "open",
+      "rtl",
+      "save_text",
+      "start_value",
+      "switch_to_calendar_icon",
+      "switch_to_input_icon",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_change",
+      "on_dismiss"
     ]
   },
   {
@@ -1050,7 +2422,9 @@
     "slug": "control-divider",
     "family": "materials",
     "widget_type": "divider",
-    "helpers": [],
+    "helpers": [
+      "divider"
+    ],
     "properties": [
       "badge",
       "col",
@@ -1065,15 +2439,21 @@
       "opacity",
       "radius",
       "rtl",
-      "thickness"
-    ]
+      "thickness",
+      "tooltip",
+      "trailing_indent",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "Dropdown",
     "slug": "control-dropdown",
     "family": "materials",
     "widget_type": "dropdown",
-    "helpers": [],
+    "helpers": [
+      "dropdown"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1088,7 +2468,75 @@
       "autofocus",
       "badge",
       "bgcolor",
-      "border"
+      "border",
+      "border_color",
+      "border_radius",
+      "border_width",
+      "bottom",
+      "capitalization",
+      "col",
+      "color",
+      "content_padding",
+      "data",
+      "dense",
+      "disabled",
+      "editable",
+      "elevation",
+      "enable_filter",
+      "enable_search",
+      "error_style",
+      "error_text",
+      "expand",
+      "expand_loose",
+      "expanded_insets",
+      "fill_color",
+      "filled",
+      "focused_border_color",
+      "focused_border_width",
+      "height",
+      "helper_style",
+      "helper_text",
+      "hint_style",
+      "hint_text",
+      "hover_color",
+      "input_filter",
+      "key",
+      "label",
+      "label_style",
+      "leading_icon",
+      "left",
+      "margin",
+      "menu_height",
+      "menu_style",
+      "menu_width",
+      "offset",
+      "opacity",
+      "options",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_suffix",
+      "selected_trailing_icon",
+      "size_change_interval",
+      "text",
+      "text_align",
+      "text_size",
+      "text_style",
+      "tooltip",
+      "top",
+      "trailing_icon",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_focus",
+      "on_select",
+      "on_size_change",
+      "on_text_change"
     ]
   },
   {
@@ -1096,7 +2544,9 @@
     "slug": "control-dropdown-m2",
     "family": "materials",
     "widget_type": "dropdownm2",
-    "helpers": [],
+    "helpers": [
+      "dropdown_m2"
+    ],
     "properties": [
       "align",
       "align_label_with_hint",
@@ -1111,7 +2561,95 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bgcolor",
+      "border",
+      "border_color",
+      "border_radius",
+      "border_width",
+      "bottom",
+      "col",
+      "collapsed",
+      "color",
+      "content_padding",
+      "counter",
+      "counter_style",
+      "data",
+      "dense",
+      "disabled",
+      "disabled_hint_content",
+      "elevation",
+      "enable_feedback",
+      "error",
+      "error_max_lines",
+      "error_style",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "filled",
+      "fit_parent_size",
+      "focus_color",
+      "focused_bgcolor",
+      "focused_border_color",
+      "focused_border_width",
+      "focused_color",
+      "height",
+      "helper",
+      "helper_max_lines",
+      "helper_style",
+      "hint_content",
+      "hint_fade_duration",
+      "hint_max_lines",
+      "hint_style",
+      "hint_text",
+      "hover_color",
+      "icon",
+      "item_height",
+      "key",
+      "label",
+      "label_style",
+      "left",
+      "margin",
+      "max_menu_height",
+      "offset",
+      "opacity",
+      "options",
+      "options_fill_horizontally",
+      "padding",
+      "prefix",
+      "prefix_icon",
+      "prefix_icon_size_constraints",
+      "prefix_style",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "select_icon",
+      "select_icon_disabled_color",
+      "select_icon_enabled_color",
+      "select_icon_size",
+      "size_change_interval",
+      "size_constraints",
+      "suffix",
+      "suffix_icon",
+      "suffix_icon_size_constraints",
+      "suffix_style",
+      "text_size",
+      "text_style",
+      "text_vertical_align",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_click",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -1119,7 +2657,9 @@
     "slug": "control-dropdown-option",
     "family": "materials",
     "widget_type": "dropdownoption",
-    "helpers": [],
+    "helpers": [
+      "dropdown_option"
+    ],
     "properties": [
       "badge",
       "col",
@@ -1134,15 +2674,20 @@
       "rtl",
       "style",
       "text",
-      "tooltip"
-    ]
+      "tooltip",
+      "trailing_icon",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "ExpansionPanel",
     "slug": "control-expansion-panel",
     "family": "materials",
     "widget_type": "expansionpanel",
-    "helpers": [],
+    "helpers": [
+      "expansion_panel"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1157,7 +2702,37 @@
       "aspect_ratio",
       "badge",
       "bgcolor",
-      "bottom"
+      "bottom",
+      "can_tap_header",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "expanded",
+      "header",
+      "height",
+      "highlight_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "splash_color",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -1165,7 +2740,9 @@
     "slug": "control-expansion-panel-list",
     "family": "materials",
     "widget_type": "expansionpanellist",
-    "helpers": [],
+    "helpers": [
+      "expansion_panel_list"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1180,7 +2757,36 @@
       "badge",
       "bottom",
       "col",
-      "controls"
+      "controls",
+      "data",
+      "disabled",
+      "divider_color",
+      "elevation",
+      "expand",
+      "expand_icon_color",
+      "expand_loose",
+      "expanded_header_padding",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -1188,7 +2794,9 @@
     "slug": "control-expansion-tile",
     "family": "materials",
     "widget_type": "expansiontile",
-    "helpers": [],
+    "helpers": [
+      "expansion_tile"
+    ],
     "properties": [
       "adaptive",
       "affinity",
@@ -1203,7 +2811,58 @@
       "animate_size",
       "animation_style",
       "aspect_ratio",
-      "badge"
+      "badge",
+      "bgcolor",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "collapsed_bgcolor",
+      "collapsed_icon_color",
+      "collapsed_shape",
+      "collapsed_text_color",
+      "controls",
+      "controls_padding",
+      "data",
+      "dense",
+      "disabled",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "expanded",
+      "expanded_alignment",
+      "expanded_cross_axis_alignment",
+      "height",
+      "icon_color",
+      "key",
+      "leading",
+      "left",
+      "maintain_state",
+      "margin",
+      "min_tile_height",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shape",
+      "show_trailing_icon",
+      "size_change_interval",
+      "subtitle",
+      "text_color",
+      "tile_padding",
+      "title",
+      "tooltip",
+      "top",
+      "trailing",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -1228,7 +2887,45 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1236,7 +2933,9 @@
     "slug": "control-filled-icon-button",
     "family": "materials",
     "widget_type": "fillediconbutton",
-    "helpers": [],
+    "helpers": [
+      "filled_icon_button"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1251,7 +2950,57 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "disabled_color",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "highlight_color",
+      "hover_color",
+      "icon",
+      "icon_color",
+      "icon_size",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected",
+      "selected_icon",
+      "selected_icon_color",
+      "size_change_interval",
+      "size_constraints",
+      "splash_color",
+      "splash_radius",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1259,7 +3008,9 @@
     "slug": "control-filled-tonal-button",
     "family": "materials",
     "widget_type": "filledtonalbutton",
-    "helpers": [],
+    "helpers": [
+      "filled_tonal_button"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1274,7 +3025,45 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1282,7 +3071,9 @@
     "slug": "control-filled-tonal-icon-button",
     "family": "materials",
     "widget_type": "filledtonaliconbutton",
-    "helpers": [],
+    "helpers": [
+      "filled_tonal_icon_button"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1297,7 +3088,57 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "disabled_color",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "highlight_color",
+      "hover_color",
+      "icon",
+      "icon_color",
+      "icon_size",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected",
+      "selected_icon",
+      "selected_icon_color",
+      "size_change_interval",
+      "size_constraints",
+      "splash_color",
+      "splash_radius",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1322,7 +3163,49 @@
       "autofocus",
       "badge",
       "bgcolor",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "disabled_elevation",
+      "elevation",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "focus_elevation",
+      "foreground_color",
+      "height",
+      "highlight_elevation",
+      "hover_color",
+      "hover_elevation",
+      "icon",
+      "key",
+      "left",
+      "margin",
+      "mini",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shape",
+      "size_change_interval",
+      "splash_color",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_size_change"
     ]
   },
   {
@@ -1347,7 +3230,57 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "disabled_color",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "highlight_color",
+      "hover_color",
+      "icon",
+      "icon_color",
+      "icon_size",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected",
+      "selected_icon",
+      "selected_icon_color",
+      "size_change_interval",
+      "size_constraints",
+      "splash_color",
+      "splash_radius",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1355,7 +3288,9 @@
     "slug": "control-list-tile",
     "family": "materials",
     "widget_type": "listtile",
-    "helpers": [],
+    "helpers": [
+      "list_tile"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1370,7 +3305,63 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "bottom",
+      "col",
+      "content_padding",
+      "data",
+      "dense",
+      "disabled",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "height",
+      "horizontal_spacing",
+      "hover_color",
+      "icon_color",
+      "is_three_line",
+      "key",
+      "leading",
+      "leading_and_trailing_text_style",
+      "left",
+      "margin",
+      "min_height",
+      "min_leading_width",
+      "min_vertical_padding",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected",
+      "selected_color",
+      "selected_tile_color",
+      "shape",
+      "size_change_interval",
+      "splash_color",
+      "style",
+      "subtitle",
+      "subtitle_text_style",
+      "text_color",
+      "title",
+      "title_alignment",
+      "title_text_style",
+      "toggle_inputs",
+      "tooltip",
+      "top",
+      "trailing",
+      "url",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1378,7 +3369,9 @@
     "slug": "control-menu-bar",
     "family": "materials",
     "widget_type": "menubar",
-    "helpers": [],
+    "helpers": [
+      "menu_bar"
+    ],
     "properties": [
       "badge",
       "clip_behavior",
@@ -1394,14 +3387,17 @@
       "style",
       "tooltip",
       "visible"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "MenuItemButton",
     "slug": "control-menu-item-button",
     "family": "materials",
     "widget_type": "menuitembutton",
-    "helpers": [],
+    "helpers": [
+      "menu_item_button"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1416,7 +3412,43 @@
       "autofocus",
       "badge",
       "bottom",
-      "clip_behavior"
+      "clip_behavior",
+      "close_on_click",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "focus_on_hover",
+      "height",
+      "key",
+      "leading",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "overflow_axis",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantic_label",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "trailing",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_size_change"
     ]
   },
   {
@@ -1441,7 +3473,44 @@
       "animation_duration",
       "aspect_ratio",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "border",
+      "bottom",
+      "col",
+      "data",
+      "destinations",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "height",
+      "indicator_color",
+      "indicator_shape",
+      "key",
+      "label_behavior",
+      "label_padding",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "shadow_color",
+      "size_change_interval",
+      "surface_tint_color",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -1466,15 +3535,20 @@
       "label",
       "opacity",
       "rtl",
-      "selected_icon"
-    ]
+      "selected_icon",
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "NavigationDrawer",
     "slug": "control-navigation-drawer",
     "family": "materials",
     "widget_type": "navigationdrawer",
-    "helpers": [],
+    "helpers": [
+      "navigation_drawer"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -1489,7 +3563,19 @@
       "indicator_color",
       "indicator_shape",
       "key",
-      "opacity"
+      "opacity",
+      "rtl",
+      "selected_index",
+      "shadow_color",
+      "surface_tint_color",
+      "tile_padding",
+      "tooltip",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_change",
+      "on_dismiss"
     ]
   },
   {
@@ -1497,7 +3583,9 @@
     "slug": "control-navigation-drawer-destination",
     "family": "materials",
     "widget_type": "navigationdrawerdestination",
-    "helpers": [],
+    "helpers": [
+      "navigation_drawer_destination"
+    ],
     "properties": [
       "badge",
       "bgcolor",
@@ -1512,15 +3600,19 @@
       "opacity",
       "rtl",
       "selected_icon",
-      "tooltip"
-    ]
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "NavigationRail",
     "slug": "control-navigation-rail",
     "family": "materials",
     "widget_type": "navigationrail",
-    "helpers": [],
+    "helpers": [
+      "navigation_rail"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1535,7 +3627,46 @@
       "badge",
       "bgcolor",
       "bottom",
-      "col"
+      "col",
+      "data",
+      "destinations",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "extended",
+      "group_alignment",
+      "height",
+      "indicator_color",
+      "indicator_shape",
+      "key",
+      "label_type",
+      "leading",
+      "left",
+      "margin",
+      "min_extended_width",
+      "min_width",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "selected_label_text_style",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "trailing",
+      "unselected_label_text_style",
+      "use_indicator",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -1543,7 +3674,9 @@
     "slug": "control-navigation-rail-destination",
     "family": "materials",
     "widget_type": "navigationraildestination",
-    "helpers": [],
+    "helpers": [
+      "navigation_rail_destination"
+    ],
     "properties": [
       "badge",
       "col",
@@ -1558,8 +3691,12 @@
       "label",
       "opacity",
       "padding",
-      "rtl"
-    ]
+      "rtl",
+      "selected_icon",
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "Option",
@@ -1581,7 +3718,11 @@
       "rtl",
       "text",
       "text_style",
-      "tooltip"
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_click"
     ]
   },
   {
@@ -1589,7 +3730,9 @@
     "slug": "control-outlined-button",
     "family": "materials",
     "widget_type": "outlinedbutton",
-    "helpers": [],
+    "helpers": [
+      "outlined_button"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1604,7 +3747,42 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1612,7 +3790,9 @@
     "slug": "control-outlined-icon-button",
     "family": "materials",
     "widget_type": "outlinediconbutton",
-    "helpers": [],
+    "helpers": [
+      "outlined_icon_button"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1627,7 +3807,57 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "disabled_color",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "highlight_color",
+      "hover_color",
+      "icon",
+      "icon_color",
+      "icon_size",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected",
+      "selected_icon",
+      "selected_icon_color",
+      "size_change_interval",
+      "size_constraints",
+      "splash_color",
+      "splash_radius",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -1635,7 +3865,9 @@
     "slug": "control-popup-menu-button",
     "family": "materials",
     "widget_type": "popupmenubutton",
-    "helpers": [],
+    "helpers": [
+      "popup_menu_button"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1650,7 +3882,50 @@
       "badge",
       "bgcolor",
       "bottom",
-      "clip_behavior"
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "elevation",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "icon_size",
+      "items",
+      "key",
+      "left",
+      "margin",
+      "menu_padding",
+      "menu_position",
+      "offset",
+      "opacity",
+      "padding",
+      "popup_animation_style",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shadow_color",
+      "shape",
+      "size_change_interval",
+      "size_constraints",
+      "splash_radius",
+      "style",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_cancel",
+      "on_open",
+      "on_select",
+      "on_size_change"
     ]
   },
   {
@@ -1658,7 +3933,9 @@
     "slug": "control-popup-menu-item",
     "family": "materials",
     "widget_type": "popupmenuitem",
-    "helpers": [],
+    "helpers": [
+      "popup_menu_item"
+    ],
     "properties": [
       "badge",
       "checked",
@@ -1673,7 +3950,14 @@
       "key",
       "label_text_style",
       "mouse_cursor",
-      "opacity"
+      "opacity",
+      "padding",
+      "rtl",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_click"
     ]
   },
   {
@@ -1681,7 +3965,9 @@
     "slug": "control-progress-bar",
     "family": "materials",
     "widget_type": "progressbar",
-    "helpers": [],
+    "helpers": [
+      "progress_bar"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1696,7 +3982,40 @@
       "badge",
       "bar_height",
       "bgcolor",
-      "border_radius"
+      "border_radius",
+      "bottom",
+      "col",
+      "color",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantics_label",
+      "semantics_value",
+      "size_change_interval",
+      "stop_indicator_color",
+      "stop_indicator_radius",
+      "tooltip",
+      "top",
+      "track_gap",
+      "value",
+      "visible",
+      "width",
+      "year_2023"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -1704,7 +4023,9 @@
     "slug": "control-progress-ring",
     "family": "materials",
     "widget_type": "progressring",
-    "helpers": [],
+    "helpers": [
+      "progress_ring"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1719,7 +4040,41 @@
       "badge",
       "bgcolor",
       "bottom",
-      "col"
+      "col",
+      "color",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantics_label",
+      "semantics_value",
+      "size_change_interval",
+      "size_constraints",
+      "stroke_align",
+      "stroke_cap",
+      "stroke_width",
+      "tooltip",
+      "top",
+      "track_gap",
+      "value",
+      "visible",
+      "width",
+      "year_2023"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -1744,7 +4099,46 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "focus_color",
+      "height",
+      "hover_color",
+      "key",
+      "label",
+      "label_position",
+      "label_style",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "splash_radius",
+      "toggleable",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "visual_density",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -1768,7 +4162,9 @@
       "rtl",
       "tooltip",
       "value",
-      "visible",
+      "visible"
+    ],
+    "events": [
       "on_change"
     ]
   },
@@ -1777,7 +4173,9 @@
     "slug": "control-range-slider",
     "family": "materials",
     "widget_type": "rangeslider",
-    "helpers": [],
+    "helpers": [
+      "range_slider"
+    ],
     "properties": [
       "active_color",
       "align",
@@ -1792,7 +4190,43 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "col"
+      "col",
+      "data",
+      "disabled",
+      "divisions",
+      "end_value",
+      "expand",
+      "expand_loose",
+      "height",
+      "inactive_color",
+      "key",
+      "label",
+      "left",
+      "margin",
+      "max",
+      "min",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "right",
+      "rotate",
+      "round",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "start_value",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_change_end",
+      "on_change_start",
+      "on_size_change"
     ]
   },
   {
@@ -1800,7 +4234,9 @@
     "slug": "control-reorderable-list-view",
     "family": "materials",
     "widget_type": "reorderablelistview",
-    "helpers": [],
+    "helpers": [
+      "reorderable_list_view"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -1815,7 +4251,56 @@
       "animate_size",
       "aspect_ratio",
       "auto_scroll",
-      "auto_scroller_velocity_scalar"
+      "auto_scroller_velocity_scalar",
+      "badge",
+      "bottom",
+      "build_controls_on_demand",
+      "cache_extent",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "divider_thickness",
+      "expand",
+      "expand_loose",
+      "first_item_prototype",
+      "footer",
+      "header",
+      "height",
+      "horizontal",
+      "item_extent",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "padding",
+      "prototype_item",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "semantic_child_count",
+      "show_default_drag_handles",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_reorder",
+      "on_reorder_end",
+      "on_reorder_start",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -1823,7 +4308,9 @@
     "slug": "control-search-bar",
     "family": "materials",
     "widget_type": "searchbar",
-    "helpers": [],
+    "helpers": [
+      "search_bar"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -1838,7 +4325,70 @@
       "autofocus",
       "badge",
       "bar_bgcolor",
-      "bar_border_side"
+      "bar_border_side",
+      "bar_elevation",
+      "bar_hint_text",
+      "bar_hint_text_style",
+      "bar_leading",
+      "bar_overlay_color",
+      "bar_padding",
+      "bar_scroll_padding",
+      "bar_shadow_color",
+      "bar_shape",
+      "bar_size_constraints",
+      "bar_text_style",
+      "bar_trailing",
+      "bottom",
+      "capitalization",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "divider_color",
+      "expand",
+      "expand_loose",
+      "full_screen",
+      "height",
+      "key",
+      "keyboard_type",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shrink_wrap",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "value",
+      "view_bar_padding",
+      "view_bgcolor",
+      "view_elevation",
+      "view_header_height",
+      "view_header_text_style",
+      "view_hint_text",
+      "view_hint_text_style",
+      "view_leading",
+      "view_padding",
+      "view_shape",
+      "view_side",
+      "view_size_constraints",
+      "view_trailing",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_size_change",
+      "on_submit",
+      "on_tap",
+      "on_tap_outside_bar"
     ]
   },
   {
@@ -1846,7 +4396,9 @@
     "slug": "control-segment",
     "family": "materials",
     "widget_type": "segment",
-    "helpers": [],
+    "helpers": [
+      "segment"
+    ],
     "properties": [
       "badge",
       "col",
@@ -1862,14 +4414,17 @@
       "tooltip",
       "value",
       "visible"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "SegmentedButton",
     "slug": "control-segmented-button",
     "family": "materials",
     "widget_type": "segmentedbutton",
-    "helpers": [],
+    "helpers": [
+      "segmented_button"
+    ],
     "properties": [
       "align",
       "allow_empty_selection",
@@ -1884,7 +4439,39 @@
       "animate_size",
       "aspect_ratio",
       "badge",
-      "bottom"
+      "bottom",
+      "col",
+      "data",
+      "direction",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "segments",
+      "selected",
+      "selected_icon",
+      "show_selected_icon",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -1892,7 +4479,9 @@
     "slug": "control-selection-area",
     "family": "materials",
     "widget_type": "selectionarea",
-    "helpers": [],
+    "helpers": [
+      "selection_area"
+    ],
     "properties": [
       "badge",
       "col",
@@ -1905,7 +4494,9 @@
       "opacity",
       "rtl",
       "tooltip",
-      "visible",
+      "visible"
+    ],
+    "events": [
       "on_change"
     ]
   },
@@ -1914,7 +4505,9 @@
     "slug": "control-slider",
     "family": "materials",
     "widget_type": "slider",
-    "helpers": [],
+    "helpers": [
+      "slider"
+    ],
     "properties": [
       "active_color",
       "adaptive",
@@ -1929,7 +4522,52 @@
       "animate_size",
       "aspect_ratio",
       "autofocus",
-      "badge"
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "divisions",
+      "expand",
+      "expand_loose",
+      "height",
+      "inactive_color",
+      "interaction",
+      "key",
+      "label",
+      "left",
+      "margin",
+      "max",
+      "min",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "padding",
+      "right",
+      "rotate",
+      "round",
+      "rtl",
+      "scale",
+      "secondary_active_color",
+      "secondary_track_value",
+      "size_change_interval",
+      "thumb_color",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width",
+      "year_2023"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_change_end",
+      "on_change_start",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -1954,7 +4592,27 @@
       "data",
       "disabled",
       "dismiss_direction",
-      "duration"
+      "duration",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "key",
+      "margin",
+      "opacity",
+      "open",
+      "padding",
+      "persist",
+      "rtl",
+      "shape",
+      "show_close_icon",
+      "tooltip",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_action",
+      "on_dismiss",
+      "on_visible"
     ]
   },
   {
@@ -1962,7 +4620,9 @@
     "slug": "control-sub-menu-button",
     "family": "materials",
     "widget_type": "submenubutton",
-    "helpers": [],
+    "helpers": [
+      "submenu_button"
+    ],
     "properties": [
       "align",
       "alignment_offset",
@@ -1977,7 +4637,42 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "clip_behavior"
+      "clip_behavior",
+      "col",
+      "content",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "leading",
+      "left",
+      "margin",
+      "menu_style",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "trailing",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_close",
+      "on_focus",
+      "on_hover",
+      "on_open",
+      "on_size_change"
     ]
   },
   {
@@ -1985,7 +4680,9 @@
     "slug": "control-switch",
     "family": "materials",
     "widget_type": "switch",
-    "helpers": [],
+    "helpers": [
+      "switch"
+    ],
     "properties": [
       "active_color",
       "active_track_color",
@@ -2000,7 +4697,53 @@
       "animate_scale",
       "animate_size",
       "aspect_ratio",
-      "autofocus"
+      "autofocus",
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "focus_color",
+      "height",
+      "hover_color",
+      "inactive_thumb_color",
+      "inactive_track_color",
+      "key",
+      "label",
+      "label_position",
+      "label_text_style",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "splash_radius",
+      "thumb_color",
+      "thumb_icon",
+      "tooltip",
+      "top",
+      "track_color",
+      "track_outline_color",
+      "track_outline_width",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_size_change"
     ]
   },
   {
@@ -2025,8 +4768,11 @@
       "key",
       "label",
       "opacity",
-      "rtl"
-    ]
+      "rtl",
+      "tooltip",
+      "visible"
+    ],
+    "events": []
   },
   {
     "title": "TabBar",
@@ -2050,7 +4796,53 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "col"
+      "col",
+      "data",
+      "disabled",
+      "divider_color",
+      "divider_height",
+      "enable_feedback",
+      "expand",
+      "expand_loose",
+      "height",
+      "indicator",
+      "indicator_animation",
+      "indicator_color",
+      "indicator_size",
+      "indicator_thickness",
+      "key",
+      "label_color",
+      "label_padding",
+      "label_text_style",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scrollable",
+      "secondary",
+      "size_change_interval",
+      "splash_border_radius",
+      "tab_alignment",
+      "tabs",
+      "tooltip",
+      "top",
+      "unselected_label_color",
+      "unselected_label_text_style",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_hover",
+      "on_size_change"
     ]
   },
   {
@@ -2075,7 +4867,33 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "clip_behavior"
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "viewport_fraction",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2100,7 +4918,35 @@
       "animation_duration",
       "aspect_ratio",
       "badge",
-      "bottom"
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "length",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -2125,7 +4971,42 @@
       "aspect_ratio",
       "autofocus",
       "badge",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "icon_color",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_click",
+      "on_focus",
+      "on_hover",
+      "on_long_press",
+      "on_size_change"
     ]
   },
   {
@@ -2150,7 +5031,124 @@
       "animate_rotation",
       "animate_scale",
       "animate_size",
-      "aspect_ratio"
+      "aspect_ratio",
+      "autocorrect",
+      "autofill_hints",
+      "autofocus",
+      "badge",
+      "bgcolor",
+      "border",
+      "border_color",
+      "border_radius",
+      "border_width",
+      "bottom",
+      "can_request_focus",
+      "can_reveal_password",
+      "capitalization",
+      "clip_behavior",
+      "col",
+      "collapsed",
+      "color",
+      "content_padding",
+      "counter",
+      "counter_style",
+      "cursor_color",
+      "cursor_error_color",
+      "cursor_height",
+      "cursor_radius",
+      "cursor_width",
+      "data",
+      "dense",
+      "disabled",
+      "enable_ime_personalized_learning",
+      "enable_interactive_selection",
+      "enable_stylus_handwriting",
+      "enable_suggestions",
+      "error",
+      "error_max_lines",
+      "error_style",
+      "expand",
+      "expand_loose",
+      "fill_color",
+      "filled",
+      "fit_parent_size",
+      "focus_color",
+      "focused_bgcolor",
+      "focused_border_color",
+      "focused_border_width",
+      "focused_color",
+      "height",
+      "helper",
+      "helper_max_lines",
+      "helper_style",
+      "hint_fade_duration",
+      "hint_max_lines",
+      "hint_style",
+      "hint_text",
+      "hover_color",
+      "icon",
+      "ignore_pointers",
+      "ignore_up_down_keys",
+      "input_filter",
+      "key",
+      "keyboard_brightness",
+      "keyboard_type",
+      "label",
+      "label_style",
+      "left",
+      "margin",
+      "max_length",
+      "max_lines",
+      "min_lines",
+      "mouse_cursor",
+      "multiline",
+      "obscuring_character",
+      "offset",
+      "opacity",
+      "password",
+      "prefix",
+      "prefix_icon",
+      "prefix_icon_size_constraints",
+      "prefix_style",
+      "read_only",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scroll_padding",
+      "selection",
+      "selection_color",
+      "shift_enter",
+      "show_cursor",
+      "size_change_interval",
+      "size_constraints",
+      "smart_dashes_type",
+      "smart_quotes_type",
+      "strut_style",
+      "suffix",
+      "suffix_icon",
+      "suffix_icon_size_constraints",
+      "suffix_style",
+      "text_align",
+      "text_size",
+      "text_style",
+      "text_vertical_align",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_click",
+      "on_focus",
+      "on_selection_change",
+      "on_size_change",
+      "on_submit",
+      "on_tap_outside"
     ]
   },
   {
@@ -2158,7 +5156,9 @@
     "slug": "control-time-picker",
     "family": "materials",
     "widget_type": "timepicker",
-    "helpers": [],
+    "helpers": [
+      "time_picker"
+    ],
     "properties": [
       "adaptive",
       "badge",
@@ -2173,7 +5173,26 @@
       "expand",
       "expand_loose",
       "help_text",
-      "hour_format"
+      "hour_format",
+      "hour_label_text",
+      "key",
+      "locale",
+      "minute_label_text",
+      "modal",
+      "opacity",
+      "open",
+      "orientation",
+      "rtl",
+      "switch_to_input_icon",
+      "switch_to_timer_icon",
+      "tooltip",
+      "value",
+      "visible"
+    ],
+    "events": [
+      "on_change",
+      "on_dismiss",
+      "on_entry_mode_change"
     ]
   },
   {
@@ -2181,7 +5200,9 @@
     "slug": "control-vertical-divider",
     "family": "materials",
     "widget_type": "verticaldivider",
-    "helpers": [],
+    "helpers": [
+      "vertical_divider"
+    ],
     "properties": [
       "badge",
       "col",
@@ -2196,30 +5217,63 @@
       "radius",
       "rtl",
       "thickness",
-      "tooltip"
-    ]
+      "tooltip",
+      "trailing_indent",
+      "visible",
+      "width"
+    ],
+    "events": []
   },
   {
     "title": "Video",
     "slug": "control-video",
     "family": "materials",
     "widget_type": "video",
-    "helpers": [],
+    "helpers": [
+      "video"
+    ],
     "properties": [
+      "alignment",
       "aspect_ratio",
       "autoplay",
+      "configuration",
       "data",
+      "fill_color",
+      "filter_quality",
+      "fit",
       "fullscreen",
       "height",
       "key",
+      "muted",
       "opacity",
+      "pause_upon_entering_background_mode",
+      "pitch",
       "playlist",
       "playlist_mode",
       "playback_rate",
+      "resume_upon_entering_foreground_mode",
       "rtl",
+      "show_controls",
+      "shuffle_playlist",
+      "subtitle_configuration",
+      "title",
       "tooltip",
       "visible",
-      "volume"
+      "volume",
+      "wakelock",
+      "width"
+    ],
+    "events": [
+      "on_completed",
+      "on_complete",
+      "on_enter_fullscreen",
+      "on_error",
+      "on_exit_fullscreen",
+      "on_load",
+      "on_loaded",
+      "on_state_change",
+      "on_track_change",
+      "on_track_changed"
     ]
   },
   {
@@ -2239,12 +5293,22 @@
       "key",
       "method",
       "opacity",
+      "prevent_links",
       "rtl",
       "tooltip",
       "url",
       "visible",
-      "width",
-      "on_page_ended"
+      "width"
+    ],
+    "events": [
+      "on_page_ended",
+      "on_page_started",
+      "on_web_resource_error",
+      "on_progress",
+      "on_url_change",
+      "on_scroll",
+      "on_console_message",
+      "on_javascript_alert_dialog"
     ]
   },
   {
@@ -2252,7 +5316,9 @@
     "slug": "control-animatedswitcher",
     "family": "shared",
     "widget_type": "animatedswitcher",
-    "helpers": [],
+    "helpers": [
+      "animated_switcher"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -2267,7 +5333,35 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "duration",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "reverse_duration",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "switch_in_curve",
+      "switch_out_curve",
+      "tooltip",
+      "top",
+      "transition",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2275,7 +5369,9 @@
     "slug": "control-arc",
     "family": "shared",
     "widget_type": "arc",
-    "helpers": [],
+    "helpers": [
+      "arc"
+    ],
     "properties": [
       "data",
       "height",
@@ -2287,7 +5383,8 @@
       "width",
       "x",
       "y"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "AutofillGroup",
@@ -2309,7 +5406,8 @@
       "rtl",
       "tooltip",
       "visible"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "BrowserContextMenu",
@@ -2319,15 +5417,19 @@
     "helpers": [],
     "properties": [
       "data",
+      "disabled",
       "key"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Canvas",
     "slug": "control-canvas",
     "family": "shared",
     "widget_type": "canvas",
-    "helpers": [],
+    "helpers": [
+      "canvas"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -2342,7 +5444,33 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "resize_interval",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shapes",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_resize",
+      "on_size_change"
     ]
   },
   {
@@ -2350,7 +5478,9 @@
     "slug": "control-circle",
     "family": "shared",
     "widget_type": "circle",
-    "helpers": [],
+    "helpers": [
+      "circle"
+    ],
     "properties": [
       "data",
       "key",
@@ -2358,20 +5488,24 @@
       "radius",
       "x",
       "y"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Color",
     "slug": "control-color",
     "family": "shared",
     "widget_type": "color",
-    "helpers": [],
+    "helpers": [
+      "color"
+    ],
     "properties": [
       "blend_mode",
       "color",
       "data",
       "key"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Column",
@@ -2395,7 +5529,43 @@
       "animate_size",
       "aspect_ratio",
       "auto_scroll",
-      "badge"
+      "badge",
+      "bottom",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "horizontal_alignment",
+      "intrinsic_width",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "run_alignment",
+      "run_spacing",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "size_change_interval",
+      "spacing",
+      "tight",
+      "tooltip",
+      "top",
+      "visible",
+      "width",
+      "wrap"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -2403,7 +5573,9 @@
     "slug": "control-dismissible",
     "family": "shared",
     "widget_type": "dismissible",
-    "helpers": [],
+    "helpers": [
+      "dismissible"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -2418,7 +5590,42 @@
       "aspect_ratio",
       "background",
       "badge",
-      "bottom"
+      "bottom",
+      "col",
+      "content",
+      "cross_axis_end_offset",
+      "data",
+      "disabled",
+      "dismiss_direction",
+      "dismiss_thresholds",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "movement_duration",
+      "offset",
+      "opacity",
+      "resize_duration",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "secondary_background",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_confirm_dismiss",
+      "on_dismiss",
+      "on_resize",
+      "on_size_change",
+      "on_update"
     ]
   },
   {
@@ -2443,7 +5650,15 @@
       "expand_loose",
       "group",
       "key",
-      "max_simultaneous_drags"
+      "max_simultaneous_drags",
+      "opacity",
+      "rtl",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_drag_complete",
+      "on_drag_start"
     ]
   },
   {
@@ -2467,8 +5682,13 @@
       "opacity",
       "rtl",
       "tooltip",
-      "visible",
-      "on_accept"
+      "visible"
+    ],
+    "events": [
+      "on_accept",
+      "on_leave",
+      "on_move",
+      "on_will_accept"
     ]
   },
   {
@@ -2476,12 +5696,15 @@
     "slug": "control-fill",
     "family": "shared",
     "widget_type": "fill",
-    "helpers": [],
+    "helpers": [
+      "fill"
+    ],
     "properties": [
       "data",
       "key",
       "paint"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "GestureDetector",
@@ -2505,7 +5728,105 @@
       "animate_size",
       "aspect_ratio",
       "badge",
-      "bottom"
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "drag_interval",
+      "exclude_from_semantics",
+      "expand",
+      "expand_loose",
+      "height",
+      "hover_interval",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "multi_tap_touches",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "trackpad_scroll_causes_scale",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_double_tap",
+      "on_double_tap_cancel",
+      "on_double_tap_down",
+      "on_enter",
+      "on_exit",
+      "on_force_press_end",
+      "on_force_press_peak",
+      "on_force_press_start",
+      "on_force_press_update",
+      "on_horizontal_drag_cancel",
+      "on_horizontal_drag_down",
+      "on_horizontal_drag_end",
+      "on_horizontal_drag_start",
+      "on_horizontal_drag_update",
+      "on_hover",
+      "on_long_press",
+      "on_long_press_cancel",
+      "on_long_press_down",
+      "on_long_press_end",
+      "on_long_press_move_update",
+      "on_long_press_start",
+      "on_long_press_up",
+      "on_multi_long_press",
+      "on_multi_tap",
+      "on_pan_cancel",
+      "on_pan_down",
+      "on_pan_end",
+      "on_pan_start",
+      "on_pan_update",
+      "on_right_pan_end",
+      "on_right_pan_start",
+      "on_right_pan_update",
+      "on_scale_end",
+      "on_scale_start",
+      "on_scale_update",
+      "on_scroll",
+      "on_secondary_long_press",
+      "on_secondary_long_press_cancel",
+      "on_secondary_long_press_down",
+      "on_secondary_long_press_end",
+      "on_secondary_long_press_move_update",
+      "on_secondary_long_press_start",
+      "on_secondary_long_press_up",
+      "on_secondary_tap",
+      "on_secondary_tap_cancel",
+      "on_secondary_tap_down",
+      "on_secondary_tap_up",
+      "on_size_change",
+      "on_tap",
+      "on_tap_cancel",
+      "on_tap_down",
+      "on_tap_move",
+      "on_tap_up",
+      "on_tertiary_long_press",
+      "on_tertiary_long_press_cancel",
+      "on_tertiary_long_press_down",
+      "on_tertiary_long_press_end",
+      "on_tertiary_long_press_move_update",
+      "on_tertiary_long_press_start",
+      "on_tertiary_long_press_up",
+      "on_tertiary_tap_cancel",
+      "on_tertiary_tap_down",
+      "on_tertiary_tap_up",
+      "on_vertical_drag_cancel",
+      "on_vertical_drag_down",
+      "on_vertical_drag_end",
+      "on_vertical_drag_start",
+      "on_vertical_drag_update"
     ]
   },
   {
@@ -2530,7 +5851,47 @@
       "aspect_ratio",
       "auto_scroll",
       "badge",
-      "bottom"
+      "bottom",
+      "build_controls_on_demand",
+      "cache_extent",
+      "child_aspect_ratio",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "horizontal",
+      "key",
+      "left",
+      "margin",
+      "max_extent",
+      "offset",
+      "opacity",
+      "padding",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "run_spacing",
+      "runs_count",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "semantic_child_count",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -2553,7 +5914,32 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tag",
+      "tooltip",
+      "top",
+      "transition_on_user_gestures",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2578,7 +5964,40 @@
       "aspect_ratio",
       "badge",
       "blend_mode",
-      "bottom"
+      "bottom",
+      "col",
+      "color",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fill",
+      "grade",
+      "height",
+      "icon",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "optical_size",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "semantics_label",
+      "shadows",
+      "size",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "weight",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2586,24 +6005,47 @@
     "slug": "control-image",
     "family": "shared",
     "widget_type": "image",
-    "helpers": [],
+    "helpers": [
+      "image"
+    ],
     "properties": [
+      "anti_alias",
+      "border_radius",
+      "cache_height",
+      "cache_width",
+      "color",
+      "color_blend_mode",
       "data",
+      "error_content",
+      "exclude_from_semantics",
+      "fade_in_animation",
+      "filter_quality",
+      "fit",
+      "gapless_playback",
       "height",
       "key",
       "paint",
+      "placeholder_fade_out_animation",
+      "placeholder_fit",
+      "placeholder_src",
+      "repeat",
+      "semantics_label",
       "src",
+      "src_base64",
       "width",
       "x",
       "y"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "InteractiveViewer",
     "slug": "control-interactive-viewer",
     "family": "shared",
     "widget_type": "interactiveviewer",
-    "helpers": [],
+    "helpers": [
+      "interactive_viewer"
+    ],
     "properties": [
       "align",
       "alignment",
@@ -2618,7 +6060,45 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "boundary_margin"
+      "boundary_margin",
+      "clip_behavior",
+      "col",
+      "constrained",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "interaction_end_friction_coefficient",
+      "interaction_update_interval",
+      "key",
+      "left",
+      "margin",
+      "max_scale",
+      "min_scale",
+      "offset",
+      "opacity",
+      "pan_enabled",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scale_enabled",
+      "scale_factor",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "trackpad_scroll_causes_scale",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_interaction_end",
+      "on_interaction_start",
+      "on_interaction_update",
+      "on_size_change"
     ]
   },
   {
@@ -2626,7 +6106,9 @@
     "slug": "control-keyboard-listener",
     "family": "shared",
     "widget_type": "keyboardlistener",
-    "helpers": [],
+    "helpers": [
+      "keyboard_listener"
+    ],
     "properties": [
       "autofocus",
       "badge",
@@ -2642,6 +6124,11 @@
       "rtl",
       "tooltip",
       "visible"
+    ],
+    "events": [
+      "on_key_down",
+      "on_key_repeat",
+      "on_key_up"
     ]
   },
   {
@@ -2649,7 +6136,9 @@
     "slug": "control-line",
     "family": "shared",
     "widget_type": "line",
-    "helpers": [],
+    "helpers": [
+      "line"
+    ],
     "properties": [
       "data",
       "key",
@@ -2658,14 +6147,17 @@
       "x2",
       "y1",
       "y2"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "ListView",
     "slug": "control-list-view",
     "family": "shared",
     "widget_type": "listview",
-    "helpers": [],
+    "helpers": [
+      "list_view"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -2680,7 +6172,47 @@
       "aspect_ratio",
       "auto_scroll",
       "badge",
-      "bottom"
+      "bottom",
+      "build_controls_on_demand",
+      "cache_extent",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "divider_thickness",
+      "expand",
+      "expand_loose",
+      "first_item_prototype",
+      "height",
+      "horizontal",
+      "item_extent",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "prototype_item",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "semantic_child_count",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -2688,7 +6220,9 @@
     "slug": "control-markdown",
     "family": "shared",
     "widget_type": "markdown",
-    "helpers": [],
+    "helpers": [
+      "markdown"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -2703,7 +6237,46 @@
       "auto_follow_links",
       "auto_follow_links_target",
       "badge",
-      "bottom"
+      "bottom",
+      "code_style_sheet",
+      "code_theme",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "extension_set",
+      "fit_content",
+      "height",
+      "image_error_content",
+      "key",
+      "latex_scale_factor",
+      "latex_style",
+      "left",
+      "margin",
+      "md_style_sheet",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selectable",
+      "shrink_wrap",
+      "size_change_interval",
+      "soft_line_break",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_selection_change",
+      "on_size_change",
+      "on_tap_link",
+      "on_tap_text"
     ]
   },
   {
@@ -2711,7 +6284,9 @@
     "slug": "control-merge-semantics",
     "family": "shared",
     "widget_type": "mergesemantics",
-    "helpers": [],
+    "helpers": [
+      "merge_semantics"
+    ],
     "properties": [
       "badge",
       "col",
@@ -2725,14 +6300,17 @@
       "rtl",
       "tooltip",
       "visible"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Oval",
     "slug": "control-oval",
     "family": "shared",
     "widget_type": "oval",
-    "helpers": [],
+    "helpers": [
+      "oval"
+    ],
     "properties": [
       "data",
       "height",
@@ -2741,7 +6319,8 @@
       "width",
       "x",
       "y"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Overlay",
@@ -2753,14 +6332,17 @@
       "controls",
       "data",
       "key"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "PageView",
     "slug": "control-page-view",
     "family": "shared",
     "widget_type": "pageview",
-    "helpers": [],
+    "helpers": [
+      "page_view"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -2775,7 +6357,40 @@
       "badge",
       "bottom",
       "clip_behavior",
-      "col"
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "horizontal",
+      "implicit_scrolling",
+      "keep_page",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "pad_ends",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "size_change_interval",
+      "snap",
+      "tooltip",
+      "top",
+      "viewport_fraction",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
     ]
   },
   {
@@ -2783,20 +6398,25 @@
     "slug": "control-path",
     "family": "shared",
     "widget_type": "path",
-    "helpers": [],
+    "helpers": [
+      "path"
+    ],
     "properties": [
       "data",
       "elements",
       "key",
       "paint"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Placeholder",
     "slug": "control-placeholder",
     "family": "shared",
     "widget_type": "placeholder",
-    "helpers": [],
+    "helpers": [
+      "placeholder"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -2811,7 +6431,34 @@
       "badge",
       "bottom",
       "col",
-      "color"
+      "color",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fallback_height",
+      "fallback_width",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "stroke_width",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2819,21 +6466,26 @@
     "slug": "control-points",
     "family": "shared",
     "widget_type": "points",
-    "helpers": [],
+    "helpers": [
+      "points"
+    ],
     "properties": [
       "data",
       "key",
       "paint",
       "point_mode",
       "points"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "Rect",
     "slug": "control-rect",
     "family": "shared",
     "widget_type": "rect",
-    "helpers": [],
+    "helpers": [
+      "rect"
+    ],
     "properties": [
       "border_radius",
       "data",
@@ -2843,14 +6495,17 @@
       "width",
       "x",
       "y"
-    ]
+    ],
+    "events": []
   },
   {
     "title": "ReorderableDragHandle",
     "slug": "control-reorderable-drag-handle",
     "family": "shared",
     "widget_type": "reorderabledraghandle",
-    "helpers": [],
+    "helpers": [
+      "reorderable_drag_handle"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -2865,7 +6520,32 @@
       "aspect_ratio",
       "badge",
       "bottom",
-      "col"
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2873,7 +6553,9 @@
     "slug": "control-responsive-row",
     "family": "shared",
     "widget_type": "responsiverow",
-    "helpers": [],
+    "helpers": [
+      "responsive_row"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -2888,7 +6570,37 @@
       "animate_size",
       "aspect_ratio",
       "badge",
-      "bottom"
+      "bottom",
+      "breakpoints",
+      "col",
+      "columns",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "run_spacing",
+      "scale",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "vertical_alignment",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2913,7 +6625,43 @@
       "animate_size",
       "aspect_ratio",
       "auto_scroll",
-      "badge"
+      "badge",
+      "bottom",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "intrinsic_height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "run_alignment",
+      "run_spacing",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "size_change_interval",
+      "spacing",
+      "tight",
+      "tooltip",
+      "top",
+      "vertical_alignment",
+      "visible",
+      "width",
+      "wrap"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -2921,7 +6669,9 @@
     "slug": "control-safe-area",
     "family": "shared",
     "widget_type": "safearea",
-    "helpers": [],
+    "helpers": [
+      "safe_area"
+    ],
     "properties": [
       "adaptive",
       "align",
@@ -2936,7 +6686,37 @@
       "aspect_ratio",
       "avoid_intrusions_bottom",
       "avoid_intrusions_left",
-      "avoid_intrusions_right"
+      "avoid_intrusions_right",
+      "avoid_intrusions_top",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "maintain_bottom_view_padding",
+      "margin",
+      "minimum_padding",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -2944,7 +6724,9 @@
     "slug": "control-semantics",
     "family": "shared",
     "widget_type": "semantics",
-    "helpers": [],
+    "helpers": [
+      "semantics"
+    ],
     "properties": [
       "badge",
       "button",
@@ -2959,7 +6741,55 @@
       "exclude_semantics",
       "expand",
       "expand_loose",
-      "expanded"
+      "expanded",
+      "focus",
+      "focusable",
+      "header",
+      "heading_level",
+      "hidden",
+      "hint_text",
+      "image",
+      "increased_value",
+      "key",
+      "label",
+      "link",
+      "live_region",
+      "max_value_length",
+      "mixed",
+      "multiline",
+      "obscured",
+      "opacity",
+      "read_only",
+      "rtl",
+      "selected",
+      "slider",
+      "textfield",
+      "toggled",
+      "tooltip",
+      "value",
+      "visible"
+    ],
+    "events": [
+      "on_copy",
+      "on_cut",
+      "on_decrease",
+      "on_did_gain_accessibility_focus",
+      "on_did_lose_accessibility_focus",
+      "on_dismiss",
+      "on_double_tap",
+      "on_increase",
+      "on_long_press",
+      "on_long_press_hint_text",
+      "on_move_cursor_backward_by_character",
+      "on_move_cursor_forward_by_character",
+      "on_paste",
+      "on_scroll_down",
+      "on_scroll_left",
+      "on_scroll_right",
+      "on_scroll_up",
+      "on_set_text",
+      "on_tap",
+      "on_tap_hint_text"
     ]
   },
   {
@@ -2982,7 +6812,33 @@
       "badge",
       "blend_mode",
       "border_radius",
-      "bottom"
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shader",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -3005,7 +6861,36 @@
       "badge",
       "base_color",
       "bottom",
-      "col"
+      "col",
+      "content",
+      "data",
+      "direction",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "gradient",
+      "height",
+      "highlight_color",
+      "key",
+      "left",
+      "loop",
+      "margin",
+      "offset",
+      "opacity",
+      "period",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -3030,7 +6915,34 @@
       "animate_size",
       "aspect_ratio",
       "badge",
-      "bottom"
+      "bottom",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fit",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -3038,21 +6950,44 @@
     "slug": "control-text",
     "family": "shared",
     "widget_type": "text",
-    "helpers": [],
+    "helpers": [
+      "text"
+    ],
     "properties": [
       "alignment",
+      "bgcolor",
+      "color",
       "data",
       "ellipsis",
+      "enable_interactive_selection",
+      "font_family",
+      "font_family_fallback",
+      "italic",
       "key",
       "max_lines",
       "max_width",
+      "no_wrap",
+      "overflow",
       "rotate",
+      "selectable",
+      "selection_cursor_color",
+      "selection_cursor_height",
+      "selection_cursor_width",
+      "semantics_label",
+      "show_selection_cursor",
+      "size",
       "spans",
       "style",
       "text_align",
+      "theme_style",
       "value",
+      "weight",
       "x",
       "y"
+    ],
+    "events": [
+      "on_selection_change",
+      "on_tap"
     ]
   },
   {
@@ -3075,7 +7010,15 @@
       "spans",
       "spell_out",
       "style",
-      "text"
+      "text",
+      "tooltip",
+      "url",
+      "visible"
+    ],
+    "events": [
+      "on_click",
+      "on_enter",
+      "on_exit"
     ]
   },
   {
@@ -3083,7 +7026,9 @@
     "slug": "control-transparent-pointer",
     "family": "shared",
     "widget_type": "transparentpointer",
-    "helpers": [],
+    "helpers": [
+      "transparent_pointer"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -3098,7 +7043,30 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
     ]
   },
   {
@@ -3123,7 +7091,53 @@
       "aspect_ratio",
       "auto_scroll",
       "badge",
-      "bgcolor"
+      "bgcolor",
+      "bottom",
+      "bottom_appbar",
+      "can_pop",
+      "col",
+      "controls",
+      "data",
+      "decoration",
+      "disabled",
+      "drawer",
+      "end_drawer",
+      "expand",
+      "expand_loose",
+      "floating_action_button",
+      "floating_action_button_location",
+      "foreground_decoration",
+      "fullscreen_dialog",
+      "height",
+      "horizontal_alignment",
+      "key",
+      "left",
+      "margin",
+      "navigation_bar",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "route",
+      "rtl",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "services",
+      "size_change_interval",
+      "spacing",
+      "tooltip",
+      "top",
+      "vertical_alignment",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_confirm_pop",
+      "on_scroll",
+      "on_size_change"
     ]
   },
   {
@@ -3131,7 +7145,9 @@
     "slug": "control-window-drag-area",
     "family": "shared",
     "widget_type": "windowdragarea",
-    "helpers": [],
+    "helpers": [
+      "window_drag_area"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -3146,7 +7162,34 @@
       "badge",
       "bottom",
       "col",
-      "content"
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "maximizable",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_double_tap",
+      "on_drag_end",
+      "on_drag_start",
+      "on_size_change"
     ]
   }
 ]
