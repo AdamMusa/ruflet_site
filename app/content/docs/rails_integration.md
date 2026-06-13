@@ -19,24 +19,35 @@ gem "ruflet_rails"
 bin/rails generate ruflet:install
 ```
 
-The generator creates `config/initializers/ruflet.rb`:
+The generator creates two files and adds one route:
+
+- `app/views/ruflet/main.rb` — your home screen, served to native clients over
+  `/ws` and to any web mount. You own this file; nothing is auto-discovered.
+- `ruflet.yaml` — app metadata and build options (name, `backend_url`,
+  services, assets).
+- a `/ws` route in `config/routes.rb`:
+
+```ruby
+match "/ws", to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")), via: :all
+```
+
+Nothing is auto-mounted — you mount everything explicitly in `routes.rb`, the
+same way you mount a web frontend. No initializer is required.
+
+You can add `config/initializers/ruflet.rb` to set `backend_url` (used by asset
+URLs and the desktop launcher) or other build metadata:
 
 ```ruby
 Ruflet::Rails.configure do |config|
-  config.app_file    = Rails.root.join("app/views/ruflet/main.rb")
-  config.ws_path     = "/ws"
-
-  # Base URL the Flutter client uses to reach this Rails app. Always required —
-  # it backs asset URLs, the build-time RUFLET_URL define, and the desktop
-  # launcher. Point it at a LAN IP (not localhost) to test on a real device.
+  # Base URL the Flutter client uses to reach this Rails app. Point it at a LAN
+  # IP (not localhost) to test on a real device.
   config.backend_url = ENV.fetch("RUFLET_BACKEND_URL") do
     Rails.env.production? ? "https://example.com" : "http://localhost:3000"
   end
 end
 ```
 
-See [Assets and URLs](/docs/rails-assets) for why `backend_url` is always
-required.
+See [Assets and URLs](/docs/rails-assets) for more on `backend_url`.
 
 ## Widget helpers work directly
 
@@ -89,10 +100,10 @@ match "/ws", to: Ruflet::Rails.endpoint(view: "HomeComponent"), via: :all
 match "/ws", to: Ruflet::Rails.endpoint { |page| MyHome.render(page) }, via: :all
 ```
 
-`Ruflet::Rails.app(path)` is shorthand for `endpoint(app_file: path)`. A bare
-`Ruflet::Rails.endpoint` (no arguments) falls back to a convenience view router
-that auto-discovers `RufletView` subclasses — useful for zero-config, but
-declare an entry above to own your home screen.
+`Ruflet::Rails.app(path)` is shorthand for `endpoint(app_file: path)`. You must
+declare an entry — `view:`, `app_file:`, or a block. A bare
+`Ruflet::Rails.endpoint` with no arguments raises `ArgumentError`; there is no
+auto-discovery fallback.
 
 ### `Ruflet::Rails.web_app` — a web frontend
 
@@ -106,8 +117,8 @@ source:
 
 ## Build the native clients from Rails
 
-The build reads metadata from your initializer config — no `ruflet.yaml` on disk
-required (see Build metadata below):
+The build reads `ruflet.yaml` (created by the install generator — see Build
+metadata below):
 
 ```bash
 bundle exec rake ruflet:build[web]
@@ -118,17 +129,20 @@ bundle exec rake ruflet:build[ios]
 
 ### Build metadata
 
-`rake ruflet:build` serializes `Ruflet::Rails.config` to the `ruflet.yaml`
-structure and writes it to a temp file the CLI reads via `RUFLET_CONFIG`. So
-`config/initializers/ruflet.rb` *is* your `ruflet.yaml` for a Rails app:
+By default `ruflet.yaml` in the Rails root is the source of build metadata — its
+`app:`, `services:`, `assets:`, and `build:` sections.
+
+You can configure it in Ruby instead: set `Ruflet::Rails.config` (e.g. in
+`config/initializers/ruflet.rb`) and, when no `ruflet.yaml`/`ruflet.yml` is on
+disk, `rake ruflet:build` serializes the config to a temp file the CLI reads via
+`RUFLET_CONFIG`:
 
 - `app_name`, `backend_url` → the `app:` section
 - `services` → the `services:` section
 - `splash_screen`, `icon_launcher`, `icon_*` → the `assets:` section
 - `splash_color`, `theme_color`, … → the `build:` section
 
-If you drop a real `ruflet.yaml`/`ruflet.yml` in the Rails root, it takes
-precedence and the initializer config is ignored for the build.
+A real `ruflet.yaml`/`ruflet.yml` on disk always takes precedence over config.
 
 ## What else `ruflet_rails` gives you
 
