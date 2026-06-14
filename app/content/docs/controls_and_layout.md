@@ -1,142 +1,72 @@
 # Controls and Layout
 
-Ruflet already exposes a broad Flutter-style control surface. The current generated Ruflet-layer index contains 159 discovered controls, spanning layout, forms, navigation, charts, media, and platform-aware UI.
-
-## Core layout
-
-These are the controls you will use in almost every app:
-
-- `column`
-- `row`
-- `container`
-- `stack`
-- `responsive_row`
-- `grid_view`
-- `list_view`
-- `safe_area`
-- `card`
-- `center`
-- `view`
-- `pagelet`
-
-These controls are enough to build:
-
-- dashboards
-- settings screens
-- forms
-- split-view layouts
-- mobile-first stacked flows
-
-## Text and imagery
-
-Common presentation controls include:
-
-- `text`
-- `text_span`
-- `icon`
-- `image`
-- `circle_avatar`
-- `tooltip`
-- `markdown`
-
-## Buttons and actions
-
-Ruflet supports several action styles:
-
-- `button`
-- `elevated_button`
-- `filled_button`
-- `filled_tonal_button`
-- `outlined_button`
-- `text_button`
-- `icon_button`
-- `floating_action_button`
-- `popup_menu_button`
-- `menu_bar`
-- `menu_item_button`
-
-There is also good Cupertino coverage for adaptive interfaces:
-
-- `cupertino_button`
-- `cupertino_filled_button`
-- `cupertino_tinted_button`
-
-## Forms and input
-
-Current form-friendly controls include:
-
-- `text_field`
-- `cupertino_text_field`
-- `checkbox`
-- `cupertino_checkbox`
-- `radio`
-- `radio_group`
-- `switch`
-- `cupertino_switch`
-- `slider`
-- `range_slider`
-- `dropdown`
-- `auto_complete`
-- `segmented_button`
-- `cupertino_segmented_button`
-- `cupertino_sliding_segmented_button`
-- `search_bar`
-
-## Lists, tiles, and data display
-
-For content-heavy apps you can use:
-
-- `list_tile`
-- `cupertino_list_tile`
-- `expansion_tile`
-- `data_table`
-- `badge`
-- `chip`
-- `banner`
-- `divider`
-- `vertical_divider`
-
-## Adaptive and Cupertino UI
-
-Ruflet is not limited to Material-style components. The current layer also includes:
-
-- `cupertino_app_bar`
-- `cupertino_navigation_bar`
-- `cupertino_action_sheet`
-- `cupertino_alert_dialog`
-- `cupertino_bottom_sheet`
-- `cupertino_date_picker`
-- `cupertino_timer_picker`
-- `cupertino_picker`
-
-## Practical layout pattern
+Ruflet interfaces are trees of controls built with Ruby helper methods.
 
 ```ruby
 page.add(
-  container(
-    expand: true,
-    padding: 24,
-    content: column(
-      spacing: 16,
-      children: [
-        text(value: "Profile", style: { size: 28, weight: "w700" }),
-        text_field(label: "Display name"),
-        row(
-          spacing: 12,
-          children: [
-            filled_button(content: text(value: "Save")),
-            control(:outlined_button, content: text(value: "Cancel"))
-          ]
-        )
-      ]
+  safe_area(
+    container(
+      expand: true,
+      padding: 24,
+      content: column(
+        spacing: 16,
+        children: [
+          text("Profile", size: 28, weight: "bold"),
+          text_field(label: "Display name"),
+          row(
+            spacing: 12,
+            children: [
+              filled_button(content: text("Save")),
+              outlined_button(content: text("Cancel"))
+            ]
+          )
+        ]
+      )
     )
   )
 )
 ```
 
-## What to keep in mind
+## Composition
 
-- Use builder helpers for normal controls.
-- Use `page.update(...)` to mutate existing controls.
-- Reach for `responsive_row`, `grid_view`, or `navigation_rail` when the app needs to scale to larger screens.
-- When in doubt, study Showcase and the examples folder for the current preferred calling style.
+- `column` lays out children vertically.
+- `row` lays out children horizontally.
+- `container` adds size, spacing, alignment, decoration, and one content control.
+- `stack` overlays positioned children.
+- `list_view` and `grid_view` provide scrolling collections.
+- `safe_area` avoids operating-system display cutouts and insets.
+
+Most controls use `children:` for a list or `content:` for one nested control.
+Some compatibility helpers also accept `controls:`.
+
+## Sizing
+
+- `expand: true` fills available space along the parent's main axis.
+- `width` and `height` request fixed dimensions.
+- `padding` adds space inside a control.
+- `margin` adds space around a control.
+- `spacing` controls gaps between row or column children.
+
+Use `page.client_details` when a layout must respond to client width, height,
+or platform.
+
+## Updating controls
+
+Keep a reference to controls that change:
+
+```ruby
+status = text("Ready")
+page.add(status)
+
+page.update(status, value: "Saved")
+```
+
+For large state changes, rebuild the relevant view or replace `page.views`.
+For small changes, patch the mounted control with `page.update`.
+
+## Control families
+
+Ruflet includes Material and Cupertino controls, form inputs, navigation
+surfaces, lists, tables, charts, maps, media controls, and drawing primitives.
+Browse [Controls](/docs/component-reference) for individual properties and
+events.

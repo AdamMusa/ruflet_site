@@ -1,64 +1,67 @@
 # Build and Release
 
-Ruflet already supports packaging for the major targets you would expect from a Flutter-backed app stack.
+Ruflet builds the managed Flutter client for Android, iOS, web, macOS,
+Windows, and Linux.
 
 ## Build targets
 
-Current CLI targets include:
-
-- `apk`
-- `android`
-- `ios`
-- `aab`
-- `web`
-- `macos`
-- `windows`
-- `linux`
-
-Example commands:
-
 ```bash
 ruflet build apk
+ruflet build aab
 ruflet build ios
 ruflet build web
 ruflet build macos
+ruflet build windows
+ruflet build linux
 ```
 
-## Two build modes
+`android` is an alias for an Android APK build.
 
-### Server-driven mode
+## Server-driven builds
 
-This is the default. Your packaged app expects a backend URL:
+Server-driven is the default build mode. The installed client connects to a
+deployed Ruby or Rails server, so configure a reachable HTTPS URL:
 
 ```yaml
 app:
-  backend_url: "https://api.example.com"
+  backend_url: https://app.example.com
 ```
 
-Use this mode when:
+Do not use `localhost` in a build intended for another device.
 
-- the app should talk to a hosted Ruflet backend
-- you want a thinner client package
-- your release model already includes a deployed server
+## Self-contained builds
 
-### Self-contained mode
-
-Use `--self` to build against the embedded runtime/client entrypoint:
+Use `--self` to package the Ruby project with the client:
 
 ```bash
 ruflet build android --self
 ruflet build ios --self
 ```
 
-Use this mode when:
+Choose this mode when the app should run without a remote Ruflet server.
 
-- you want more standalone packaging
-- the app logic should travel with the client build
-- you are closer to an installed-app workflow than a hosted runtime
+## Extensions and permissions
 
-## Assets and branding
+Optional client packages belong in `ruflet.yaml`:
 
-`ruflet.yaml` also drives build-time assets:
+```yaml
+extensions:
+  - charts
+  - map
+  - webview
+```
+
+Protected device access belongs in `services.yaml`:
+
+```yaml
+services:
+  - camera:
+      description: Allows users to capture photos.
+```
+
+Rebuild after changing either file.
+
+## Assets
 
 ```yaml
 assets:
@@ -73,29 +76,12 @@ build:
   theme_color: "#FFFFFF"
 ```
 
-## Installing builds
-
-After building, use:
+## Install a build
 
 ```bash
 ruflet install
+ruflet install --device DEVICE_ID
 ```
 
-This helps move exported outputs into the client workspace and asks Flutter to install the app on a chosen device.
-
-## Prebuilt client updates
-
-Ruflet also has a client update flow:
-
-```bash
-ruflet update all
-ruflet update web --check
-```
-
-This is useful when you rely on cached prebuilt clients for development.
-
-## Shipping advice
-
-- Decide early whether your app is server-driven or self-contained.
-- If you need media, camera, storage, or other extensions, declare them up front in `ruflet.yaml`.
-- Test the real build target early, especially on iOS and Android, because native permissions and packaging details matter.
+Run the intended platform build early. Native signing, permissions, and store
+requirements are platform-specific and should not be left until release day.

@@ -1,3 +1,5 @@
 # Controls
 
-Browse the current catalog of Ruflet controls. This page lists controls only, without services, and follows the API exposed by the current Ruflet packages.
+Browse Ruflet controls by family and open a dedicated page for properties,
+events, and examples. Device services are documented separately under
+[Services and Device APIs](/docs/services-and-plugins).

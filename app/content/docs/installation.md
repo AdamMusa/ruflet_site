@@ -1,37 +1,39 @@
 # Installation
 
-Ruflet is installed from RubyGems.
-
-## Install Ruflet Explorer
-
-Ruflet Explorer is the mobile companion app used to connect to a local or hosted Ruflet app while you are developing.
-
-- ![iOS](/assets/platform_ios.svg) **iOS:** download [Ruflet Explorer on the App Store](https://apps.apple.com/us/app/ruflet-explorer/id6762528151).
-- ![Android](/assets/platform_android.svg) **Android:** Google Play is coming soon. For now, download the Android build from the [Ruflet GitHub releases page](https://github.com/AdamMusa/Ruflet/releases).
-
-## Install the CLI
+Ruflet requires Ruby and installs through RubyGems:
 
 ```bash
 gem install ruflet
-```
-
-The app projects created by Ruflet still use runtime gems inside the generated `Gemfile`, but the command-line entrypoint you install globally is now `ruflet`.
-
-## Verify the install
-
-```bash
 ruflet --version
 ```
 
-## What gets installed into an app later
+Use `ruflet doctor` to inspect the local Ruby, Flutter, template, and platform
+tooling:
 
-When you run `ruflet new`, the generated project uses runtime gems such as:
+```bash
+ruflet doctor
+ruflet doctor --fix
+```
 
-- `ruflet_core`
-- `ruflet_server`
+`--fix` downloads or installs supported missing tooling. Android, Apple, and
+desktop builds can still require platform-specific SDKs, signing, or system
+packages.
 
-That split keeps the CLI package focused on project tooling while the app itself carries the runtime dependencies it actually needs.
+## Mobile development client
 
-## Next step
+Install Ruflet Explorer to connect to `ruflet run` during mobile development:
 
-Continue with Creating a New Ruflet App.
+- [Ruflet Explorer for iOS](https://apps.apple.com/us/app/ruflet-explorer/id6762528151)
+- Android builds are available from the [Ruflet releases](https://github.com/AdamMusa/Ruflet/releases)
+
+You do not need Ruflet Explorer for `--web`, `--desktop`, or packaged builds.
+
+## Project dependencies
+
+Projects created by `ruflet new` use Bundler and include the runtime gems in
+their `Gemfile`. Run application commands through the project bundle:
+
+```bash
+bundle install
+bundle exec ruflet run main.rb
+```

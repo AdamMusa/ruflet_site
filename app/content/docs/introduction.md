@@ -1,50 +1,39 @@
 # Introduction
 
-Ruflet is a Ruby-first framework for building web, desktop, and mobile applications from one codebase.
+Ruflet is a Ruby framework for building web, desktop, and mobile user
+interfaces from one application codebase.
 
-If Flet is the inspiration, Ruflet is the Ruby-native interpretation: Ruby app code, RubyGems packaging, Ruby-friendly examples, and a runtime that lets you stay out of Dart for the application layer.
+Ruby code creates controls and handles events. A Ruflet client renders the UI
+and provides access to browser, desktop, and device capabilities.
 
-## Why developers like Ruflet
-
-- Build the app layer in Ruby.
-- Target mobile, web, and desktop from one codebase.
-- Keep iteration fast with `ruflet run`.
-- Grow from a tiny counter app to larger product UIs.
-- Bring Rails and Ruby gems into the same ecosystem naturally.
-
-## Start in 60 seconds
+## First application
 
 ```bash
 gem install ruflet
 ruflet new my_app
 cd my_app
 bundle install
-ruflet run main
+bundle exec ruflet run main.rb --web
 ```
-
-## Ruflet app example
 
 ```ruby
 require "ruflet"
 
 Ruflet.run do |page|
-  page.title = "Ruflet counter example"
-  page.vertical_alignment = Ruflet::MainAxisAlignment::CENTER
-
-  counter = text("0", style: { size: 32 })
+  count = 0
+  label = text("0", size: 40)
 
   page.add(
-    row(
-      alignment: Ruflet::MainAxisAlignment::CENTER,
+    column(
+      spacing: 12,
       children: [
-        icon_button(
-          icon: Ruflet::MaterialIcons::REMOVE,
-          on_click: ->(_e) { page.update(counter, value: (counter.value.to_i - 1).to_s) }
-        ),
-        counter,
-        icon_button(
-          icon: Ruflet::MaterialIcons::ADD,
-          on_click: ->(_e) { page.update(counter, value: (counter.value.to_i + 1).to_s) }
+        label,
+        filled_button(
+          content: text("Increment"),
+          on_click: ->(_event) {
+            count += 1
+            page.update(label, value: count.to_s)
+          }
         )
       ]
     )
@@ -52,25 +41,21 @@ Ruflet.run do |page|
 end
 ```
 
-## What Ruflet already includes
+The control tree describes the interface. Event handlers update Ruby state and
+use `page.update` to patch mounted controls.
 
-- CLI scaffolding with `ruflet new`
-- local development with `ruflet run`
-- build targets for Android, iOS, web, macOS, Windows, and Linux
-- both `Ruflet.run` and `Ruflet::App` authoring styles
-- Material and Cupertino controls
-- navigation, dialogs, feedback, charts, media, and service integrations
-- Rails integration through `ruflet_rails`
+## Application modes
 
-## Best path through these docs
+- During mobile development, `ruflet run main.rb` starts a server that Ruflet Explorer can connect to.
+- `ruflet run main.rb --web` launches the managed web client.
+- `ruflet run main.rb --desktop` launches the managed desktop client.
+- Server-driven builds connect to a deployed Ruby server.
+- Self-contained builds package the Ruby project with the client.
 
-1. Start with Installation.
-2. Create a new app.
-3. Run it on mobile, web, or desktop.
-4. Work through the tutorials.
-5. Come back to the reference pages when you need specifics.
+Rails applications can use `ruflet_rails` to serve Ruflet screens from the
+existing Rails process.
 
-## Good next pages
+## Continue
 
 - [Installation](/docs/installation)
 - [Creating a New Ruflet App](/docs/creating-a-new-app)

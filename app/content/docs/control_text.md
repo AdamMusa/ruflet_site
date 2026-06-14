@@ -19,7 +19,7 @@ text(value: "Dashboard", style: { size: 28, weight: "w700" })
 
 ```ruby
 title = text(value: "Ruflet", style: { size: 28, weight: "w700" })
-subtitle = text("Ruby UI on top of Flet")
+subtitle = text("Ruby UI for every screen")
 ```
 
 ## Notes

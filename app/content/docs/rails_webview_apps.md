@@ -1,140 +1,289 @@
 # Webview Apps
 
-Ruflet can wrap your existing website in a native shell — native AppBar and
-bottom navigation around a `WebView` body — and turn web navigation into native
-navigation, the way Hotwire Native or NativePHP work.
+A webview app displays pages from your Rails website inside a Ruflet native
+client. This is useful when you already have working Rails pages and want to
+add native navigation, native actions, or selected fully native screens without
+rebuilding the whole product at once.
 
-There are three layers, from lowest to highest:
+Ruflet provides three levels of webview integration:
 
-1. The [`WebView` control](#the-webview-control) — render web content, inject JS.
-2. [`webview_app`](#webview_app--a-native-shell) — a native shell around a
-   webview body, with explicit navigation.
-3. [`native_app`](#native_app--hotwire-native-style) — a declarative,
-   Hotwire-style driver where navigation works out of the box.
+1. `web_view` embeds one page and gives you direct control over navigation, events, and JavaScript.
+2. `Ruflet::Rails.webview_app` places a webview inside a native Ruflet `View` with an optional app bar and bottom navigation.
+3. `Ruflet::Rails.native_app` manages a stack of web pages and lets selected paths open as native screens or bottom sheets.
 
-> Platform note: the native webview (and its methods/events, including
-> `run_javascript`) runs on **iOS, Android, and macOS**. On web it falls back to
-> an `<iframe>`, which can't run the methods and which most external sites block
-> via `X-Frame-Options`/CSP — embed your own same-origin pages there. To put
-> native UI *inside* a web page instead, see
-> [`ruflet_frame`](/docs/rails-assets#ruflet_frame--embed-native-ui-in-an-erb-page).
+Start with `web_view` when you need one embedded page. Use `webview_app` when
+you want to control navigation yourself. Use `native_app` when most navigation
+should follow links from your Rails website automatically.
 
-## The WebView control
+## Platform support
 
-```ruby
-webview(url: "https://flet.dev", expand: true,
-        on_page_ended: ->(e) { ... },
-        on_url_change: ->(e) { ... })
-```
+The full native webview runs on **iOS, Android, and macOS**. It supports
+navigation events, JavaScript execution, browser history, and page state
+queries.
 
-### Properties
+On the web, `web_view` falls back to an `<iframe>`. Browser security rules may
+prevent external sites from loading in that frame, and native webview methods
+are not available.
 
-- `url`
-- `bgcolor`
-- `prevent_links` — URL prefixes the webview must not follow (blocked silently)
+## Embed one Rails page
 
-### Events
-
-`on_page_started`, `on_page_ended`, `on_web_resource_error`, `on_progress`,
-`on_url_change`, `on_scroll`, `on_console_message`, `on_javascript_alert_dialog`.
-
-### Methods
-
-Methods are invoked on a **mounted** webview (after `page.add`):
-
-- `run_javascript(value)` — execute JS in the page
-- `reload` — reload the current URL
-- `go_back` / `go_forward` — history navigation
-- `can_go_back { |ok, _| }` / `can_go_forward { ... }` — query history
-- `load_html(value, base_url:)` — load an HTML string
-- `load_request(url, method:)` — load a URL
-- `load_file(path)` — load a local file
-- `scroll_to(x, y)` / `scroll_by(x, y)` — scroll
-- `clear_cache` / `clear_local_storage` — clear storage
-- `enable_zoom` / `disable_zoom` — zoom controls
-- `set_javascript_mode(mode)` — JS execution mode
-- `get_current_url { |url, _| }` / `get_title { ... }` / `get_user_agent { ... }` — read state into a block
-
-### Injecting JavaScript
-
-`run_javascript` lets a Ruflet app reach into the page — for example, hide a
-node so a native control can replace it:
+Use the `web_view` helper to display a page directly:
 
 ```ruby
-webview.run_javascript("document.querySelector('.web-banner').remove()")
-```
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  account = web_view(
+    url: "#{Ruflet::Rails.backend_url}/account",
+    method: "get",
+    expand: true,
+    on_page_started: ->(event) { puts "Loading #{event.data}" },
+    on_page_ended: ->(event) { puts "Loaded #{event.data}" },
+    on_web_resource_error: ->(event) { puts "Webview error: #{event.data}" }
+  )
 
-## `webview_app` — a native shell
-
-Build the classic webview-app layout: native AppBar on top, native
-NavigationBar (or bottom AppBar) below, a webview body in between. Following a
-link can open a native view instead of navigating inside the frame.
-
-```ruby
-Ruflet::Rails.routed(page) do |route, nav|
-  if route == "/"
-    nav.push(
-      Ruflet::Rails.webview_app(
-        url: "https://myapp.com",
-        appbar: app_bar(title: text("My App")),
-        navigation_bar: navigation_bar(destinations: [...]),
-        on_navigate: ->(url) { page.go("/details") if url.include?("/product/") }
-      )
-    )
-  elsif route == "/details"
-    nav.push(detail_view)   # native screen; back returns to the shell
-  end
+  page.add(account)
 end
 ```
 
-- `on_navigate` fires from the webview's URL change with the target URL — map it
-  to a native route with `page.go`.
-- `prevent_links:` stops the webview from ever loading matching URLs.
-- Pass a block to capture the `WebView` control (e.g. to `run_javascript` later):
-  `Ruflet::Rails.webview_app(url: "...") { |wv| @web = wv }`.
+Use `Ruflet::Rails.backend_url` instead of hard-coding `localhost`. On a real
+phone, `localhost` points to the phone itself, not your Rails development
+server. Configure a reachable LAN or production URL in `ruflet.yaml`.
 
-## `native_app` — Hotwire Native-style
+## Control a mounted webview
 
-`native_app` removes the per-route branching. Navigation works out of the box:
-a small JS bridge injected into each page intercepts same-origin link clicks and
-proposes them to native, so every visit becomes a native screen push with an
-automatic back button. The AppBar title tracks each page's `<title>`, and
-special paths are declared as data.
+Webview methods work after the control has been added to the page:
 
 ```ruby
 Ruflet.run do |page|
-  Ruflet::Rails.native_app(
-    page,
-    start_url: "https://myapp.com",
-    title: "My App",                                  # auto-updates from <title>
-    actions: -> { [icon_button("search", on_click: ->(_e) { ... })] },
-    navigation_bar: navigation_bar(destinations: [...]),
+  browser = web_view(url: "#{Ruflet::Rails.backend_url}/dashboard", method: "get", expand: true)
 
-    # web content shown in a bottom sheet (auth, quick forms):
-    modal: ["/sign_in", "/sign_up", %r{/new\z}],
-
-    # optional: override a path with a fully native screen:
-    native: { %r{\A/products/(\d+)\z} => ->(ctx) { product_screen(ctx.match[1]) } }
+  page.add(
+    column(
+      expand: true,
+      controls: [
+        row(
+          controls: [
+            icon_button("arrow_back", on_click: ->(_event) { browser.go_back }),
+            icon_button("refresh", on_click: ->(_event) { browser.reload }),
+            icon_button(
+              "info",
+              on_click: ->(_event) {
+                browser.get_title { |title, _error| page.snack_bar = snack_bar(content: text(title)) }
+              }
+            )
+          ]
+        ),
+        browser
+      ]
+    )
   )
 end
 ```
 
-How a navigation is handled:
+Common methods include:
 
-- a path listed in `native:` → render your native screen (`ctx.match` carries the regexp captures)
-- a path listed in `modal:` → open the web content in a bottom sheet (auth, forms)
-- anything else → push a native webview screen (back returns)
+- `reload`, `go_back`, and `go_forward`
+- `can_go_back { |value, error| ... }`
+- `get_current_url { |url, error| ... }`
+- `get_title { |title, error| ... }`
+- `run_javascript(source)`
+- `load_request(url, method:)`
+- `clear_cache` and `clear_local_storage`
 
-`native:` takes precedence over `modal:`. Normal links need no configuration.
+See the [WebView control reference](/docs/control-web-view) for the complete
+property, event, and method list.
 
-### How the bridge works
+## Add a native shell with `webview_app`
 
-The driver injects a small script into every page that:
+`Ruflet::Rails.webview_app` creates a Ruflet `View` whose body is a webview. It
+accepts native app bars and navigation controls while your Rails page remains
+the main content.
 
-- reports `document.title` over the webview console channel, so native can
-  update the AppBar title per page;
-- intercepts same-origin link clicks, calls `preventDefault()`, and proposes the
-  URL to native (so the link does not load in place).
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.routed(page) do |route, nav|
+    case route
+    when "/"
+      nav.push(
+        Ruflet::Rails.webview_app(
+          url: "#{Ruflet::Rails.backend_url}/dashboard",
+          appbar: app_bar(title: text("Dashboard")),
+          on_navigate: ->(url) {
+            page.go("/settings") if url.end_with?("/settings")
+          }
+        ) { |webview| @dashboard_webview = webview }
+      )
+    when "/settings"
+      nav.push(
+        view(
+          route: "/settings",
+          appbar: app_bar(title: text("Native settings")),
+          controls: [text("This screen is built with Ruflet controls.")]
+        )
+      )
+    end
+  end
+end
+```
 
-Native receives these via `on_console_message`, which works on iOS, Android, and
-macOS. External links and `target="_blank"` are left to the webview.
+Important options:
+
+- `url:` sets the initial page.
+- `appbar:`, `navigation_bar:`, and `bottom_appbar:` add native controls.
+- `route:` sets the Ruflet route for the returned view.
+- `on_navigate:` receives each URL reported by the webview.
+- `prevent_links:` blocks matching URL prefixes from loading.
+- `on_page_started:` and `on_page_ended:` receive loading events.
+- A block receives the created webview so you can call methods on it later.
+- Additional keyword arguments are passed to `web_view`.
+
+`on_navigate` observes URL changes; it does not automatically stop the webview
+from loading the URL. Add the same URL prefix to `prevent_links:` when a link
+must open only as a Ruflet route.
+
+```ruby
+Ruflet::Rails.webview_app(
+  url: "#{Ruflet::Rails.backend_url}/dashboard",
+  prevent_links: ["#{Ruflet::Rails.backend_url}/settings"],
+  on_navigate: ->(url) { page.go("/settings") if url.end_with?("/settings") }
+)
+```
+
+## Manage website navigation with `native_app`
+
+`Ruflet::Rails.native_app` is useful when your Rails website should provide the
+main navigation structure. It opens same-origin links as screens in a native
+view stack and provides an automatic back action.
+
+You can keep most destinations as web pages, open selected paths in a bottom
+sheet, and replace selected paths with Ruflet controls.
+
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.native_app(
+    page,
+    start_url: "#{Ruflet::Rails.backend_url}/account",
+    title: "Account",
+    actions: -> {
+      [
+        icon_button(
+          "refresh",
+          on_click: ->(_event) { puts "Add your refresh action here" }
+        )
+      ]
+    },
+    modal: [
+      "/sign_in",
+      "/support/new"
+    ],
+    native: {
+      "/settings" => ->(_context) {
+        view(
+          route: "/settings",
+          appbar: app_bar(title: text("Settings")),
+          controls: [text("Native settings screen")]
+        )
+      },
+      %r{\A/orders/(\d+)\z} => ->(context) {
+        order_id = context.match[1]
+        view(
+          route: "/orders/#{order_id}",
+          appbar: app_bar(title: text("Order #{order_id}")),
+          controls: [text("Build this order screen with Rails models and Ruflet controls.")]
+        )
+      }
+    }
+  )
+end
+```
+
+When the user follows a same-origin link:
+
+1. A matching `native:` rule renders the Ruflet view returned by its block.
+2. Otherwise, a matching `modal:` rule opens the web page in a bottom sheet.
+3. Otherwise, the URL opens as another webview screen in the native stack.
+
+`native:` accepts exact paths and regular expressions. Its block receives a
+context with:
+
+- `context.url` — the complete proposed URL
+- `context.path` — the URL path used for matching
+- `context.match` — the `MatchData` for a regular-expression rule
+
+The root screen can also receive `navigation_bar:` or `bottom_appbar:`. The
+`actions:` value can be an array or a callable that returns app-bar actions.
+
+## How link navigation works
+
+After each page loads, `native_app` injects a small navigation bridge. The
+bridge:
+
+- reads the page `<title>` and updates the native app-bar title;
+- captures same-origin link clicks and sends the destination to Ruflet;
+- leaves external links and links with `target="_blank"` unchanged.
+
+Because navigation is based on normal links, your Rails pages do not need a
+special JavaScript framework or Ruflet-specific markup.
+
+## Run JavaScript in a page
+
+Capture the mounted webview and call `run_javascript` from a Ruflet event:
+
+```ruby
+shell = Ruflet::Rails.webview_app(
+  url: "#{Ruflet::Rails.backend_url}/account"
+) { |webview| @account_webview = webview }
+
+hide_banner = filled_button(
+  "Hide banner",
+  on_click: ->(_event) {
+    @account_webview.run_javascript(
+      "document.querySelector('.mobile-banner')?.remove()"
+    )
+  }
+)
+```
+
+Only run JavaScript against pages you control. Treat interpolated values as
+untrusted input and encode them before inserting them into JavaScript source.
+
+## Authentication and sessions
+
+A native webview keeps its own cookies and browser storage. If the user signs
+in inside the webview, later requests from that webview can use the resulting
+session normally.
+
+The Ruflet WebSocket connection and the embedded Rails page are separate
+connections. Do not assume that authentication from one is automatically
+available to the other. Pass only the minimum information needed and validate
+authorization in Rails for every request.
+
+## Choosing an API
+
+Use `web_view` when:
+
+- you need one embedded page;
+- you want direct access to browser methods and events;
+- Ruflet controls already manage the surrounding layout.
+
+Use `webview_app` when:
+
+- you want a native app bar or bottom navigation;
+- you want to choose which URL changes become Ruflet routes;
+- you need access to the underlying webview.
+
+Use `native_app` when:
+
+- your existing Rails links should drive the native screen stack;
+- most screens can remain web pages;
+- selected routes should become native views or bottom sheets.
+
+## Troubleshooting
+
+- **The page cannot connect on a phone:** configure `backend_url` with a URL reachable from the device. Do not use `localhost`.
+- **A page is blank on Ruflet web:** the site may block iframe embedding with `X-Frame-Options` or Content Security Policy.
+- **A method does nothing:** call webview methods only after the control is mounted, and remember that native methods are unavailable in the iframe fallback.
+- **A native destination also loads in the webview:** add its URL prefix to `prevent_links:` when using `webview_app`.
+- **A `native:` rule does not match:** rules match the URL path, such as `/orders/42`, not the complete URL.

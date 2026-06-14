@@ -1,27 +1,18 @@
 # API Reference
 
-Reference is where you look things up once you already know what you want to use.
+Use the reference pages after you understand the basic Ruflet application
+model.
 
-## Controls
+## UI
 
-UI building blocks with common properties, usage notes, and focused examples.
+- [Controls](/docs/component-reference) lists controls and dedicated reference pages.
+- [Controls and Layout](/docs/controls-and-layout) explains composition and sizing.
+- [Navigation and Feedback](/docs/navigation-feedback) covers views, routes, dialogs, sheets, and snackbars.
+- [Charts and Canvas](/docs/charts-and-canvas) documents chart and drawing helpers.
+- [Maps](/docs/maps) documents map controls and layers.
 
-- [Controls](/docs/component-reference)
+## Runtime and tooling
 
-## Services and Plugins
-
-Device APIs, client capabilities, and extension points configured through Ruflet.
-
-- [Services and Plugins](/docs/services-and-plugins)
-
-## CLI Workflow
-
-Project creation, running, packaging, installation, and update commands.
-
-- [CLI Workflow](/docs/cli-workflow)
-
-## App Structure
-
-Generated files, project conventions, and where code and assets live.
-
-- [App Structure](/docs/app-structure)
+- [Services and Device APIs](/docs/services-and-plugins) covers client services, permissions, and extensions.
+- [CLI Workflow](/docs/cli-workflow) covers project, run, build, update, and install commands.
+- [App Structure](/docs/app-structure) explains generated files and configuration.

@@ -1,109 +1,70 @@
 # Navigation and Feedback
 
-Ruflet already includes enough navigation and feedback primitives to build multi-screen apps, nested shells, and polished transient UI flows.
+Ruflet supports route-driven view stacks, navigation controls, dialogs, bottom
+sheets, snackbars, and banners.
 
-## Navigation primitives
-
-Current navigation-oriented controls and patterns include:
-
-- `view`
-- `pagelet`
-- `navigation_bar`
-- `navigation_bar_destination`
-- `navigation_rail`
-- `navigation_rail_destination`
-- `navigation_drawer`
-- `navigation_drawer_destination`
-- `tabs`
-- `tab`
-- `tab_bar`
-- `tab_bar_view`
-- `page_view`
-
-In practice Ruflet apps combine these with:
-
-- `page.route`
-- `page.views`
-- button click handlers that call navigation methods or swap views
-
-## App shell surfaces
-
-Ruflet supports the main shell building blocks you would expect:
-
-- `app_bar`
-- `cupertino_app_bar`
-- `bottom_app_bar`
-- `drawer`
-- `end_drawer`
-- `floating_action_button`
-
-## Dialogs and sheets
-
-The repo already uses both Material and Cupertino dialog patterns:
-
-- `alert_dialog`
-- `cupertino_alert_dialog`
-- `bottom_sheet`
-- `cupertino_bottom_sheet`
-- `cupertino_action_sheet`
-
-And the page API includes:
-
-- `page.show_dialog(control)`
-- `page.pop_dialog`
-
-## Feedback controls
-
-These are already part of the available surface:
-
-- `snack_bar`
-- `banner`
-- `progress_bar`
-- `progress_ring`
-- `tooltip`
-- `badge`
-
-## Tabs example
-
-The shipped `tabs.rb` example combines tabbed content and a bottom navigation bar:
+## Routes and views
 
 ```ruby
-top_tabs = tabs(
-  expand: 1,
-  length: 3,
-  selected_index: 0,
-  content: column(
-    expand: true,
-    spacing: 0,
-    children: [
-      tab_bar(
-        tabs: [
-          tab(label: text(value: "Home")),
-          tab(label: text(value: "Play")),
-          tab(label: text(value: "About"))
-        ]
-      ),
-      tab_bar_view(
-        expand: 1,
-        children: [
-          container(expand: true, content: text(value: "Home tab")),
-          container(expand: true, content: text(value: "Play tab")),
-          container(expand: true, content: text(value: "About tab"))
-        ]
-      )
-    ]
-  )
+page.on_route_change = ->(_event) { render_route(page) }
+page.on_view_pop = ->(_event) {
+  page.views.pop
+  page.go(page.views.last&.route || "/")
+}
+
+page.go("/")
+```
+
+Build a stack by assigning `page.views`:
+
+```ruby
+page.views = [
+  view(route: "/", controls: [text("Home")]),
+  view(route: "/settings", controls: [text("Settings")])
+]
+page.update
+```
+
+Navigation controls such as `navigation_bar`, `navigation_rail`, `tabs`, and
+`navigation_drawer` can change application state or call `page.go`.
+
+## Dialogs
+
+```ruby
+dialog = alert_dialog(
+  open: false,
+  title: text("Delete item?"),
+  actions: [
+    text_button(content: text("Cancel"), on_click: ->(_event) { page.close_dialog(dialog) }),
+    filled_button(content: text("Delete"), on_click: ->(_event) { delete_item })
+  ]
+)
+
+page.show_dialog(dialog)
+```
+
+Use `page.close_dialog(dialog)` to close a specific dialog or
+`page.pop_dialog` to close the latest open dialog.
+
+## Bottom sheets
+
+Assign a bottom sheet through the page API:
+
+```ruby
+page.bottom_sheet = bottom_sheet(
+  open: true,
+  content: container(padding: 24, content: text("Sheet content"))
 )
 ```
 
-## Where Showcase is especially useful
+## Snackbars
 
-Showcase demonstrates:
+```ruby
+page.snack_bar = snack_bar(
+  open: true,
+  content: text("Changes saved")
+)
+```
 
-- dialog presentation
-- sheets and pickers
-- top-level navigation
-- bottom navigation
-- route-aware detail pages
-
-That makes it the best reference when you are building real app shells instead of isolated components.
+Use transient feedback for action results. Keep validation errors near the
+affected input when the user needs to correct them.

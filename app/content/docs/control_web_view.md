@@ -11,6 +11,7 @@ available there.
 ```ruby
 web_view(
   url: "https://ruflet.dev",
+  method: "get",
   expand: true,
   on_page_ended: ->(event) { @loading = false }
 )
@@ -63,7 +64,7 @@ iOS/Android/macOS.
 native control can take its place:
 
 ```ruby
-webview = web_view(url: "https://myapp.com", expand: true)
+webview = web_view(url: "https://myapp.com", method: "get", expand: true)
 page.add(webview)
 
 # later, in a handler:
@@ -81,7 +82,7 @@ webview.get_current_url { |url, _err| page.update(label, value: url) }
 To wrap a whole website in a native shell (native app bar + bottom nav around a
 webview body) and turn link taps into native navigation, see
 [Webview Apps](/docs/rails-webview-apps) — `Ruflet::Rails.webview_app` and the
-Hotwire Native-style `Ruflet::Rails.native_app`.
+managed navigation stack provided by `Ruflet::Rails.native_app`.
 
 ## Reference
 

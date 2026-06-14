@@ -13,8 +13,8 @@ class DocsCatalog
         id: "learn",
         title: "Learn",
         entries: [
-          entry("introduction", "Introduction", "What Ruflet is, why it exists, and what the current platform and feature story looks like.", SOURCE_ROOT.join("introduction.md"), "Learn"),
-          entry("installation", "Installation", "Install Ruflet, understand the package rename, and prepare your local Ruby workflow.", SOURCE_ROOT.join("installation.md"), "Learn"),
+          entry("introduction", "Introduction", "Build web, desktop, and mobile applications with Ruby and Ruflet.", SOURCE_ROOT.join("introduction.md"), "Learn"),
+          entry("installation", "Installation", "Install the Ruflet CLI and prepare a Ruby development environment.", SOURCE_ROOT.join("installation.md"), "Learn"),
           entry("creating-a-new-app", "Creating a New Ruflet App", "Scaffold a new project, inspect the generated files, and understand `ruflet.yaml`.", SOURCE_ROOT.join("creating_a_new_app.md"), "Learn"),
           entry("app-structure", "App Structure", "Understand the generated files, the role of `main.rb`, `Gemfile`, and `ruflet.yaml`, and how Ruflet apps are organized.", SOURCE_ROOT.join("app_structure.md"), "Learn"),
           entry("running-a-ruflet-app", "Running a Ruflet App", "Run Ruflet for mobile, web, and desktop, and understand the core development loop.", SOURCE_ROOT.join("running_a_ruflet_app.md"), "Learn"),
@@ -30,7 +30,7 @@ class DocsCatalog
           entry("tutorial-calculator", "Calculator", "Build a small Ruflet calculator and learn buttons, layout, and state updates.", SOURCE_ROOT.join("tutorial_calculator.md"), "Tutorials"),
           entry("tutorial-todo", "ToDo", "Build a task list with filters, mutations, and realistic view composition.", SOURCE_ROOT.join("tutorial_todo.md"), "Tutorials"),
           entry("tutorial-solitaire", "Solitaire", "Study a larger interactive Ruflet app with richer state and custom presentation.", SOURCE_ROOT.join("tutorial_solitaire.md"), "Tutorials"),
-          entry("examples", "Example Gallery", "A guided tour of the shipped demos and the fastest way to learn Ruflet by running code.", SOURCE_ROOT.join("examples.md"), "Tutorials")
+          entry("examples", "Example Gallery", "Find complete examples and guides for common Ruflet application features.", SOURCE_ROOT.join("examples.md"), "Tutorials")
         ]
       ),
       Section.new(
@@ -50,10 +50,10 @@ class DocsCatalog
         entries: [
           entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
           entry("rails-scaffolding", "Scaffolding", "Generate a full CRUD resource as a single mountable Ruflet component.", SOURCE_ROOT.join("rails_scaffolding.md"), "Integrations"),
-          entry("rails-navigation", "Navigation", "Flet-style routed view-stack navigation with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
-          entry("rails-assets", "Assets and URLs", "Display Rails assets as images with `asset_url`, the always-resolved `backend_url`, and the `ruflet_frame` ERB helper.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
-          entry("rails-webview-apps", "Webview Apps", "Wrap your website in a native shell with `webview_app` and the Hotwire Native-style `native_app`, plus the full WebView control.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
-          entry("services-and-plugins", "Services and Plugins", "Built-in device APIs plus optional client extensions configured through `ruflet.yaml`.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
+          entry("rails-navigation", "Navigation", "Build route-driven native view stacks with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
+          entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
+          entry("rails-webview-apps", "Webview Apps", "Display Rails pages in a native shell, control webview navigation, and replace selected routes with Ruflet screens.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
+          entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
         ]
       ),
       Section.new(
@@ -126,7 +126,7 @@ class DocsCatalog
 
   def self.generated_control_summary(control)
     family = control[:family].to_s.sub(/s\z/, "").capitalize
-    "#{family} control available in the current Ruflet packages."
+    "#{family} control for Ruflet applications."
   end
 
   COMMON_PROPERTIES_PATH = Rails.root.join("config/control_common_properties.json")

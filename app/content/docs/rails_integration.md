@@ -1,155 +1,131 @@
 # Rails Integration
 
-`ruflet_rails` runs Ruflet UI inside an existing Rails app. The Rails server
-*is* the Ruflet server: it drives native screens over a WebSocket, serves the
-web build, and builds the native clients — all from one codebase.
+`ruflet_rails` lets a Rails application serve Ruflet screens to native,
+desktop, and web clients. Ruflet code can use Rails models, services, and
+application logic directly.
 
-Use it when your product already lives in Rails and you want native screens
-backed by your existing models, routes, and business logic.
+## Install
 
-## Add the gem
+Add the gem and run the generator:
 
 ```ruby
 gem "ruflet_rails"
 ```
 
-## Install
-
 ```bash
+bundle install
 bin/rails generate ruflet:install
 ```
 
-The generator creates two files and adds one route:
+The generator creates:
 
-- `app/views/ruflet/main.rb` — your home screen, served to native clients over
-  `/ws` and to any web mount. You own this file; nothing is auto-discovered.
-- `ruflet.yaml` — app metadata and build options (name, `backend_url`,
-  services, assets).
-- a `/ws` route in `config/routes.rb`:
+- `app/views/ruflet/main.rb`, the native client entrypoint
+- `ruflet.yaml`, containing Rails build metadata
+- an explicit `/ws` route in `config/routes.rb`
 
 ```ruby
-match "/ws", to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")), via: :all
+match "/ws",
+  to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")),
+  via: :all
 ```
 
-Nothing is auto-mounted — you mount everything explicitly in `routes.rb`, the
-same way you mount a web frontend. No initializer is required.
+No initializer is required.
 
-You can add `config/initializers/ruflet.rb` to set `backend_url` (used by asset
-URLs and the desktop launcher) or other build metadata:
+## Build a screen
 
-```ruby
-Ruflet::Rails.configure do |config|
-  # Base URL the Flutter client uses to reach this Rails app. Point it at a LAN
-  # IP (not localhost) to test on a real device.
-  config.backend_url = ENV.fetch("RUFLET_BACKEND_URL") do
-    Rails.env.production? ? "https://example.com" : "http://localhost:3000"
-  end
-end
-```
-
-See [Assets and URLs](/docs/rails-assets) for more on `backend_url`.
-
-## Widget helpers work directly
-
-After the gem is loaded, the widget helpers (`view`, `text`, `container`,
-`app_bar`, `filled_button`, …) build controls anywhere — no builder to
-instantiate, no prefix:
+Widget helpers are available directly in Ruflet application files:
 
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  page.title = "Hello"
+  page.title = "Account"
   page.add(
-    safe_area(container(padding: 24, content: text("Hello from Rails")))
+    safe_area(
+      container(
+        padding: 24,
+        content: column(
+          spacing: 12,
+          children: [
+            text("Account", size: 28, weight: "bold"),
+            text("Signed in as #{Current.user.email}")
+          ]
+        )
+      )
+    )
   )
 end
 ```
 
-The `page` block parameter is the live runtime page for each connected client.
+Each connected client receives its own `page` instance.
 
-## Mounting a Ruflet frontend
+## Mount a web application
 
-Routes declare only the mount point — UI lives in your Ruby files, never in
-`routes.rb`.
+Install the prebuilt Ruflet web client:
+
+```bash
+bundle exec rake ruflet:web
+```
+
+Then mount an application file, component class, or block:
 
 ```ruby
 Rails.application.routes.draw do
-  # Native mobile/desktop clients connect here. The home screen is declared in
-  # app/views/ruflet/main.rb (dev code), not auto-discovered by the framework.
-  match "/ws", to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")), via: :all
+  match "/ws",
+    to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")),
+    via: :all
 
-  # A web frontend, mounted at a route. Pick ONE source:
-  mount Ruflet::Rails.web_app(app_file: Rails.root.join("app/ruflet/store/main.rb")), at: "/store"
-  mount Ruflet::Rails.web_app(view: "ProductComponent"), at: "/products"
+  mount Ruflet::Rails.web_app(
+    app_file: Rails.root.join("app/views/ruflet/main.rb")
+  ), at: "/app"
+
+  mount Ruflet::Rails.web_app(view: "DashboardComponent"), at: "/dashboard"
 end
 ```
 
-### `Ruflet::Rails.endpoint` — the mobile/desktop entry
+`web_app` serves the installed web client and its WebSocket from the same
+mount. The browser URL remains the mounted route without query parameters.
 
-The `/ws` endpoint is declared the same way as a web mount, so the screens your
-app shows live in dev code:
+## Endpoint sources
+
+Native endpoints and web mounts require one explicit source:
 
 ```ruby
-# a standalone Ruflet app file (per session):
-match "/ws", to: Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb")), via: :all
-
-# a single component/view class (resolved lazily, so reloading works):
-match "/ws", to: Ruflet::Rails.endpoint(view: "HomeComponent"), via: :all
-
-# a custom block:
-match "/ws", to: Ruflet::Rails.endpoint { |page| MyHome.render(page) }, via: :all
+Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb"))
+Ruflet::Rails.endpoint(view: "DashboardComponent")
+Ruflet::Rails.endpoint { |page| Dashboard.render(page) }
 ```
 
-`Ruflet::Rails.app(path)` is shorthand for `endpoint(app_file: path)`. You must
-declare an entry — `view:`, `app_file:`, or a block. A bare
-`Ruflet::Rails.endpoint` with no arguments raises `ArgumentError`; there is no
-auto-discovery fallback.
+`Ruflet::Rails.app(path)` is shorthand for `endpoint(app_file: path)`.
 
-### `Ruflet::Rails.web_app` — a web frontend
+## Rails scaffolds
 
-`web_app` serves the Flutter web build (rewriting `<base href>` to the mount
-point) and answers the Ruflet WebSocket on the same path. Pass exactly one
-source:
-
-- `view:` — a component/view class name, resolved lazily per session.
-- `app_file:` — a standalone Ruflet app file (`Ruflet.run { |page| ... }`).
-- a block — `web_app { |page| ... }`.
-
-## Build the native clients from Rails
-
-The build reads `ruflet.yaml` (created by the install generator — see Build
-metadata below):
+The normal Rails scaffold generator also creates a Ruflet resource component:
 
 ```bash
-bundle exec rake ruflet:build[web]
-bundle exec rake ruflet:build[macos]
-bundle exec rake ruflet:build[apk]      # android
-bundle exec rake ruflet:build[ios]
+bin/rails generate scaffold Post title:string body:text
 ```
 
-### Build metadata
+Use `--skip-ruflet` when a scaffold should not create one. Ruflet resource
+routes are never mounted automatically.
 
-By default `ruflet.yaml` in the Rails root is the source of build metadata — its
-`app:`, `services:`, `assets:`, and `build:` sections.
+## Build native clients
 
-You can configure it in Ruby instead: set `Ruflet::Rails.config` (e.g. in
-`config/initializers/ruflet.rb`) and, when no `ruflet.yaml`/`ruflet.yml` is on
-disk, `rake ruflet:build` serializes the config to a temp file the CLI reads via
-`RUFLET_CONFIG`:
+`ruflet_rails` builds native clients through Rails tasks:
 
-- `app_name`, `backend_url` → the `app:` section
-- `services` → the `services:` section
-- `splash_screen`, `icon_launcher`, `icon_*` → the `assets:` section
-- `splash_color`, `theme_color`, … → the `build:` section
+```bash
+bundle exec rake ruflet:build[desktop]
+bundle exec rake ruflet:build[macos]
+bundle exec rake ruflet:build[apk]
+bundle exec rake ruflet:build[ios]
+bundle exec rake ruflet:build[aab]
+```
 
-A real `ruflet.yaml`/`ruflet.yml` on disk always takes precedence over config.
+The Rails integration installs the web client with `rake ruflet:web`; it does
+not compile a web client through `ruflet:build`.
 
-## What else `ruflet_rails` gives you
+## Related guides
 
-- [Scaffolding](/docs/rails-scaffolding) — generate a full CRUD resource as a
-  single mountable component.
-- [Navigation](/docs/rails-navigation) — a Flet-style routed view stack.
-- [Assets and URLs](/docs/rails-assets) — `asset_url`, `backend_url`, and the
-  `ruflet_frame` ERB helper.
-- [Webview Apps](/docs/rails-webview-apps) — wrap your website in a native
-  shell, Hotwire Native-style.
+- [Scaffolding](/docs/rails-scaffolding)
+- [Navigation](/docs/rails-navigation)
+- [Assets and URLs](/docs/rails-assets)
+- [Webview Apps](/docs/rails-webview-apps)

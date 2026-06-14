@@ -1,28 +1,14 @@
 # Examples Overview
 
-Once you understand app structure and know how to run a Ruflet app, the examples become much easier to learn from.
+The tutorials in this documentation are self-contained and can be added to a
+new Ruflet project. They progress from focused state updates to larger
+interactive layouts:
 
-## Why examples matter
+1. [Calculator](/docs/tutorial-calculator) covers controls, events, and targeted updates.
+2. [ToDo](/docs/tutorial-todo) covers collections, filters, and rerendering.
+3. [Solitaire](/docs/tutorial-solitaire) explains architecture for a larger interactive app.
 
-Ruflet is still growing, and the example apps are one of the best sources of truth for current patterns.
-
-They show:
-
-- naming conventions
-- control composition
-- state management
-- event handling
-- responsive layout choices
-- service integration
-
-## Recommended order
-
-1. Calculator
-2. ToDo
-3. Tabs and dialog examples
-4. Solitaire
-5. Showcase
-
-## What to do next
-
-Move into the Tutorials section and build one example step by step.
+The Ruflet source distribution also contains a `showcase` application used to
+exercise controls and device services during framework development. It can be
+useful when contributing to Ruflet, but application developers should rely on
+the guides and reference pages here rather than internal repository paths.

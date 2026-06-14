@@ -1,20 +1,17 @@
 # Creating a New Ruflet App
 
-The fastest way to start a Ruflet project is with the CLI scaffold.
-
-## Create the project
+Create a Ruby-first Ruflet project with:
 
 ```bash
 ruflet new my_app
 cd my_app
 bundle install
+bundle exec ruflet run main.rb
 ```
 
-## What happens next
+`ruflet create my_app` is an alias for `ruflet new my_app`.
 
-This is the important part many frameworks skip: after generating the app, you should understand the structure before jumping into features.
-
-Ruflet writes a practical starter structure:
+## Generated files
 
 ```tree
 my_app/
@@ -22,66 +19,38 @@ my_app/
   README.md
   main.rb
   ruflet.yaml
+  services.yaml
   assets/
     icon.png
     splash.png
 ```
 
-## Read the app structure first
+- `main.rb` contains the starter app and is the normal application entrypoint.
+- `Gemfile` contains the Ruby runtime dependencies.
+- `ruflet.yaml` configures app metadata, optional client extensions, assets, and builds.
+- `services.yaml` declares protected device access such as camera or location.
+- `assets/` contains the default icon and splash image.
 
-Right after scaffolding, the next thing you should learn is what each generated file is for:
+## Run targets
 
-- `main.rb` is your app entry point
-- `Gemfile` defines the runtime dependencies
-- `ruflet.yaml` controls metadata, assets, and client build behavior
-- `README.md` gives the local project commands
+Mobile is the default development target:
 
-That is why the next recommended page is [`/docs/app-structure`](/docs/app-structure).
-
-## The generated starter app
-
-This is the current Ruflet scaffold template:
-
-```ruby
-require "ruflet"
-
-Ruflet.run do |page|
-  page.title = "Counter Demo"
-  count = 0
-  count_text = text(count.to_s, style: {size: 40})
-
-  page.add(
-    container(
-      expand: true,
-      alignment: Ruflet::MainAxisAlignment::CENTER,
-      content: column(
-        alignment: Ruflet::MainAxisAlignment::CENTER,
-        horizontal_alignment: Ruflet::CrossAxisAlignment::CENTER,
-        children: [
-          text("You have pushed the button this many times:"),
-          count_text
-        ]
-      )
-    ),
-    floating_action_button: fab(
-      icon: "add",
-      on_click: ->(_e) do
-        count += 1
-        page.update(count_text, value: count.to_s)
-      end
-    )
-  )
-end
+```bash
+bundle exec ruflet run main.rb
 ```
 
-## Why this starter is useful
+Launch the managed web or desktop client with:
 
-The starter app already teaches the core Ruflet mental model:
+```bash
+bundle exec ruflet run main.rb --web
+bundle exec ruflet run main.rb --desktop
+```
 
-- controls are built with helper methods like `text`, `column`, and `container`
-- `page` handles runtime behavior
-- button events mutate state and then update the page
+Use `bundle exec` inside an application so the CLI and runtime gems come from
+that project's bundle.
 
-## Recommended next step
+## Next step
 
-Continue to [`/docs/app-structure`](/docs/app-structure) before moving to run targets or tutorials.
+Read [App Structure](/docs/app-structure) to understand the generated
+configuration, then [Running a Ruflet App](/docs/running-a-ruflet-app) for the
+development loop.
