@@ -18,7 +18,7 @@ module Showcase
       "flashlight" => %w[android ios],
       "screen_brightness" => %w[android ios],
       "camera" => %w[android ios],
-      "webview" => %w[macos windows linux android ios]           # not web (iframe)
+      "webview" => %w[macos android ios]
     }.freeze
 
     def web_platform?(page)
