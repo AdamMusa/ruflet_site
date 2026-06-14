@@ -196,8 +196,7 @@ class DocsCatalog
     lines = []
     lines << "# #{control[:title]}"
     lines << ""
-    lines << "#{control[:title]} control. " +
-             (helper ? "Build it with the `#{helper}` helper." : "Build it with `control(:#{control[:widget_type]}, ...)`.")
+    lines << "#{control[:title]} control. Build it with the `#{helper}` helper."
     lines << ""
 
     # --- Example ----------------------------------------------------------
@@ -237,27 +236,78 @@ class DocsCatalog
     lines << ""
     lines << "- Family: `#{control[:family]}`"
     lines << "- Widget type: `#{control[:widget_type]}`"
-    lines << "- Helper: #{helper ? "`#{helper}`" : "`control(:#{control[:widget_type]}, ...)`"}"
+    lines << "- Helper: `#{helper}`"
     lines.join("\n")
   end
 
   def self.preferred_helper(control)
     helpers = Array(control[:helpers]).uniq
-    return nil if helpers.empty?
+    raise "No public helper documented for #{control[:widget_type]}" if helpers.empty?
 
     helpers.find { |name| name.include?("_") } || helpers.first
   end
 
   def self.generated_control_example(control, helper)
+    crafted = crafted_control_example(control[:widget_type])
+    return crafted if crafted
+
     prop_lines = example_property_lines(control)
 
-    return [helper || "control(:#{control[:widget_type]})"] if prop_lines.empty?
+    return ["#{helper}()"] if prop_lines.empty?
 
-    open = helper ? "#{helper}(" : "control(:#{control[:widget_type]},"
+    open = "#{helper}("
     body = prop_lines.each_with_index.map do |line, index|
       "  #{line}#{index < prop_lines.length - 1 ? ',' : ''}"
     end
     [open, *body, ")"]
+  end
+
+  def self.crafted_control_example(widget_type)
+    {
+      "option" => [
+        'dropdown_option("ruby", text: "Ruby")'
+      ],
+      "autofillgroup" => [
+        "autofill_group(",
+        '  text_field(label: "Email", autofill_hints: ["email"])',
+        ")"
+      ],
+      "browsercontextmenu" => [
+        "page.browser_context_menu(disabled: true)"
+      ],
+      "hero" => [
+        "hero(",
+        '  image("assets/logo.png"),',
+        '  tag: "app-logo"',
+        ")"
+      ],
+      "overlay" => [
+        "overlay([",
+        '  progress_ring(),',
+        '  snack_bar("Saved")',
+        "])"
+      ],
+      "shadermask" => [
+        "shader_mask(",
+        '  text("Ruflet", size: 36),',
+        '  blend_mode: "srcIn"',
+        ")"
+      ],
+      "shimmer" => [
+        "shimmer(",
+        "  container(width: 240, height: 80, bgcolor: \"#d1d5db\"),",
+        '  base_color: "#d1d5db",',
+        '  highlight_color: "#f9fafb"',
+        ")"
+      ],
+      "textspan" => [
+        "text_span(",
+        '  "Ruflet documentation",',
+        '  url: "https://ruflet.dev",',
+        "  on_click: ->(event) {}",
+        ")"
+      ]
+    }[widget_type.to_s]
   end
 
   def self.example_property_lines(control)
@@ -305,6 +355,6 @@ class DocsCatalog
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
-                       :example_property_lines, :sample_value_for, :common_properties,
+                       :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description
 end

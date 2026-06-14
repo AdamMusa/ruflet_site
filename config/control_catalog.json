@@ -3703,7 +3703,9 @@
     "slug": "control-option",
     "family": "materials",
     "widget_type": "option",
-    "helpers": [],
+    "helpers": [
+      "dropdown_option"
+    ],
     "properties": [
       "alignment",
       "badge",
@@ -5391,7 +5393,9 @@
     "slug": "control-autofill-group",
     "family": "shared",
     "widget_type": "autofillgroup",
-    "helpers": [],
+    "helpers": [
+      "autofill_group"
+    ],
     "properties": [
       "badge",
       "col",
@@ -5414,7 +5418,9 @@
     "slug": "control-browser-context-menu",
     "family": "shared",
     "widget_type": "browsercontextmenu",
-    "helpers": [],
+    "helpers": [
+      "page.browser_context_menu"
+    ],
     "properties": [
       "data",
       "disabled",
@@ -5899,7 +5905,9 @@
     "slug": "control-hero",
     "family": "shared",
     "widget_type": "hero",
-    "helpers": [],
+    "helpers": [
+      "hero"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -6327,7 +6335,9 @@
     "slug": "control-overlay",
     "family": "shared",
     "widget_type": "overlay",
-    "helpers": [],
+    "helpers": [
+      "overlay"
+    ],
     "properties": [
       "controls",
       "data",
@@ -6797,7 +6807,9 @@
     "slug": "control-shader-mask",
     "family": "shared",
     "widget_type": "shadermask",
-    "helpers": [],
+    "helpers": [
+      "shader_mask"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -6846,7 +6858,9 @@
     "slug": "control-shimmer",
     "family": "shared",
     "widget_type": "shimmer",
-    "helpers": [],
+    "helpers": [
+      "shimmer"
+    ],
     "properties": [
       "align",
       "animate_align",
@@ -6995,7 +7009,9 @@
     "slug": "control-text-span",
     "family": "shared",
     "widget_type": "textspan",
-    "helpers": [],
+    "helpers": [
+      "text_span"
+    ],
     "properties": [
       "badge",
       "col",
