@@ -1,14 +1,6 @@
-# Desktop
+# Desktop Builds
 
-Ruflet can target desktop platforms from the same Ruby app.
-
-## Supported targets
-
-- macOS
-- Windows
-- Linux
-
-## Example build commands
+Build native desktop clients:
 
 ```bash
 ruflet build macos
@@ -16,13 +8,18 @@ ruflet build windows
 ruflet build linux
 ```
 
-## Why Ruflet feels good on desktop
+Use `--self` for a self-contained application. Server-driven builds require
+`app.backend_url` in `ruflet.yaml`.
 
-- one Ruby app layer
-- native-window style workflows without switching to Electron
-- navigation, forms, data, charts, and media controls already available in the current stack
+## Development client
 
-## Related commands
+```bash
+ruflet run main.rb --desktop
+ruflet update desktop
+```
 
-- `ruflet run main --desktop`
-- `ruflet update desktop`
+`ruflet run --desktop` uses the cached prebuilt desktop client. `ruflet build`
+creates a distributable application from the managed Flutter workspace.
+
+Packaging, signing, installers, and store submission remain platform-specific
+release tasks.

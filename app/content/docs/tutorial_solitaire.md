@@ -1,6 +1,7 @@
 # Solitaire
 
-The solitaire example is where Ruflet starts to feel like a serious app framework instead of a small demo toolkit.
+This tutorial explains how to organize a larger interactive Ruflet
+application.
 
 This tutorial does not ask you to memorize the whole file at once. Instead, use the example as a study path:
 
@@ -11,11 +12,8 @@ This tutorial does not ask you to memorize the whole file at once. Instead, use 
 5. understand drag and drop
 6. understand game rules
 
-The full example lives here:
-
-```text
-examples/solitaire.rb
-```
+Build the game in a new Ruflet project and split the model, rules, and UI into
+separate Ruby files as it grows.
 
 ## Step 1: model the game data
 
@@ -187,7 +185,7 @@ That is the architectural payoff:
 - a `stack` for absolute-positioned card controls
 - page updates for card movement and flip state
 
-## How to study this example productively
+## How to build it productively
 
 Do not try to rewrite the whole file in one pass.
 
@@ -201,12 +199,10 @@ Use this order:
 
 That order makes the example far easier to absorb.
 
-## Run the example
+## Run the application
 
 ```bash
-cd examples
-bundle install
-ruflet run solitaire
+bundle exec ruflet run main.rb --web
 ```
 
 ## What you learned

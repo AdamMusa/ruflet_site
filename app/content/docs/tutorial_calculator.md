@@ -1,6 +1,6 @@
 # Calculator
 
-This tutorial turns the calculator example into a learn-by-building exercise.
+This tutorial builds a calculator in small, testable steps.
 
 Instead of jumping straight to the finished code, we will build the app in layers:
 
@@ -13,13 +13,8 @@ Instead of jumping straight to the finished code, we will build the app in layer
 
 ## Before you start
 
-The production calculator logic in this repo lives in Showcase under:
-
-```text
-showcase/sections_controls/calculator.rb
-```
-
-This tutorial teaches the same ideas in a smaller step-by-step flow.
+Create a Ruflet project and replace its `main.rb` as you work through the
+steps.
 
 ## Step 1: create the app shell
 
@@ -246,7 +241,7 @@ end
 
 ## Step 7: calculate results
 
-This is the core math step from the real example.
+This is the core math step.
 
 ```ruby
 def apply_calculation
@@ -286,7 +281,7 @@ end
 
 ## Step 8: add utility keys
 
-The real calculator includes useful extra keys:
+Add useful extra keys:
 
 - `AC` resets the calculator
 - `BS` removes the last character
@@ -312,7 +307,7 @@ The pattern is the important part:
 
 ## Final keypad layout
 
-The full keypad from the real example is:
+The complete keypad is:
 
 ```ruby
 keypad_row(page, "BS", "AC", "%", "/")
@@ -325,7 +320,7 @@ keypad_row(page, "+/-", "0", ".", "=")
 ## Run your version
 
 ```bash
-ruflet run main
+bundle exec ruflet run main.rb --web
 ```
 
 ## What you learned
@@ -334,13 +329,3 @@ ruflet run main
 - how to generate repeated controls with Ruby helpers
 - how to route events through one shared handler
 - how `page.update(...)` keeps the UI in sync
-
-## Compare with the repo implementation
-
-After finishing your version, compare it with the real calculator logic in:
-
-```text
-showcase/sections_controls/calculator.rb
-```
-
-That comparison is useful because you will see the same structure at a slightly more polished level.

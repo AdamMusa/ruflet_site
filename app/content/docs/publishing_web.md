@@ -1,29 +1,24 @@
-# Web
+# Web Builds
 
-Ruflet can run and ship the same app as a web experience.
-
-## Run locally
+Run the managed web client during development:
 
 ```bash
-ruflet run main --web
+ruflet run main.rb --web
 ```
 
-The CLI starts the backend, serves the web client locally, and opens the browser when possible.
+This starts the Ruby backend, serves the local web client, and opens a browser
+when possible.
 
-## Build for the web
+## Build
 
 ```bash
 ruflet build web
+ruflet build web --self
 ```
 
-## Why the web target matters
+A server-driven web build requires `app.backend_url` in `ruflet.yaml`. A
+self-contained web build packages the Ruby project with the client runtime.
 
-The web target is useful when you want:
-
-- a shareable internal tool
-- a browser-based admin surface
-- one codebase for mobile, desktop, and browser experiences
-
-## Related note
-
-The same server-driven vs self-contained thinking still applies when you decide how your app should be delivered.
+Deploy the exported web build with the hosting and caching rules appropriate
+for a Flutter web application. Ensure the configured backend URL is reachable
+from users' browsers when using server-driven mode.

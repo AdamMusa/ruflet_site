@@ -5,12 +5,12 @@ Mobile is Ruflet's default target for local development.
 ## Install the Ruflet mobile client
 
 - ![iOS](/assets/platform_ios.svg) **iOS:** download [Ruflet Explorer on the App Store](https://apps.apple.com/us/app/ruflet-explorer/id6762528151).
-- ![Android](/assets/platform_android.svg) **Android:** Google Play is coming soon. For now, download the Android build from the [Ruflet GitHub releases page](https://github.com/AdamMusa/Ruflet/releases).
+- ![Android](/assets/platform_android.svg) **Android:** download the Android client from the [Ruflet releases page](https://github.com/AdamMusa/Ruflet/releases).
 
 ## Run your app
 
 ```bash
-ruflet run main
+bundle exec ruflet run main.rb
 ```
 
 The terminal output includes:

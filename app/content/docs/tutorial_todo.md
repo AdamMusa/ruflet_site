@@ -11,15 +11,12 @@ Instead of reading the finished file as one block, build it in layers:
 5. add filters
 6. wire task actions
 
-The production example lives here:
-
-```text
-examples/todo.rb
-```
+Create a Ruflet project and replace its `main.rb` as you work through the
+steps.
 
 ## Step 1: create the app and initial state
 
-The real example uses a class-based app with a few instance variables.
+Use a class-based app with a few instance variables.
 
 ```ruby
 require "ruflet"
@@ -62,7 +59,7 @@ Use a dedicated `render(page)` method just like the example does. That makes ful
 
 ## Step 3: add the draft input
 
-The real app keeps the text field controlled by `@draft`.
+Keep the text field controlled by `@draft`.
 
 ```ruby
 input = text_field(
@@ -121,7 +118,7 @@ This small method teaches a lot:
 
 ## Step 6: render the task list
 
-The real example turns each task into its own row helper.
+Turn each task into its own row helper.
 
 ```ruby
 def task_row(page, task)
@@ -245,7 +242,7 @@ That makes the whole app easy to reason about.
 
 ## Step 9: make the layout feel complete
 
-The real example adds:
+To finish the application, add:
 
 - a card container
 - an app bar
@@ -255,12 +252,10 @@ The real example adds:
 
 Those are polish layers you can add after the core flow works.
 
-## Run the real example
+## Run the application
 
 ```bash
-cd examples
-bundle install
-ruflet run todo
+bundle exec ruflet run main.rb --web
 ```
 
 ## What you learned

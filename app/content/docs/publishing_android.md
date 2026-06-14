@@ -1,30 +1,44 @@
-# Android
+# Android Builds
 
-Ruflet can package Android builds through the CLI.
-
-## Build commands
+Build an APK for direct installation or an Android App Bundle for store
+distribution:
 
 ```bash
 ruflet build apk
-ruflet build android --self
 ruflet build aab
 ```
 
-## Choosing a mode
+`ruflet build android` is an alias for the APK build.
 
-- Use the default mode when the app will talk to a hosted Ruflet backend.
-- Use `--self` when you want a more self-contained client build.
-
-## Things to decide early
-
-- which services/extensions your app needs
-- whether runtime logic stays server-driven or embedded
-- your asset setup in `ruflet.yaml`
-
-## Install after building
+Add `--self` when the Ruby project should be packaged with the client:
 
 ```bash
-ruflet install
+ruflet build android --self
 ```
 
-For device-specific install flows, use `--device`.
+Server-driven builds require `app.backend_url` in `ruflet.yaml`.
+
+## Permissions
+
+Declare protected device access in `services.yaml` before building:
+
+```yaml
+services:
+  - camera:
+      description: Allows users to capture photos.
+  - location:
+      description: Shows nearby locations.
+```
+
+Ruflet adds the corresponding Android permissions during client preparation.
+
+## Install
+
+```bash
+ruflet devices
+ruflet install
+ruflet install --device DEVICE_ID
+```
+
+Store signing, release keys, versioning, and Play Console submission remain
+standard Android release responsibilities.

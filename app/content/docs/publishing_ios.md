@@ -1,20 +1,32 @@
-# iOS
+# iOS Builds
 
-Ruflet supports iOS builds through the same CLI-driven pipeline.
-
-## Build commands
+Build the iOS client with:
 
 ```bash
 ruflet build ios
 ruflet build ios --self
 ```
 
-## What to keep in mind
+Server-driven builds require a device-reachable `app.backend_url` in
+`ruflet.yaml`.
 
-- iOS is sensitive to client capabilities and permissions.
-- Camera, media, storage, and similar features should be planned early.
-- Build expectations are different between simulator and physical device installs.
+## Permissions and usage descriptions
 
-## Good practice
+Declare protected access in `services.yaml`:
 
-Test on mobile early with the Ruflet client, then move to a real iOS build once the feature flow is stable.
+```yaml
+services:
+  - camera:
+      description: Allows users to capture photos.
+  - microphone:
+      description: Allows users to record voice notes.
+```
+
+Ruflet uses these declarations to configure the required iOS permission
+definitions and usage descriptions.
+
+## Release requirements
+
+iOS device installation and distribution require the normal Apple signing,
+provisioning, bundle identifier, and App Store Connect setup. Test permission
+flows and physical-device behavior before preparing a release build.
