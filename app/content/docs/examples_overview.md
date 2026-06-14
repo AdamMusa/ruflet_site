@@ -8,7 +8,5 @@ interactive layouts:
 2. [ToDo](/docs/tutorial-todo) covers collections, filters, and rerendering.
 3. [Solitaire](/docs/tutorial-solitaire) explains architecture for a larger interactive app.
 
-The Ruflet source distribution also contains a `showcase` application used to
-exercise controls and device services during framework development. It can be
-useful when contributing to Ruflet, but application developers should rely on
-the guides and reference pages here rather than internal repository paths.
+After the tutorials, use the control and service reference pages to add
+features without depending on framework-internal examples.

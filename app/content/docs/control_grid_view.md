@@ -39,4 +39,4 @@ grid_view(
 ## Notes
 
 - Use `children:` for the tiles, consistent with `column`, `row`, and
-  `list_view`. (`controls:` is still accepted for backward compatibility.)
+  `list_view`.

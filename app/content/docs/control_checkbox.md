@@ -24,7 +24,7 @@ checkbox(
 checkbox(
   label: "I agree",
   value: accepted,
-  on_change: ->(e) { accepted = e.data == "true" }
+  on_change: ->(event) { accepted = event.value }
 )
 ```
 

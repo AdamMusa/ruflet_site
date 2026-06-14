@@ -30,7 +30,7 @@ row(
   spacing: 10,
   children: [
     filled_button(content: text(value: "Save")),
-    control(:outlined_button, content: text(value: "Cancel"))
+    outlined_button(content: text(value: "Cancel"))
   ]
 )
 ```

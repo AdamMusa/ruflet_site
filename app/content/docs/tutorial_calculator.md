@@ -134,7 +134,7 @@ end
 Now mount a few rows:
 
 ```ruby
-content: column(
+layout = column(
   spacing: 12,
   children: [
     row(alignment: "end", children: [build_display]),

@@ -1,9 +1,9 @@
 # Charts and Canvas
 
-Ruflet ships a full charting layer (powered by `fl_chart` on the Flutter side) plus
-a low-level drawing canvas. Charts are built from a parent chart control and a tree
-of plain data controls (groups, rods, sections, spots…). The canvas paints shapes
-described by `paint(...)` and lets you draw interactively with a gesture detector.
+Ruflet provides chart controls and a low-level drawing canvas. Charts are built
+from a parent chart and data controls such as groups, rods, sections, and
+spots. The canvas paints shapes described by `paint(...)` and can receive
+pointer input through a gesture detector.
 
 Every helper below is a normal Ruflet control — compose them inside `column`,
 `row`, `container`, etc. like any other widget.
@@ -406,10 +406,3 @@ gradient-tinted images.
 - `blend_mode` — how the shader combines with the child.
 - `border_radius` — clip the masked area to rounded corners.
 - Standard layout props: `expand`, `width`, `height`, `opacity`, `visible`.
-
----
-
-## Where to see it live
-
-The showcase app exercises all of the above — see its **Charts** and **Drawing**
-sections (`app/ruflet/showcase/sections_charts.rb` and `sections_drawing.rb`).

@@ -1,9 +1,7 @@
 # Maps
 
-Ruflet ships an interactive map control (powered by `flutter_map` on the Flutter
-side) backed by tile layers, so you can render slippy maps with markers, circles,
-polylines, and polygons — useful for store locators, delivery tracking, and geo
-dashboards.
+Ruflet maps combine tile layers, markers, circles, polylines, and polygons for
+features such as store locators, delivery tracking, and geographic dashboards.
 
 A map is a `map` control holding an ordered list of **layers**. The first layer is
 almost always a `tile_layer` that supplies the base imagery; further layers draw
