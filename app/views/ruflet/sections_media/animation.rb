@@ -105,7 +105,7 @@ module Showcase
           horizontal_alignment: "center",
           tight: true,
           spacing: 16,
-          children: [canvas, btn]
+          children: [transparent_pointer(canvas), btn]
         )
       )
     end
