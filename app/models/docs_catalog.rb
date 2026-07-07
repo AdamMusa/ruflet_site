@@ -345,8 +345,8 @@ class DocsCatalog
     when "min"          then "min: 0"
     when "max"          then "max: 100"
     when "divisions"    then "divisions: 10"
-    when "color"        then 'color: "#2563eb"'
-    when "bgcolor"      then 'bgcolor: "#111827"'
+    when "color"        then "color: :blue_600"
+    when "bgcolor"      then "bgcolor: :surface_container_high"
     when "width"        then "width: 240"
     when "height"       then "height: 120"
     when "expand"       then "expand: true"
