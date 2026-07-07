@@ -9,11 +9,12 @@ Ruflet provides three levels of webview integration:
 
 1. `web_view` embeds one page and gives you direct control over navigation, events, and JavaScript.
 2. `Ruflet::Rails.webview_app` places a webview inside a native Ruflet `View` with an optional app bar and bottom navigation.
-3. `Ruflet::Rails.native_app` manages a stack of web pages and lets selected paths open as native screens or bottom sheets.
+3. `Ruflet::Rails.native_app` builds a Ruflet native shell around your Rails pages, with app bars, drawers, navigation, sheets, dialogs, and services declared from ERB.
 
 Start with `web_view` when you need one embedded page. Use `webview_app` when
-you want to control navigation yourself. Use `native_app` when most navigation
-should follow links from your Rails website automatically.
+you want to control navigation yourself. Use `native_app` when your Rails views
+should remain the body of the app while Ruflet owns the native shell around
+them.
 
 ## Platform support
 
@@ -150,82 +151,215 @@ Ruflet::Rails.webview_app(
 )
 ```
 
-## Manage website navigation with `native_app`
+## Wrap Rails pages with `native_app`
 
-`Ruflet::Rails.native_app` is useful when your Rails website should provide the
-main navigation structure. It opens same-origin links as screens in a native
-view stack and provides an automatic back action.
+`Ruflet::Rails.native_app` is a normal Ruflet app whose body is a WebView. The
+native app bar, drawer, bottom navigation, navigation rail, menus, dialogs,
+sheets, loading state, and platform services are Ruflet controls. Rails only
+declares what the shell should look like using ERB helpers or
+`data-ruflet-*` attributes.
 
-You can keep most destinations as web pages, open selected paths in a bottom
-sheet, and replace selected paths with Ruflet controls.
+In a regular browser those helpers still render ordinary HTML, links, and
+buttons. In a Ruflet client, the native shell reads the declarations and
+updates the Ruflet page.
 
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
   Ruflet::Rails.native_app(
     page,
-    start_url: "#{Ruflet::Rails.backend_url}/account",
-    title: "Account",
-    actions: -> {
-      [
-        icon_button(
-          "refresh",
-          on_click: ->(_event) { puts "Add your refresh action here" }
-        )
-      ]
-    },
-    modal: [
-      "/sign_in",
-      "/support/new"
-    ],
-    native: {
-      "/settings" => ->(_context) {
-        view(
-          route: "/settings",
-          appbar: app_bar(title: text("Settings")),
-          controls: [text("Native settings screen")]
-        )
-      },
-      %r{\A/orders/(\d+)\z} => ->(context) {
-        order_id = context.match[1]
-        view(
-          route: "/orders/#{order_id}",
-          appbar: app_bar(title: text("Order #{order_id}")),
-          controls: [text("Build this order screen with Rails models and Ruflet controls.")]
-        )
-      }
+    start_url: "#{Ruflet::Rails.backend_url}/dashboard",
+    loading: {
+      type: "shimmer",
+      container_props: { bgcolor: "#f8fafc" }
     }
   )
 end
 ```
 
-When the user follows a same-origin link:
+The default loading view is a body-only shimmer. Native chrome stays visible
+while a new page loads, so the app bar, drawer, and bottom navigation do not
+flash or get replaced by a web loading screen.
 
-1. A matching `native:` rule renders the Ruflet view returned by its block.
-2. Otherwise, a matching `modal:` rule opens the web page in a bottom sheet.
-3. Otherwise, the URL opens as another webview screen in the native stack.
+## Declare native chrome from ERB
 
-`native:` accepts exact paths and regular expressions. Its block receives a
-context with:
+Use the Rails helpers in your normal views to promote web markup into native
+chrome. Helper names and data attributes use the `ruflet` namespace, and custom
+data keys use `data-ruflet-*`.
 
-- `context.url` — the complete proposed URL
-- `context.path` — the URL path used for matching
-- `context.match` — the `MatchData` for a regular-expression rule
+```erb
+<%= ruflet_appbar "Dashboard",
+      leading: { icon: "menu", action: "drawer" },
+      actions: [
+        {
+          icon: "language",
+          action: "menu",
+          title: "Language",
+          items: [
+            { label: "FR", icon: "check", url: url_for(locale: :fr), action: "root", selected: I18n.locale == :fr },
+            { label: "EN", icon: "translate", url: url_for(locale: :en), action: "root" },
+            { label: "AR", icon: "translate", url: url_for(locale: :ar), action: "root" }
+          ]
+        }
+      ],
+      payload: { center_title: true, bgcolor: "#ffffff" } %>
 
-The root screen can also receive `navigation_bar:` or `bottom_appbar:`. The
-`actions:` value can be an array or a callable that returns app-bar actions.
+<%= ruflet_drawer(payload: { title: current_account.name, subtitle: current_account.email }) do %>
+  <%= ruflet_drawer_item "Dashboard", dashboard_path, icon: "dashboard", selected: current_page?(dashboard_path) %>
+  <%= ruflet_drawer_item "Campaigns", campaigns_path, icon: "sms", selected: current_page?(campaigns_path) %>
+  <%= ruflet_drawer_item "Settings", settings_path, icon: "settings", selected: current_page?(settings_path) %>
+  <%= ruflet_drawer_item "Sign out", session_path, icon: "logout", method: :delete %>
+<% end %>
 
-## How link navigation works
+<%= ruflet_bottom_nav(payload: { label_behavior: "alwaysHide" }) do %>
+  <%= ruflet_nav_item "Features", features_path, icon: "inventory_2", selected: current_page?(features_path) %>
+  <%= ruflet_nav_item "How it works", how_it_works_path, icon: "schedule", selected: current_page?(how_it_works_path) %>
+  <%= ruflet_nav_item "Sign up", new_registration_path, icon: "person_add", selected: current_page?(new_registration_path) %>
+  <%= ruflet_nav_item "Company", company_path, icon: "business", selected: current_page?(company_path) %>
+<% end %>
+```
 
-After each page loads, `native_app` injects a small navigation bridge. The
-bridge:
+For desktop-style shells, use a navigation rail from the same Rails view:
 
-- reads the page `<title>` and updates the native app-bar title;
-- captures same-origin link clicks and sends the destination to Ruflet;
-- leaves external links and links with `target="_blank"` unchanged.
+```erb
+<%= ruflet_navigation_rail extended: true, breakpoint: 720 do %>
+  <%= ruflet_rail_item "Inbox", inbox_path, icon: "mail", selected: current_page?(inbox_path) %>
+  <%= ruflet_rail_item "Profile", profile_path, icon: "person", selected: current_page?(profile_path) %>
+  <%= ruflet_rail_item "Settings", settings_path, icon: "settings", selected: current_page?(settings_path) %>
+<% end %>
+```
 
-Because navigation is based on normal links, your Rails pages do not need a
-special JavaScript framework or Ruflet-specific markup.
+The selected state should come from the current Rails route. Ruflet mirrors that
+state in the drawer, bottom navigation, and navigation rail so all native
+navigation stays in sync.
+
+## Open native screens and sheets
+
+Use normal Rails links for normal Rails navigation. Add a Ruflet payload only
+when the link should become a native action.
+
+```erb
+<%= link_to "Open inbox", inbox_path,
+      data: {
+        ruflet_screen: {
+          action: "push",
+          title: "Inbox",
+          leading: { icon: "menu", action: "drawer" }
+        }.to_json
+      } %>
+
+<%= link_to "Compose", new_message_path,
+      data: {
+        ruflet_screen: {
+          action: "sheet",
+          title: "Compose"
+        }.to_json
+      } %>
+
+<%= link_to "Replace with settings", settings_path,
+      data: {
+        ruflet_screen: {
+          action: "replace",
+          title: "Settings",
+          leading: { icon: "menu", action: "drawer" }
+        }.to_json
+      } %>
+```
+
+Supported navigation actions include `push`, `replace`, `root`, `sheet`, and
+`back`. A pushed or replaced screen still uses the Rails URL as the WebView
+body; only the surrounding shell is native.
+
+## Menus, bottom sheets, and close callbacks
+
+Native menus are useful for language pickers, account menus, and compact action
+sets. Menu items close their sheet by default before they run navigation or a
+callback.
+
+```erb
+<%= ruflet_appbar "T4U",
+      leading: { icon: "menu", action: "drawer" },
+      actions: [
+        {
+          icon: "language",
+          action: "menu",
+          title: "Language",
+          items: [
+            { label: "FR", icon: "check", url: url_for(locale: :fr), action: "root", selected: I18n.locale == :fr },
+            { label: "EN", icon: "translate", url: url_for(locale: :en), action: "root" },
+            { label: "AR", icon: "translate", url: url_for(locale: :ar), action: "root" }
+          ]
+        }
+      ] %>
+```
+
+Set `close: false` on an item when the menu should remain open:
+
+```ruby
+{ label: "Preview", icon: "visibility", action: "toast", message: "Still open", close: false }
+```
+
+WebView bottom sheets use the same close lifecycle. Plain links inside a
+Ruflet-owned sheet close the sheet first, then continue the requested
+navigation. If a link should stay inside the sheet, opt out explicitly:
+
+```erb
+<%= link_to "English", url_for(locale: :en) %>
+
+<%= link_to "Preview without closing", preview_language_path,
+      data: { ruflet_close: "false" } %>
+```
+
+This keeps native sheet state predictable: one tap produces one close action,
+Ruflet waits for the native dismiss event, and then the callback or navigation
+runs.
+
+## Native dialogs, toasts, and services
+
+Rails views can request native feedback and platform services without adding
+custom JavaScript.
+
+```erb
+<%= button_tag "Show dialog",
+      data: {
+        ruflet_action: {
+          component: "dialog",
+          title: "Delete draft?",
+          message: "This cannot be undone.",
+          actions: [
+            { label: "Cancel", role: "cancel" },
+            { label: "Delete", role: "destructive", url: draft_path(@draft), method: "delete" }
+          ]
+        }.to_json
+      } %>
+
+<%= ruflet_share_link "Share invite",
+      text: "Join my workspace",
+      url: invite_url(@invite) %>
+
+<%= ruflet_copy_button "Copy code", value: @invite.code %>
+<%= ruflet_launch_link "Open website", "https://example.com" %>
+<%= ruflet_haptic_button "Saved", style: "success" %>
+```
+
+Dialogs, menus, sheets, share sheets, clipboard actions, URL launching, and
+haptics use the native platform presentation on iOS, Android, and desktop where
+available.
+
+## How the HTML adapter works
+
+After each WebView page loads, `native_app` scans the HTML for Ruflet
+declarations and updates the native shell. The adapter:
+
+- reads `data-ruflet-*` payloads for app bars, drawers, bottom navigation, navigation rails, tabs, dialogs, sheets, menus, and services;
+- hides promoted chrome in the WebView so users do not see both the HTML navbar and the native navbar;
+- keeps unannotated Rails links as normal Rails links;
+- turns annotated links and buttons into native Ruflet actions;
+- closes drawers and bottom sheets before running item callbacks or navigation;
+- keeps the loading state inside the body WebView, not over the native app bar or bottom navigation.
+
+The important rule is that Rails remains Rails. You augment specific HTML with
+Ruflet data, and Ruflet turns that data into native controls.
 
 ## Run JavaScript in a page
 
@@ -276,9 +410,10 @@ Use `webview_app` when:
 
 Use `native_app` when:
 
-- your existing Rails links should drive the native screen stack;
+- your Rails ERB should declare native app bars, drawers, bottom navigation, rails, menus, tabs, dialogs, sheets, and services;
 - most screens can remain web pages;
-- selected routes should become native views or bottom sheets.
+- only the screen body should be rendered by WebView;
+- the same Rails pages should still work in a browser.
 
 ## Troubleshooting
 
@@ -286,4 +421,6 @@ Use `native_app` when:
 - **A page is blank on Ruflet web:** the site may block iframe embedding with `X-Frame-Options` or Content Security Policy.
 - **A method does nothing:** call webview methods only after the control is mounted, and remember that native methods are unavailable in the iframe fallback.
 - **A native destination also loads in the webview:** add its URL prefix to `prevent_links:` when using `webview_app`.
-- **A `native:` rule does not match:** rules match the URL path, such as `/orders/42`, not the complete URL.
+- **The HTML navbar still appears:** make sure the navbar is declared with the Ruflet helpers or `data-ruflet-*` attributes so `native_app` can promote and hide it.
+- **A drawer or sheet stays open after an item tap:** native menu and drawer items close by default. For links inside a WebView sheet, use a normal link for close-and-navigate or add `data-ruflet-close="false"` when the sheet should remain open.
+- **The app bar flashes while loading:** keep app bar and bottom navigation declarations in the native shell payload. The loading state should cover only the body WebView.

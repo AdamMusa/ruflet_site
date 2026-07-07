@@ -52,7 +52,7 @@ class DocsCatalog
           entry("rails-scaffolding", "Scaffolding", "Generate a full CRUD resource as a single mountable Ruflet component.", SOURCE_ROOT.join("rails_scaffolding.md"), "Integrations"),
           entry("rails-navigation", "Navigation", "Build route-driven native view stacks with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
-          entry("rails-webview-apps", "Webview Apps", "Display Rails pages in a native shell, control webview navigation, and replace selected routes with Ruflet screens.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
+          entry("rails-webview-apps", "Webview Apps", "Wrap Rails views in a native shell and promote ERB-declared app bars, drawers, navigation, sheets, dialogs, and services.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
           entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
         ]
       ),
