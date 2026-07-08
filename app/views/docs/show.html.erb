@@ -1,4 +1,4 @@
-<section class="min-h-screen bg-slate-950 text-slate-100" data-controller="docs-nav">
+<section class="min-h-screen bg-slate-950 text-slate-100" data-controller="docs-nav" data-docs-nav-search-index-value="<%= json_escape(@search_index.to_json) %>">
   <% intro_entry = DocsCatalog.find("introduction") %>
   <% nav_sections = @sections.map do |section|
        filtered_entries = section.entries.reject { |entry| entry.slug == "introduction" }
@@ -13,9 +13,16 @@
         <% end %>
       </div>
 
-      <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-200 md:hidden" aria-label="Open documentation menu">
-        <span class="text-base leading-none">≡</span>
-      </button>
+      <div class="flex items-center gap-3">
+        <button type="button" data-action="docs-nav#openSearch" class="docs-navbar-search" aria-haspopup="dialog" aria-controls="docs-search-dialog">
+          <span>Search docs</span>
+          <span class="docs-navbar-search-key">⌘K</span>
+        </button>
+
+        <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-200 md:hidden" aria-label="Open documentation menu">
+          <span class="text-base leading-none">≡</span>
+        </button>
+      </div>
 
       <nav class="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
         <%= link_to "Learn", doc_path("introduction"), class: "transition hover:text-white" %>
@@ -25,6 +32,17 @@
       </nav>
     </div>
   </header>
+
+  <div id="docs-search-dialog" class="docs-search-dialog hidden" data-docs-nav-target="searchDialog" data-action="click->docs-nav#closeSearchFromBackdrop" role="dialog" aria-modal="true" aria-labelledby="docs-search-title">
+    <div class="docs-search-panel">
+      <div class="docs-search-panel-header">
+        <label id="docs-search-title" class="docs-search-label" for="docs-search-input">Search docs</label>
+        <button type="button" class="docs-search-close" data-action="docs-nav#closeSearch" aria-label="Close search">×</button>
+      </div>
+      <input id="docs-search-input" type="search" placeholder="Search components, guides..." autocomplete="off" class="docs-search-input" data-docs-nav-target="searchInput" data-action="input->docs-nav#search keydown->docs-nav#handleSearchKeydown">
+      <div class="docs-search-results" data-docs-nav-target="searchResults" role="listbox" aria-label="Documentation search results"></div>
+    </div>
+  </div>
 
   <div class="mx-auto max-w-[1500px] px-0 pb-12 pt-0 lg:pb-16">
     <div class="mb-5 flex items-center justify-between border-b border-white/10 px-4 py-4 lg:hidden">

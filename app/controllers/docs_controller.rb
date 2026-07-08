@@ -23,6 +23,7 @@ class DocsController < ApplicationController
     markdown = doc_markdown
     @rendered_doc = MarkdownRenderer.render(markdown)
     @control_catalog = DocsCatalog.control_catalog
+    @search_index = DocsCatalog.search_index
     @headings = @rendered_doc.headings.select { |heading| heading.level <= 3 }
     @previous_doc = DocsCatalog.previous_for(@doc.slug)
     @next_doc = DocsCatalog.next_for(@doc.slug)

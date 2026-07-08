@@ -84,6 +84,20 @@ class DocsCatalog
     sections.flat_map(&:entries)
   end
 
+  def self.search_index
+    all_entries.map do |entry|
+      markdown = entry.content || (entry.source&.exist? ? entry.source.read : "")
+      {
+        slug: entry.slug,
+        title: entry.title,
+        summary: entry.summary.presence || first_paragraph(markdown),
+        section: entry.section,
+        url: Rails.application.routes.url_helpers.doc_path(entry.slug),
+        text: [entry.title, entry.summary, entry.section, searchable_text(markdown)].compact.join(" ")
+      }
+    end
+  end
+
   def self.index_for(slug)
     all_entries.index { |entry| entry.slug == slug }
   end
@@ -108,6 +122,27 @@ class DocsCatalog
 
   def self.entry(slug, title, summary, source, section, content = nil)
     Entry.new(slug: slug, title: title, summary: summary, source: source, section: section, content: content)
+  end
+
+  def self.first_paragraph(markdown)
+    markdown.to_s
+            .split(/\n{2,}/)
+            .map { |block| clean_markdown(block) }
+            .find(&:present?)
+  end
+
+  def self.searchable_text(markdown)
+    clean_markdown(markdown.to_s)
+  end
+
+  def self.clean_markdown(markdown)
+    markdown
+      .gsub(/```.*?```/m, " ")
+      .gsub(/`([^`]+)`/, '\1')
+      .gsub(/!\[[^\]]*\]\([^)]+\)/, " ")
+      .gsub(/\[([^\]]+)\]\([^)]+\)/, '\1')
+      .gsub(/[#>*_\-]+/, " ")
+      .squish
   end
 
   def self.control_entries
