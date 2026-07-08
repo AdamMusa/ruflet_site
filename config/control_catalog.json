@@ -7207,5 +7207,87 @@
       "on_drag_start",
       "on_size_change"
     ]
+  },
+  {
+    "title": "CodeEditor",
+    "slug": "control-code-editor",
+    "family": "materials",
+    "widget_type": "codeeditor",
+    "helpers": [
+      "code_editor"
+    ],
+    "properties": [
+      "adaptive",
+      "autocomplete",
+      "autocomplete_words",
+      "autofocus",
+      "badge",
+      "code_theme",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "gutter_style",
+      "height",
+      "issues",
+      "key",
+      "language",
+      "opacity",
+      "padding",
+      "read_only",
+      "rtl",
+      "selection",
+      "text_style",
+      "tooltip",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_selection_change"
+    ]
+  },
+  {
+    "title": "Rive",
+    "slug": "control-rive",
+    "family": "materials",
+    "widget_type": "rive",
+    "helpers": [
+      "rive"
+    ],
+    "properties": [
+      "adaptive",
+      "alignment",
+      "animations",
+      "artboard",
+      "aspect_ratio",
+      "badge",
+      "clip_rect",
+      "col",
+      "data",
+      "disabled",
+      "enable_antialiasing",
+      "expand",
+      "expand_loose",
+      "fit",
+      "headers",
+      "height",
+      "key",
+      "opacity",
+      "placeholder",
+      "rtl",
+      "speed_multiplier",
+      "src",
+      "state_machines",
+      "tooltip",
+      "use_artboard_size",
+      "visible",
+      "width"
+    ],
+    "events": []
   }
 ]

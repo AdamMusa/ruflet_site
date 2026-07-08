@@ -81,9 +81,6 @@ module Showcase
       when "/charts"
         page.views = [detail_view(page, "Charts", build_charts(page, status_text(page)),
                                   source_path: "showcase/sections_charts.rb")]
-      when "/minesweeper"
-        page.views = [detail_view(page, "Minesweeper", build_minesweeper(page, status_text(page)),
-                                  source_path: "showcase/sections_minesweeper.rb")]
       when "/icon-search"
         page.views = [detail_view(page, "Icon Search", build_icon_search(page, status_text(page)),
                                   source_path: "showcase/sections_misc/icon_search.rb")]

@@ -47,7 +47,6 @@ module Showcase
         tile(page, Ruflet::MaterialIcons::VIEW_MODULE, "Material controls", "/material"),
         tile(page, Ruflet::MaterialIcons::PHONE_IPHONE, "Cupertino controls", "/cupertino"),
         tile(page, Ruflet::MaterialIcons::SHOW_CHART, "Charts", "/charts"),
-        tile(page, Ruflet::MaterialIcons::GRID_ON, "Minesweeper", "/minesweeper"),
         tile(page, Ruflet::MaterialIcons::SEARCH, "Icon Search", "/icon-search"),
         tile(page, Ruflet::MaterialIcons::ANIMATION, "Ruflet Animation", "/animation"),
         tile(page, Ruflet::MaterialIcons::SPEED, "Accelerometer", "/accelerometer"),
