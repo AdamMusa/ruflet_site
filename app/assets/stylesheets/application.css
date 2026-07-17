@@ -219,6 +219,10 @@
   color: #c084fc;
 }
 
+.docs-code-block .tok-embed {
+  color: #fdba74;
+}
+
 .docs-code-block .tok-string {
   color: #86efac;
 }

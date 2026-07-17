@@ -153,9 +153,51 @@ class MarkdownRenderer
       highlight_yaml(escaped)
     when "tree"
       highlight_tree(escaped)
+    when "erb", "html", "html+erb", "rhtml", "xml"
+      highlight_markup(escaped)
     else
       escaped
     end
+  end
+
+  # Highlight HTML / ERB: tag names, attribute names, quoted values, HTML
+  # comments, and embedded `<%= … %>` expressions. Operates on already
+  # HTML-escaped text (`&lt;`, `&quot;`, …).
+  def highlight_markup(code)
+    html = code.dup
+    stash = []
+    # Stash inserted markup behind a placeholder so later passes never re-scan
+    # a span we already produced (e.g. the `class=` inside a `<span class=…>`).
+    hold = ->(markup) { stash << markup; placeholder_token(stash.length - 1) }
+
+    # ERB expressions first, so `<%= … %>` inside an attribute is one unit.
+    html.gsub!(/&lt;%=?.*?%&gt;/m) { |erb| hold.call(%(<span class="tok-embed">#{erb}</span>)) }
+    # HTML comments.
+    html.gsub!(/&lt;!--.*?--&gt;/m) { |c| hold.call(%(<span class="tok-comment">#{c}</span>)) }
+    # Quoted attribute values.
+    html.gsub!(/(&quot;.*?&quot;|&#39;.*?&#39;)/m) { hold.call(%(<span class="tok-string">#{Regexp.last_match(1)}</span>)) }
+
+    # Tag names on open/close tags.
+    html.gsub!(%r{(&lt;/?)([a-zA-Z][\w:-]*)}) do
+      lead = Regexp.last_match(1)
+      name = Regexp.last_match(2)
+      "#{lead}#{hold.call(%(<span class="tok-keyword">#{name}</span>))}"
+    end
+    # Attribute names (word immediately before `=`).
+    html.gsub!(/(\s)([a-zA-Z_:][\w:.-]*)(=)/) do
+      ws = Regexp.last_match(1)
+      name = Regexp.last_match(2)
+      "#{ws}#{hold.call(%(<span class="tok-flag">#{name}</span>))}="
+    end
+
+    # Restore placeholders (repeat so nested tokens — e.g. ERB inside a quoted
+    # value — are fully expanded).
+    loop do
+      changed = false
+      stash.each_with_index { |markup, index| changed = true if html.gsub!(placeholder_token(index), markup) }
+      break unless changed
+    end
+    html
   end
 
   def highlight_ruby(code)
