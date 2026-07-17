@@ -107,21 +107,24 @@ class MarkdownRenderer
   end
 
   def inline_markup(text)
+    # Escape once, up front. The handlers below operate on already-escaped
+    # text, so they must not escape their captures again (that turns `<column>`
+    # into a literal `&lt;column&gt;`).
     html = ERB::Util.html_escape(text)
     html = html.gsub(/!\[([^\]]*)\]\(([^)]+)\)/) do
-      alt = ERB::Util.html_escape(Regexp.last_match(1))
-      src = ERB::Util.html_escape(resolve_image_src(Regexp.last_match(2)))
+      alt = Regexp.last_match(1)
+      src = resolve_image_src(Regexp.last_match(2))
       %(<img src="#{src}" alt="#{alt}" class="docs-inline-image">)
     end
     html = html.gsub(/\[([^\]]+)\]\(([^)]+)\)/) do
-      label = ERB::Util.html_escape(Regexp.last_match(1))
-      href = ERB::Util.html_escape(Regexp.last_match(2))
+      label = Regexp.last_match(1)
+      href = Regexp.last_match(2)
       external = href.start_with?("http://", "https://")
       attrs = external ? ' target="_blank" rel="noreferrer"' : ""
       %(<a href="#{href}"#{attrs}>#{label}</a>)
     end
-    html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{ERB::Util.html_escape(Regexp.last_match(1))}</strong>" }
-    html = html.gsub(/`([^`]+)`/) { "<code>#{ERB::Util.html_escape(Regexp.last_match(1))}</code>" }
+    html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{Regexp.last_match(1)}</strong>" }
+    html = html.gsub(/`([^`]+)`/) { "<code>#{Regexp.last_match(1)}</code>" }
     html
   end
 
