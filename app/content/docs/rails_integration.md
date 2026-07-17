@@ -1,8 +1,8 @@
 # Rails Integration
 
-`ruflet_rails` lets a Rails application serve Ruflet screens to native,
-desktop, and web clients. Ruflet code can use Rails models, services, and
-application logic directly.
+`ruflet_rails` lets a Rails application serve native, desktop, and web clients
+from one codebase. Your Ruflet screens run inside Rails and can use models,
+services, sessions, and application logic directly.
 
 ## Install
 
@@ -17,11 +17,9 @@ bundle install
 bin/rails generate ruflet:install
 ```
 
-The generator creates:
-
-- `app/views/ruflet/main.rb`, the native client entrypoint
-- `ruflet.yaml`, containing Rails build metadata
-- an explicit `/ws` route in `config/routes.rb`
+The generator creates `app/views/ruflet/main.rb` (the client entrypoint),
+`config/initializers/ruflet.rb`, and a `/ws` route that native, desktop, and
+web clients connect to:
 
 ```ruby
 match "/ws",
@@ -29,11 +27,23 @@ match "/ws",
   via: :all
 ```
 
-No initializer is required.
+`Ruflet::Rails.app(path)` is shorthand for
+`Ruflet::Rails.endpoint(app_file: path)`. An endpoint can also take a block or a
+component class:
 
-## Build a screen
+```ruby
+Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb"))
+Ruflet::Rails.endpoint { |page| Dashboard.render(page) }
+```
 
-Widget helpers are available directly in Ruflet application files:
+## Three ways to build the UI
+
+`main.rb` chooses how your app's UI is produced. Pick the one that fits — you
+can change your mind by editing this one file.
+
+### 1. Ruby-driven UI — `Ruflet::Rails.native`
+
+Build the native control tree in Ruby. Widget helpers are available directly:
 
 ```ruby
 # app/views/ruflet/main.rb
@@ -56,76 +66,82 @@ Ruflet.run do |page|
 end
 ```
 
-Each connected client receives its own `page` instance.
-
-## Mount a web application
-
-Install the prebuilt Ruflet web client:
+To serve this UI to a **web** client, install the prebuilt web client and mount
+it at a route — `native` serves the client and its WebSocket together:
 
 ```bash
-bundle exec rake ruflet:web
+rake ruflet:web
 ```
-
-Then mount an application file, component class, or block:
 
 ```ruby
 Rails.application.routes.draw do
-  match "/ws",
-    to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")),
-    via: :all
-
-  mount Ruflet::Rails.web_app(
-    app_file: Rails.root.join("app/views/ruflet/main.rb")
-  ), at: "/app"
-
-  mount Ruflet::Rails.web_app(view: "DashboardComponent"), at: "/dashboard"
+  mount Ruflet::Rails.native(app_file: Rails.root.join("app/views/ruflet/main.rb")), at: "/app"
 end
 ```
 
-`web_app` serves the installed web client and its WebSocket from the same
-mount. The browser URL remains the mounted route without query parameters.
+### 2. HTML rendered as native controls — `Ruflet::Rails.html_to_native`
 
-## Endpoint sources
-
-Native endpoints and web mounts require one explicit source:
+Write screens as HTML in ordinary Rails views; Ruflet compiles each page into
+real native controls, with no WebView. State lives in Rails and every
+interaction is a request.
 
 ```ruby
-Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb"))
-Ruflet::Rails.endpoint(view: "DashboardComponent")
-Ruflet::Rails.endpoint { |page| Dashboard.render(page) }
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.html_to_native(page, start_url: "#{Ruflet::Rails.backend_url}/app")
+end
 ```
 
-`Ruflet::Rails.app(path)` is shorthand for `endpoint(app_file: path)`.
-
-## Rails scaffolds
-
-The normal Rails scaffold generator also creates a Ruflet resource component:
-
-```bash
-bin/rails generate scaffold Post title:string body:text
+```erb
+<%# app/views/app/show.html.erb %>
+<appbar title="Counter"></appbar>
+<column class="p-6 gap-6 items-center justify-center flex-1">
+  <text class="text-5xl font-bold"><%= @count %></text>
+  <button variant="filled" icon="add" on-click="<%= increment_path %>">Add</button>
+</column>
 ```
 
-Use `--skip-ruflet` when a scaffold should not create one. Ruflet resource
-routes are never mounted automatically.
+See [Native HTML Apps](/docs/rails-native-html) for the full guide.
+
+### 3. Web pages in a native shell — `Ruflet::Rails.native_shell`
+
+Keep your existing web pages in a native WebView while Ruflet owns the native
+chrome — app bar, drawer, navigation, sheets, and dialogs — declared from ERB.
+
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.native_shell(page, start_url: Ruflet::Rails.backend_url, title: "My App")
+end
+```
+
+See [Webview Apps](/docs/rails-webview-apps) for the full guide.
+
+## Configuration
+
+`config/initializers/ruflet.rb` is the source of truth for the app name,
+backend URL, services, splash/icon assets, and build colors. Use
+`Ruflet::Rails.backend_url` in code instead of hard-coding `localhost`, so the
+app reaches your server from a real device.
 
 ## Build native clients
 
 `ruflet_rails` builds native clients through Rails tasks:
 
 ```bash
-bundle exec rake ruflet:build[desktop]
-bundle exec rake ruflet:build[macos]
-bundle exec rake ruflet:build[apk]
-bundle exec rake ruflet:build[ios]
-bundle exec rake ruflet:build[aab]
+rake ruflet:build[desktop]
+rake ruflet:build[macos]
+rake ruflet:build[apk]
+rake ruflet:build[ios]
+rake ruflet:build[aab]
 ```
 
-The Rails integration installs the web client with `rake ruflet:web`; it does
-not compile a web client through `ruflet:build`.
+The web client is installed with `rake ruflet:web`; it is not compiled through
+`ruflet:build`.
 
 ## Related guides
 
-- [Scaffolding](/docs/rails-scaffolding)
-- [Navigation](/docs/rails-navigation)
+- [Native HTML Apps](/docs/rails-native-html) — write screens as HTML
+- [Webview Apps](/docs/rails-webview-apps) — wrap web pages in a native shell
 - [Assets and URLs](/docs/rails-assets)
-- [Webview Apps](/docs/rails-webview-apps)
+- [Navigation](/docs/rails-navigation)
