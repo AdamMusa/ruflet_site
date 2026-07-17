@@ -49,6 +49,11 @@ class DocsCatalog
         title: "Integrations",
         entries: [
           entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
+          entry("rails-native-html", "Native HTML Apps", "Build a fully native app by writing HTML in your Rails views — Ruflet renders it as real native controls, no WebView.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
+          entry("rails-native-styling", "Native Styling", "Style native HTML screens with a Tailwind-flavored class vocabulary that maps to real control props.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
+          entry("rails-native-components", "Native Components", "The component tags — layout, content, badges, tabs, tables — plus the full control catalog from markup.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations"),
+          entry("rails-native-interactivity", "Native Navigation and Forms", "Links, navigation modes, on-click actions, forms, and native app chrome for HTML screens.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
+          entry("rails-native-services", "Native Services and Extensions", "Reach the device — camera, GPS, sensors, storage — and render extensions like video, maps, and charts from ERB.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
           entry("rails-scaffolding", "Scaffolding", "Generate a full CRUD resource as a single mountable Ruflet component.", SOURCE_ROOT.join("rails_scaffolding.md"), "Integrations"),
           entry("rails-navigation", "Navigation", "Build route-driven native view stacks with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
