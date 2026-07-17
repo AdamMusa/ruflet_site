@@ -79,7 +79,7 @@ Rails.application.routes.draw do
 end
 ```
 
-### 2. HTML rendered as native controls — `Ruflet::Rails.html_to_native`
+### 2. HTML rendered as native controls — `Ruflet::Rails.erb_to_native`
 
 Write screens as HTML in ordinary Rails views; Ruflet compiles each page into
 real native controls, with no WebView. State lives in Rails and every
@@ -88,7 +88,7 @@ interaction is a request.
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  Ruflet::Rails.html_to_native(page, start_url: "#{Ruflet::Rails.backend_url}/app")
+  Ruflet::Rails.erb_to_native(page, start_url: "#{Ruflet::Rails.backend_url}/app")
 end
 ```
 

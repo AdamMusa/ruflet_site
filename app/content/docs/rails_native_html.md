@@ -1,7 +1,7 @@
 # Native HTML Apps
 
 Build a fully native app by writing HTML in your Rails views. With
-`Ruflet::Rails.html_to_native`, every page you render is compiled into **real native
+`Ruflet::Rails.erb_to_native`, every page you render is compiled into **real native
 controls** — there is no WebView. State lives in Rails, each interaction is a
 request, and the response markup re-renders the screen.
 
@@ -14,7 +14,7 @@ that targets a browser.
 
 Ruflet gives you three ways to bring Rails into a native client:
 
-1. `Ruflet::Rails.html_to_native` renders your Rails HTML as native controls. No
+1. `Ruflet::Rails.erb_to_native` renders your Rails HTML as native controls. No
    WebView — the markup *becomes* the widgets.
 2. `Ruflet::Rails.native_shell` keeps your web pages in a native WebView and adds
    a native shell (app bar, drawer, navigation) around them. See
@@ -22,17 +22,17 @@ Ruflet gives you three ways to bring Rails into a native client:
 3. `Ruflet::Rails.native` serves a Ruby-driven Ruflet UI over the WebSocket
    protocol. See [Rails Integration](/docs/rails-integration).
 
-Reach for `html_to_native` when you want a genuinely native UI but would rather write
+Reach for `erb_to_native` when you want a genuinely native UI but would rather write
 markup in Rails views than build the control tree in Ruby.
 
 ## Quick start
 
-Point the native entrypoint at an `html_to_native` app:
+Point the native entrypoint at an `erb_to_native` app:
 
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  Ruflet::Rails.html_to_native(
+  Ruflet::Rails.erb_to_native(
     page,
     start_url: "#{Ruflet::Rails.backend_url}/app",
     title: "My App"
