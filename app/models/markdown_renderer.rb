@@ -170,8 +170,15 @@ class MarkdownRenderer
     # a span we already produced (e.g. the `class=` inside a `<span class=…>`).
     hold = ->(markup) { stash << markup; placeholder_token(stash.length - 1) }
 
-    # ERB expressions first, so `<%= … %>` inside an attribute is one unit.
-    html.gsub!(/&lt;%=?.*?%&gt;/m) { |erb| hold.call(%(<span class="tok-embed">#{erb}</span>)) }
+    # ERB expressions: color the `<%= … %>` delimiters, and highlight the Ruby
+    # inside so a screen written with helpers reads like Ruby, not one blob.
+    html.gsub!(/(&lt;%=?)(.*?)(%&gt;)/m) do
+      open_delim = Regexp.last_match(1)
+      inner = Regexp.last_match(2)
+      close_delim = Regexp.last_match(3)
+      colored = %(<span class="tok-embed">#{open_delim}</span>#{highlight_ruby(inner)}<span class="tok-embed">#{close_delim}</span>)
+      hold.call(colored)
+    end
     # HTML comments.
     html.gsub!(/&lt;!--.*?--&gt;/m) { |c| hold.call(%(<span class="tok-comment">#{c}</span>)) }
     # Quoted attribute values.
@@ -200,13 +207,43 @@ class MarkdownRenderer
     html
   end
 
+  RUBY_KEYWORDS = %w[require class module def do end if elsif else unless when case while until
+                     return yield super private protected public rescue ensure begin then].freeze
+
+  # Single-pass tokenizer over already HTML-escaped Ruby. Scanning each token
+  # once (rather than layering gsubs) means an inserted span is never re-matched
+  # by a later rule — e.g. the word `class` inside `class="tok-key"`.
+  RUBY_TOKEN = Regexp.union(
+    /\#[^\n]*/,                              # comment
+    /&quot;.*?&quot;|&#39;.*?&#39;/,         # string
+    /\b[a-z_]\w*:(?=\s)/,                    # keyword arg / hash key: `class:`
+    /(?<![:\w]):[a-z_]\w*[!?]?/,             # symbol: `:filled`
+    /\b[A-Z][A-Za-z0-9_]*\b/,               # constant
+    /\b\d+(?:\.\d+)?\b/,                     # number
+    /\b[a-z_]\w*[!?]?\b/                     # bareword (keyword? atom? plain)
+  )
+
   def highlight_ruby(code)
-    highlight_with_placeholders(code) do |html|
-      html.gsub!(/\b(require|class|module|def|do|end|if|elsif|else|when|case|while|until|return|super|private|protected|public|rescue|begin)\b/, '<span class="tok-keyword">\1</span>')
-      html.gsub!(/\b(true|false|nil)\b/, '<span class="tok-atom">\1</span>')
-      html.gsub!(/\b([A-Z][A-Za-z0-9_:]*)\b/, '<span class="tok-constant">\1</span>')
-      html.gsub!(/(\b\d+(?:\.\d+)?\b)/, '<span class="tok-number">\1</span>')
-      html
+    code.gsub(RUBY_TOKEN) do |tok|
+      if tok.start_with?("#")
+        %(<span class="tok-comment">#{tok}</span>)
+      elsif tok.start_with?("&quot;", "&#39;")
+        %(<span class="tok-string">#{tok}</span>)
+      elsif tok.end_with?(":")
+        %(<span class="tok-key">#{tok.chomp(":")}</span>:)
+      elsif tok.start_with?(":")
+        %(<span class="tok-atom">#{tok}</span>)
+      elsif tok =~ /\A[A-Z]/
+        %(<span class="tok-constant">#{tok}</span>)
+      elsif tok =~ /\A\d/
+        %(<span class="tok-number">#{tok}</span>)
+      elsif %w[true false nil].include?(tok)
+        %(<span class="tok-atom">#{tok}</span>)
+      elsif RUBY_KEYWORDS.include?(tok)
+        %(<span class="tok-keyword">#{tok}</span>)
+      else
+        tok
+      end
     end
   end
 
