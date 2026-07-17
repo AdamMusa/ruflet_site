@@ -16,6 +16,9 @@ you want to control navigation yourself. Use `native_app` when your Rails views
 should remain the body of the app while Ruflet owns the native shell around
 them.
 
+To render Rails HTML as **real native controls** instead of showing it in a
+WebView, see [Native HTML Apps](/docs/rails-native-html).
+
 ## Platform support
 
 The full native webview runs on **iOS, Android, and macOS**. It supports
@@ -61,15 +64,15 @@ Ruflet.run do |page|
   page.add(
     column(
       expand: true,
-      controls: [
+      children: [
         row(
-          controls: [
+          children: [
             icon_button("arrow_back", on_click: ->(_event) { browser.go_back }),
             icon_button("refresh", on_click: ->(_event) { browser.reload }),
             icon_button(
               "info",
               on_click: ->(_event) {
-                browser.get_title { |title, _error| page.snack_bar = snack_bar(content: text(title)) }
+                browser.get_title { |title, _error| page.show_snack_bar(snack_bar(content: text(title))) }
               }
             )
           ]

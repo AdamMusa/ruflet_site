@@ -144,4 +144,3 @@ The web client is installed with `rake ruflet:web`; it is not compiled through
 - [Native HTML Apps](/docs/rails-native-html) — write screens as HTML
 - [Webview Apps](/docs/rails-webview-apps) — wrap web pages in a native shell
 - [Assets and URLs](/docs/rails-assets)
-- [Navigation](/docs/rails-navigation)

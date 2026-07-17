@@ -54,8 +54,6 @@ class DocsCatalog
           entry("rails-native-components", "Native Components", "The component tags — layout, content, badges, tabs, tables — plus the full control catalog from markup.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations"),
           entry("rails-native-interactivity", "Native Navigation and Forms", "Links, navigation modes, on-click actions, forms, and native app chrome for HTML screens.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
           entry("rails-native-services", "Native Services and Extensions", "Reach the device — camera, GPS, sensors, storage — and render extensions like video, maps, and charts from ERB.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
-          entry("rails-scaffolding", "Scaffolding", "Generate a full CRUD resource as a single mountable Ruflet component.", SOURCE_ROOT.join("rails_scaffolding.md"), "Integrations"),
-          entry("rails-navigation", "Navigation", "Build route-driven native view stacks with `Ruflet::Rails.routed`.", SOURCE_ROOT.join("rails_navigation.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
           entry("rails-webview-apps", "Webview Apps", "Wrap Rails views in a native shell and promote ERB-declared app bars, drawers, navigation, sheets, dialogs, and services.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
           entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
@@ -368,7 +366,10 @@ class DocsCatalog
     when "title"        then 'title: text("Title")'
     when "subtitle"     then 'subtitle: text("Subtitle")'
     when "content"      then "content: text(#{title.inspect})"
-    when "controls", "children", "actions", "tabs", "destinations", "options"
+    when "controls"
+      # `controls` is the wire prop; the helper DSL takes `children:`.
+      "children: []"
+    when "children", "actions", "tabs", "destinations", "options"
       "#{property}: []"
     when "icon", "leading_icon", "trailing_icon", "selected_trailing_icon", "select_icon"
       "#{property}: \"add\""

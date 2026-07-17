@@ -156,5 +156,4 @@ so a wrong route or a server exception is visible instead of a blank screen.
 
 - [Rails Integration](/docs/rails-integration)
 - [Webview Apps](/docs/rails-webview-apps)
-- [Navigation](/docs/rails-navigation)
 - [Controls](/docs/component-reference)
