@@ -44,14 +44,12 @@ it anywhere in the screen:
 Extensions are visible controls that render inline like any other:
 
 - media: `<audio>`, `<video>`
-- graphics: `<lottie src="…">`, `<rive>`, `<spinkit>`, `<color-picker>`
+- graphics: `<lottie src="…">`, `<rive>`, `<color-picker>`
 - content: `<code-editor language="ruby">…</code-editor>`, `<map>`
 - charts: `<bar-chart>`, `<line-chart>`, `<pie-chart>`, `<scatter-chart>`,
   `<candlestick-chart>`, `<radar-chart>`
 
 ```erb
-<%= spinkit %>
-
 <%= code_editor "puts 'Hello from Ruflet'", language: "ruby", height: 120 %>
 
 <%= container class: "h-64 rounded-xl overflow-hidden" do %>
