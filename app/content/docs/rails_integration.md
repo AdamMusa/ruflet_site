@@ -28,8 +28,8 @@ match "/ws",
 ```
 
 `Ruflet::Rails.app(path)` is shorthand for
-`Ruflet::Rails.endpoint(app_file: path)`. An endpoint can also take a block or a
-component class:
+`Ruflet::Rails.endpoint(app_file: path)`. An endpoint takes exactly one source —
+an app file or a block:
 
 ```ruby
 Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb"))
