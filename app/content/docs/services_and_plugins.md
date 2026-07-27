@@ -228,7 +228,7 @@ page.accelerometer(
 Sensor services include `accelerometer`, `user_accelerometer`, `gyroscope`,
 `magnetometer`, `barometer`, and `shake_detector`.
 
-## Client configuration
+## Native capability configuration
 
 Some capabilities require additional Flutter packages or native permissions in
 the built client. Runtime Ruby code alone cannot add these after the app has
@@ -251,7 +251,7 @@ services:
 ```
 
 During a native build, Ruflet uses these declarations to include the required
-client extensions, Android permissions, Apple usage descriptions, and macOS
+client package, Android permissions, Apple usage descriptions, and macOS
 entitlements.
 
 Supported protected service declarations are:
@@ -264,37 +264,17 @@ Supported protected service declarations are:
 Write descriptions that clearly explain your application's reason for
 requesting access.
 
-### Optional client extensions
-
-Declare optional non-permission extensions in `ruflet.yaml`:
-
-```yaml
-extensions:
-  - audio
-  - charts
-  - map
-  - video
-  - webview
-```
-
-Available extension keys are:
-
-- `audio`, `audio_recorder`, `camera`, `charts`, `code_editor`,
-  `color_pickers`, `datatable2`, and `flashlight`
-- `geolocator`, `lottie`, `map`, `permission_handler`, `rive`,
-  `secure_storage`, `video`, and `webview`
-
-Permission-backed extensions such as camera, audio recording, geolocation, and
-permission handling are activated through `services.yaml`.
-
-Rebuild the client after changing `services.yaml` or the `extensions` list.
+Optional Flutter packages are documented separately in the
+[Extension Catalog](/docs/extensions). Rebuild the client after changing
+`services.yaml` or `ruflet.yaml` extensions.
 
 ## Choosing the right API
 
 - Use a page convenience method for a single action and result.
 - Use a service object for events, repeated operations, or service-specific methods.
 - Add protected device access to `services.yaml` before building native clients.
-- Add optional visual or media packages to `ruflet.yaml` under `extensions`.
+- Use the [Extension Catalog](/docs/extensions) for optional visual controls,
+  media packages, and third-party integrations.
 - Check platform support and handle service errors in the UI.
 
 Services belong to the connected client. In a server-driven app, a file path,

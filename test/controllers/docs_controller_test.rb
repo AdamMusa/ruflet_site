@@ -29,4 +29,20 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     assert_includes integrations.entries.map(&:slug), "rails-api-reference"
     refute_includes reference.entries.map(&:slug), "rails-api-reference"
   end
+
+  test "groups controls services and extensions separately" do
+    controls = DocsCatalog.sections.find { |section| section.id == "controls" }
+    services = DocsCatalog.sections.find { |section| section.id == "services" }
+    extensions = DocsCatalog.sections.find { |section| section.id == "extensions" }
+    integrations = DocsCatalog.sections.find { |section| section.id == "integrations" }
+
+    assert_includes controls.entries.map(&:slug), "component-reference"
+    assert_includes controls.entries.map(&:slug), "control-text"
+    assert_includes services.entries.map(&:slug), "services-and-plugins"
+    assert_includes extensions.entries.map(&:slug), "extensions"
+    assert_includes extensions.entries.map(&:slug), "qrcode-scanner"
+    assert_includes extensions.entries.map(&:slug), "extension-authoring"
+    refute_includes integrations.entries.map(&:slug), "services-and-plugins"
+    refute_includes integrations.entries.map(&:slug), "extension-authoring"
+  end
 end

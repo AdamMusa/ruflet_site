@@ -5123,6 +5123,19 @@
       ]
     },
     {
+      "name": "qrcode_scanner",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
       "name": "service",
       "parameters": [
         [

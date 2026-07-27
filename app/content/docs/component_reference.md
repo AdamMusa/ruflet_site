@@ -1,5 +1,9 @@
 # Controls
 
-Browse Ruflet controls by family and open a dedicated page for properties,
-events, and examples. Device services are documented separately under
-[Services and Device APIs](/docs/services-and-plugins).
+Controls are the visual components and widgets that compose a Ruflet interface.
+Browse them by family and open a dedicated page for properties, events, methods,
+and examples.
+
+Client capabilities that do not render UI belong under
+[Services](/docs/services-and-plugins). Optional Flutter packages and their
+setup belong under [Extensions](/docs/extensions).

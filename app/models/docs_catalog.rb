@@ -57,9 +57,7 @@ class DocsCatalog
           entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
           entry("rails-native-services", "Rails Service Actions", "Trigger sharing, clipboard, URL-launching, and haptic actions from annotated Rails HTML.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
-          entry("rails-webview-apps", "WebView Apps", "Wrap Rails views in a native WebView shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
-          entry("extension-authoring", "Extension Authoring", "Build typed Ruflet controls as standard Flet Flutter extension packages.", SOURCE_ROOT.join("extension_authoring.md"), "Integrations"),
-          entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
+          entry("rails-webview-apps", "WebView Apps", "Wrap Rails views in a native WebView shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations")
         ]
       ),
       Section.new(
@@ -69,14 +67,35 @@ class DocsCatalog
           entry("reference", "API Reference", "Overview of Ruflet controls, services, CLI workflow, and app structure.", SOURCE_ROOT.join("reference.md"), "Reference"),
           entry("cli-reference", "CLI Reference", "Complete Ruflet CLI commands, options, defaults, hot reload controls, and diagnostics.", SOURCE_ROOT.join("cli_reference.md"), "Reference"),
           entry("events-and-state", "Events and State", "Handle control and Page events, read payloads, keep Ruby state, and patch mounted controls.", SOURCE_ROOT.join("events_and_state.md"), "Reference"),
-          entry("configuration-reference", "Configuration", "Every supported `ruflet.yaml` and `services.yaml` key, extension, service, and environment override.", SOURCE_ROOT.join("configuration_reference.md"), "Reference"),
-          entry("component-reference", "Controls", "Browse Ruflet controls and open dedicated reference pages for each component.", SOURCE_ROOT.join("component_reference.md"), "Reference"),
-          entry("controls-and-layout", "Controls and Layout", "How controls, containers, and the layout model fit together.", SOURCE_ROOT.join("controls_and_layout.md"), "Reference"),
-          entry("navigation-feedback", "Navigation and Feedback", "Views, dialogs, snackbars, bottom sheets, and other navigation and feedback patterns.", SOURCE_ROOT.join("navigation_feedback.md"), "Reference"),
-          entry("charts-and-canvas", "Charts and Canvas", "Bar, line, pie, scatter, candlestick, and radar charts, plus canvas drawing primitives.", SOURCE_ROOT.join("charts_and_canvas.md"), "Reference"),
-          entry("maps", "Maps", "Interactive maps with tile layers, markers, circles, and shapes.", SOURCE_ROOT.join("maps.md"), "Reference"),
-          entry("qrcode-scanner", "QRCodeScanner", "Scan QR codes and barcodes with the first-party Ruflet Flet extension.", SOURCE_ROOT.join("control_qrcode_scanner.md"), "Reference"),
+          entry("configuration-reference", "Configuration", "Every supported `ruflet.yaml` and `services.yaml` key, extension, service, and environment override.", SOURCE_ROOT.join("configuration_reference.md"), "Reference")
+        ]
+      ),
+      Section.new(
+        id: "controls",
+        title: "Controls (Components & Widgets)",
+        entries: [
+          entry("component-reference", "Controls", "Browse Ruflet controls and open dedicated reference pages for each component.", SOURCE_ROOT.join("component_reference.md"), "Controls"),
+          entry("controls-and-layout", "Controls and Layout", "How controls, containers, and the layout model fit together.", SOURCE_ROOT.join("controls_and_layout.md"), "Controls"),
+          entry("navigation-feedback", "Navigation and Feedback", "Views, dialogs, snackbars, bottom sheets, and other navigation and feedback patterns.", SOURCE_ROOT.join("navigation_feedback.md"), "Controls"),
+          entry("charts-and-canvas", "Charts and Canvas", "Bar, line, pie, scatter, candlestick, and radar charts, plus canvas drawing primitives.", SOURCE_ROOT.join("charts_and_canvas.md"), "Controls"),
+          entry("maps", "Maps", "Interactive maps with tile layers, markers, circles, and shapes.", SOURCE_ROOT.join("maps.md"), "Controls"),
           *control_entries
+        ]
+      ),
+      Section.new(
+        id: "services",
+        title: "Services",
+        entries: [
+          entry("services-and-plugins", "Services and Device APIs", "Use page convenience methods and persistent services to access client capabilities.", SOURCE_ROOT.join("services_and_plugins.md"), "Services")
+        ]
+      ),
+      Section.new(
+        id: "extensions",
+        title: "Extensions",
+        entries: [
+          entry("extensions", "Extension Catalog", "Enable optional Ruflet client packages and find the Ruby APIs they provide.", SOURCE_ROOT.join("extensions.md"), "Extensions"),
+          entry("qrcode-scanner", "QRCodeScanner", "Scan QR codes and barcodes with the first-party Ruflet Flet extension.", SOURCE_ROOT.join("control_qrcode_scanner.md"), "Extensions"),
+          entry("extension-authoring", "Extension Authoring", "Build typed Ruflet controls as standard Flet Flutter extension packages.", SOURCE_ROOT.join("extension_authoring.md"), "Extensions")
         ]
       )
     ]
@@ -164,7 +183,7 @@ class DocsCatalog
         generated_control_markdown(control)
       end
       summary = source ? nil : generated_control_summary(control)
-      entry(control[:slug], control[:title], summary, nil, "Reference", content)
+      entry(control[:slug], control[:title], summary, nil, "Controls", content)
     end
   end
 
