@@ -1,159 +1,59 @@
-# Native HTML Apps
+# Mounted Rails Web Apps
 
-Build a fully native app by writing HTML in your Rails views. With
-`Ruflet::Rails.erb_to_native`, every page you render is compiled into **real native
-controls** — there is no WebView. State lives in Rails, each interaction is a
-request, and the response markup re-renders the screen.
+Ruflet 0.0.19 supports two web-based Rails integrations: mount a Ruflet web
+frontend inside Rails, or display ordinary Rails pages inside a managed native
+WebView shell. Rails HTML is not converted into a native control tree.
 
-This is the fastest way to ship a native app from an existing Rails codebase:
-you keep controllers, views, sessions, redirects, and CSRF, and write screens
-with tags like `<column>`, `<row>`, `<text>`, and `<button>` instead of HTML
-that targets a browser.
+## Mount a Ruflet web app
 
-## How it compares
+Install the prebuilt frontend and mount an app file:
 
-Ruflet gives you three ways to bring Rails into a native client:
+```bash
+rake ruflet:web
+```
 
-1. `Ruflet::Rails.erb_to_native` renders your Rails HTML as native controls. No
-   WebView — the markup *becomes* the widgets.
-2. `Ruflet::Rails.native_shell` keeps your web pages in a native WebView and adds
-   a native shell (app bar, drawer, navigation) around them. See
-   [Webview Apps](/docs/rails-webview-apps).
-3. `Ruflet::Rails.native` serves a Ruby-driven Ruflet UI over the WebSocket
-   protocol. See [Rails Integration](/docs/rails-integration).
+```ruby
+# config/routes.rb
+mount Ruflet::Rails.web_app(
+  app_file: Rails.root.join("app/views/ruflet/main.rb")
+), at: "/ruflet"
+```
 
-Reach for `erb_to_native` when you want a genuinely native UI but would rather write
-markup in Rails views than build the control tree in Ruby.
+The mount serves the web assets and WebSocket on the same route. It accepts
+exactly one app source: `app_file:` or a block. Use `build_dir:` only when the
+web build is stored outside the default location.
 
-## Quick start
+Embed the mounted app inside another Rails page when useful:
 
-Point the native entrypoint at an `erb_to_native` app:
+```erb
+<%= ruflet_frame "/ruflet", height: 640, title: "Account app" %>
+```
+
+## Display Rails HTML in a native shell
 
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  Ruflet::Rails.erb_to_native(
+  Ruflet::Rails.native_app(
     page,
-    start_url: "#{Ruflet::Rails.backend_url}/app",
-    title: "My App"
+    start_url: "#{Ruflet::Rails.backend_url}/dashboard",
+    title: "Dashboard"
   )
 end
 ```
 
-Use `Ruflet::Rails.backend_url` instead of hard-coding `localhost`, so the app
-reaches your server from a real device.
+The requested URL renders through normal Rails controllers, views, sessions,
+CSS, and JavaScript. The native shell hosts that page in a WebView and can read
+supported `data-ruflet-*` annotations for native chrome and platform actions.
 
-Screens are ordinary Rails views. A controller renders markup; the client shows
-native controls:
+## Choose between them
 
-```ruby
-# app/controllers/app_controller.rb
-class AppController < ApplicationController
-  layout "native"
+- Use `web_app` when the UI is built with Ruflet controls and should run in a
+  browser under a Rails route.
+- Use `native_app` when an existing Rails website should remain HTML while
+  gaining native app chrome and selected platform actions.
+- Use `endpoint` or `app` for Ruby-driven Ruflet controls rendered by native or
+  desktop clients.
 
-  def show
-    @count = session[:count] ||= 0
-  end
-
-  def increment
-    session[:count] = (session[:count] || 0) + 1
-    redirect_to app_path
-  end
-end
-```
-
-```erb
-<%# app/views/app/show.html.erb %>
-<appbar title="Counter"></appbar>
-
-<column class="p-6 gap-8 items-center justify-center flex-1">
-  <text class="text-5xl font-bold"><%= @count %></text>
-  <row class="gap-3">
-    <button variant="filled" icon="add" on-click="<%= increment_path %>">Add</button>
-  </row>
-</column>
-```
-
-A minimal layout is enough — the CSRF token lets native actions and forms post
-back to Rails:
-
-```erb
-<%# app/views/layouts/native.html.erb %>
-<%= csrf_meta_tags %>
-<%= yield %>
-```
-
-## How it works
-
-- The client requests `start_url`. Ruflet compiles the response into native
-  controls and shows them as a screen.
-- A `<a href>` link pushes a new native screen (fetched from that URL). The
-  native back button and gesture pop it.
-- An `on-click` action posts to Rails and re-renders the current screen in
-  place with the response. Rails `redirect_to` is followed, so redirect-based
-  flows work unchanged.
-- Requests carry the Rails session cookie and CSRF token, plus an
-  `X-Ruflet-Native: 1` header, so one controller action can serve both a
-  browser page and a native screen.
-
-## Layout and content
-
-- **Layout** — `<column>`, `<row>`, `<stack>`, `<div>`/`<section>` (a
-  container), `<card>`, `<center>`, `<spacer>`, `<list>`, `<grid>`.
-- **Content** — `<text>`, `<h1>`–`<h6>`, `<p>`, `<markdown>`, `<img>`,
-  `<icon>`, `<hr>`, `<ul>`/`<li>`.
-
-```erb
-<column class="p-6 gap-4">
-  <h1>Inbox</h1>
-  <card class="p-4">
-    <row class="gap-3 items-center">
-      <icon name="mail" class="text-emerald-600"></icon>
-      <column class="gap-1 flex-1">
-        <text class="font-semibold">Welcome</text>
-        <text class="text-sm text-slate-500">Tap to read</text>
-      </column>
-    </row>
-  </card>
-</column>
-```
-
-Screens can also be written with Ruby helpers (auto-included into ActionView),
-and both styles mix freely in one template. Snake-case keys become the matching
-attributes (`on_click:` → `on-click`):
-
-```erb
-<%= column class: "p-6 gap-6 items-center justify-center flex-1" do %>
-  <%= text @count, class: "text-5xl font-bold" %>
-  <%= button "Add", variant: "filled", icon: "add", on_click: increment_path %>
-  <%= link "Settings", settings_path %>
-<% end %>
-```
-
-## Guides
-
-The rest of the framework is covered in focused guides:
-
-- [Styling](/docs/rails-native-styling) — the full class vocabulary: spacing,
-  color, typography, borders, transforms, and transitions.
-- [Components](/docs/rails-native-components) — layout and content tags, the
-  first-class components (badge, chip, tabs, list tile, table…), and the full
-  control catalog.
-- [Navigation and Forms](/docs/rails-native-interactivity) — links and
-  navigation modes, `on-click` actions, forms, and app chrome (app bar, bottom
-  navigation, FAB).
-- [Services and Extensions](/docs/rails-native-services) — the camera, GPS,
-  sensors, storage, and visible extensions like video, maps, and charts.
-
-## Errors
-
-A single bad element never takes down a screen — it renders a small inline
-placeholder and the rest of the page keeps building. HTTP errors (except `422`,
-which is a form re-render) show a compact error screen with the status and URL,
-so a wrong route or a server exception is visible instead of a blank screen.
-
-## Related guides
-
-- [Rails Integration](/docs/rails-integration)
-- [Webview Apps](/docs/rails-webview-apps)
-- [Controls](/docs/component-reference)
+See [Rails API Reference](/docs/rails-api-reference) for exact signatures and
+[WebView Apps](/docs/rails-webview-apps) for the managed shell.

@@ -8,7 +8,7 @@ gem "propshaft"
 gem "sqlite3", ">= 2.1"
 
 # Ruflet: Ruby-driven Flutter UI for web and native clients
-gem "ruflet_rails", "~> 0.0.12"
+gem "ruflet_rails", "~> 0.0.16"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
