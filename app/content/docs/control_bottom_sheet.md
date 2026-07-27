@@ -22,11 +22,18 @@ sheet = bottom_sheet(
 )
 
 page.show_bottom_sheet(sheet)
+
+# Later, from an event handler:
+page.close_bottom_sheet
 ```
 
 `show_bottom_sheet` opens the sheet for you. You can also assign
 `page.bottom_sheet = bottom_sheet(open: true, …)` directly, but the assignment
 form only displays when the control is built with `open: true`.
+
+`page.close_bottom_sheet` closes the currently shown sheet. Pass a sheet when
+you want to close a specific instance: `page.close_bottom_sheet(sheet)`.
+`show_bottomsheet` and `close_bottomsheet` are compact aliases.
 
 ## Common properties
 
@@ -43,11 +50,13 @@ form only displays when the control is built with `open: true`.
 
 ## Usage
 
-Close it by setting `open: false` and updating:
+Prefer the page helper:
 
 ```ruby
-page.update(sheet, open: false)
+page.close_bottom_sheet(sheet)
 ```
+
+The lower-level equivalent is `page.update(sheet, open: false)`.
 
 For a modal that hosts your *website* content (e.g. an auth flow), see
 [Webview Apps](/docs/rails-webview-apps).
