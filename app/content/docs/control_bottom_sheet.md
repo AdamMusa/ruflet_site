@@ -1,13 +1,12 @@
 # BottomSheet
 
-A panel that slides up from the bottom of the screen. Assign it to
-`page.bottom_sheet` with `open: true` to show it.
+A panel that slides up from the bottom of the screen. Show it with
+`page.show_bottom_sheet`.
 
 ## Example
 
 ```ruby
 sheet = bottom_sheet(
-  open: true,
   show_drag_handle: true,
   content: container(
     padding: 24,
@@ -15,16 +14,19 @@ sheet = bottom_sheet(
       tight: true,
       spacing: 12,
       children: [
-        text("Share", size: 18, weight: "bold"),
+        text(value: "Share", style: { size: 18, weight: "w700" }),
         filled_button(content: text("Copy link"), on_click: ->(_e) { copy_link })
       ]
     )
   )
 )
 
-page.bottom_sheet = sheet
-page.update
+page.show_bottom_sheet(sheet)
 ```
+
+`show_bottom_sheet` opens the sheet for you. You can also assign
+`page.bottom_sheet = bottom_sheet(open: true, …)` directly, but the assignment
+form only displays when the control is built with `open: true`.
 
 ## Common properties
 

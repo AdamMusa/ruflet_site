@@ -1,0 +1,5968 @@
+{
+  "version": "0.0.19",
+  "ruflet": [
+    {
+      "name": "app",
+      "parameters": [
+        [
+          "key",
+          "host"
+        ],
+        [
+          "key",
+          "port"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "resolved_run_port",
+      "parameters": [
+        [
+          "req",
+          "port"
+        ]
+      ]
+    },
+    {
+      "name": "run",
+      "parameters": [
+        [
+          "opt",
+          "entrypoint"
+        ],
+        [
+          "key",
+          "host"
+        ],
+        [
+          "key",
+          "port"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "with_run_interceptor",
+      "parameters": [
+        [
+          "req",
+          "interceptor"
+        ]
+      ]
+    }
+  ],
+  "app": [
+    {
+      "name": "initialize",
+      "parameters": [
+        [
+          "key",
+          "host"
+        ],
+        [
+          "key",
+          "port"
+        ]
+      ]
+    },
+    {
+      "name": "run",
+      "parameters": []
+    },
+    {
+      "name": "view",
+      "parameters": [
+        [
+          "req",
+          "_page"
+        ]
+      ]
+    }
+  ],
+  "dsl_app": [
+    {
+      "name": "initialize",
+      "parameters": [
+        [
+          "keyreq",
+          "host"
+        ],
+        [
+          "keyreq",
+          "port"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "control",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "duration",
+      "parameters": [
+        [
+          "keyrest",
+          "parts"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "host",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "page",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "page_props",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "port",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "run",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "service",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "set_endpoint!",
+      "parameters": [
+        [
+          "keyreq",
+          "host"
+        ],
+        [
+          "keyreq",
+          "port"
+        ]
+      ],
+      "internal": true
+    },
+    {
+      "name": "widget",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    }
+  ],
+  "page": [
+    {
+      "name": "accelerometer",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "add",
+      "parameters": [
+        [
+          "req",
+          "control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "add_service",
+      "parameters": [
+        [
+          "rest",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "appbar",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "appbar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "apply_client_update",
+      "parameters": [
+        [
+          "req",
+          "control_or_id"
+        ],
+        [
+          "req",
+          "props"
+        ]
+      ],
+      "internal": true
+    },
+    {
+      "name": "audio",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "audio_recorder",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "auto_scroll",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "auto_scroll=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "barometer",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "battery",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "battery_save_mode?",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "bgcolor",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "bgcolor=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "bottom_appbar",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "bottom_appbar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "bottom_sheet",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "bottom_sheet=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "bottomappbar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "bottomsheet=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "browser_context_menu",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "browser_context_menu=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "camera",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "can_launch_url",
+      "parameters": [
+        [
+          "req",
+          "url"
+        ],
+        [
+          "key",
+          "timeout"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "clean",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "client_details",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "clipboard",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close",
+      "parameters": [
+        [
+          "opt",
+          "dialog_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_banner",
+      "parameters": [
+        [
+          "opt",
+          "banner_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_dialog",
+      "parameters": [
+        [
+          "opt",
+          "dialog_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_drawer",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_end_drawer",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_in_app_web_view",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "connectivity",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "controls",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "controls=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "decoration",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "decoration=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "dialog",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "dialog=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "dispatch_event",
+      "parameters": [
+        [
+          "keyreq",
+          "target"
+        ],
+        [
+          "keyreq",
+          "name"
+        ],
+        [
+          "keyreq",
+          "data"
+        ]
+      ],
+      "internal": true
+    },
+    {
+      "name": "drawer",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "drawer=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "end_drawer",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "end_drawer=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "file_picker",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "finalize_reload!",
+      "parameters": [],
+      "internal": true
+    },
+    {
+      "name": "flashlight",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "floating_action_button",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "floating_action_button=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "floating_action_button_location",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "floating_action_button_location=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "foreground_decoration",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "foreground_decoration=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "geolocator",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_application_cache_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_application_documents_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_application_support_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_battery_level",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_battery_state",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_clipboard",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_clipboard_files",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_clipboard_image",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_connectivity",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_console_log_filename",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_control",
+      "parameters": [
+        [
+          "req",
+          "id"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_directory_path",
+      "parameters": [
+        [
+          "key",
+          "dialog_title"
+        ],
+        [
+          "key",
+          "initial_directory"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_downloads_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_external_cache_directories",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_external_storage_directories",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_external_storage_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_library_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "get_temporary_directory",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "go",
+      "parameters": [
+        [
+          "req",
+          "route"
+        ],
+        [
+          "keyrest",
+          "query_params"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "gyroscope",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "handle_invoke_method_result",
+      "parameters": [
+        [
+          "req",
+          "payload"
+        ]
+      ],
+      "internal": true
+    },
+    {
+      "name": "haptic_feedback",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "heavy_impact",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "horizontal_alignment",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "horizontal_alignment=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "insert",
+      "parameters": [
+        [
+          "req",
+          "at"
+        ],
+        [
+          "rest",
+          "controls"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "invoke",
+      "parameters": [
+        [
+          "req",
+          "control_or_id"
+        ],
+        [
+          "req",
+          "method_name"
+        ],
+        [
+          "key",
+          "args"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "invoke_sync",
+      "parameters": [
+        [
+          "req",
+          "control_or_id"
+        ],
+        [
+          "req",
+          "method_name"
+        ],
+        [
+          "key",
+          "args"
+        ],
+        [
+          "key",
+          "timeout"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "is_in_battery_save_mode",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "launch_url",
+      "parameters": [
+        [
+          "req",
+          "url"
+        ],
+        [
+          "key",
+          "mode"
+        ],
+        [
+          "key",
+          "web_view_configuration"
+        ],
+        [
+          "key",
+          "browser_configuration"
+        ],
+        [
+          "key",
+          "web_only_window_name"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "light_impact",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "magnetometer",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "medium_impact",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "method_missing",
+      "parameters": [
+        [
+          "req",
+          "name"
+        ],
+        [
+          "rest",
+          "args"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": true
+    },
+    {
+      "name": "mount",
+      "parameters": [
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "navigate",
+      "parameters": [
+        [
+          "req",
+          "route"
+        ],
+        [
+          "keyrest",
+          "query_params"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "navigation_bar",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "navigation_bar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "on",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "on_route_change=",
+      "parameters": [
+        [
+          "req",
+          "handler"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "on_view_pop=",
+      "parameters": [
+        [
+          "req",
+          "handler"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "on_views_pop_until=",
+      "parameters": [
+        [
+          "req",
+          "handler"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "open",
+      "parameters": [
+        [
+          "req",
+          "dialog_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "open_window",
+      "parameters": [
+        [
+          "req",
+          "url"
+        ],
+        [
+          "key",
+          "title"
+        ],
+        [
+          "key",
+          "width"
+        ],
+        [
+          "key",
+          "height"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "overlay",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "overlay=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "padding",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "padding=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "patch_page",
+      "parameters": [
+        [
+          "req",
+          "control_id"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "permission_handler",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "pick_files",
+      "parameters": [
+        [
+          "key",
+          "dialog_title"
+        ],
+        [
+          "key",
+          "initial_directory"
+        ],
+        [
+          "key",
+          "file_type"
+        ],
+        [
+          "key",
+          "allowed_extensions"
+        ],
+        [
+          "key",
+          "allow_multiple"
+        ],
+        [
+          "key",
+          "with_data"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "pop_dialog",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "push_route",
+      "parameters": [
+        [
+          "req",
+          "route"
+        ],
+        [
+          "keyrest",
+          "query_params"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "query",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "register_page_patch",
+      "parameters": [],
+      "internal": true
+    },
+    {
+      "name": "remove",
+      "parameters": [
+        [
+          "rest",
+          "controls"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "remove_at",
+      "parameters": [
+        [
+          "req",
+          "index"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "remove_service",
+      "parameters": [
+        [
+          "rest",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "replay_route_after_reload!",
+      "parameters": [],
+      "internal": true
+    },
+    {
+      "name": "reset_for_reload!",
+      "parameters": [],
+      "internal": true
+    },
+    {
+      "name": "route",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "route=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "save_file",
+      "parameters": [
+        [
+          "key",
+          "dialog_title"
+        ],
+        [
+          "key",
+          "file_name"
+        ],
+        [
+          "key",
+          "initial_directory"
+        ],
+        [
+          "key",
+          "file_type"
+        ],
+        [
+          "key",
+          "allowed_extensions"
+        ],
+        [
+          "key",
+          "src_bytes"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "schedule_update",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "screen_brightness",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "screenshot",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "scroll_to",
+      "parameters": [
+        [
+          "key",
+          "offset"
+        ],
+        [
+          "key",
+          "delta"
+        ],
+        [
+          "key",
+          "scroll_key"
+        ],
+        [
+          "key",
+          "duration"
+        ],
+        [
+          "key",
+          "curve"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "secure_storage",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "selection_click",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "semantics_service",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "service",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "services",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "services=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "session_id",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "set_clipboard",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "set_clipboard_files",
+      "parameters": [
+        [
+          "req",
+          "files"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "set_clipboard_image",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "set_view_props",
+      "parameters": [
+        [
+          "req",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "shake_detector",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "share",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "share_files",
+      "parameters": [
+        [
+          "opt",
+          "files"
+        ],
+        [
+          "key",
+          "text"
+        ],
+        [
+          "key",
+          "title"
+        ],
+        [
+          "key",
+          "subject"
+        ],
+        [
+          "key",
+          "preview_thumbnail"
+        ],
+        [
+          "key",
+          "share_position_origin"
+        ],
+        [
+          "key",
+          "download_fallback_enabled"
+        ],
+        [
+          "key",
+          "mail_to_fallback_enabled"
+        ],
+        [
+          "key",
+          "excluded_cupertino_activities"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "share_text",
+      "parameters": [
+        [
+          "opt",
+          "text"
+        ],
+        [
+          "key",
+          "title"
+        ],
+        [
+          "key",
+          "subject"
+        ],
+        [
+          "key",
+          "preview_thumbnail"
+        ],
+        [
+          "key",
+          "share_position_origin"
+        ],
+        [
+          "key",
+          "download_fallback_enabled"
+        ],
+        [
+          "key",
+          "mail_to_fallback_enabled"
+        ],
+        [
+          "key",
+          "excluded_cupertino_activities"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "share_uri",
+      "parameters": [
+        [
+          "opt",
+          "uri"
+        ],
+        [
+          "key",
+          "share_position_origin"
+        ],
+        [
+          "key",
+          "excluded_cupertino_activities"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "shared_preferences",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_banner",
+      "parameters": [
+        [
+          "req",
+          "banner_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_bottom_sheet",
+      "parameters": [
+        [
+          "req",
+          "bottom_sheet_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_dialog",
+      "parameters": [
+        [
+          "req",
+          "dialog_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_drawer",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_end_drawer",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_snack_bar",
+      "parameters": [
+        [
+          "req",
+          "snack_bar_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_snackbar",
+      "parameters": [
+        [
+          "req",
+          "snack_bar_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "snack_bar",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "snack_bar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "snackbar=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "spacing",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "spacing=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "storage_paths",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "supports_close_for_launch_mode",
+      "parameters": [
+        [
+          "req",
+          "mode"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "supports_launch_mode",
+      "parameters": [
+        [
+          "req",
+          "mode"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "title",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "title=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "update",
+      "parameters": [
+        [
+          "opt",
+          "control_or_id"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "upload",
+      "parameters": [
+        [
+          "req",
+          "files"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "upload_files",
+      "parameters": [
+        [
+          "req",
+          "files"
+        ],
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "url_launcher",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "user_accelerometer",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "vertical_alignment",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "vertical_alignment=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "vibrate",
+      "parameters": [
+        [
+          "key",
+          "timeout"
+        ],
+        [
+          "key",
+          "on_result"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "views",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "views=",
+      "parameters": [
+        [
+          "req",
+          "value"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "wakelock",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "web",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "web?",
+      "parameters": [],
+      "internal": false
+    },
+    {
+      "name": "window",
+      "parameters": [],
+      "internal": false
+    }
+  ],
+  "control": [
+    {
+      "name": "initialize",
+      "parameters": [
+        [
+          "keyreq",
+          "type"
+        ],
+        [
+          "key",
+          "id"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "attach_handler",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "req",
+          "handler"
+        ]
+      ]
+    },
+    {
+      "name": "children",
+      "parameters": []
+    },
+    {
+      "name": "emit",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "req",
+          "event"
+        ]
+      ]
+    },
+    {
+      "name": "has_handler?",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ]
+      ]
+    },
+    {
+      "name": "id",
+      "parameters": []
+    },
+    {
+      "name": "merge_props",
+      "parameters": [
+        [
+          "opt",
+          "values"
+        ]
+      ]
+    },
+    {
+      "name": "on",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "props",
+      "parameters": []
+    },
+    {
+      "name": "runtime_page",
+      "parameters": []
+    },
+    {
+      "name": "runtime_page=",
+      "parameters": [
+        [
+          "req",
+          null
+        ]
+      ]
+    },
+    {
+      "name": "to_patch",
+      "parameters": []
+    },
+    {
+      "name": "type",
+      "parameters": []
+    },
+    {
+      "name": "wire_id",
+      "parameters": []
+    },
+    {
+      "name": "wire_id=",
+      "parameters": [
+        [
+          "req",
+          null
+        ]
+      ]
+    }
+  ],
+  "event": [
+    {
+      "name": "initialize",
+      "parameters": [
+        [
+          "keyreq",
+          "name"
+        ],
+        [
+          "keyreq",
+          "target"
+        ],
+        [
+          "keyreq",
+          "raw_data"
+        ],
+        [
+          "keyreq",
+          "page"
+        ],
+        [
+          "keyreq",
+          "control"
+        ]
+      ]
+    },
+    {
+      "name": "control",
+      "parameters": []
+    },
+    {
+      "name": "data",
+      "parameters": []
+    },
+    {
+      "name": "method_missing",
+      "parameters": [
+        [
+          "req",
+          "name"
+        ],
+        [
+          "rest",
+          "args"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "name",
+      "parameters": []
+    },
+    {
+      "name": "page",
+      "parameters": []
+    },
+    {
+      "name": "raw_data",
+      "parameters": []
+    },
+    {
+      "name": "target",
+      "parameters": []
+    },
+    {
+      "name": "typed_data",
+      "parameters": []
+    }
+  ],
+  "event_payloads": [
+    {
+      "name": "ActionEvent",
+      "readers": []
+    },
+    {
+      "name": "AutoCompleteSelectEvent",
+      "readers": [
+        "selection"
+      ]
+    },
+    {
+      "name": "BasePayload",
+      "readers": []
+    },
+    {
+      "name": "BlurEvent",
+      "readers": []
+    },
+    {
+      "name": "ChangeEvent",
+      "readers": []
+    },
+    {
+      "name": "ClickEvent",
+      "readers": []
+    },
+    {
+      "name": "DismissEvent",
+      "readers": [
+        "direction"
+      ]
+    },
+    {
+      "name": "DismissibleUpdateEvent",
+      "readers": [
+        "direction",
+        "progress",
+        "reached"
+      ]
+    },
+    {
+      "name": "DragDownEvent",
+      "readers": [
+        "global_position",
+        "local_position"
+      ]
+    },
+    {
+      "name": "DragEndEvent",
+      "readers": [
+        "global_position",
+        "local_position",
+        "primary_velocity",
+        "velocity"
+      ]
+    },
+    {
+      "name": "DragStartEvent",
+      "readers": [
+        "global_position",
+        "kind",
+        "local_position",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "DragTargetEvent",
+      "readers": [
+        "accept",
+        "src_id",
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "DragUpdateEvent",
+      "readers": [
+        "global_delta",
+        "global_position",
+        "local_delta",
+        "local_position",
+        "primary_delta",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "ErrorEvent",
+      "readers": []
+    },
+    {
+      "name": "FocusEvent",
+      "readers": []
+    },
+    {
+      "name": "ForcePressEvent",
+      "readers": [
+        "global_position",
+        "local_position",
+        "pressure"
+      ]
+    },
+    {
+      "name": "GenericEvent",
+      "readers": [
+        "raw",
+        "value"
+      ]
+    },
+    {
+      "name": "HoverEvent",
+      "readers": [
+        "device",
+        "distance",
+        "distance_max",
+        "global_delta",
+        "global_position",
+        "kind",
+        "local_delta",
+        "local_position",
+        "orientation",
+        "pressure",
+        "pressure_max",
+        "pressure_min",
+        "radius_major",
+        "radius_max",
+        "radius_min",
+        "radius_minor",
+        "size",
+        "tilt",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "LongPressDownEvent",
+      "readers": [
+        "global_position",
+        "kind",
+        "local_position"
+      ]
+    },
+    {
+      "name": "LongPressEndEvent",
+      "readers": [
+        "global_position",
+        "local_position",
+        "velocity"
+      ]
+    },
+    {
+      "name": "LongPressMoveUpdateEvent",
+      "readers": [
+        "global_position",
+        "local_offset_from_origin",
+        "local_position",
+        "offset_from_origin"
+      ]
+    },
+    {
+      "name": "LongPressStartEvent",
+      "readers": [
+        "global_position",
+        "local_position"
+      ]
+    },
+    {
+      "name": "MultiTapEvent",
+      "readers": [
+        "correct_touches"
+      ]
+    },
+    {
+      "name": "PointerEvent",
+      "readers": [
+        "device",
+        "distance",
+        "distance_max",
+        "global_delta",
+        "global_position",
+        "kind",
+        "local_delta",
+        "local_position",
+        "orientation",
+        "pressure",
+        "pressure_max",
+        "pressure_min",
+        "radius_major",
+        "radius_max",
+        "radius_min",
+        "radius_minor",
+        "size",
+        "tilt",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "ReorderEvent",
+      "readers": [
+        "new_index",
+        "old_index"
+      ]
+    },
+    {
+      "name": "ResultEvent",
+      "readers": []
+    },
+    {
+      "name": "ScaleEndEvent",
+      "readers": [
+        "pointer_count",
+        "velocity"
+      ]
+    },
+    {
+      "name": "ScaleStartEvent",
+      "readers": [
+        "global_focal_point",
+        "local_focal_point",
+        "pointer_count",
+        "timestamp"
+      ]
+    },
+    {
+      "name": "ScaleUpdateEvent",
+      "readers": [
+        "focal_point_delta",
+        "global_focal_point",
+        "horizontal_scale",
+        "local_focal_point",
+        "pointer_count",
+        "rotation",
+        "scale",
+        "timestamp",
+        "vertical_scale"
+      ]
+    },
+    {
+      "name": "ScrollEvent",
+      "readers": [
+        "global_position",
+        "local_position",
+        "scroll_delta"
+      ]
+    },
+    {
+      "name": "SelectEvent",
+      "readers": []
+    },
+    {
+      "name": "StateChangeEvent",
+      "readers": [
+        "state"
+      ]
+    },
+    {
+      "name": "SubmitEvent",
+      "readers": []
+    },
+    {
+      "name": "TapEvent",
+      "readers": [
+        "global_position",
+        "kind",
+        "local_position"
+      ]
+    },
+    {
+      "name": "TapMoveEvent",
+      "readers": [
+        "delta",
+        "global_position",
+        "kind",
+        "local_position"
+      ]
+    },
+    {
+      "name": "UploadEvent",
+      "readers": []
+    },
+    {
+      "name": "VisibleEvent",
+      "readers": []
+    }
+  ],
+  "value_types": [
+    {
+      "name": "Ruflet::Duration",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": [
+            [
+              "keyreq",
+              "milliseconds"
+            ]
+          ]
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "milliseconds",
+          "parameters": []
+        },
+        {
+          "name": "to_h",
+          "parameters": []
+        }
+      ],
+      "class_methods": [
+        {
+          "name": "from_wire",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ruflet::IconData",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ]
+          ]
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "==",
+          "parameters": [
+            [
+              "req",
+              "other"
+            ]
+          ]
+        },
+        {
+          "name": "eql?",
+          "parameters": [
+            [
+              "req",
+              "other"
+            ]
+          ]
+        },
+        {
+          "name": "hash",
+          "parameters": []
+        },
+        {
+          "name": "to_s",
+          "parameters": []
+        },
+        {
+          "name": "value",
+          "parameters": []
+        }
+      ],
+      "class_methods": []
+    },
+    {
+      "name": "Ruflet::Offset",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": [
+            [
+              "keyreq",
+              "x"
+            ],
+            [
+              "keyreq",
+              "y"
+            ]
+          ]
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "to_h",
+          "parameters": []
+        },
+        {
+          "name": "x",
+          "parameters": []
+        },
+        {
+          "name": "y",
+          "parameters": []
+        }
+      ],
+      "class_methods": [
+        {
+          "name": "from_wire",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ruflet::StrutStyle",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": [
+            [
+              "key",
+              "size"
+            ],
+            [
+              "key",
+              "height"
+            ],
+            [
+              "key",
+              "weight"
+            ],
+            [
+              "key",
+              "italic"
+            ],
+            [
+              "key",
+              "font_family"
+            ],
+            [
+              "key",
+              "leading"
+            ],
+            [
+              "key",
+              "force_strut_height"
+            ]
+          ]
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "copy",
+          "parameters": [
+            [
+              "keyrest",
+              "overrides"
+            ]
+          ]
+        },
+        {
+          "name": "font_family",
+          "parameters": []
+        },
+        {
+          "name": "force_strut_height",
+          "parameters": []
+        },
+        {
+          "name": "height",
+          "parameters": []
+        },
+        {
+          "name": "italic",
+          "parameters": []
+        },
+        {
+          "name": "leading",
+          "parameters": []
+        },
+        {
+          "name": "size",
+          "parameters": []
+        },
+        {
+          "name": "to_h",
+          "parameters": []
+        },
+        {
+          "name": "weight",
+          "parameters": []
+        }
+      ],
+      "class_methods": []
+    },
+    {
+      "name": "Ruflet::TextStyle",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": [
+            [
+              "key",
+              "size"
+            ],
+            [
+              "key",
+              "height"
+            ],
+            [
+              "key",
+              "weight"
+            ],
+            [
+              "key",
+              "italic"
+            ],
+            [
+              "key",
+              "decoration"
+            ],
+            [
+              "key",
+              "decoration_color"
+            ],
+            [
+              "key",
+              "decoration_thickness"
+            ],
+            [
+              "key",
+              "decoration_style"
+            ],
+            [
+              "key",
+              "font_family"
+            ],
+            [
+              "key",
+              "font_family_fallback"
+            ],
+            [
+              "key",
+              "color"
+            ],
+            [
+              "key",
+              "bgcolor"
+            ],
+            [
+              "key",
+              "shadow"
+            ],
+            [
+              "key",
+              "foreground"
+            ],
+            [
+              "key",
+              "letter_spacing"
+            ],
+            [
+              "key",
+              "word_spacing"
+            ],
+            [
+              "key",
+              "overflow"
+            ],
+            [
+              "key",
+              "baseline"
+            ]
+          ]
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "baseline",
+          "parameters": []
+        },
+        {
+          "name": "bgcolor",
+          "parameters": []
+        },
+        {
+          "name": "color",
+          "parameters": []
+        },
+        {
+          "name": "copy",
+          "parameters": [
+            [
+              "keyrest",
+              "overrides"
+            ]
+          ]
+        },
+        {
+          "name": "decoration",
+          "parameters": []
+        },
+        {
+          "name": "decoration_color",
+          "parameters": []
+        },
+        {
+          "name": "decoration_style",
+          "parameters": []
+        },
+        {
+          "name": "decoration_thickness",
+          "parameters": []
+        },
+        {
+          "name": "font_family",
+          "parameters": []
+        },
+        {
+          "name": "font_family_fallback",
+          "parameters": []
+        },
+        {
+          "name": "foreground",
+          "parameters": []
+        },
+        {
+          "name": "height",
+          "parameters": []
+        },
+        {
+          "name": "italic",
+          "parameters": []
+        },
+        {
+          "name": "letter_spacing",
+          "parameters": []
+        },
+        {
+          "name": "overflow",
+          "parameters": []
+        },
+        {
+          "name": "shadow",
+          "parameters": []
+        },
+        {
+          "name": "size",
+          "parameters": []
+        },
+        {
+          "name": "to_h",
+          "parameters": []
+        },
+        {
+          "name": "weight",
+          "parameters": []
+        },
+        {
+          "name": "word_spacing",
+          "parameters": []
+        }
+      ],
+      "class_methods": []
+    },
+    {
+      "name": "Ruflet::WidgetBuilder",
+      "constructors": [
+        {
+          "name": "initialize",
+          "parameters": []
+        }
+      ],
+      "instance_methods": [
+        {
+          "name": "build_service",
+          "parameters": [
+            [
+              "req",
+              "type"
+            ],
+            [
+              "keyrest",
+              "props"
+            ],
+            [
+              "block",
+              "block"
+            ]
+          ]
+        },
+        {
+          "name": "build_widget",
+          "parameters": [
+            [
+              "req",
+              "type"
+            ],
+            [
+              "keyrest",
+              "props"
+            ],
+            [
+              "block",
+              "block"
+            ]
+          ]
+        },
+        {
+          "name": "children",
+          "parameters": []
+        },
+        {
+          "name": "control",
+          "parameters": [
+            [
+              "req",
+              "type"
+            ],
+            [
+              "keyrest",
+              "props"
+            ],
+            [
+              "block",
+              "block"
+            ]
+          ]
+        },
+        {
+          "name": "service",
+          "parameters": [
+            [
+              "req",
+              "type"
+            ],
+            [
+              "keyrest",
+              "props"
+            ],
+            [
+              "block",
+              "block"
+            ]
+          ]
+        },
+        {
+          "name": "widget",
+          "parameters": [
+            [
+              "req",
+              "type"
+            ],
+            [
+              "keyrest",
+              "props"
+            ],
+            [
+              "block",
+              "block"
+            ]
+          ]
+        }
+      ],
+      "class_methods": []
+    }
+  ],
+  "constant_modules": [
+    {
+      "name": "Ruflet::MainAxisAlignment",
+      "constants": [
+        "CENTER",
+        "FINISH",
+        "SPACE_AROUND",
+        "SPACE_BETWEEN",
+        "SPACE_EVENLY",
+        "START"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::CrossAxisAlignment",
+      "constants": [
+        "CENTER",
+        "FINISH",
+        "START",
+        "STRETCH"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::TextAlign",
+      "constants": [
+        "CENTER",
+        "FINISH",
+        "JUSTIFY",
+        "LEFT",
+        "RIGHT",
+        "START"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::UI::Types::TextBaseline",
+      "constants": [
+        "ALPHABETIC",
+        "IDEOGRAPHIC"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::UI::Types::TextDecoration",
+      "constants": [
+        "LINE_THROUGH",
+        "NONE",
+        "OVERLINE",
+        "UNDERLINE"
+      ],
+      "methods": [
+        {
+          "name": "combine",
+          "parameters": [
+            [
+              "req",
+              "decorations"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ruflet::UI::Types::TextDecorationStyle",
+      "constants": [
+        "DASHED",
+        "DOTTED",
+        "DOUBLE",
+        "SOLID",
+        "WAVY"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::UI::Types::TextOverflow",
+      "constants": [
+        "CLIP",
+        "ELLIPSIS",
+        "FADE",
+        "VISIBLE"
+      ],
+      "methods": []
+    },
+    {
+      "name": "Ruflet::UI::Types::TextThemeStyle",
+      "constants": [
+        "BODY_LARGE",
+        "BODY_MEDIUM",
+        "BODY_SMALL",
+        "DISPLAY_LARGE",
+        "DISPLAY_MEDIUM",
+        "DISPLAY_SMALL",
+        "HEADLINE_LARGE",
+        "HEADLINE_MEDIUM",
+        "HEADLINE_SMALL",
+        "LABEL_LARGE",
+        "LABEL_MEDIUM",
+        "LABEL_SMALL",
+        "TITLE_LARGE",
+        "TITLE_MEDIUM",
+        "TITLE_SMALL"
+      ],
+      "methods": []
+    }
+  ],
+  "namespaces": {
+    "ruflet_ui": [
+      {
+        "name": "app",
+        "parameters": [
+          [
+            "keyrest",
+            "opts"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "page",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "icons": [
+      {
+        "name": "[]",
+        "parameters": [
+          [
+            "req",
+            "name"
+          ]
+        ]
+      },
+      {
+        "name": "const_missing",
+        "parameters": [
+          [
+            "req",
+            "name"
+          ]
+        ]
+      },
+      {
+        "name": "cupertino",
+        "parameters": []
+      },
+      {
+        "name": "material",
+        "parameters": []
+      }
+    ],
+    "icon_group": [
+      {
+        "name": "[]",
+        "parameters": [
+          [
+            "req",
+            "name"
+          ]
+        ]
+      },
+      {
+        "name": "all",
+        "parameters": []
+      },
+      {
+        "name": "const_missing",
+        "parameters": [
+          [
+            "req",
+            "name"
+          ]
+        ]
+      },
+      {
+        "name": "names",
+        "parameters": []
+      },
+      {
+        "name": "random",
+        "parameters": []
+      }
+    ],
+    "colors": [
+      {
+        "name": "AMBER",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_100",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_200",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_300",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_400",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_50",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_500",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_600",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_700",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_800",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_900",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "AMBER_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "BLACK",
+        "parameters": []
+      },
+      {
+        "name": "BLACK12",
+        "parameters": []
+      },
+      {
+        "name": "BLACK26",
+        "parameters": []
+      },
+      {
+        "name": "BLACK38",
+        "parameters": []
+      },
+      {
+        "name": "BLACK45",
+        "parameters": []
+      },
+      {
+        "name": "BLACK54",
+        "parameters": []
+      },
+      {
+        "name": "BLACK87",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_12",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_26",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_38",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_45",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_54",
+        "parameters": []
+      },
+      {
+        "name": "BLACK_87",
+        "parameters": []
+      },
+      {
+        "name": "BLUE",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_100",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_200",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_300",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_400",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_50",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_500",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_600",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_700",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_800",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_900",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_100",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_200",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_300",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_400",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_50",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_500",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_600",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_700",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_800",
+        "parameters": []
+      },
+      {
+        "name": "BLUE_GREY_900",
+        "parameters": []
+      },
+      {
+        "name": "BROWN",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_100",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_200",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_300",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_400",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_50",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_500",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_600",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_700",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_800",
+        "parameters": []
+      },
+      {
+        "name": "BROWN_900",
+        "parameters": []
+      },
+      {
+        "name": "CYAN",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_100",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_200",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_300",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_400",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_50",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_500",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_600",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_700",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_800",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_900",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "CYAN_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_100",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_200",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_300",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_400",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_50",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_500",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_600",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_700",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_800",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_900",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_ORANGE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_100",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_200",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_300",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_400",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_50",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_500",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_600",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_700",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_800",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_900",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "DEEP_PURPLE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "ERROR",
+        "parameters": []
+      },
+      {
+        "name": "ERROR_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "GREEN",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_100",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_200",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_300",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_400",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_50",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_500",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_600",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_700",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_800",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_900",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "GREEN_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "GREY",
+        "parameters": []
+      },
+      {
+        "name": "GREY_100",
+        "parameters": []
+      },
+      {
+        "name": "GREY_200",
+        "parameters": []
+      },
+      {
+        "name": "GREY_300",
+        "parameters": []
+      },
+      {
+        "name": "GREY_400",
+        "parameters": []
+      },
+      {
+        "name": "GREY_50",
+        "parameters": []
+      },
+      {
+        "name": "GREY_500",
+        "parameters": []
+      },
+      {
+        "name": "GREY_600",
+        "parameters": []
+      },
+      {
+        "name": "GREY_700",
+        "parameters": []
+      },
+      {
+        "name": "GREY_800",
+        "parameters": []
+      },
+      {
+        "name": "GREY_900",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_100",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_200",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_300",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_400",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_50",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_500",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_600",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_700",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_800",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_900",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "INDIGO_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "INVERSE_PRIMARY",
+        "parameters": []
+      },
+      {
+        "name": "INVERSE_SURFACE",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_100",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_200",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_300",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_400",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_50",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_500",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_600",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_700",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_800",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_900",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_BLUE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_100",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_200",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_300",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_400",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_50",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_500",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_600",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_700",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_800",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_900",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "LIGHT_GREEN_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "LIME",
+        "parameters": []
+      },
+      {
+        "name": "LIME_100",
+        "parameters": []
+      },
+      {
+        "name": "LIME_200",
+        "parameters": []
+      },
+      {
+        "name": "LIME_300",
+        "parameters": []
+      },
+      {
+        "name": "LIME_400",
+        "parameters": []
+      },
+      {
+        "name": "LIME_50",
+        "parameters": []
+      },
+      {
+        "name": "LIME_500",
+        "parameters": []
+      },
+      {
+        "name": "LIME_600",
+        "parameters": []
+      },
+      {
+        "name": "LIME_700",
+        "parameters": []
+      },
+      {
+        "name": "LIME_800",
+        "parameters": []
+      },
+      {
+        "name": "LIME_900",
+        "parameters": []
+      },
+      {
+        "name": "LIME_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "LIME_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "LIME_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "LIME_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "LIME_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "ON_ERROR",
+        "parameters": []
+      },
+      {
+        "name": "ON_ERROR_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "ON_INVERSE_SURFACE",
+        "parameters": []
+      },
+      {
+        "name": "ON_PRIMARY",
+        "parameters": []
+      },
+      {
+        "name": "ON_PRIMARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "ON_PRIMARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "ON_PRIMARY_FIXED_VARIANT",
+        "parameters": []
+      },
+      {
+        "name": "ON_SECONDARY",
+        "parameters": []
+      },
+      {
+        "name": "ON_SECONDARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "ON_SECONDARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "ON_SECONDARY_FIXED_VARIANT",
+        "parameters": []
+      },
+      {
+        "name": "ON_SURFACE",
+        "parameters": []
+      },
+      {
+        "name": "ON_SURFACE_VARIANT",
+        "parameters": []
+      },
+      {
+        "name": "ON_TERTIARY",
+        "parameters": []
+      },
+      {
+        "name": "ON_TERTIARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "ON_TERTIARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "ON_TERTIARY_FIXED_VARIANT",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_100",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_200",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_300",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_400",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_50",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_500",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_600",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_700",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_800",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_900",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "ORANGE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "OUTLINE",
+        "parameters": []
+      },
+      {
+        "name": "OUTLINE_VARIANT",
+        "parameters": []
+      },
+      {
+        "name": "PINK",
+        "parameters": []
+      },
+      {
+        "name": "PINK_100",
+        "parameters": []
+      },
+      {
+        "name": "PINK_200",
+        "parameters": []
+      },
+      {
+        "name": "PINK_300",
+        "parameters": []
+      },
+      {
+        "name": "PINK_400",
+        "parameters": []
+      },
+      {
+        "name": "PINK_50",
+        "parameters": []
+      },
+      {
+        "name": "PINK_500",
+        "parameters": []
+      },
+      {
+        "name": "PINK_600",
+        "parameters": []
+      },
+      {
+        "name": "PINK_700",
+        "parameters": []
+      },
+      {
+        "name": "PINK_800",
+        "parameters": []
+      },
+      {
+        "name": "PINK_900",
+        "parameters": []
+      },
+      {
+        "name": "PINK_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "PINK_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "PINK_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "PINK_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "PINK_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "PRIMARY",
+        "parameters": []
+      },
+      {
+        "name": "PRIMARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "PRIMARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "PRIMARY_FIXED_DIM",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_100",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_200",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_300",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_400",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_50",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_500",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_600",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_700",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_800",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_900",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "PURPLE_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "RED",
+        "parameters": []
+      },
+      {
+        "name": "RED_100",
+        "parameters": []
+      },
+      {
+        "name": "RED_200",
+        "parameters": []
+      },
+      {
+        "name": "RED_300",
+        "parameters": []
+      },
+      {
+        "name": "RED_400",
+        "parameters": []
+      },
+      {
+        "name": "RED_50",
+        "parameters": []
+      },
+      {
+        "name": "RED_500",
+        "parameters": []
+      },
+      {
+        "name": "RED_600",
+        "parameters": []
+      },
+      {
+        "name": "RED_700",
+        "parameters": []
+      },
+      {
+        "name": "RED_800",
+        "parameters": []
+      },
+      {
+        "name": "RED_900",
+        "parameters": []
+      },
+      {
+        "name": "RED_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "RED_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "RED_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "RED_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "RED_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "SCRIM",
+        "parameters": []
+      },
+      {
+        "name": "SECONDARY",
+        "parameters": []
+      },
+      {
+        "name": "SECONDARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "SECONDARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "SECONDARY_FIXED_DIM",
+        "parameters": []
+      },
+      {
+        "name": "SHADOW",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_BRIGHT",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_CONTAINER_HIGH",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_CONTAINER_HIGHEST",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_CONTAINER_LOW",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_CONTAINER_LOWEST",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_DIM",
+        "parameters": []
+      },
+      {
+        "name": "SURFACE_TINT",
+        "parameters": []
+      },
+      {
+        "name": "TEAL",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_100",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_200",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_300",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_400",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_50",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_500",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_600",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_700",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_800",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_900",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "TEAL_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "TERTIARY",
+        "parameters": []
+      },
+      {
+        "name": "TERTIARY_CONTAINER",
+        "parameters": []
+      },
+      {
+        "name": "TERTIARY_FIXED",
+        "parameters": []
+      },
+      {
+        "name": "TERTIARY_FIXED_DIM",
+        "parameters": []
+      },
+      {
+        "name": "TRANSPARENT",
+        "parameters": []
+      },
+      {
+        "name": "WHITE",
+        "parameters": []
+      },
+      {
+        "name": "WHITE10",
+        "parameters": []
+      },
+      {
+        "name": "WHITE12",
+        "parameters": []
+      },
+      {
+        "name": "WHITE24",
+        "parameters": []
+      },
+      {
+        "name": "WHITE30",
+        "parameters": []
+      },
+      {
+        "name": "WHITE38",
+        "parameters": []
+      },
+      {
+        "name": "WHITE54",
+        "parameters": []
+      },
+      {
+        "name": "WHITE60",
+        "parameters": []
+      },
+      {
+        "name": "WHITE70",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_10",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_12",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_24",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_30",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_38",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_54",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_60",
+        "parameters": []
+      },
+      {
+        "name": "WHITE_70",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_100",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_200",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_300",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_400",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_50",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_500",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_600",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_700",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_800",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_900",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_ACCENT",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_ACCENT_100",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_ACCENT_200",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_ACCENT_400",
+        "parameters": []
+      },
+      {
+        "name": "YELLOW_ACCENT_700",
+        "parameters": []
+      },
+      {
+        "name": "constant_prefix_for",
+        "parameters": [
+          [
+            "req",
+            "base_name"
+          ]
+        ]
+      },
+      {
+        "name": "normalize_color",
+        "parameters": [
+          [
+            "req",
+            "color"
+          ]
+        ]
+      }
+    ],
+    "server": [
+      {
+        "name": "initialize",
+        "parameters": [
+          [
+            "key",
+            "host"
+          ],
+          [
+            "key",
+            "port"
+          ],
+          [
+            "block",
+            "app_block"
+          ]
+        ]
+      },
+      {
+        "name": "bind_server_socket!",
+        "parameters": [
+          [
+            "key",
+            "max_attempts"
+          ]
+        ]
+      },
+      {
+        "name": "handle_upgraded_socket",
+        "parameters": [
+          [
+            "req",
+            "io"
+          ]
+        ]
+      },
+      {
+        "name": "port",
+        "parameters": []
+      },
+      {
+        "name": "publish_runtime_port",
+        "parameters": []
+      },
+      {
+        "name": "reload_app!",
+        "parameters": []
+      },
+      {
+        "name": "start",
+        "parameters": []
+      },
+      {
+        "name": "stop",
+        "parameters": []
+      }
+    ]
+  },
+  "dsl_utilities": [
+    {
+      "name": "animation",
+      "parameters": [
+        [
+          "opt",
+          "duration"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "animation_style",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "app",
+      "parameters": [
+        [
+          "key",
+          "host"
+        ],
+        [
+          "key",
+          "port"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "control",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "default_host",
+      "parameters": []
+    },
+    {
+      "name": "default_port",
+      "parameters": []
+    },
+    {
+      "name": "duration",
+      "parameters": [
+        [
+          "keyrest",
+          "parts"
+        ]
+      ]
+    },
+    {
+      "name": "duration_in_milliseconds",
+      "parameters": [
+        [
+          "req",
+          "parts"
+        ]
+      ]
+    },
+    {
+      "name": "page",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "paint",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_arc",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_arc_to",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_close",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_cubic_to",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_line_to",
+      "parameters": [
+        [
+          "opt",
+          "x"
+        ],
+        [
+          "opt",
+          "y"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_move_to",
+      "parameters": [
+        [
+          "opt",
+          "x"
+        ],
+        [
+          "opt",
+          "y"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_oval",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_quadratic_to",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_rect",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "path_sub_path",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "service",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "spinkit",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "widget",
+      "parameters": [
+        [
+          "req",
+          "type"
+        ],
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    }
+  ],
+  "dsl_internal": [
+    {
+      "name": "_pending_app",
+      "parameters": []
+    },
+    {
+      "name": "_reset_pending_app!",
+      "parameters": []
+    },
+    {
+      "name": "read_duration_part",
+      "parameters": [
+        [
+          "req",
+          "parts"
+        ],
+        [
+          "req",
+          "key"
+        ]
+      ]
+    }
+  ],
+  "control_methods": [
+    {
+      "title": "Audio",
+      "methods": [
+        {
+          "name": "get_current_position",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_duration",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pause",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "play",
+          "parameters": [
+            [
+              "key",
+              "position"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "release",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "resume",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "seek",
+          "parameters": [
+            [
+              "req",
+              "position_milliseconds"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ContextMenu",
+      "methods": [
+        {
+          "name": "open",
+          "parameters": [
+            [
+              "key",
+              "position"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "SearchBar",
+      "methods": [
+        {
+          "name": "close_view",
+          "parameters": [
+            [
+              "opt",
+              "text"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "focus",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "open_view",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Video",
+      "methods": [
+        {
+          "name": "get_current_position",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_duration",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_completed",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_playing",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "jump_to",
+          "parameters": [
+            [
+              "req",
+              "media_index"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "next",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pause",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "play",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "play_or_pause",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "playlist_add",
+          "parameters": [
+            [
+              "opt",
+              "media"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ],
+            [
+              "keyrest",
+              "props"
+            ]
+          ]
+        },
+        {
+          "name": "playlist_remove",
+          "parameters": [
+            [
+              "req",
+              "media_index"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "previous",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "seek",
+          "parameters": [
+            [
+              "req",
+              "position_milliseconds"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "stop",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "WebView",
+      "methods": [
+        {
+          "name": "can_go_back",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "block",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "can_go_forward",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "block",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "clear_cache",
+          "parameters": []
+        },
+        {
+          "name": "clear_local_storage",
+          "parameters": []
+        },
+        {
+          "name": "disable_zoom",
+          "parameters": []
+        },
+        {
+          "name": "enable_zoom",
+          "parameters": []
+        },
+        {
+          "name": "get_current_url",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "block",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_title",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "block",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_user_agent",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "block",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "go_back",
+          "parameters": []
+        },
+        {
+          "name": "go_forward",
+          "parameters": []
+        },
+        {
+          "name": "load_file",
+          "parameters": [
+            [
+              "req",
+              "path"
+            ]
+          ]
+        },
+        {
+          "name": "load_html",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "base_url"
+            ]
+          ]
+        },
+        {
+          "name": "load_request",
+          "parameters": [
+            [
+              "req",
+              "url"
+            ],
+            [
+              "key",
+              "method"
+            ]
+          ]
+        },
+        {
+          "name": "reload",
+          "parameters": []
+        },
+        {
+          "name": "run_javascript",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ]
+          ]
+        },
+        {
+          "name": "scroll_by",
+          "parameters": [
+            [
+              "req",
+              "x"
+            ],
+            [
+              "req",
+              "y"
+            ]
+          ]
+        },
+        {
+          "name": "scroll_to",
+          "parameters": [
+            [
+              "req",
+              "x"
+            ],
+            [
+              "req",
+              "y"
+            ]
+          ]
+        },
+        {
+          "name": "set_javascript_mode",
+          "parameters": [
+            [
+              "req",
+              "mode"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "InteractiveViewer",
+      "methods": [
+        {
+          "name": "pan",
+          "parameters": [
+            [
+              "req",
+              "dx"
+            ],
+            [
+              "key",
+              "dy"
+            ],
+            [
+              "key",
+              "dz"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "reset",
+          "parameters": [
+            [
+              "key",
+              "animation_duration"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "restore_state",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "save_state",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "zoom",
+          "parameters": [
+            [
+              "req",
+              "factor"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Map",
+      "methods": [
+        {
+          "name": "center_on",
+          "parameters": [
+            [
+              "req",
+              "point"
+            ],
+            [
+              "key",
+              "zoom"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "move_to",
+          "parameters": [
+            [
+              "key",
+              "destination"
+            ],
+            [
+              "key",
+              "zoom"
+            ],
+            [
+              "key",
+              "rotation"
+            ],
+            [
+              "key",
+              "offset"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "reset_rotation",
+          "parameters": [
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "rotate_from",
+          "parameters": [
+            [
+              "req",
+              "degree"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "zoom_in",
+          "parameters": [
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "zoom_out",
+          "parameters": [
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "zoom_to",
+          "parameters": [
+            [
+              "req",
+              "zoom"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Screenshot",
+      "methods": [
+        {
+          "name": "capture",
+          "parameters": [
+            [
+              "key",
+              "pixel_ratio"
+            ],
+            [
+              "key",
+              "delay"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

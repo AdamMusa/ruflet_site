@@ -12,7 +12,7 @@ card(
     content: column(
       spacing: 8,
       children: [
-        text("Monthly report", size: 18, weight: "bold"),
+        text(value: "Monthly report", style: { size: 18, weight: "w700" }),
         text("Revenue is up 12% over last month."),
         filled_button(content: text("Open"), on_click: ->(_e) { open_report })
       ]

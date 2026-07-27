@@ -79,10 +79,9 @@ webview.get_current_url { |url, _err| page.update(label, value: url) }
 
 ## Building webview apps
 
-To wrap a whole website in a native shell (native app bar + bottom nav around a
-webview body) and turn link taps into native navigation, see
-[Webview Apps](/docs/rails-webview-apps) — `Ruflet::Rails.webview_app` and the
-managed navigation stack provided by `Ruflet::Rails.native_app`.
+To wrap a Rails website in a native shell and turn annotated link taps into
+native navigation, see [WebView Apps](/docs/rails-webview-apps).
+`Ruflet::Rails.native_app` provides the managed navigation stack.
 
 ## Reference
 

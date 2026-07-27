@@ -20,8 +20,8 @@ accepts named colors or hex strings.
 ```ruby
 container(
   bgcolor: :surface_container_high,
-  border: { color: "Blue Grey 200", width: 1 },
-  content: text("Named colors", color: "DeepOrange500")
+  border: { color: :blue_grey_200, width: 1 },
+  content: text(value: "Named colors", style: { color: :deep_orange_500 })
 )
 
 filled_button(
@@ -32,13 +32,17 @@ filled_button(
 ```
 
 Use named colors for Material/theme colors and hex for exact brand values.
-Ruflet accepts Ruby-style symbols such as `:deep_orange_500`, compact strings
-such as `"DeepOrange500"`, spaced names such as `"Deep Orange 500"`, and
-hyphenated names such as `"deep-orange-500"`. Hex values can use `#rrggbb`,
+Use Ruby-style symbols such as `:deep_orange_500`, `:blue_grey_200`, and
+`:surface_container_high` for named colors. Hex values can use `#rrggbb`,
 `#aarrggbb`, `0xrrggbb`, or `0xaarrggbb`; append `,0.5` to apply opacity.
 
 ## Runtime and tooling
 
 - [Services and Device APIs](/docs/services-and-plugins) covers client services, permissions, and extensions.
-- [CLI Workflow](/docs/cli-workflow) covers project, run, build, update, and install commands.
-- [App Structure](/docs/app-structure) explains generated files and configuration.
+- [Events and State](/docs/events-and-state) documents event payloads and control updates.
+- [CLI Reference](/docs/cli-reference) covers every project, run, build, update, install, and tooling option.
+- [Configuration](/docs/configuration-reference) documents `ruflet.yaml`, `services.yaml`, extensions, and environment overrides.
+- [App Structure](/docs/app-structure) explains how generated files fit together.
+
+Rails documentation, including the complete [Rails API](/docs/rails-api-reference),
+is grouped under **Integrations**.

@@ -1,0 +1,627 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require "pathname"
+
+DOCS_ROOT = Pathname.new(__dir__).join("..").expand_path
+CONTROL_CATALOG_PATH = DOCS_ROOT.join("config/control_catalog.json")
+SERVICE_CATALOG_PATH = DOCS_ROOT.join("config/service_catalog.json")
+RUNTIME_CATALOG_PATH = DOCS_ROOT.join("config/runtime_catalog.json")
+COMMON_PROPERTIES_PATH = DOCS_ROOT.join("config/control_common_properties.json")
+
+def checkout_core_lib(root)
+  root.join("packages/ruflet_core/lib").then { |path| path.directory? ? path : nil }
+end
+
+def resolve_core_lib
+  explicit = ENV["RUFLET_SOURCE_ROOT"].to_s.strip
+  unless explicit.empty?
+    root = Pathname.new(explicit).expand_path
+    return checkout_core_lib(root) ||
+      abort("Ruflet source not found at #{root} (expected packages/ruflet_core/lib).")
+  end
+
+  checkout_candidates = [
+    # Izeesoft-style workspace: RailsApp/ruflet and FlutterApp/ruflet.
+    DOCS_ROOT.join("../../FlutterApp/ruflet").expand_path,
+    # Conventional sibling checkouts.
+    DOCS_ROOT.join("../ruflet").expand_path,
+    DOCS_ROOT.join("../Ruflet").expand_path
+  ]
+  checkout_candidates.each do |root|
+    lib = checkout_core_lib(root)
+    return lib if lib
+  end
+
+  require "rubygems"
+  spec = Gem::Specification.find_by_name("ruflet_core")
+  Pathname.new(spec.full_gem_path).join("lib")
+rescue Gem::MissingSpecError
+  abort "Could not find a Ruflet source checkout or installed ruflet_core gem. Set RUFLET_SOURCE_ROOT."
+end
+
+CORE_LIB = resolve_core_lib
+$LOAD_PATH.unshift(CORE_LIB.to_s)
+$LOAD_PATH.unshift(CORE_LIB.join("../../ruflet_server/lib").expand_path.to_s)
+require "ruflet_core"
+require "ruflet_server"
+
+# These classes are runtime plumbing, not application-facing widget builders.
+INTERNAL_CONTROL_CLASSES = %w[
+  BasePageControl
+  DialogsControl
+  FletAppControl
+  PageControl
+  PageletControl
+  ServiceRegistryControl
+  WindowControl
+].freeze
+
+# The Ruby DSL currently exposes spinkit, but the Ruflet client does not
+# recognize its wire type. Keep it out of the supported reference until both
+# sides implement the same contract.
+UNSUPPORTED_CONTROL_CLASSES = %w[SpinkitControl].freeze
+
+# These builders are intentionally open-ended adapters to optional Flutter
+# extensions, so their property/event lists are curated in the existing
+# catalog rather than inferred from a core KEYWORDS schema.
+CURATED_EXTENSION_TITLES = %w[CodeEditor Rive].freeze
+
+def control_title(klass)
+  name = klass.name.split("::").last.sub(/Control\z/, "")
+  return "DropdownM2" if name == "Dropdown2"
+
+  name
+end
+
+def slug_for(title)
+  words = title
+    .gsub(/([A-Z]+)([A-Z][a-z])/, '\\1-\\2')
+    .gsub(/([a-z\d])([A-Z])/, '\\1-\\2')
+    .gsub(/([A-Za-z])(\d+)/, '\\1-\\2')
+  "control-#{words.downcase}"
+end
+
+def source_family(klass)
+  location = klass.const_source_location(:KEYWORDS)&.first ||
+    klass.const_source_location(:TYPE)&.first ||
+    klass.instance_method(:initialize).source_location&.first
+  return "cupertinos" if location&.include?("/cupertinos/")
+  return "shared" if location&.include?("/shared/")
+
+  "materials"
+end
+
+def preferred_helper(keys)
+  keys = public_helpers(keys)
+  keys.find { |key| key.include?("_") } || keys.first
+end
+
+def public_helpers(keys)
+  keys.map(&:to_s).select { |key| public_control_helper?(key) }.uniq.sort
+end
+
+def public_control_helper?(name)
+  Ruflet::DSL.respond_to?(name) ||
+    Ruflet::UI::SharedControlForwarders.public_instance_methods(false).include?(name.to_sym)
+end
+
+def event_keyword?(name)
+  name.start_with?("on_") && name != "on_label_color" && !name.end_with?("_hint_text")
+end
+
+def widget_type_for(klass, keys)
+  return klass::TYPE.to_s if klass.const_defined?(:TYPE, false)
+
+  keys.find { |key| !key.include?("_") } || keys.first
+end
+
+def schema_entry(klass, keys)
+  keywords = Ruflet::UI::ControlFactory.constructor_keywords(klass).map(&:to_s)
+  title = control_title(klass)
+  helpers = public_helpers(keys)
+  raise "No public DSL helper found for #{klass}" if helpers.empty?
+
+  {
+    "title" => title,
+    "slug" => slug_for(title),
+    "family" => source_family(klass),
+    "widget_type" => widget_type_for(klass, keys),
+    "helpers" => helpers,
+    "helper_signatures" => helper_signatures(helpers),
+    "properties" => keywords.reject { |name| event_keyword?(name) },
+    "events" => keywords.select { |name| event_keyword?(name) },
+    "methods" => method_signatures(klass)
+  }
+end
+
+def raw_registry_entries
+  class_map = Ruflet::UI::ControlFactory::CLASS_MAP
+  Ruflet::UI::ControlRegistry::TYPE_MAP
+    .reject { |type, _wire| class_map.key?(type) }
+    .group_by { |_type, wire| wire }
+    .filter_map do |wire, pairs|
+      keys = pairs.map(&:first)
+      helper = preferred_helper(keys)
+      next unless helper
+      next if CURATED_EXTENSION_TITLES.include?(wire)
+      # `elevated_button` delegates to the Button builder; it is an alias, not
+      # a separate control contract.
+      next if wire == "ElevatedButton"
+
+      {
+        "title" => wire,
+        "slug" => slug_for(wire),
+        "family" => "materials",
+        "widget_type" => (keys.find { |key| !key.include?("_") } || keys.first),
+        "helpers" => public_helpers(keys),
+        "helper_signatures" => helper_signatures(public_helpers(keys)),
+        # These legacy/extension registry controls deliberately accept an open
+        # property surface; an empty schema is more truthful than invented API.
+        "properties" => [],
+        "events" => [],
+        "methods" => []
+      }
+    end
+end
+
+def source_entries
+  service_classes = Ruflet::UI::Services::RufletServices::CLASS_MAP.values.uniq
+  grouped = Ruflet::UI::ControlFactory::CLASS_MAP.group_by { |_type, klass| klass }
+
+  schema = grouped.filter_map do |klass, pairs|
+    basename = klass.name.split("::").last
+    next if service_classes.include?(klass)
+    next if INTERNAL_CONTROL_CLASSES.include?(basename)
+    next if UNSUPPORTED_CONTROL_CLASSES.include?(basename)
+
+    keys = pairs.map(&:first)
+    next unless keys.any? { |key| public_control_helper?(key) }
+
+    schema_entry(klass, keys)
+  end
+
+  (schema + raw_registry_entries).uniq { |entry| entry.fetch("title") }
+end
+
+def method_signature(owner, name)
+  {
+    "name" => name.to_s,
+    "parameters" => owner.instance_method(name).parameters.map { |kind, argument| [kind.to_s, argument&.to_s] }
+  }
+end
+
+def singleton_method_signature(owner, name)
+  {
+    "name" => name.to_s,
+    "parameters" => owner.method(name).parameters.map { |kind, argument| [kind.to_s, argument&.to_s] }
+  }
+end
+
+def singleton_method_signatures(owner, names = owner.singleton_methods(false))
+  names.map(&:to_sym).uniq.sort.map { |name| singleton_method_signature(owner, name) }
+end
+
+def helper_signature(name)
+  method = if Ruflet::DSL.respond_to?(name)
+    Ruflet::DSL.method(name)
+  else
+    Ruflet::UI::SharedControlForwarders.instance_method(name)
+  end
+
+  {
+    "name" => name.to_s,
+    "parameters" => method.parameters.map { |kind, argument| [kind.to_s, argument&.to_s] }
+  }
+end
+
+def helper_signatures(names)
+  names.map { |name| helper_signature(name) }
+end
+
+def method_signatures(owner, names = owner.public_instance_methods(false))
+  names.map(&:to_sym).uniq.sort.map { |name| method_signature(owner, name) }
+end
+
+def service_catalog
+  class_map = Ruflet::UI::Services::RufletServices::CLASS_MAP
+  grouped = class_map.group_by { |_type, klass| klass }
+  proxies = {
+    "shared_preferences" => Ruflet::Page::SharedPreferencesService,
+    "wakelock" => Ruflet::Page::WakelockService,
+    "flashlight" => Ruflet::Page::FlashlightService,
+    "screen_brightness" => Ruflet::Page::ScreenBrightnessService
+  }
+
+  services = grouped.map do |klass, pairs|
+    keys = pairs.map(&:first).map(&:to_s)
+    helper = keys.find { |key| key.include?("_") } || keys.first
+    keywords = Ruflet::UI::ControlFactory.constructor_keywords(klass).map(&:to_s)
+    proxy = proxies[helper]
+
+    {
+      "title" => klass.name.split("::").last.sub(/Control\z/, ""),
+      "helper" => helper,
+      "aliases" => keys.reject { |key| key == helper }.sort,
+      "widget_type" => (klass.const_defined?(:TYPE, false) ? klass::TYPE.to_s : helper.delete("_")),
+      "properties" => keywords.reject { |name| event_keyword?(name) },
+      "events" => keywords.select { |name| event_keyword?(name) },
+      "methods" => method_signatures(klass),
+      "proxy_methods" => proxy ? method_signatures(proxy) : [],
+      "page_accessor" => method_signature(Ruflet::Page, helper)
+    }
+  end
+
+  {
+    "common_control_methods" => method_signatures(Ruflet::Control),
+    "services" => services.sort_by { |entry| entry.fetch("helper") }
+  }
+end
+
+
+INTERNAL_PAGE_METHODS = %w[
+  apply_client_update dispatch_event finalize_reload! handle_invoke_method_result
+  method_missing register_page_patch replay_route_after_reload!
+  reset_for_reload!
+].freeze
+
+INTERNAL_DSL_METHODS = %w[_pending_app _reset_pending_app! read_duration_part].freeze
+INTERNAL_RUFLET_METHODS = %w[resolved_run_port with_run_interceptor].freeze
+INTERNAL_DSL_APP_METHODS = %w[set_endpoint!].freeze
+
+def event_payload_catalog
+  Ruflet::Events.constants(false).sort.filter_map do |name|
+    klass = Ruflet::Events.const_get(name)
+    next unless klass.is_a?(Class)
+    next if name == :GestureEventFactory
+
+    {
+      "name" => name.to_s,
+      "readers" => klass.public_instance_methods(false).map(&:to_s).sort
+    }
+  end
+end
+
+VALUE_TYPES = [
+  Ruflet::Duration,
+  Ruflet::IconData,
+  Ruflet::Offset,
+  Ruflet::StrutStyle,
+  Ruflet::TextStyle,
+  Ruflet::WidgetBuilder
+].freeze
+
+PUBLIC_TYPE_NAMES = {
+  Ruflet::Duration => "Ruflet::Duration",
+  Ruflet::Offset => "Ruflet::Offset",
+  Ruflet::StrutStyle => "Ruflet::StrutStyle",
+  Ruflet::TextStyle => "Ruflet::TextStyle"
+}.freeze
+
+CONSTANT_MODULES = [
+  Ruflet::MainAxisAlignment,
+  Ruflet::CrossAxisAlignment,
+  Ruflet::TextAlign,
+  Ruflet::TextBaseline,
+  Ruflet::TextDecoration,
+  Ruflet::TextDecorationStyle,
+  Ruflet::TextOverflow,
+  Ruflet::TextThemeStyle
+].freeze
+
+def value_type_catalog
+  VALUE_TYPES.map do |klass|
+    {
+      "name" => PUBLIC_TYPE_NAMES.fetch(klass, klass.name),
+      "constructors" => [method_signature(klass, :initialize)],
+      "instance_methods" => method_signatures(klass),
+      "class_methods" => singleton_method_signatures(klass)
+    }
+  end
+end
+
+def constant_module_catalog
+  CONSTANT_MODULES.map do |mod|
+    {
+      "name" => mod.name,
+      "constants" => mod.constants(false).map(&:to_s).sort,
+      "methods" => singleton_method_signatures(mod)
+    }
+  end
+end
+
+def namespace_catalog
+  {
+    "ruflet_ui" => singleton_method_signatures(Ruflet::UI),
+    "icons" => singleton_method_signatures(Ruflet::Icons),
+    "icon_group" => method_signatures(Ruflet::Icons::IconGroup),
+    "colors" => singleton_method_signatures(Ruflet::Colors),
+    "server" => [method_signature(Ruflet::Server, :initialize), *method_signatures(Ruflet::Server)]
+  }
+end
+
+def dart_control_attributes(path, receivers: %w[control])
+  source = path.read
+  receiver = Regexp.union(receivers)
+  source.scan(/(?:#{receiver})\s*\.(?:get(?:<[^>]+>)?[A-Za-z]*|buildWidget|buildWidgets|buildTextOrWidget|children)\(\s*"([^"]+)"/).flatten.uniq
+end
+
+def map_extension_contracts
+  root = CORE_LIB.join("../../../ruflet_client/flet_packages/flet_map/lib/src").expand_path
+  abort "Ruflet map client source not found at #{root}" unless root.directory?
+
+  common = JSON.parse(COMMON_PROPERTIES_PATH.read)
+  map_attributes = dart_control_attributes(root.join("map.dart"), receivers: ["widget.control"])
+  map_attributes |= dart_control_attributes(root.join("utils/map.dart"))
+
+  contracts = {
+    "Map" => map_attributes + common,
+    "TileLayer" => dart_control_attributes(root.join("tile_layer.dart")),
+    "MarkerLayer" => dart_control_attributes(root.join("marker_layer.dart")),
+    "Marker" => dart_control_attributes(root.join("marker_layer.dart"), receivers: ["marker"]),
+    "CircleLayer" => dart_control_attributes(root.join("circle_layer.dart")),
+    "CircleMarker" => dart_control_attributes(root.join("circle_layer.dart"), receivers: ["circle"]),
+    "PolylineLayer" => dart_control_attributes(root.join("polyline_layer.dart")),
+    "PolylineMarker" => dart_control_attributes(root.join("polyline_layer.dart"), receivers: ["polyline"]),
+    "PolygonLayer" => dart_control_attributes(root.join("polygon_layer.dart")),
+    "PolygonMarker" => dart_control_attributes(root.join("polygon_layer.dart"), receivers: ["polygon"]),
+    "SimpleAttribution" => dart_control_attributes(root.join("simple_attribution.dart"), receivers: ["control"])
+  }
+
+  contracts.each_value { |attributes| attributes.replace((attributes + %w[data key]).uniq.sort) }
+  tile_attributes = contracts.fetch("TileLayer")
+  tile_attributes.replace((tile_attributes + common).uniq.sort)
+  contracts.fetch("TileLayer") << "on_image_error"
+  contracts.fetch("SimpleAttribution") << "on_click"
+  contracts.transform_values do |attributes|
+    {
+      "properties" => attributes.reject { |name| name.start_with?("on_") }.uniq.sort,
+      "events" => attributes.select { |name| name.start_with?("on_") }.uniq.sort
+    }
+  end
+end
+
+def runtime_catalog(controls, services)
+  documented_helpers = controls.flat_map { |entry| entry.fetch("helpers") }
+  documented_helpers.concat(
+    services.fetch("services").flat_map { |entry| [entry.fetch("helper"), *entry.fetch("aliases")] }
+  )
+  dsl_names = Ruflet::DSL.singleton_methods(false).map(&:to_s).sort
+  utility_names = dsl_names - documented_helpers - INTERNAL_DSL_METHODS
+
+  {
+    "version" => Ruflet::VERSION,
+    "ruflet" => singleton_method_signatures(Ruflet),
+    "app" => [method_signature(Ruflet::App, :initialize), *method_signatures(Ruflet::App)],
+    "dsl_app" => [method_signature(Ruflet::DSL::App, :initialize), *method_signatures(Ruflet::DSL::App)].map do |method|
+      method.merge("internal" => INTERNAL_DSL_APP_METHODS.include?(method.fetch("name")))
+    end,
+    "page" => method_signatures(Ruflet::Page).map do |method|
+      method.merge("internal" => INTERNAL_PAGE_METHODS.include?(method.fetch("name")))
+    end,
+    "control" => [method_signature(Ruflet::Control, :initialize), *method_signatures(Ruflet::Control)],
+    "event" => [method_signature(Ruflet::Event, :initialize), *method_signatures(Ruflet::Event)],
+    "event_payloads" => event_payload_catalog,
+    "value_types" => value_type_catalog,
+    "constant_modules" => constant_module_catalog,
+    "namespaces" => namespace_catalog,
+    "dsl_utilities" => singleton_method_signatures(Ruflet::DSL, utility_names),
+    "dsl_internal" => singleton_method_signatures(Ruflet::DSL, INTERNAL_DSL_METHODS),
+    "control_methods" => controls.filter_map do |entry|
+      methods = entry.fetch("methods", [])
+      { "title" => entry.fetch("title"), "methods" => methods } if methods.any?
+    end
+  }
+end
+
+def format_parameters(parameters)
+  parameters.map do |kind, name|
+    case kind
+    when "req" then name
+    when "opt" then "#{name} = ..."
+    when "rest" then "*#{name}"
+    when "keyreq" then "#{name}:"
+    when "key" then "#{name}: ..."
+    when "keyrest" then "**#{name}"
+    when "block" then "&#{name}"
+    else name.to_s
+    end
+  end.join(", ")
+end
+
+def format_method(method, prefix: nil)
+  name = method.fetch("name")
+  params = format_parameters(method.fetch("parameters"))
+  call = params.empty? ? name : "#{name}(#{params})"
+  prefix ? "#{prefix}.#{call}" : call
+end
+
+def method_list(lines, methods, prefix: nil)
+  methods.each { |method| lines << "- `#{format_method(method, prefix: prefix)}`" }
+end
+
+def api_surface_markdown(runtime, controls, services)
+  lines = [
+    "# Complete Ruby API Surface",
+    "",
+    "This generated index is synchronized with Ruflet #{runtime.fetch('version')}. It lists",
+    "the complete application-facing DSL and runtime API exposed by the current source. Defaults and",
+    "behavioral guidance live in the linked handwritten guides; this page prevents methods",
+    "and aliases from disappearing silently.",
+    "",
+    "## How control helpers are exposed",
+    "",
+    "Every helper signature in the Controls reference is callable as a top-level Ruflet DSL",
+    "method (for example `text(...)`). `Ruflet::DSL.text(...)` is the explicit module form,",
+    "but the documentation uses the bare DSL consistently. Named device-service",
+    "helpers are Page APIs and are listed separately below. Kernel's compatibility fallback",
+    "can forward an otherwise unknown helper name to a generic wire control; treat that as",
+    "an extension escape hatch rather than a core control contract.",
+    "",
+    "## Ruflet module",
+    ""
+  ]
+  method_list(lines, runtime.fetch("ruflet").reject { |method| INTERNAL_RUFLET_METHODS.include?(method.fetch("name")) }, prefix: "Ruflet")
+  lines.concat(["", "### Runtime integration hooks", ""])
+  method_list(lines, runtime.fetch("ruflet").select { |method| INTERNAL_RUFLET_METHODS.include?(method.fetch("name")) }, prefix: "Ruflet")
+
+  lines.concat(["", "## Ruflet::App", ""])
+  method_list(lines, runtime.fetch("app"))
+
+  lines.concat(["", "## DSL application builder", ""])
+  lines << "`Ruflet::DSL.app` returns this builder; normal code calls its methods through the DSL."
+  lines << ""
+  method_list(lines, runtime.fetch("dsl_app").reject { |method| method.fetch("internal") })
+  lines.concat(["", "### Builder integration hook", ""])
+  method_list(lines, runtime.fetch("dsl_app").select { |method| method.fetch("internal") })
+
+  lines.concat(["", "## Page", "", "### Application-facing methods", ""])
+  method_list(lines, runtime.fetch("page").reject { |method| method.fetch("internal") })
+  lines.concat([
+    "", "### Runtime integration methods", "",
+    "These methods are public for framework integration but are not normal application calls.", ""
+  ])
+  method_list(lines, runtime.fetch("page").select { |method| method.fetch("internal") })
+
+  lines.concat(["", "## Ruflet::Control", ""])
+  method_list(lines, runtime.fetch("control"))
+  lines.concat(["", "## Ruflet::Event", ""])
+  method_list(lines, runtime.fetch("event"))
+
+  lines.concat(["", "### Typed event payload readers", ""])
+  runtime.fetch("event_payloads").each do |payload|
+    readers = payload.fetch("readers")
+    lines << "- `#{payload.fetch('name')}` — #{readers.empty? ? 'no additional readers' : readers.map { |reader| "`#{reader}`" }.join(', ')}"
+  end
+
+
+  lines.concat(["", "## DSL entrypoints and value builders", ""])
+  method_list(lines, runtime.fetch("dsl_utilities"))
+  lines.concat([
+    "", "The control reference documents all #{controls.length} supported controls and every",
+    "public helper alias. The services guide documents all #{services.fetch('services').length}",
+    "source-defined service helpers. `spinkit` remains visible in the Ruby DSL but is not",
+    "documented as supported because the current client rejects its wire type.", "",
+    "## Control-specific methods", ""
+  ])
+  runtime.fetch("control_methods").each do |entry|
+    lines << "### #{entry.fetch('title')}"
+    lines << ""
+    method_list(lines, entry.fetch("methods"))
+    lines << ""
+  end
+
+
+  lines.concat(["## Service API", ""])
+  services.fetch("services").each do |service|
+    lines << "### `page.#{service.fetch('helper')}`"
+    lines << ""
+    lines << "- Page accessor: `#{format_method(service.fetch('page_accessor'))}`"
+    aliases = service.fetch("aliases")
+    lines << "- Aliases: #{aliases.map { |name| "`#{name}`" }.join(', ')}" if aliases.any?
+    properties = service.fetch("properties")
+    events = service.fetch("events")
+    lines << "- Properties: #{properties.empty? ? 'none' : properties.map { |name| "`#{name}`" }.join(', ')}"
+    lines << "- Events: #{events.empty? ? 'none' : events.map { |name| "`#{name}`" }.join(', ')}"
+    if service.fetch("methods").any?
+      lines << "- Service methods:"
+      service.fetch("methods").each { |method| lines << "  - `#{format_method(method)}`" }
+    end
+    if service.fetch("proxy_methods").any?
+      lines << "- Page proxy methods:"
+      service.fetch("proxy_methods").each { |method| lines << "  - `#{format_method(method)}`" }
+    end
+    lines << ""
+  end
+
+  lines.concat([
+    "## Related reference", "",
+    "- [Controls](/docs/component-reference) — constructors, aliases, properties, and events.",
+    "- [Services and Device APIs](/docs/services-and-plugins) — service constructors and methods.",
+    "- [Ruby Runtime](/docs/runtime-reference) — behavior and examples.",
+    "- [CLI Reference](/docs/cli-reference) — executable commands and options.",
+    "- [Configuration](/docs/configuration-reference) — project and build configuration."
+  ])
+  lines.join("\n") << "\n"
+end
+
+existing = JSON.parse(CONTROL_CATALOG_PATH.read)
+existing_by_title = existing.to_h { |entry| [entry.fetch("title"), entry] }
+generated = source_entries
+generated_by_title = generated.to_h { |entry| [entry.fetch("title"), entry] }
+
+# Public convenience aliases whose implementation delegates to another
+# builder instead of appearing as a separate ControlFactory key.
+generated_by_title.fetch("Button")["helpers"] |= ["elevated_button"]
+generated_by_title.fetch("FloatingActionButton")["helpers"] |= ["fab"]
+generated_by_title.fetch("Container")["helpers"] |= ["center"]
+generated_by_title.fetch("Color")["helpers"] |= ["canvas_color"]
+generated_by_title.fetch("AutoCompleteSuggestion")["helpers"] |= ["autocomplete_suggestion"]
+map_extension_contracts.each do |title, contract|
+  generated_by_title.fetch(title).merge!(contract)
+end
+generated_by_title.each_value do |entry|
+  entry["helpers"].sort!
+  entry["helper_signatures"] = helper_signatures(entry.fetch("helpers"))
+end
+
+# Preserve curated extension metadata verbatim. Source-backed entries are
+# replaced only in their API fields, and retain any future presentation-only
+# keys added by documentation authors.
+merged = existing.filter_map do |entry|
+  title = entry.fetch("title")
+  if CURATED_EXTENSION_TITLES.include?(title)
+    aliases = case title
+    when "CodeEditor" then %w[code_editor codeeditor]
+    when "Rive" then %w[rive]
+    end
+    common = JSON.parse(COMMON_PROPERTIES_PATH.read)
+    extension_contract = case title
+    when "CodeEditor"
+      {
+        "properties" => (%w[value language selection autofocus autocomplete autocomplete_words read_only text_style padding code_theme gutter_style] + common.reject { |name| name.start_with?("on_") }).uniq.sort,
+        "events" => (%w[on_change on_selection_change on_focus on_blur] + common.select { |name| name.start_with?("on_") }).uniq.sort
+      }
+    when "Rive"
+      {
+        "properties" => (%w[src art_board use_art_board_size fit alignment placeholder speed_multiplier animations state_machines headers clip_rect] + common.reject { |name| name.start_with?("on_") }).uniq.sort,
+        "events" => common.select { |name| name.start_with?("on_") }.sort
+      }
+    end
+    entry.merge(extension_contract).merge(
+      "helpers" => aliases,
+      "helper_signatures" => helper_signatures(aliases),
+      "methods" => entry.fetch("methods", [])
+    )
+  elsif (source = generated_by_title[title])
+    entry.merge(source)
+  end
+end
+
+new_titles = generated_by_title.keys - existing_by_title.keys
+merged.concat(new_titles.sort.map { |title| generated_by_title.fetch(title) })
+
+services = service_catalog
+runtime = runtime_catalog(merged, services)
+control_output = JSON.pretty_generate(merged) << "\n"
+service_output = JSON.pretty_generate(services) << "\n"
+runtime_output = JSON.pretty_generate(runtime) << "\n"
+if ARGV.delete("--check")
+  stale = []
+  stale << CONTROL_CATALOG_PATH unless CONTROL_CATALOG_PATH.read == control_output
+  stale << SERVICE_CATALOG_PATH unless SERVICE_CATALOG_PATH.file? && SERVICE_CATALOG_PATH.read == service_output
+  stale << RUNTIME_CATALOG_PATH unless RUNTIME_CATALOG_PATH.file? && RUNTIME_CATALOG_PATH.read == runtime_output
+  if stale.empty?
+    puts "Ruflet API catalogs are current (#{merged.length} controls, 24 services)."
+    exit 0
+  end
+
+  warn "#{stale.map { |path| path.relative_path_from(DOCS_ROOT) }.join(', ')} is stale. Run script/sync_ruflet_api."
+  exit 1
+end
+
+CONTROL_CATALOG_PATH.write(control_output)
+SERVICE_CATALOG_PATH.write(service_output)
+RUNTIME_CATALOG_PATH.write(runtime_output)
+puts "Updated Ruflet API catalogs (#{merged.length} controls, 24 services)."

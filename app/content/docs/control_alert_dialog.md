@@ -14,7 +14,7 @@ dialog = alert_dialog(
   actions: [
     text_button(
       content: text(value: "OK"),
-      on_click: ->(_e) { page.close_dialog(dialog) }
+      on_click: ->(_e) { page.pop_dialog }
     )
   ]
 )
@@ -43,4 +43,4 @@ page.show_dialog(dialog)
 
 - `actions` takes an array of controls
 - `title` and `content` are usually `text(...)` controls
-- use `page.close_dialog(dialog)` to close the mounted dialog
+- use `page.pop_dialog` to close the latest open dialog

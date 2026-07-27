@@ -6,7 +6,7 @@ A material design app bar.
 
 ```ruby
 app_bar(
-  leading: icon(icon: Ruflet::MaterialIcons::MENU),
+  leading: icon(Ruflet::MaterialIcons::MENU),
   title: text(value: "Dashboard"),
   bgcolor: "#1f2937",
   actions: [

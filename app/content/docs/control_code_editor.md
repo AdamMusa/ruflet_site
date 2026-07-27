@@ -54,7 +54,6 @@ The first positional argument is the editor `value` (the code), so
 - `selection` — the current text selection / caret position
   (`{ base_offset:, extent_offset: }`).
 - `gutter_style` — styling for the line-number gutter.
-- `issues` — an array of analysis issues to render in the gutter.
 - `expand` — fill the available space in a `row`/`column`.
 - `width` / `height` — fixed size when not expanding.
 - `tooltip`, `visible`, `opacity`, `rtl`, `disabled` — the usual layout
@@ -66,25 +65,6 @@ The first positional argument is the editor `value` (the code), so
 - `on_selection_change` — the selection or caret position changed.
 - `on_focus` — the editor gained focus.
 - `on_blur` — the editor lost focus.
-
-## Methods
-
-Call these on a **mounted** editor (after `page.add`):
-
-- `focus` — request focus for the editor.
-- `fold_at(line_number)` — fold the code block that starts at `line_number`.
-- `fold_comment_at_line_zero` — fold a comment block at line 0 (e.g. a license
-  header).
-- `fold_imports` — fold all import sections.
-
-```ruby
-editor = code_editor("...", language: "ruby")
-page.add(editor)
-
-# later, in a handler:
-editor.fold_imports
-editor.focus
-```
 
 ## Reference
 

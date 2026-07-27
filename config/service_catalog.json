@@ -1,0 +1,1648 @@
+{
+  "common_control_methods": [
+    {
+      "name": "attach_handler",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "req",
+          "handler"
+        ]
+      ]
+    },
+    {
+      "name": "children",
+      "parameters": []
+    },
+    {
+      "name": "emit",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "req",
+          "event"
+        ]
+      ]
+    },
+    {
+      "name": "has_handler?",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ]
+      ]
+    },
+    {
+      "name": "id",
+      "parameters": []
+    },
+    {
+      "name": "merge_props",
+      "parameters": [
+        [
+          "opt",
+          "values"
+        ]
+      ]
+    },
+    {
+      "name": "on",
+      "parameters": [
+        [
+          "req",
+          "event_name"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "props",
+      "parameters": []
+    },
+    {
+      "name": "runtime_page",
+      "parameters": []
+    },
+    {
+      "name": "runtime_page=",
+      "parameters": [
+        [
+          "req",
+          null
+        ]
+      ]
+    },
+    {
+      "name": "to_patch",
+      "parameters": []
+    },
+    {
+      "name": "type",
+      "parameters": []
+    },
+    {
+      "name": "wire_id",
+      "parameters": []
+    },
+    {
+      "name": "wire_id=",
+      "parameters": [
+        [
+          "req",
+          null
+        ]
+      ]
+    }
+  ],
+  "services": [
+    {
+      "title": "Accelerometer",
+      "helper": "accelerometer",
+      "aliases": [],
+      "widget_type": "accelerometer",
+      "properties": [
+        "cancel_on_error",
+        "data",
+        "enabled",
+        "interval",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_reading"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "accelerometer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "AudioRecorder",
+      "helper": "audio_recorder",
+      "aliases": [
+        "audiorecorder"
+      ],
+      "widget_type": "audiorecorder",
+      "properties": [
+        "configuration",
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_state_change",
+        "on_stream",
+        "on_upload"
+      ],
+      "methods": [
+        {
+          "name": "cancel_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_input_devices",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "has_permission",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_paused",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_supported_encoder",
+          "parameters": [
+            [
+              "req",
+              "encoder"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pause_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "resume_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "start_recording",
+          "parameters": [
+            [
+              "key",
+              "output_path"
+            ],
+            [
+              "key",
+              "configuration"
+            ],
+            [
+              "key",
+              "upload"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "stop_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "audio_recorder",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Barometer",
+      "helper": "barometer",
+      "aliases": [],
+      "widget_type": "barometer",
+      "properties": [
+        "cancel_on_error",
+        "data",
+        "enabled",
+        "interval",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_reading"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "barometer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Battery",
+      "helper": "battery",
+      "aliases": [],
+      "widget_type": "battery",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_state_change"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "battery",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Camera",
+      "helper": "camera",
+      "aliases": [],
+      "widget_type": "camera",
+      "properties": [
+        "align",
+        "animate_align",
+        "animate_margin",
+        "animate_offset",
+        "animate_opacity",
+        "animate_position",
+        "animate_rotation",
+        "animate_scale",
+        "animate_size",
+        "aspect_ratio",
+        "badge",
+        "bottom",
+        "col",
+        "content",
+        "data",
+        "disabled",
+        "expand",
+        "expand_loose",
+        "height",
+        "key",
+        "left",
+        "margin",
+        "offset",
+        "opacity",
+        "preview_enabled",
+        "right",
+        "rotate",
+        "rtl",
+        "scale",
+        "size_change_interval",
+        "tooltip",
+        "top",
+        "visible",
+        "width"
+      ],
+      "events": [
+        "on_animation_end",
+        "on_error",
+        "on_size_change",
+        "on_state_change",
+        "on_stream_image"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "camera",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Clipboard",
+      "helper": "clipboard",
+      "aliases": [],
+      "widget_type": "clipboard",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [
+        {
+          "name": "get",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_files",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_image",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_files",
+          "parameters": [
+            [
+              "req",
+              "files"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_image",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "clipboard",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Connectivity",
+      "helper": "connectivity",
+      "aliases": [],
+      "widget_type": "connectivity",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_change"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "connectivity",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "FilePicker",
+      "helper": "file_picker",
+      "aliases": [
+        "filepicker"
+      ],
+      "widget_type": "filepicker",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_result",
+        "on_upload"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "file_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Flashlight",
+      "helper": "flashlight",
+      "aliases": [],
+      "widget_type": "flashlight",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_error"
+      ],
+      "methods": [],
+      "proxy_methods": [
+        {
+          "name": "is_available",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "off",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "on",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "page_accessor": {
+        "name": "flashlight",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Geolocator",
+      "helper": "geolocator",
+      "aliases": [],
+      "widget_type": "geolocator",
+      "properties": [
+        "configuration",
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_position_change"
+      ],
+      "methods": [
+        {
+          "name": "distance_between",
+          "parameters": [
+            [
+              "req",
+              "start_latitude"
+            ],
+            [
+              "req",
+              "start_longitude"
+            ],
+            [
+              "req",
+              "end_latitude"
+            ],
+            [
+              "req",
+              "end_longitude"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_current_position",
+          "parameters": [
+            [
+              "key",
+              "configuration"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_last_known_position",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_permission_status",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_location_service_enabled",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "open_app_settings",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "open_location_settings",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "request_permission",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "geolocator",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Gyroscope",
+      "helper": "gyroscope",
+      "aliases": [],
+      "widget_type": "gyroscope",
+      "properties": [
+        "cancel_on_error",
+        "data",
+        "enabled",
+        "interval",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_reading"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "gyroscope",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "HapticFeedback",
+      "helper": "haptic_feedback",
+      "aliases": [
+        "hapticfeedback"
+      ],
+      "widget_type": "hapticfeedback",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "haptic_feedback",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Magnetometer",
+      "helper": "magnetometer",
+      "aliases": [],
+      "widget_type": "magnetometer",
+      "properties": [
+        "cancel_on_error",
+        "data",
+        "enabled",
+        "interval",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_reading"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "magnetometer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "PermissionHandler",
+      "helper": "permission_handler",
+      "aliases": [
+        "permissionhandler"
+      ],
+      "widget_type": "permissionhandler",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [
+        {
+          "name": "get_status",
+          "parameters": [
+            [
+              "req",
+              "permission"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "open_app_settings",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "request",
+          "parameters": [
+            [
+              "req",
+              "permission"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "permission_handler",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "ScreenBrightness",
+      "helper": "screen_brightness",
+      "aliases": [
+        "screenbrightness"
+      ],
+      "widget_type": "screenbrightness",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [
+        "on_application_screen_brightness_change",
+        "on_system_screen_brightness_change"
+      ],
+      "methods": [],
+      "proxy_methods": [
+        {
+          "name": "can_change_system_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_application_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_system_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_animate",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_auto_reset",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "reset_application_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_animate",
+          "parameters": [
+            [
+              "req",
+              "animate"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_application_screen_brightness",
+          "parameters": [
+            [
+              "req",
+              "brightness"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_auto_reset",
+          "parameters": [
+            [
+              "req",
+              "auto_reset"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_system_screen_brightness",
+          "parameters": [
+            [
+              "req",
+              "brightness"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "page_accessor": {
+        "name": "screen_brightness",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "SecureStorage",
+      "helper": "secure_storage",
+      "aliases": [
+        "securestorage"
+      ],
+      "widget_type": "securestorage",
+      "properties": [
+        "android_options",
+        "data",
+        "ios_options",
+        "key",
+        "macos_options",
+        "web_options",
+        "windows_options"
+      ],
+      "events": [
+        "on_change"
+      ],
+      "methods": [
+        {
+          "name": "clear",
+          "parameters": [
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "contains_key",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "get",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "get_all",
+          "parameters": [
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "get_availability",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "remove",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        },
+        {
+          "name": "set",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "req",
+              "value"
+            ],
+            [
+              "keyrest",
+              "options"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "secure_storage",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "SemanticsService",
+      "helper": "semantics_service",
+      "aliases": [
+        "semanticsservice"
+      ],
+      "widget_type": "semanticsservice",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [
+        {
+          "name": "announce_message",
+          "parameters": [
+            [
+              "req",
+              "message"
+            ],
+            [
+              "key",
+              "rtl"
+            ],
+            [
+              "key",
+              "assertiveness"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "announce_tooltip",
+          "parameters": [
+            [
+              "req",
+              "message"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_accessibility_features",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "semantics_service",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "ShakeDetector",
+      "helper": "shake_detector",
+      "aliases": [
+        "shakedetector"
+      ],
+      "widget_type": "shakedetector",
+      "properties": [
+        "data",
+        "key",
+        "minimum_shake_count",
+        "shake_count_reset_time_ms",
+        "shake_slop_time_ms",
+        "shake_threshold_gravity"
+      ],
+      "events": [
+        "on_shake"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "shake_detector",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Share",
+      "helper": "share",
+      "aliases": [],
+      "widget_type": "share",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "share",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "SharedPreferences",
+      "helper": "shared_preferences",
+      "aliases": [
+        "sharedpreferences"
+      ],
+      "widget_type": "sharedpreferences",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [
+        {
+          "name": "clear",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "contains_key",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_keys",
+          "parameters": [
+            [
+              "req",
+              "key_prefix"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "remove",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "page_accessor": {
+        "name": "shared_preferences",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "StoragePaths",
+      "helper": "storage_paths",
+      "aliases": [
+        "storagepaths"
+      ],
+      "widget_type": "storagepaths",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "storage_paths",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "UrlLauncher",
+      "helper": "url_launcher",
+      "aliases": [
+        "urllauncher"
+      ],
+      "widget_type": "urllauncher",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "url_launcher",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "UserAccelerometer",
+      "helper": "user_accelerometer",
+      "aliases": [
+        "useraccelerometer"
+      ],
+      "widget_type": "useraccelerometer",
+      "properties": [
+        "cancel_on_error",
+        "data",
+        "enabled",
+        "interval",
+        "key"
+      ],
+      "events": [
+        "on_error",
+        "on_reading"
+      ],
+      "methods": [],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "user_accelerometer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Wakelock",
+      "helper": "wakelock",
+      "aliases": [],
+      "widget_type": "wakelock",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [],
+      "proxy_methods": [
+        {
+          "name": "disable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "enable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_enabled",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "page_accessor": {
+        "name": "wakelock",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    }
+  ]
+}

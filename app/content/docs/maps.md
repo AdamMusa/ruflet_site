@@ -40,6 +40,9 @@ map(
 - `initial_zoom` — zoom level at first render.
 - `min_zoom` / `max_zoom` — clamp how far the user can zoom.
 - `interaction_configuration` — which gestures are enabled (pan, pinch-zoom, rotate, double-tap).
+- `initial_rotation` — rotation in degrees at first render.
+- `initial_camera_fit` — fit the initial camera to coordinates or bounds.
+- `animation_curve` / `animation_duration` — defaults for animated map methods.
 - `keep_alive` — keep the map state alive when it scrolls offscreen.
 - `bgcolor` — color shown behind tiles while they load.
 - `expand` / `width` / `height` — layout sizing.
@@ -52,6 +55,9 @@ map(
 - `on_secondary_tap` — a secondary (right-click) tap.
 - `on_position_change` — the camera moved (data includes center and zoom).
 - `on_init` — the map finished initializing.
+- `on_hover`, `on_pointer_down`, `on_pointer_up`, and `on_pointer_cancel` —
+  pointer events with geographic coordinates.
+- `on_event` — any map camera/interaction event.
 
 ## Layers
 
@@ -63,13 +69,18 @@ Supplies the base imagery from an XYZ tile server.
 - `fallback_url` — URL used when a tile fails to load.
 - `subdomains` — array of subdomain tokens for `{s}` (e.g. `["a", "b", "c"]`).
 - `additional_options` — extra query params merged into each tile request.
-- `attribution` — attribution text required by the provider.
 - `min_zoom` / `max_zoom` — zoom range this layer serves tiles for.
-- `retina_mode` — request high-DPI (`@2x`) tiles on retina displays.
+- `min_native_zoom` / `max_native_zoom` — zoom levels available from the provider.
+- `enable_retina_mode` — request high-DPI tiles on retina displays.
+- `enable_tms` — use TMS Y-axis tile numbering.
+- `zoom_reverse` / `zoom_offset` — transform requested zoom levels.
+- `keep_buffer` / `pan_buffer` — retain nearby tiles while moving.
+- `display_mode` — tile loading/fade behavior.
+- `fallback_url` / `errorImageSrc` / `evict_error_tile_strategy` — failed-tile behavior.
+- `on_image_error` — fires when a tile image fails to load.
 - `tile_bounds` — restrict tiles to a geographic bounding box.
 - `tile_size` — tile pixel size (default 256).
 - `user_agent_package_name` — package name sent in the tile request user agent.
-- `visible` — show/hide the layer.
 
 ### `marker_layer`
 
@@ -77,7 +88,6 @@ Holds `marker` controls.
 
 - `markers` — array of `marker` controls.
 - `rotate` — rotate markers to counter map rotation so they stay upright.
-- `visible` — show/hide the layer.
 
 ### `marker`
 
@@ -92,7 +102,8 @@ Holds `marker` controls.
 Holds `circle_marker`s.
 
 - `circles` — array of `circle_marker` controls.
-- `visible` — show/hide the layer.
+- `culling_margin`, `min_hittable_radius`, and `simplification_tolerance` —
+  rendering and hit-test tuning.
 
 ### `circle_marker`
 
@@ -117,6 +128,9 @@ Connected lines — routes, boundaries.
 - `stroke_width` — line thickness.
 - `border_color` / `border_stroke_width` — optional outline around the line.
 - `gradient_colors` — colors blended along the line.
+- `colors_stop` — normalized positions for `gradient_colors`.
+- `stroke_pattern` — solid, dotted, or dashed stroke configuration.
+- `use_stroke_width_in_meter` — interpret line width in map meters.
 - `stroke_cap` — line end shape (`"round"`, `"square"`, `"butt"`).
 - `stroke_join` — corner shape (`"round"`, `"bevel"`, `"miter"`).
 
@@ -125,7 +139,9 @@ Connected lines — routes, boundaries.
 Filled polygons.
 
 - `polygons` — array of `polygon_marker` controls.
-- `visible` — show/hide the layer.
+- `polygon_culling`, `polygon_labels`, `draw_labels_last`,
+  `simplification_tolerance`, and `use_alternative_rendering` — rendering and
+  label controls for the layer.
 
 ### `polygon_marker`
 
@@ -134,6 +150,8 @@ Filled polygons.
 - `border_color` / `border_stroke_width` — outline.
 - `disable_holes_border` — don't draw a border around interior holes.
 - `label` — text label drawn on the polygon.
+- `label_text_style` — label style as a plain Ruby hash.
+- `rotate_label`, `stroke_cap`, and `stroke_join` — label and outline behavior.
 
 ### `simple_attribution`
 
@@ -142,8 +160,6 @@ The attribution badge most tile providers require.
 - `text` — the attribution text.
 - `alignment` — where the badge sits over the map.
 - `bgcolor` — badge background color.
-- `text_style` — text style: `{ size:, color:, weight: }`.
-- `url` — link opened when the badge is tapped.
 - `on_click` — handler fired when the badge is tapped.
 
 ## Layering overlays
@@ -165,7 +181,10 @@ map(
       )
     ]),
     marker_layer(markers: store_pins),
-    simple_attribution(text: "© OpenStreetMap", url: "https://openstreetmap.org/copyright")
+    simple_attribution(
+      text: "© OpenStreetMap",
+      on_click: ->(_event) { page.launch_url("https://openstreetmap.org/copyright") }
+    )
   ]
 )
 ```

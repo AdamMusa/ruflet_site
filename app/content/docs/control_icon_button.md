@@ -20,6 +20,7 @@ icon_button(
 - `selected`
 - `selected_icon`
 - `selected_icon_color`
+- `url`
 - `on_click`
 
 ## Usage
@@ -36,3 +37,5 @@ icon_button(
 
 - Ruflet accepts icon names as strings, symbols, and `Ruflet::MaterialIcons::*`
 - `selected_icon` is supported by the underlying control model
+- Use `url:` to open a link through the client `url_launcher`; use `on_click:`
+  for application actions.

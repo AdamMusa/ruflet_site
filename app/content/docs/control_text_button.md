@@ -14,6 +14,7 @@ text_button(
 ## Common properties
 
 - `content`
+- `url`
 - `on_click`
 - `disabled`
 - `style`
@@ -33,3 +34,5 @@ row(
 ## Notes
 
 - `text_button` is useful for secondary actions
+- Use `url:` to open a link through the client `url_launcher`; use `on_click:`
+  for application actions.

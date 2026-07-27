@@ -14,7 +14,7 @@ dropdown(
     dropdown_option(key: "banana", text: "Banana"),
     dropdown_option(key: "cherry", text: "Cherry")
   ],
-  on_change: ->(event) { page.update(status, value: "Picked #{event.control.value}") }
+  on_select: ->(event) { page.update(status, value: "Picked #{event.control.value}") }
 )
 ```
 
@@ -32,6 +32,10 @@ dropdown(
 - `editable` — allow typing into the field
 - `enable_filter` / `enable_search`
 - `leading_icon` / `trailing_icon`
+
+Use `on_select` when an option is selected. Editable dropdowns also expose
+`on_text_change`, `on_focus`, and `on_blur`; the current Dropdown API does not
+define an `on_change` event.
 
 ## Options
 

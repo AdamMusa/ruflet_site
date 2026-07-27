@@ -32,9 +32,9 @@ Drive a specific artboard and state machine:
 ```ruby
 rive(
   "assets/character.riv",
-  artboard: "Main",
+  art_board: "Main",
   state_machines: ["State Machine 1"],
-  use_artboard_size: true
+  use_art_board_size: true
 )
 ```
 
@@ -42,7 +42,7 @@ rive(
 
 - `src` — **required** path to the `.riv` file (network URL or asset path).
 - `placeholder` — a control shown while the file loads (e.g. `progress_ring()`).
-- `artboard` — the name of the artboard to display; defaults to the file's main
+- `art_board` — the name of the artboard to display; defaults to the file's main
   artboard.
 - `animations` — an array of animation names to play.
 - `state_machines` — an array of state machine names to run.
@@ -51,9 +51,8 @@ rive(
 - `alignment` — alignment of the animation within its box
   (`{ x:, y: }`, each from -1.0 to 1.0).
 - `speed_multiplier` — playback speed multiplier (default `1.0`).
-- `use_artboard_size` — size the widget to the artboard's intrinsic size
+- `use_art_board_size` — size the widget to the artboard's intrinsic size
   instead of the available space (default `false`).
-- `enable_antialiasing` — enable anti-aliasing (default `true`).
 - `headers` — a hash of HTTP headers used when fetching a network `src`.
 - `clip_rect` — a clip rectangle (`{ left:, top:, right:, bottom: }`).
 - `expand` — fill the available space in a `row`/`column`.
@@ -61,9 +60,8 @@ rive(
 - `tooltip`, `visible`, `opacity`, `rtl`, `disabled` — the usual layout
   properties.
 
-> Note: the Flet API names the artboard property `artboard` /
-> `use_artboard_size`. The renderer reads `art_board` / `use_art_board_size` on
-> the wire; the helper accepts either spelling and normalizes it for you.
+Use the Ruflet wire names `art_board` and `use_art_board_size`; the current DSL
+passes extension properties through without renaming them.
 
 Rive has no events or methods — playback is driven by `animations`,
 `state_machines`, and `speed_multiplier`.

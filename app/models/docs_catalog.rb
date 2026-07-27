@@ -15,6 +15,7 @@ class DocsCatalog
         entries: [
           entry("introduction", "Introduction", "Build web, desktop, and mobile applications with Ruby and Ruflet.", SOURCE_ROOT.join("introduction.md"), "Learn"),
           entry("installation", "Installation", "Install the Ruflet CLI and prepare a Ruby development environment.", SOURCE_ROOT.join("installation.md"), "Learn"),
+          entry("getting-started", "Getting Started", "Create a Ruflet app, run it in a browser, and learn the development loop.", SOURCE_ROOT.join("getting_started.md"), "Learn"),
           entry("creating-a-new-app", "Creating a New Ruflet App", "Scaffold a new project, inspect the generated files, and understand `ruflet.yaml`.", SOURCE_ROOT.join("creating_a_new_app.md"), "Learn"),
           entry("app-structure", "App Structure", "Understand the generated files, the role of `main.rb`, `Gemfile`, and `ruflet.yaml`, and how Ruflet apps are organized.", SOURCE_ROOT.join("app_structure.md"), "Learn"),
           entry("running-a-ruflet-app", "Running a Ruflet App", "Run Ruflet for mobile, web, and desktop, and understand the core development loop.", SOURCE_ROOT.join("running_a_ruflet_app.md"), "Learn"),
@@ -49,13 +50,14 @@ class DocsCatalog
         title: "Integrations",
         entries: [
           entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
-          entry("rails-native-html", "Native HTML Apps", "Build a fully native app by writing HTML in your Rails views — Ruflet renders it as real native controls, no WebView.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
-          entry("rails-native-styling", "Native Styling", "Style native HTML screens with a Tailwind-flavored class vocabulary that maps to real control props.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
-          entry("rails-native-components", "Native Components", "The component tags — layout, content, badges, tabs, tables — plus the full control catalog from markup.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations"),
-          entry("rails-native-interactivity", "Native Navigation and Forms", "Links, navigation modes, on-click actions, forms, and native app chrome for HTML screens.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
-          entry("rails-native-services", "Native Services and Extensions", "Reach the device — camera, GPS, sensors, storage — and render extensions like video, maps, and charts from ERB.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
+          entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
+          entry("rails-native-html", "Mounted Rails Web Apps", "Serve a Ruflet web app from Rails or place Rails pages inside the supported native WebView shell.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
+          entry("rails-native-styling", "Styling Rails Pages", "Style Rails HTML normally when it is displayed inside a Ruflet native WebView shell.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
+          entry("rails-native-components", "Rails View Helpers", "Annotate Rails HTML with the supported app bar, navigation, drawer, rail, and frame helpers.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations"),
+          entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
+          entry("rails-native-services", "Rails Service Actions", "Trigger sharing, clipboard, URL-launching, and haptic actions from annotated Rails HTML.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
-          entry("rails-webview-apps", "Webview Apps", "Wrap Rails views in a native shell and promote ERB-declared app bars, drawers, navigation, sheets, dialogs, and services.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
+          entry("rails-webview-apps", "WebView Apps", "Wrap Rails views in a native WebView shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
           entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
         ]
       ),
@@ -64,6 +66,9 @@ class DocsCatalog
         title: "Reference",
         entries: [
           entry("reference", "API Reference", "Overview of Ruflet controls, services, CLI workflow, and app structure.", SOURCE_ROOT.join("reference.md"), "Reference"),
+          entry("cli-reference", "CLI Reference", "Complete Ruflet CLI commands, options, defaults, hot reload controls, and diagnostics.", SOURCE_ROOT.join("cli_reference.md"), "Reference"),
+          entry("events-and-state", "Events and State", "Handle control and Page events, read payloads, keep Ruby state, and patch mounted controls.", SOURCE_ROOT.join("events_and_state.md"), "Reference"),
+          entry("configuration-reference", "Configuration", "Every supported `ruflet.yaml` and `services.yaml` key, extension, service, and environment override.", SOURCE_ROOT.join("configuration_reference.md"), "Reference"),
           entry("component-reference", "Controls", "Browse Ruflet controls and open dedicated reference pages for each component.", SOURCE_ROOT.join("component_reference.md"), "Reference"),
           entry("controls-and-layout", "Controls and Layout", "How controls, containers, and the layout model fit together.", SOURCE_ROOT.join("controls_and_layout.md"), "Reference"),
           entry("navigation-feedback", "Navigation and Feedback", "Views, dialogs, snackbars, bottom sheets, and other navigation and feedback patterns.", SOURCE_ROOT.join("navigation_feedback.md"), "Reference"),
@@ -96,7 +101,7 @@ class DocsCatalog
         summary: entry.summary.presence || first_paragraph(markdown),
         section: entry.section,
         url: Rails.application.routes.url_helpers.doc_path(entry.slug),
-        text: [entry.title, entry.summary, entry.section, searchable_text(markdown)].compact.join(" ")
+        text: [ entry.title, entry.summary, entry.section, searchable_text(markdown) ].compact.join(" ")
       }
     end
   end
@@ -151,9 +156,13 @@ class DocsCatalog
   def self.control_entries
     control_catalog.map do |control|
       source = source_for_slug(control[:slug])
-      content = source ? nil : generated_control_markdown(control)
+      content = if source
+        "#{source.read.rstrip}\n\n#{generated_control_api_appendix(control)}"
+      else
+        generated_control_markdown(control)
+      end
       summary = source ? nil : generated_control_summary(control)
-      entry(control[:slug], control[:title], summary, source, "Reference", content)
+      entry(control[:slug], control[:title], summary, nil, "Reference", content)
     end
   end
 
@@ -202,7 +211,9 @@ class DocsCatalog
 
   def self.describe(name, kind)
     desc = attribute_descriptions[kind]&.[](name.to_s) || heuristic_description(name.to_s, kind)
-    desc ? "- `#{name}` — #{desc}" : "- `#{name}`"
+    desc ||= "Sets the #{name.to_s.tr('_', ' ')} property." if kind == "properties"
+    desc ||= "Fired when #{name.to_s.sub(/\Aon_/, '').tr('_', ' ')} occurs." if kind == "events"
+    "- `#{name}` — #{desc}"
   end
 
   # Derive a description for common naming patterns so more attributes are
@@ -229,7 +240,8 @@ class DocsCatalog
     helper = preferred_helper(control)
     props = Array(control[:properties]).map(&:to_s)
     events = Array(control[:events]).map(&:to_s)
-    specific = props - common_properties
+    common = props & common_properties
+    specific = props - common
 
     lines = []
     lines << "# #{control[:title]}"
@@ -250,13 +262,14 @@ class DocsCatalog
     lines << ""
     if specific.any?
       specific.each { |property| lines << describe(property, "properties") }
+    end
+    if common.any?
+      lines << "" if specific.any?
+      lines << "### Common layout and animation properties"
       lines << ""
-      lines << "Plus the common layout and animation properties shared by most " \
-               "controls (`expand`, `visible`, `disabled`, `opacity`, `width`, " \
-               "`height`, `align`, `tooltip`, `animate_*`, …)."
-    elsif props.any?
-      props.each { |property| lines << describe(property, "properties") }
-    else
+      common.each { |property| lines << describe(property, "properties") }
+    end
+    if props.empty?
       lines << "- See the control definition for the full property list."
     end
     lines << ""
@@ -269,13 +282,72 @@ class DocsCatalog
       lines << ""
     end
 
+    append_control_methods(lines, control)
+
     # --- Reference --------------------------------------------------------
     lines << "## Reference"
     lines << ""
     lines << "- Family: `#{control[:family]}`"
     lines << "- Widget type: `#{control[:widget_type]}`"
-    lines << "- Helper: `#{helper}`"
+    lines << "- Helpers: #{Array(control[:helpers]).map { |name| "`#{name}`" }.join(', ')}"
     lines.join("\n")
+  end
+
+  def self.generated_control_api_appendix(control)
+    lines = ["## Complete API", ""]
+    lines << "### Helpers"
+    lines << ""
+    helper_signatures = Array(control[:helper_signatures])
+    if helper_signatures.any?
+      helper_signatures.each { |helper| lines << "- `#{format_api_method(helper)}`" }
+    else
+      Array(control[:helpers]).each { |helper| lines << "- `#{helper}`" }
+    end
+    lines << ""
+    lines << "### Accepted properties"
+    lines << ""
+    Array(control[:properties]).each { |property| lines << describe(property, "properties") }
+    lines << "- None." if Array(control[:properties]).empty?
+    lines << ""
+    if Array(control[:events]).any?
+      lines << "### Events"
+      lines << ""
+      Array(control[:events]).each { |event| lines << describe(event, "events") }
+      lines << ""
+    end
+    append_control_methods(lines, control, heading: "### Methods")
+    lines << "### Wire reference"
+    lines << ""
+    lines << "- Family: `#{control[:family]}`"
+    lines << "- Widget type: `#{control[:widget_type]}`"
+    lines.join("\n")
+  end
+
+  def self.append_control_methods(lines, control, heading: "## Methods")
+    methods = Array(control[:methods])
+    return if methods.empty?
+
+    lines << heading
+    lines << ""
+    methods.each { |method| lines << "- `#{format_api_method(method)}`" }
+    lines << ""
+  end
+
+  def self.format_api_method(method)
+    name = method[:name] || method["name"]
+    parameters = method[:parameters] || method["parameters"] || []
+    formatted = parameters.map do |kind, argument|
+      case kind.to_s
+      when "req" then argument
+      when "opt" then "#{argument} = ..."
+      when "rest" then "*#{argument}"
+      when "keyreq" then "#{argument}:"
+      when "key" then "#{argument}: ..."
+      when "keyrest" then "**#{argument}"
+      when "block" then "&#{argument}"
+      end
+    end.compact.join(", ")
+    formatted.empty? ? name : "#{name}(#{formatted})"
   end
 
   def self.preferred_helper(control)
@@ -291,13 +363,13 @@ class DocsCatalog
 
     prop_lines = example_property_lines(control)
 
-    return ["#{helper}()"] if prop_lines.empty?
+    return [ "#{helper}()" ] if prop_lines.empty?
 
     open = "#{helper}("
     body = prop_lines.each_with_index.map do |line, index|
       "  #{line}#{index < prop_lines.length - 1 ? ',' : ''}"
     end
-    [open, *body, ")"]
+    [ open, *body, ")" ]
   end
 
   def self.crafted_control_example(widget_type)
@@ -313,21 +385,43 @@ class DocsCatalog
       "browsercontextmenu" => [
         "page.browser_context_menu(disabled: true)"
       ],
+      "fillediconbutton" => [
+        "filled_icon_button(",
+        '  icon: "add",',
+        '  tooltip: "Add item",',
+        "  on_click: ->(event) {}",
+        ")"
+      ],
+      "filledtonaliconbutton" => [
+        "filled_tonal_icon_button(",
+        '  icon: "favorite",',
+        '  selected_icon: "favorite",',
+        "  selected: true,",
+        "  on_click: ->(event) {}",
+        ")"
+      ],
       "hero" => [
         "hero(",
         '  image("assets/logo.png"),',
         '  tag: "app-logo"',
         ")"
       ],
+      "outlinediconbutton" => [
+        "outlined_icon_button(",
+        '  icon: "search",',
+        '  tooltip: "Search",',
+        "  on_click: ->(event) {}",
+        ")"
+      ],
       "overlay" => [
         "overlay([",
-        '  progress_ring(),',
+        "  progress_ring(),",
         '  snack_bar("Saved")',
         "])"
       ],
       "shadermask" => [
         "shader_mask(",
-        '  text("Ruflet", size: 36),',
+        '  text(value: "Ruflet", style: { size: 36 }),',
         '  blend_mode: "srcIn"',
         ")"
       ],
@@ -341,8 +435,7 @@ class DocsCatalog
       "textspan" => [
         "text_span(",
         '  "Ruflet documentation",',
-        '  url: "https://ruflet.dev",',
-        "  on_click: ->(event) {}",
+        '  url: "https://ruflet.dev"',
         ")"
       ]
     }[widget_type.to_s]
@@ -350,12 +443,15 @@ class DocsCatalog
 
   def self.example_property_lines(control)
     props = Array(control[:properties]).map(&:to_s)
-    chosen = EXAMPLE_PROPERTY_PRIORITY.select { |p| props.include?(p) }.first(4)
+    events = Array(control[:events]).map(&:to_s)
+    event = %w[on_click on_change on_tap on_submit].find { |e| events.include?(e) } || events.first
+
+    candidates = EXAMPLE_PROPERTY_PRIORITY.select { |p| props.include?(p) }
+    candidates -= [ "url" ] if event == "on_click"
+    chosen = candidates.first(4)
     lines = chosen.filter_map { |property| sample_value_for(property, control[:title]) }
 
     # Add one representative event handler if the control has any.
-    events = Array(control[:events]).map(&:to_s)
-    event = %w[on_click on_change on_tap on_submit].find { |e| events.include?(e) } || events.first
     lines << "#{event}: ->(event) {}" if event
 
     lines
@@ -397,5 +493,6 @@ class DocsCatalog
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
-                       :attribute_descriptions, :describe, :heuristic_description
+                       :attribute_descriptions, :describe, :heuristic_description,
+                       :generated_control_api_appendix, :append_control_methods, :format_api_method
 end

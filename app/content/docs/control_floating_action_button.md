@@ -17,6 +17,7 @@ fab(
 - positional content: `fab("Create")`
 - `icon`
 - `content`
+- `url`
 - `on_click`
 
 ## Usage
@@ -47,3 +48,5 @@ page.add(
 - `fab(icon: "add")`
 - `fab(icon: "add", content: "Create")`
 - `fab(icon: Ruflet::MaterialIcons::ADD)`
+- Use `url:` to open a link through the client `url_launcher`; use `on_click:`
+  for application actions.

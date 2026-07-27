@@ -14,6 +14,7 @@ elevated_button(
 ## Common properties
 
 - `content`
+- `url`
 - `on_click`
 - `width`
 - `height`
@@ -33,3 +34,5 @@ elevated_button(
 ## Notes
 
 - Use `content:` for the visible label or nested control
+- Use `url:` to open a link through the client `url_launcher`; use `on_click:`
+  for application actions.

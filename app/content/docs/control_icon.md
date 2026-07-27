@@ -5,7 +5,7 @@ Display a standalone icon.
 ## Example
 
 ```ruby
-icon(icon: "home")
+icon("home")
 ```
 
 ## Common properties
@@ -20,7 +20,7 @@ icon(icon: "home")
 row(
   spacing: 8,
   children: [
-    icon(icon: Ruflet::MaterialIcons::ADD),
+    icon(Ruflet::MaterialIcons::ADD),
     text(value: "Create")
   ]
 )

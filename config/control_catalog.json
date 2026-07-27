@@ -5,7 +5,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoactionsheet",
     "helpers": [
-      "cupertino_action_sheet"
+      "cupertino_action_sheet",
+      "cupertinoactionsheet"
     ],
     "properties": [
       "actions",
@@ -48,6 +49,27 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_action_sheet",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoactionsheet",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -56,7 +78,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoactionsheetaction",
     "helpers": [
-      "cupertino_action_sheet_action"
+      "cupertino_action_sheet_action",
+      "cupertinoactionsheetaction"
     ],
     "properties": [
       "align",
@@ -100,6 +123,27 @@
       "on_animation_end",
       "on_click",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_action_sheet_action",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoactionsheetaction",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -108,7 +152,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoactivityindicator",
     "helpers": [
-      "cupertino_activity_indicator"
+      "cupertino_activity_indicator",
+      "cupertinoactivityindicator"
     ],
     "properties": [
       "align",
@@ -151,6 +196,27 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_activity_indicator",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoactivityindicator",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -159,7 +225,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoalertdialog",
     "helpers": [
-      "cupertino_alert_dialog"
+      "cupertino_alert_dialog",
+      "cupertinoalertdialog"
     ],
     "properties": [
       "actions",
@@ -184,6 +251,27 @@
     ],
     "events": [
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_alert_dialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoalertdialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -192,7 +280,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoappbar",
     "helpers": [
-      "cupertino_app_bar"
+      "cupertino_app_bar",
+      "cupertinoappbar"
     ],
     "properties": [
       "automatic_background_visibility",
@@ -221,7 +310,28 @@
       "transition_between_routes",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_app_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoappbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "CupertinoBottomSheet",
@@ -229,7 +339,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinobottomsheet",
     "helpers": [
-      "cupertino_bottom_sheet"
+      "cupertino_bottom_sheet",
+      "cupertinobottomsheet"
     ],
     "properties": [
       "adaptive",
@@ -253,6 +364,35 @@
     ],
     "events": [
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_bottom_sheet",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinobottomsheet",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -261,7 +401,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinobutton",
     "helpers": [
-      "cupertino_button"
+      "cupertino_button",
+      "cupertinobutton"
     ],
     "properties": [
       "align",
@@ -320,6 +461,35 @@
       "on_focus",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinobutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -328,7 +498,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinocheckbox",
     "helpers": [
-      "cupertino_checkbox"
+      "cupertino_checkbox",
+      "cupertinocheckbox"
     ],
     "properties": [
       "active_color",
@@ -384,6 +555,27 @@
       "on_change",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_checkbox",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinocheckbox",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -392,7 +584,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinocontextmenu",
     "helpers": [
-      "cupertino_context_menu"
+      "cupertino_context_menu",
+      "cupertinocontextmenu"
     ],
     "properties": [
       "actions",
@@ -411,7 +604,28 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_context_menu",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinocontextmenu",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "CupertinoContextMenuAction",
@@ -419,7 +633,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinocontextmenuaction",
     "helpers": [
-      "cupertino_context_menu_action"
+      "cupertino_context_menu_action",
+      "cupertinocontextmenuaction"
     ],
     "properties": [
       "adaptive",
@@ -441,6 +656,27 @@
     ],
     "events": [
       "on_click"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_context_menu_action",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinocontextmenuaction",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -449,7 +685,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinodatepicker",
     "helpers": [
-      "cupertino_date_picker"
+      "cupertino_date_picker",
+      "cupertinodatepicker"
     ],
     "properties": [
       "align",
@@ -502,6 +739,27 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_date_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinodatepicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -510,7 +768,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinodialogaction",
     "helpers": [
-      "cupertino_dialog_action"
+      "cupertino_dialog_action",
+      "cupertinodialogaction"
     ],
     "properties": [
       "badge",
@@ -531,6 +790,27 @@
     ],
     "events": [
       "on_click"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_dialog_action",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinodialogaction",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -539,7 +819,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinofilledbutton",
     "helpers": [
-      "cupertino_filled_button"
+      "cupertino_filled_button",
+      "cupertinofilledbutton"
     ],
     "properties": [
       "align",
@@ -598,6 +879,35 @@
       "on_focus",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_filled_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinofilledbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -606,7 +916,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinolisttile",
     "helpers": [
-      "cupertino_list_tile"
+      "cupertino_list_tile",
+      "cupertinolisttile"
     ],
     "properties": [
       "additional_info",
@@ -659,6 +970,27 @@
       "on_animation_end",
       "on_click",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_list_tile",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinolisttile",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -667,7 +999,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinonavigationbar",
     "helpers": [
-      "cupertino_navigation_bar"
+      "cupertino_navigation_bar",
+      "cupertinonavigationbar"
     ],
     "properties": [
       "active_color",
@@ -714,6 +1047,27 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_navigation_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinonavigationbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -722,7 +1076,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinopicker",
     "helpers": [
-      "cupertino_picker"
+      "cupertino_picker",
+      "cupertinopicker"
     ],
     "properties": [
       "align",
@@ -774,6 +1129,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_picker",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinopicker",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -782,7 +1166,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoradio",
     "helpers": [
-      "cupertino_radio"
+      "cupertino_radio",
+      "cupertinoradio"
     ],
     "properties": [
       "active_color",
@@ -834,6 +1219,27 @@
       "on_blur",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_radio",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoradio",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -842,7 +1248,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinosegmentedbutton",
     "helpers": [
-      "cupertino_segmented_button"
+      "cupertino_segmented_button",
+      "cupertinosegmentedbutton"
     ],
     "properties": [
       "align",
@@ -891,6 +1298,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_segmented_button",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinosegmentedbutton",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -899,7 +1335,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoslider",
     "helpers": [
-      "cupertino_slider"
+      "cupertino_slider",
+      "cupertinoslider"
     ],
     "properties": [
       "active_color",
@@ -949,6 +1386,27 @@
       "on_change_start",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_slider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoslider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -957,7 +1415,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoslidingsegmentedbutton",
     "helpers": [
-      "cupertino_sliding_segmented_button"
+      "cupertino_sliding_segmented_button",
+      "cupertinoslidingsegmentedbutton"
     ],
     "properties": [
       "align",
@@ -1003,6 +1462,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_sliding_segmented_button",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoslidingsegmentedbutton",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1011,7 +1499,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinoswitch",
     "helpers": [
-      "cupertino_switch"
+      "cupertino_switch",
+      "cupertinoswitch"
     ],
     "properties": [
       "active_thumb_image",
@@ -1062,7 +1551,8 @@
       "track_outline_width",
       "value",
       "visible",
-      "width"
+      "width",
+      "on_label_color"
     ],
     "events": [
       "on_animation_end",
@@ -1070,8 +1560,28 @@
       "on_change",
       "on_focus",
       "on_image_error",
-      "on_label_color",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_switch",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinoswitch",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1080,7 +1590,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinotextfield",
     "helpers": [
-      "cupertino_text_field"
+      "cupertino_text_field",
+      "cupertinotextfield"
     ],
     "properties": [
       "adaptive",
@@ -1225,6 +1736,35 @@
       "on_size_change",
       "on_submit",
       "on_tap_outside"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_text_field",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinotextfield",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1233,7 +1773,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinotimerpicker",
     "helpers": [
-      "cupertino_timer_picker"
+      "cupertino_timer_picker",
+      "cupertinotimerpicker"
     ],
     "properties": [
       "align",
@@ -1280,6 +1821,27 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_timer_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinotimerpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1288,7 +1850,8 @@
     "family": "cupertinos",
     "widget_type": "cupertinotintedbutton",
     "helpers": [
-      "cupertino_tinted_button"
+      "cupertino_tinted_button",
+      "cupertinotintedbutton"
     ],
     "properties": [
       "align",
@@ -1347,6 +1910,35 @@
       "on_focus",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "cupertino_tinted_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "cupertinotintedbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1355,7 +1947,8 @@
     "family": "materials",
     "widget_type": "alertdialog",
     "helpers": [
-      "alert_dialog"
+      "alert_dialog",
+      "alertdialog"
     ],
     "properties": [
       "action_button_padding",
@@ -1399,6 +1992,27 @@
     ],
     "events": [
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "alert_dialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "alertdialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1407,7 +2021,8 @@
     "family": "materials",
     "widget_type": "appbar",
     "helpers": [
-      "app_bar"
+      "app_bar",
+      "appbar"
     ],
     "properties": [
       "actions",
@@ -1445,7 +2060,28 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "app_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "appbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Audio",
@@ -1477,6 +2113,118 @@
       "on_position_change",
       "on_seek_complete",
       "on_state_change"
+    ],
+    "methods": [
+      {
+        "name": "get_current_position",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "get_duration",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "pause",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "play",
+        "parameters": [
+          [
+            "key",
+            "position"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "release",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "resume",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "seek",
+        "parameters": [
+          [
+            "req",
+            "position_milliseconds"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "audio",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1485,7 +2233,8 @@
     "family": "materials",
     "widget_type": "autocomplete",
     "helpers": [
-      "auto_complete"
+      "auto_complete",
+      "autocomplete"
     ],
     "properties": [
       "align",
@@ -1529,6 +2278,35 @@
       "on_change",
       "on_select",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "auto_complete",
+        "parameters": [
+          [
+            "opt",
+            "suggestions"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "autocomplete",
+        "parameters": [
+          [
+            "opt",
+            "suggestions"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1553,7 +2331,23 @@
       "text_color",
       "text_style"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "badge",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Banner",
@@ -1595,6 +2389,22 @@
     "events": [
       "on_dismiss",
       "on_visible"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "banner",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1603,7 +2413,8 @@
     "family": "materials",
     "widget_type": "bottomappbar",
     "helpers": [
-      "bottom_app_bar"
+      "bottom_app_bar",
+      "bottomappbar"
     ],
     "properties": [
       "align",
@@ -1651,6 +2462,35 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bottom_app_bar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "bottomappbar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1659,7 +2499,8 @@
     "family": "materials",
     "widget_type": "bottomsheet",
     "helpers": [
-      "bottom_sheet"
+      "bottom_sheet",
+      "bottomsheet"
     ],
     "properties": [
       "adaptive",
@@ -1693,6 +2534,35 @@
     ],
     "events": [
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bottom_sheet",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "bottomsheet",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1757,6 +2627,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "elevated_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1814,6 +2713,22 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "card",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1884,6 +2799,18 @@
       "on_change",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "checkbox",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1966,6 +2893,22 @@
       "on_focus",
       "on_select",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "chip",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -1974,7 +2917,8 @@
     "family": "materials",
     "widget_type": "circleavatar",
     "helpers": [
-      "circle_avatar"
+      "circle_avatar",
+      "circleavatar"
     ],
     "properties": [
       "align",
@@ -2022,6 +2966,35 @@
       "on_animation_end",
       "on_image_error",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "circle_avatar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "circleavatar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2030,6 +3003,7 @@
     "family": "materials",
     "widget_type": "container",
     "helpers": [
+      "center",
       "container"
     ],
     "properties": [
@@ -2097,6 +3071,35 @@
       "on_long_press",
       "on_size_change",
       "on_tap_down"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "center",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "container",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2105,7 +3108,8 @@
     "family": "materials",
     "widget_type": "contextmenu",
     "helpers": [
-      "context_menu"
+      "context_menu",
+      "contextmenu"
     ],
     "properties": [
       "align",
@@ -2154,6 +3158,53 @@
       "on_dismiss",
       "on_select",
       "on_size_change"
+    ],
+    "methods": [
+      {
+        "name": "open",
+        "parameters": [
+          [
+            "key",
+            "position"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "context_menu",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "contextmenu",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2162,7 +3213,8 @@
     "family": "materials",
     "widget_type": "datacell",
     "helpers": [
-      "data_cell"
+      "data_cell",
+      "datacell"
     ],
     "properties": [
       "badge",
@@ -2186,6 +3238,35 @@
       "on_tap",
       "on_tap_cancel",
       "on_tap_down"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "data_cell",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datacell",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2194,7 +3275,8 @@
     "family": "materials",
     "widget_type": "datacolumn",
     "helpers": [
-      "data_column"
+      "data_column",
+      "datacolumn"
     ],
     "properties": [
       "badge",
@@ -2214,6 +3296,35 @@
     ],
     "events": [
       "on_sort"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "data_column",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datacolumn",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2222,7 +3333,8 @@
     "family": "materials",
     "widget_type": "datarow",
     "helpers": [
-      "data_row"
+      "data_row",
+      "datarow"
     ],
     "properties": [
       "badge",
@@ -2243,6 +3355,35 @@
     "events": [
       "on_long_press",
       "on_select_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "data_row",
+        "parameters": [
+          [
+            "opt",
+            "cells"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datarow",
+        "parameters": [
+          [
+            "opt",
+            "cells"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2251,7 +3392,8 @@
     "family": "materials",
     "widget_type": "datatable",
     "helpers": [
-      "data_table"
+      "data_table",
+      "datatable"
     ],
     "properties": [
       "align",
@@ -2315,6 +3457,35 @@
       "on_animation_end",
       "on_select_all",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "data_table",
+        "parameters": [
+          [
+            "opt",
+            "columns"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datatable",
+        "parameters": [
+          [
+            "opt",
+            "columns"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2323,7 +3494,8 @@
     "family": "materials",
     "widget_type": "datepicker",
     "helpers": [
-      "date_picker"
+      "date_picker",
+      "datepicker"
     ],
     "properties": [
       "adaptive",
@@ -2364,6 +3536,27 @@
       "on_change",
       "on_dismiss",
       "on_entry_mode_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "date_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datepicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2372,7 +3565,8 @@
     "family": "materials",
     "widget_type": "daterangepicker",
     "helpers": [
-      "date_range_picker"
+      "date_range_picker",
+      "daterangepicker"
     ],
     "properties": [
       "adaptive",
@@ -2415,6 +3609,27 @@
     "events": [
       "on_change",
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "date_range_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "daterangepicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2444,7 +3659,19 @@
       "trailing_indent",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "divider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Dropdown",
@@ -2537,15 +3764,32 @@
       "on_select",
       "on_size_change",
       "on_text_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "dropdown",
+        "parameters": [
+          [
+            "opt",
+            "options"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
     "title": "DropdownM2",
-    "slug": "control-dropdown-m2",
+    "slug": "control-dropdown-m-2",
     "family": "materials",
     "widget_type": "dropdownm2",
     "helpers": [
-      "dropdown_m2"
+      "dropdown_m2",
+      "dropdownm2"
     ],
     "properties": [
       "align",
@@ -2650,6 +3894,35 @@
       "on_click",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "dropdown_m2",
+        "parameters": [
+          [
+            "opt",
+            "options"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "dropdownm2",
+        "parameters": [
+          [
+            "opt",
+            "options"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2658,7 +3931,8 @@
     "family": "materials",
     "widget_type": "dropdownoption",
     "helpers": [
-      "dropdown_option"
+      "dropdown_option",
+      "dropdownoption"
     ],
     "properties": [
       "badge",
@@ -2678,7 +3952,36 @@
       "trailing_icon",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "dropdown_option",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "dropdownoption",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "ExpansionPanel",
@@ -2686,7 +3989,8 @@
     "family": "materials",
     "widget_type": "expansionpanel",
     "helpers": [
-      "expansion_panel"
+      "expansion_panel",
+      "expansionpanel"
     ],
     "properties": [
       "adaptive",
@@ -2733,6 +4037,27 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "expansion_panel",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "expansionpanel",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2741,7 +4066,8 @@
     "family": "materials",
     "widget_type": "expansionpanellist",
     "helpers": [
-      "expansion_panel_list"
+      "expansion_panel_list",
+      "expansionpanellist"
     ],
     "properties": [
       "align",
@@ -2787,6 +4113,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "expansion_panel_list",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "expansionpanellist",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2795,7 +4150,8 @@
     "family": "materials",
     "widget_type": "expansiontile",
     "helpers": [
-      "expansion_tile"
+      "expansion_tile",
+      "expansiontile"
     ],
     "properties": [
       "adaptive",
@@ -2863,6 +4219,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "expansion_tile",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "expansiontile",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2871,7 +4256,8 @@
     "family": "materials",
     "widget_type": "filledbutton",
     "helpers": [
-      "filled_button"
+      "filled_button",
+      "filledbutton"
     ],
     "properties": [
       "adaptive",
@@ -2926,6 +4312,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "filled_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "filledbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -2934,7 +4349,8 @@
     "family": "materials",
     "widget_type": "fillediconbutton",
     "helpers": [
-      "filled_icon_button"
+      "filled_icon_button",
+      "fillediconbutton"
     ],
     "properties": [
       "adaptive",
@@ -3001,6 +4417,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "filled_icon_button",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "fillediconbutton",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3009,7 +4454,8 @@
     "family": "materials",
     "widget_type": "filledtonalbutton",
     "helpers": [
-      "filled_tonal_button"
+      "filled_tonal_button",
+      "filledtonalbutton"
     ],
     "properties": [
       "adaptive",
@@ -3064,6 +4510,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "filled_tonal_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "filledtonalbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3072,7 +4547,8 @@
     "family": "materials",
     "widget_type": "filledtonaliconbutton",
     "helpers": [
-      "filled_tonal_icon_button"
+      "filled_tonal_icon_button",
+      "filledtonaliconbutton"
     ],
     "properties": [
       "adaptive",
@@ -3139,6 +4615,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "filled_tonal_icon_button",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "filledtonaliconbutton",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3147,7 +4652,9 @@
     "family": "materials",
     "widget_type": "floatingactionbutton",
     "helpers": [
-      "floating_action_button"
+      "fab",
+      "floating_action_button",
+      "floatingactionbutton"
     ],
     "properties": [
       "align",
@@ -3206,6 +4713,40 @@
       "on_animation_end",
       "on_click",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "fab",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "floating_action_button",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "floatingactionbutton",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3214,7 +4755,8 @@
     "family": "materials",
     "widget_type": "iconbutton",
     "helpers": [
-      "icon_button"
+      "icon_button",
+      "iconbutton"
     ],
     "properties": [
       "adaptive",
@@ -3281,6 +4823,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "icon_button",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "iconbutton",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3289,7 +4860,8 @@
     "family": "materials",
     "widget_type": "listtile",
     "helpers": [
-      "list_tile"
+      "list_tile",
+      "listtile"
     ],
     "properties": [
       "adaptive",
@@ -3362,6 +4934,27 @@
       "on_click",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "list_tile",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "listtile",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3370,7 +4963,8 @@
     "family": "materials",
     "widget_type": "menubar",
     "helpers": [
-      "menu_bar"
+      "menu_bar",
+      "menubar"
     ],
     "properties": [
       "badge",
@@ -3388,7 +4982,36 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "menu_bar",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "menubar",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "MenuItemButton",
@@ -3396,7 +5019,8 @@
     "family": "materials",
     "widget_type": "menuitembutton",
     "helpers": [
-      "menu_item_button"
+      "menu_item_button",
+      "menuitembutton"
     ],
     "properties": [
       "align",
@@ -3449,6 +5073,35 @@
       "on_focus",
       "on_hover",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "menu_item_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "menuitembutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3457,7 +5110,8 @@
     "family": "materials",
     "widget_type": "navigationbar",
     "helpers": [
-      "navigation_bar"
+      "navigation_bar",
+      "navigationbar"
     ],
     "properties": [
       "adaptive",
@@ -3511,6 +5165,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "navigationbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3519,7 +5202,8 @@
     "family": "materials",
     "widget_type": "navigationbardestination",
     "helpers": [
-      "navigation_bar_destination"
+      "navigation_bar_destination",
+      "navigationbardestination"
     ],
     "properties": [
       "adaptive",
@@ -3539,7 +5223,36 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_bar_destination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "navigationbardestination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "NavigationDrawer",
@@ -3547,7 +5260,8 @@
     "family": "materials",
     "widget_type": "navigationdrawer",
     "helpers": [
-      "navigation_drawer"
+      "navigation_drawer",
+      "navigationdrawer"
     ],
     "properties": [
       "adaptive",
@@ -3576,6 +5290,35 @@
     "events": [
       "on_change",
       "on_dismiss"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_drawer",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "navigationdrawer",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3584,7 +5327,8 @@
     "family": "materials",
     "widget_type": "navigationdrawerdestination",
     "helpers": [
-      "navigation_drawer_destination"
+      "navigation_drawer_destination",
+      "navigationdrawerdestination"
     ],
     "properties": [
       "badge",
@@ -3603,7 +5347,28 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_drawer_destination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "navigationdrawerdestination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "NavigationRail",
@@ -3611,7 +5376,8 @@
     "family": "materials",
     "widget_type": "navigationrail",
     "helpers": [
-      "navigation_rail"
+      "navigation_rail",
+      "navigationrail"
     ],
     "properties": [
       "align",
@@ -3667,6 +5433,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_rail",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "navigationrail",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3675,7 +5470,8 @@
     "family": "materials",
     "widget_type": "navigationraildestination",
     "helpers": [
-      "navigation_rail_destination"
+      "navigation_rail_destination",
+      "navigationraildestination"
     ],
     "properties": [
       "badge",
@@ -3696,35 +5492,35 @@
       "tooltip",
       "visible"
     ],
-    "events": []
-  },
-  {
-    "title": "Option",
-    "slug": "control-option",
-    "family": "materials",
-    "widget_type": "option",
-    "helpers": [
-      "dropdown_option"
-    ],
-    "properties": [
-      "alignment",
-      "badge",
-      "col",
-      "content",
-      "data",
-      "disabled",
-      "expand",
-      "expand_loose",
-      "key",
-      "opacity",
-      "rtl",
-      "text",
-      "text_style",
-      "tooltip",
-      "visible"
-    ],
-    "events": [
-      "on_click"
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "navigation_rail_destination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "navigationraildestination",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3733,7 +5529,8 @@
     "family": "materials",
     "widget_type": "outlinedbutton",
     "helpers": [
-      "outlined_button"
+      "outlined_button",
+      "outlinedbutton"
     ],
     "properties": [
       "adaptive",
@@ -3785,6 +5582,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "outlined_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "outlinedbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3793,7 +5619,8 @@
     "family": "materials",
     "widget_type": "outlinediconbutton",
     "helpers": [
-      "outlined_icon_button"
+      "outlined_icon_button",
+      "outlinediconbutton"
     ],
     "properties": [
       "adaptive",
@@ -3860,6 +5687,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "outlined_icon_button",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "outlinediconbutton",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3868,7 +5724,8 @@
     "family": "materials",
     "widget_type": "popupmenubutton",
     "helpers": [
-      "popup_menu_button"
+      "popup_menu_button",
+      "popupmenubutton"
     ],
     "properties": [
       "align",
@@ -3928,6 +5785,35 @@
       "on_open",
       "on_select",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "popup_menu_button",
+        "parameters": [
+          [
+            "opt",
+            "items"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "popupmenubutton",
+        "parameters": [
+          [
+            "opt",
+            "items"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3936,7 +5822,8 @@
     "family": "materials",
     "widget_type": "popupmenuitem",
     "helpers": [
-      "popup_menu_item"
+      "popup_menu_item",
+      "popupmenuitem"
     ],
     "properties": [
       "badge",
@@ -3960,6 +5847,35 @@
     ],
     "events": [
       "on_click"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "popup_menu_item",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "popupmenuitem",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -3968,7 +5884,8 @@
     "family": "materials",
     "widget_type": "progressbar",
     "helpers": [
-      "progress_bar"
+      "progress_bar",
+      "progressbar"
     ],
     "properties": [
       "align",
@@ -4018,6 +5935,27 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "progress_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "progressbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4026,7 +5964,8 @@
     "family": "materials",
     "widget_type": "progressring",
     "helpers": [
-      "progress_ring"
+      "progress_ring",
+      "progressring"
     ],
     "properties": [
       "align",
@@ -4077,6 +6016,27 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "progress_ring",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "progressring",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4141,6 +6101,18 @@
       "on_blur",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radio",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4149,7 +6121,8 @@
     "family": "materials",
     "widget_type": "radiogroup",
     "helpers": [
-      "radio_group"
+      "radio_group",
+      "radiogroup"
     ],
     "properties": [
       "badge",
@@ -4168,6 +6141,35 @@
     ],
     "events": [
       "on_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radio_group",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "radiogroup",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4176,7 +6178,8 @@
     "family": "materials",
     "widget_type": "rangeslider",
     "helpers": [
-      "range_slider"
+      "range_slider",
+      "rangeslider"
     ],
     "properties": [
       "active_color",
@@ -4229,6 +6232,27 @@
       "on_change_end",
       "on_change_start",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "range_slider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "rangeslider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4237,7 +6261,8 @@
     "family": "materials",
     "widget_type": "reorderablelistview",
     "helpers": [
-      "reorderable_list_view"
+      "reorderable_list_view",
+      "reorderablelistview"
     ],
     "properties": [
       "adaptive",
@@ -4303,6 +6328,35 @@
       "on_reorder_start",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "reorderable_list_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "reorderablelistview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4311,7 +6365,8 @@
     "family": "materials",
     "widget_type": "searchbar",
     "helpers": [
-      "search_bar"
+      "search_bar",
+      "searchbar"
     ],
     "properties": [
       "align",
@@ -4391,6 +6446,79 @@
       "on_submit",
       "on_tap",
       "on_tap_outside_bar"
+    ],
+    "methods": [
+      {
+        "name": "close_view",
+        "parameters": [
+          [
+            "opt",
+            "text"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "focus",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "open_view",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "search_bar",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "searchbar",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4417,7 +6545,23 @@
       "value",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "segment",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "SegmentedButton",
@@ -4425,7 +6569,8 @@
     "family": "materials",
     "widget_type": "segmentedbutton",
     "helpers": [
-      "segmented_button"
+      "segmented_button",
+      "segmentedbutton"
     ],
     "properties": [
       "align",
@@ -4474,6 +6619,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "segmented_button",
+        "parameters": [
+          [
+            "opt",
+            "segments"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "segmentedbutton",
+        "parameters": [
+          [
+            "opt",
+            "segments"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4482,7 +6656,8 @@
     "family": "materials",
     "widget_type": "selectionarea",
     "helpers": [
-      "selection_area"
+      "selection_area",
+      "selectionarea"
     ],
     "properties": [
       "badge",
@@ -4500,6 +6675,35 @@
     ],
     "events": [
       "on_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "selection_area",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "selectionarea",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4570,6 +6774,18 @@
       "on_change_start",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "slider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4578,7 +6794,8 @@
     "family": "materials",
     "widget_type": "snackbar",
     "helpers": [
-      "snack_bar"
+      "snack_bar",
+      "snackbar"
     ],
     "properties": [
       "action",
@@ -4615,66 +6832,35 @@
       "on_action",
       "on_dismiss",
       "on_visible"
-    ]
-  },
-  {
-    "title": "SubMenuButton",
-    "slug": "control-sub-menu-button",
-    "family": "materials",
-    "widget_type": "submenubutton",
-    "helpers": [
-      "submenu_button"
     ],
-    "properties": [
-      "align",
-      "alignment_offset",
-      "animate_align",
-      "animate_margin",
-      "animate_offset",
-      "animate_opacity",
-      "animate_position",
-      "animate_rotation",
-      "animate_scale",
-      "animate_size",
-      "aspect_ratio",
-      "badge",
-      "bottom",
-      "clip_behavior",
-      "col",
-      "content",
-      "controls",
-      "data",
-      "disabled",
-      "expand",
-      "expand_loose",
-      "height",
-      "key",
-      "leading",
-      "left",
-      "margin",
-      "menu_style",
-      "offset",
-      "opacity",
-      "right",
-      "rotate",
-      "rtl",
-      "scale",
-      "size_change_interval",
-      "style",
-      "tooltip",
-      "top",
-      "trailing",
-      "visible",
-      "width"
-    ],
-    "events": [
-      "on_animation_end",
-      "on_blur",
-      "on_close",
-      "on_focus",
-      "on_hover",
-      "on_open",
-      "on_size_change"
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "snack_bar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "snackbar",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4746,6 +6932,18 @@
       "on_change",
       "on_focus",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "switch",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4774,7 +6972,27 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "tab",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "TabBar",
@@ -4782,7 +7000,8 @@
     "family": "materials",
     "widget_type": "tabbar",
     "helpers": [
-      "tab_bar"
+      "tab_bar",
+      "tabbar"
     ],
     "properties": [
       "adaptive",
@@ -4845,6 +7064,43 @@
       "on_click",
       "on_hover",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "tab_bar",
+        "parameters": [
+          [
+            "opt",
+            "tabs"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "tabbar",
+        "parameters": [
+          [
+            "opt",
+            "tabs"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4853,7 +7109,8 @@
     "family": "materials",
     "widget_type": "tabbarview",
     "helpers": [
-      "tab_bar_view"
+      "tab_bar_view",
+      "tabbarview"
     ],
     "properties": [
       "adaptive",
@@ -4896,6 +7153,43 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "tab_bar_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "tabbarview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4949,6 +7243,26 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "tabs",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -4957,7 +7271,8 @@
     "family": "materials",
     "widget_type": "textbutton",
     "helpers": [
-      "text_button"
+      "text_button",
+      "textbutton"
     ],
     "properties": [
       "adaptive",
@@ -5009,6 +7324,35 @@
       "on_hover",
       "on_long_press",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "text_button",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "textbutton",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5017,7 +7361,8 @@
     "family": "materials",
     "widget_type": "textfield",
     "helpers": [
-      "text_field"
+      "text_field",
+      "textfield"
     ],
     "properties": [
       "adaptive",
@@ -5151,6 +7496,35 @@
       "on_size_change",
       "on_submit",
       "on_tap_outside"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "text_field",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "textfield",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5159,7 +7533,8 @@
     "family": "materials",
     "widget_type": "timepicker",
     "helpers": [
-      "time_picker"
+      "time_picker",
+      "timepicker"
     ],
     "properties": [
       "adaptive",
@@ -5195,6 +7570,27 @@
       "on_change",
       "on_dismiss",
       "on_entry_mode_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "time_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "timepicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5203,7 +7599,8 @@
     "family": "materials",
     "widget_type": "verticaldivider",
     "helpers": [
-      "vertical_divider"
+      "vertical_divider",
+      "verticaldivider"
     ],
     "properties": [
       "badge",
@@ -5224,7 +7621,28 @@
       "visible",
       "width"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "vertical_divider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "verticaldivider",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Video",
@@ -5276,15 +7694,231 @@
       "on_state_change",
       "on_track_change",
       "on_track_changed"
+    ],
+    "methods": [
+      {
+        "name": "get_current_position",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "get_duration",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "is_completed",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "is_playing",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "jump_to",
+        "parameters": [
+          [
+            "req",
+            "media_index"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "next",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "pause",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "play",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "play_or_pause",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "playlist_add",
+        "parameters": [
+          [
+            "opt",
+            "media"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "playlist_remove",
+        "parameters": [
+          [
+            "req",
+            "media_index"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "previous",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "seek",
+        "parameters": [
+          [
+            "req",
+            "position_milliseconds"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "stop",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "video",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
     "title": "WebView",
     "slug": "control-web-view",
     "family": "materials",
-    "widget_type": "webview",
+    "widget_type": "WebView",
     "helpers": [
-      "web_view"
+      "web_view",
+      "webview"
     ],
     "properties": [
       "bgcolor",
@@ -5311,59 +7945,200 @@
       "on_scroll",
       "on_console_message",
       "on_javascript_alert_dialog"
-    ]
-  },
-  {
-    "title": "Animatedswitcher",
-    "slug": "control-animatedswitcher",
-    "family": "shared",
-    "widget_type": "animatedswitcher",
-    "helpers": [
-      "animated_switcher"
     ],
-    "properties": [
-      "align",
-      "animate_align",
-      "animate_margin",
-      "animate_offset",
-      "animate_opacity",
-      "animate_position",
-      "animate_rotation",
-      "animate_scale",
-      "animate_size",
-      "aspect_ratio",
-      "badge",
-      "bottom",
-      "col",
-      "content",
-      "data",
-      "disabled",
-      "duration",
-      "expand",
-      "expand_loose",
-      "height",
-      "key",
-      "left",
-      "margin",
-      "offset",
-      "opacity",
-      "reverse_duration",
-      "right",
-      "rotate",
-      "rtl",
-      "scale",
-      "size_change_interval",
-      "switch_in_curve",
-      "switch_out_curve",
-      "tooltip",
-      "top",
-      "transition",
-      "visible",
-      "width"
+    "methods": [
+      {
+        "name": "can_go_back",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "block",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "can_go_forward",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "block",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "clear_cache",
+        "parameters": []
+      },
+      {
+        "name": "clear_local_storage",
+        "parameters": []
+      },
+      {
+        "name": "disable_zoom",
+        "parameters": []
+      },
+      {
+        "name": "enable_zoom",
+        "parameters": []
+      },
+      {
+        "name": "get_current_url",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "block",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "get_title",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "block",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "get_user_agent",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "block",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "go_back",
+        "parameters": []
+      },
+      {
+        "name": "go_forward",
+        "parameters": []
+      },
+      {
+        "name": "load_file",
+        "parameters": [
+          [
+            "req",
+            "path"
+          ]
+        ]
+      },
+      {
+        "name": "load_html",
+        "parameters": [
+          [
+            "req",
+            "value"
+          ],
+          [
+            "key",
+            "base_url"
+          ]
+        ]
+      },
+      {
+        "name": "load_request",
+        "parameters": [
+          [
+            "req",
+            "url"
+          ],
+          [
+            "key",
+            "method"
+          ]
+        ]
+      },
+      {
+        "name": "reload",
+        "parameters": []
+      },
+      {
+        "name": "run_javascript",
+        "parameters": [
+          [
+            "req",
+            "value"
+          ]
+        ]
+      },
+      {
+        "name": "scroll_by",
+        "parameters": [
+          [
+            "req",
+            "x"
+          ],
+          [
+            "req",
+            "y"
+          ]
+        ]
+      },
+      {
+        "name": "scroll_to",
+        "parameters": [
+          [
+            "req",
+            "x"
+          ],
+          [
+            "req",
+            "y"
+          ]
+        ]
+      },
+      {
+        "name": "set_javascript_mode",
+        "parameters": [
+          [
+            "req",
+            "mode"
+          ]
+        ]
+      }
     ],
-    "events": [
-      "on_animation_end",
-      "on_size_change"
+    "helper_signatures": [
+      {
+        "name": "web_view",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "webview",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5386,7 +8161,19 @@
       "x",
       "y"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "arc",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "AutofillGroup",
@@ -5394,7 +8181,8 @@
     "family": "shared",
     "widget_type": "autofillgroup",
     "helpers": [
-      "autofill_group"
+      "autofill_group",
+      "autofillgroup"
     ],
     "properties": [
       "badge",
@@ -5411,22 +8199,36 @@
       "tooltip",
       "visible"
     ],
-    "events": []
-  },
-  {
-    "title": "BrowserContextMenu",
-    "slug": "control-browser-context-menu",
-    "family": "shared",
-    "widget_type": "browsercontextmenu",
-    "helpers": [
-      "page.browser_context_menu"
-    ],
-    "properties": [
-      "data",
-      "disabled",
-      "key"
-    ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "autofill_group",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "autofillgroup",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Canvas",
@@ -5477,6 +8279,22 @@
       "on_animation_end",
       "on_resize",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "canvas",
+        "parameters": [
+          [
+            "opt",
+            "shapes"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5495,7 +8313,19 @@
       "x",
       "y"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "circle",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Color",
@@ -5503,6 +8333,7 @@
     "family": "shared",
     "widget_type": "color",
     "helpers": [
+      "canvas_color",
       "color"
     ],
     "properties": [
@@ -5511,7 +8342,28 @@
       "data",
       "key"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "canvas_color",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "color",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Column",
@@ -5572,6 +8424,26 @@
       "on_animation_end",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "column",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5632,6 +8504,22 @@
       "on_resize",
       "on_size_change",
       "on_update"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "dismissible",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5665,6 +8553,26 @@
     "events": [
       "on_drag_complete",
       "on_drag_start"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "draggable",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5673,7 +8581,8 @@
     "family": "shared",
     "widget_type": "dragtarget",
     "helpers": [
-      "drag_target"
+      "drag_target",
+      "dragtarget"
     ],
     "properties": [
       "badge",
@@ -5695,6 +8604,43 @@
       "on_leave",
       "on_move",
       "on_will_accept"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "drag_target",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "dragtarget",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5710,7 +8656,19 @@
       "key",
       "paint"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "fill",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "GestureDetector",
@@ -5718,7 +8676,8 @@
     "family": "shared",
     "widget_type": "gesturedetector",
     "helpers": [
-      "gesture_detector"
+      "gesture_detector",
+      "gesturedetector"
     ],
     "properties": [
       "adaptive",
@@ -5833,6 +8792,35 @@
       "on_vertical_drag_end",
       "on_vertical_drag_start",
       "on_vertical_drag_update"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "gesture_detector",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "gesturedetector",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5841,7 +8829,8 @@
     "family": "shared",
     "widget_type": "gridview",
     "helpers": [
-      "grid_view"
+      "grid_view",
+      "gridview"
     ],
     "properties": [
       "adaptive",
@@ -5898,6 +8887,43 @@
       "on_animation_end",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "grid_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "gridview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -5948,6 +8974,22 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "hero",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6006,6 +9048,22 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "icon",
+        "parameters": [
+          [
+            "opt",
+            "icon"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6044,7 +9102,23 @@
       "x",
       "y"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "image",
+        "parameters": [
+          [
+            "opt",
+            "src"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "InteractiveViewer",
@@ -6052,7 +9126,8 @@
     "family": "shared",
     "widget_type": "interactiveviewer",
     "helpers": [
-      "interactive_viewer"
+      "interactive_viewer",
+      "interactiveviewer"
     ],
     "properties": [
       "align",
@@ -6107,6 +9182,121 @@
       "on_interaction_start",
       "on_interaction_update",
       "on_size_change"
+    ],
+    "methods": [
+      {
+        "name": "pan",
+        "parameters": [
+          [
+            "req",
+            "dx"
+          ],
+          [
+            "key",
+            "dy"
+          ],
+          [
+            "key",
+            "dz"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "reset",
+        "parameters": [
+          [
+            "key",
+            "animation_duration"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "restore_state",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "save_state",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "zoom",
+        "parameters": [
+          [
+            "req",
+            "factor"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "interactive_viewer",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "interactiveviewer",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6115,7 +9305,8 @@
     "family": "shared",
     "widget_type": "keyboardlistener",
     "helpers": [
-      "keyboard_listener"
+      "keyboard_listener",
+      "keyboardlistener"
     ],
     "properties": [
       "autofocus",
@@ -6137,6 +9328,35 @@
       "on_key_down",
       "on_key_repeat",
       "on_key_up"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "keyboard_listener",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "keyboardlistener",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6156,7 +9376,19 @@
       "y1",
       "y2"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "line",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "ListView",
@@ -6164,7 +9396,8 @@
     "family": "shared",
     "widget_type": "listview",
     "helpers": [
-      "list_view"
+      "list_view",
+      "listview"
     ],
     "properties": [
       "adaptive",
@@ -6221,6 +9454,35 @@
       "on_animation_end",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "list_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "listview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6285,6 +9547,22 @@
       "on_size_change",
       "on_tap_link",
       "on_tap_text"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "markdown",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6293,7 +9571,8 @@
     "family": "shared",
     "widget_type": "mergesemantics",
     "helpers": [
-      "merge_semantics"
+      "merge_semantics",
+      "mergesemantics"
     ],
     "properties": [
       "badge",
@@ -6309,7 +9588,36 @@
       "tooltip",
       "visible"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "merge_semantics",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "mergesemantics",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Oval",
@@ -6328,7 +9636,19 @@
       "x",
       "y"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "oval",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Overlay",
@@ -6343,7 +9663,23 @@
       "data",
       "key"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "overlay",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "PageView",
@@ -6351,7 +9687,8 @@
     "family": "shared",
     "widget_type": "pageview",
     "helpers": [
-      "page_view"
+      "page_view",
+      "pageview"
     ],
     "properties": [
       "align",
@@ -6401,6 +9738,35 @@
       "on_animation_end",
       "on_change",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "page_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "pageview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6417,7 +9783,19 @@
       "key",
       "paint"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "path",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Placeholder",
@@ -6469,6 +9847,22 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "placeholder",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6486,7 +9880,19 @@
       "point_mode",
       "points"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "points",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "Rect",
@@ -6506,7 +9912,19 @@
       "x",
       "y"
     ],
-    "events": []
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "rect",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
   },
   {
     "title": "ReorderableDragHandle",
@@ -6514,7 +9932,8 @@
     "family": "shared",
     "widget_type": "reorderabledraghandle",
     "helpers": [
-      "reorderable_drag_handle"
+      "reorderable_drag_handle",
+      "reorderabledraghandle"
     ],
     "properties": [
       "adaptive",
@@ -6556,6 +9975,35 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "reorderable_drag_handle",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "reorderabledraghandle",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6564,7 +10012,8 @@
     "family": "shared",
     "widget_type": "responsiverow",
     "helpers": [
-      "responsive_row"
+      "responsive_row",
+      "responsiverow"
     ],
     "properties": [
       "adaptive",
@@ -6611,6 +10060,43 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "responsive_row",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "responsiverow",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6672,6 +10158,26 @@
       "on_animation_end",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "row",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6680,7 +10186,8 @@
     "family": "shared",
     "widget_type": "safearea",
     "helpers": [
-      "safe_area"
+      "safe_area",
+      "safearea"
     ],
     "properties": [
       "adaptive",
@@ -6727,6 +10234,35 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "safe_area",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "safearea",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6777,7 +10313,9 @@
       "toggled",
       "tooltip",
       "value",
-      "visible"
+      "visible",
+      "on_long_press_hint_text",
+      "on_tap_hint_text"
     ],
     "events": [
       "on_copy",
@@ -6789,7 +10327,6 @@
       "on_double_tap",
       "on_increase",
       "on_long_press",
-      "on_long_press_hint_text",
       "on_move_cursor_backward_by_character",
       "on_move_cursor_forward_by_character",
       "on_paste",
@@ -6798,8 +10335,23 @@
       "on_scroll_right",
       "on_scroll_up",
       "on_set_text",
-      "on_tap",
-      "on_tap_hint_text"
+      "on_tap"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "semantics",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6808,7 +10360,8 @@
     "family": "shared",
     "widget_type": "shadermask",
     "helpers": [
-      "shader_mask"
+      "shader_mask",
+      "shadermask"
     ],
     "properties": [
       "align",
@@ -6851,6 +10404,35 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "shader_mask",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "shadermask",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6905,6 +10487,22 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "shimmer",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -6957,6 +10555,26 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "stack",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -7002,6 +10620,22 @@
     "events": [
       "on_selection_change",
       "on_tap"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "text",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -7010,7 +10644,8 @@
     "family": "shared",
     "widget_type": "textspan",
     "helpers": [
-      "text_span"
+      "text_span",
+      "textspan"
     ],
     "properties": [
       "badge",
@@ -7035,6 +10670,35 @@
       "on_click",
       "on_enter",
       "on_exit"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "text_span",
+        "parameters": [
+          [
+            "opt",
+            "text"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "textspan",
+        "parameters": [
+          [
+            "opt",
+            "text"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -7043,7 +10707,8 @@
     "family": "shared",
     "widget_type": "transparentpointer",
     "helpers": [
-      "transparent_pointer"
+      "transparent_pointer",
+      "transparentpointer"
     ],
     "properties": [
       "align",
@@ -7083,6 +10748,2192 @@
     "events": [
       "on_animation_end",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "transparent_pointer",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "transparentpointer",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "WindowDragArea",
+    "slug": "control-window-drag-area",
+    "family": "shared",
+    "widget_type": "windowdragarea",
+    "helpers": [
+      "window_drag_area",
+      "windowdragarea"
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "maximizable",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_double_tap",
+      "on_drag_end",
+      "on_drag_start",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "window_drag_area",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "windowdragarea",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CodeEditor",
+    "slug": "control-code-editor",
+    "family": "materials",
+    "widget_type": "codeeditor",
+    "helpers": [
+      "code_editor",
+      "codeeditor"
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "autocomplete",
+      "autocomplete_words",
+      "autofocus",
+      "badge",
+      "bottom",
+      "code_theme",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "gutter_style",
+      "height",
+      "key",
+      "language",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "read_only",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selection",
+      "size_change_interval",
+      "text_style",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_change",
+      "on_focus",
+      "on_selection_change",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "code_editor",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "codeeditor",
+        "parameters": [
+          [
+            "opt",
+            "value"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Rive",
+    "slug": "control-rive",
+    "family": "materials",
+    "widget_type": "rive",
+    "helpers": [
+      "rive"
+    ],
+    "properties": [
+      "align",
+      "alignment",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "animations",
+      "art_board",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "clip_rect",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fit",
+      "headers",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "placeholder",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "speed_multiplier",
+      "src",
+      "state_machines",
+      "tooltip",
+      "top",
+      "use_art_board_size",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "rive",
+        "parameters": [
+          [
+            "opt",
+            "src"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "AnimatedSwitcher",
+    "slug": "control-animated-switcher",
+    "family": "shared",
+    "widget_type": "animatedswitcher",
+    "helpers": [
+      "animated_switcher",
+      "animatedswitcher"
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "duration",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "reverse_duration",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "switch_in_curve",
+      "switch_out_curve",
+      "tooltip",
+      "top",
+      "transition",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "animated_switcher",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "animatedswitcher",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "AutoCompleteSuggestion",
+    "slug": "control-auto-complete-suggestion",
+    "family": "materials",
+    "widget_type": "autocompletesuggestion",
+    "helpers": [
+      "auto_complete_suggestion",
+      "autocomplete_suggestion",
+      "autocompletesuggestion"
+    ],
+    "properties": [
+      "key",
+      "value"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "auto_complete_suggestion",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "autocomplete_suggestion",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "autocompletesuggestion",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "BarChart",
+    "slug": "control-bar-chart",
+    "family": "materials",
+    "widget_type": "barchart",
+    "helpers": [
+      "bar_chart",
+      "barchart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "min_y",
+      "max_y",
+      "min_x",
+      "max_x",
+      "groups",
+      "left_axis",
+      "right_axis",
+      "top_axis",
+      "bottom_axis",
+      "horizontal_grid_lines",
+      "vertical_grid_lines",
+      "border",
+      "tooltip"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bar_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "barchart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "BarChartGroup",
+    "slug": "control-bar-chart-group",
+    "family": "materials",
+    "widget_type": "barchartgroup",
+    "helpers": [
+      "bar_chart_group",
+      "barchartgroup"
+    ],
+    "properties": [
+      "x",
+      "rods",
+      "bars_space",
+      "showing_tooltip_indicators"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bar_chart_group",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "barchartgroup",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "BarChartRod",
+    "slug": "control-bar-chart-rod",
+    "family": "materials",
+    "widget_type": "barchartrod",
+    "helpers": [
+      "bar_chart_rod",
+      "barchartrod"
+    ],
+    "properties": [
+      "from_y",
+      "to_y",
+      "width",
+      "color",
+      "gradient",
+      "border_radius",
+      "rod_stack_items"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bar_chart_rod",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "barchartrod",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "BarChartRodStackItem",
+    "slug": "control-bar-chart-rod-stack-item",
+    "family": "materials",
+    "widget_type": "barchartrodstackitem",
+    "helpers": [
+      "bar_chart_rod_stack_item",
+      "barchartrodstackitem"
+    ],
+    "properties": [
+      "from_y",
+      "to_y",
+      "color",
+      "border_side"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "bar_chart_rod_stack_item",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "barchartrodstackitem",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CandlestickChart",
+    "slug": "control-candlestick-chart",
+    "family": "materials",
+    "widget_type": "candlestickchart",
+    "helpers": [
+      "candlestick_chart",
+      "candlestickchart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "min_x",
+      "max_x",
+      "min_y",
+      "max_y",
+      "spots",
+      "left_axis",
+      "right_axis",
+      "top_axis",
+      "bottom_axis",
+      "tooltip"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "candlestick_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "candlestickchart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CandlestickChartSpot",
+    "slug": "control-candlestick-chart-spot",
+    "family": "materials",
+    "widget_type": "candlestickchartspot",
+    "helpers": [
+      "candlestick_chart_spot",
+      "candlestickchartspot"
+    ],
+    "properties": [
+      "x",
+      "open",
+      "high",
+      "low",
+      "close",
+      "selected"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "candlestick_chart_spot",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "candlestickchartspot",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ChartAxis",
+    "slug": "control-chart-axis",
+    "family": "materials",
+    "widget_type": "chartaxis",
+    "helpers": [
+      "chart_axis",
+      "chartaxis"
+    ],
+    "properties": [
+      "title",
+      "labels",
+      "label_size",
+      "title_size",
+      "show_labels"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "chart_axis",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "chartaxis",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ChartAxisLabel",
+    "slug": "control-chart-axis-label",
+    "family": "materials",
+    "widget_type": "chartaxislabel",
+    "helpers": [
+      "chart_axis_label",
+      "chartaxislabel"
+    ],
+    "properties": [
+      "value",
+      "label"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "chart_axis_label",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "chartaxislabel",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CircleLayer",
+    "slug": "control-circle-layer",
+    "family": "materials",
+    "widget_type": "circlelayer",
+    "helpers": [
+      "circle_layer",
+      "circlelayer"
+    ],
+    "properties": [
+      "circles",
+      "data",
+      "key"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "circle_layer",
+        "parameters": [
+          [
+            "opt",
+            "circles"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "circlelayer",
+        "parameters": [
+          [
+            "opt",
+            "circles"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CircleMarker",
+    "slug": "control-circle-marker",
+    "family": "materials",
+    "widget_type": "circlemarker",
+    "helpers": [
+      "circle_marker",
+      "circlemarker"
+    ],
+    "properties": [
+      "border_color",
+      "border_stroke_width",
+      "color",
+      "coordinates",
+      "data",
+      "key",
+      "radius",
+      "use_radius_in_meter"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "circle_marker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "circlemarker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "LineChart",
+    "slug": "control-line-chart",
+    "family": "materials",
+    "widget_type": "linechart",
+    "helpers": [
+      "line_chart",
+      "linechart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "min_y",
+      "max_y",
+      "min_x",
+      "max_x",
+      "data_series",
+      "left_axis",
+      "right_axis",
+      "top_axis",
+      "bottom_axis",
+      "interactive",
+      "tooltip"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "line_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "linechart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "LineChartData",
+    "slug": "control-line-chart-data",
+    "family": "materials",
+    "widget_type": "linechartdata",
+    "helpers": [
+      "line_chart_data",
+      "linechartdata"
+    ],
+    "properties": [
+      "points",
+      "color",
+      "gradient",
+      "stroke_width",
+      "curved",
+      "rounded_stroke_cap"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "line_chart_data",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "linechartdata",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "LineChartDataPoint",
+    "slug": "control-line-chart-data-point",
+    "family": "materials",
+    "widget_type": "linechartdatapoint",
+    "helpers": [
+      "line_chart_data_point",
+      "linechartdatapoint"
+    ],
+    "properties": [
+      "x",
+      "y"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "line_chart_data_point",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "linechartdatapoint",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Map",
+    "slug": "control-map",
+    "family": "materials",
+    "widget_type": "map",
+    "helpers": [
+      "map"
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "animation_curve",
+      "animation_duration",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "initial_camera_fit",
+      "initial_center",
+      "initial_rotation",
+      "initial_zoom",
+      "interaction_configuration",
+      "keep_alive",
+      "key",
+      "layers",
+      "left",
+      "margin",
+      "max_zoom",
+      "min_zoom",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_event",
+      "on_hover",
+      "on_init",
+      "on_long_press",
+      "on_pointer_cancel",
+      "on_pointer_down",
+      "on_pointer_up",
+      "on_position_change",
+      "on_secondary_tap",
+      "on_size_change",
+      "on_tap"
+    ],
+    "methods": [
+      {
+        "name": "center_on",
+        "parameters": [
+          [
+            "req",
+            "point"
+          ],
+          [
+            "key",
+            "zoom"
+          ],
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "move_to",
+        "parameters": [
+          [
+            "key",
+            "destination"
+          ],
+          [
+            "key",
+            "zoom"
+          ],
+          [
+            "key",
+            "rotation"
+          ],
+          [
+            "key",
+            "offset"
+          ],
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "reset_rotation",
+        "parameters": [
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "rotate_from",
+        "parameters": [
+          [
+            "req",
+            "degree"
+          ],
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "zoom_in",
+        "parameters": [
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "zoom_out",
+        "parameters": [
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      },
+      {
+        "name": "zoom_to",
+        "parameters": [
+          [
+            "req",
+            "zoom"
+          ],
+          [
+            "keyrest",
+            "options"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "map",
+        "parameters": [
+          [
+            "opt",
+            "layers"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Marker",
+    "slug": "control-marker",
+    "family": "materials",
+    "widget_type": "marker",
+    "helpers": [
+      "marker"
+    ],
+    "properties": [
+      "alignment",
+      "content",
+      "coordinates",
+      "data",
+      "height",
+      "key",
+      "rotate",
+      "width"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "marker",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "MarkerLayer",
+    "slug": "control-marker-layer",
+    "family": "materials",
+    "widget_type": "markerlayer",
+    "helpers": [
+      "marker_layer",
+      "markerlayer"
+    ],
+    "properties": [
+      "alignment",
+      "data",
+      "key",
+      "markers",
+      "rotate"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "marker_layer",
+        "parameters": [
+          [
+            "opt",
+            "markers"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "markerlayer",
+        "parameters": [
+          [
+            "opt",
+            "markers"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PieChart",
+    "slug": "control-pie-chart",
+    "family": "materials",
+    "widget_type": "piechart",
+    "helpers": [
+      "pie_chart",
+      "piechart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "sections",
+      "sections_space",
+      "center_space_radius",
+      "tooltip"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "pie_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "piechart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PieChartSection",
+    "slug": "control-pie-chart-section",
+    "family": "materials",
+    "widget_type": "piechartsection",
+    "helpers": [
+      "pie_chart_section",
+      "piechartsection"
+    ],
+    "properties": [
+      "value",
+      "title",
+      "color",
+      "radius",
+      "title_style",
+      "badge_widget",
+      "badge_position_percentage_offset"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "pie_chart_section",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "piechartsection",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PolygonLayer",
+    "slug": "control-polygon-layer",
+    "family": "materials",
+    "widget_type": "polygonlayer",
+    "helpers": [
+      "polygon_layer",
+      "polygonlayer"
+    ],
+    "properties": [
+      "data",
+      "draw_labels_last",
+      "key",
+      "polygon_culling",
+      "polygon_labels",
+      "polygons",
+      "simplification_tolerance",
+      "use_alternative_rendering"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "polygon_layer",
+        "parameters": [
+          [
+            "opt",
+            "polygons"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "polygonlayer",
+        "parameters": [
+          [
+            "opt",
+            "polygons"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PolygonMarker",
+    "slug": "control-polygon-marker",
+    "family": "materials",
+    "widget_type": "polygonmarker",
+    "helpers": [
+      "polygon_marker",
+      "polygonmarker"
+    ],
+    "properties": [
+      "border_color",
+      "border_stroke_width",
+      "color",
+      "coordinates",
+      "data",
+      "disable_holes_border",
+      "key",
+      "label",
+      "label_text_style",
+      "rotate_label",
+      "stroke_cap",
+      "stroke_join"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "polygon_marker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "polygonmarker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PolylineLayer",
+    "slug": "control-polyline-layer",
+    "family": "materials",
+    "widget_type": "polylinelayer",
+    "helpers": [
+      "polyline_layer",
+      "polylinelayer"
+    ],
+    "properties": [
+      "culling_margin",
+      "data",
+      "key",
+      "min_hittable_radius",
+      "polylines",
+      "simplification_tolerance"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "polyline_layer",
+        "parameters": [
+          [
+            "opt",
+            "polylines"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "polylinelayer",
+        "parameters": [
+          [
+            "opt",
+            "polylines"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "PolylineMarker",
+    "slug": "control-polyline-marker",
+    "family": "materials",
+    "widget_type": "polylinemarker",
+    "helpers": [
+      "polyline_marker",
+      "polylinemarker"
+    ],
+    "properties": [
+      "border_color",
+      "border_stroke_width",
+      "color",
+      "colors_stop",
+      "coordinates",
+      "data",
+      "gradient_colors",
+      "key",
+      "stroke_cap",
+      "stroke_join",
+      "stroke_pattern",
+      "stroke_width",
+      "use_stroke_width_in_meter"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "polyline_marker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "polylinemarker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "RadarChart",
+    "slug": "control-radar-chart",
+    "family": "materials",
+    "widget_type": "radarchart",
+    "helpers": [
+      "radar_chart",
+      "radarchart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "titles",
+      "data_sets"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radar_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "radarchart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "RadarChartTitle",
+    "slug": "control-radar-chart-title",
+    "family": "materials",
+    "widget_type": "radarcharttitle",
+    "helpers": [
+      "radar_chart_title",
+      "radarcharttitle"
+    ],
+    "properties": [
+      "text",
+      "angle",
+      "position_percentage_offset"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radar_chart_title",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "radarcharttitle",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "RadarDataSet",
+    "slug": "control-radar-data-set",
+    "family": "materials",
+    "widget_type": "radardataset",
+    "helpers": [
+      "radar_data_set",
+      "radardataset"
+    ],
+    "properties": [
+      "entries",
+      "border_color",
+      "fill_color",
+      "border_width"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radar_data_set",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "radardataset",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "RadarDataSetEntry",
+    "slug": "control-radar-data-set-entry",
+    "family": "materials",
+    "widget_type": "radardatasetentry",
+    "helpers": [
+      "radar_data_set_entry",
+      "radardatasetentry"
+    ],
+    "properties": [
+      "value"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "radar_data_set_entry",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "radardatasetentry",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "RotatedBox",
+    "slug": "control-rotated-box",
+    "family": "shared",
+    "widget_type": "rotatedbox",
+    "helpers": [
+      "rotated_box",
+      "rotatedbox"
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "quarter_turns",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "rotated_box",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "rotatedbox",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ScatterChart",
+    "slug": "control-scatter-chart",
+    "family": "materials",
+    "widget_type": "scatterchart",
+    "helpers": [
+      "scatter_chart",
+      "scatterchart"
+    ],
+    "properties": [
+      "width",
+      "height",
+      "min_x",
+      "max_x",
+      "min_y",
+      "max_y",
+      "spots",
+      "left_axis",
+      "right_axis",
+      "top_axis",
+      "bottom_axis"
+    ],
+    "events": [
+      "on_event"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "scatter_chart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "scatterchart",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ScatterChartSpot",
+    "slug": "control-scatter-chart-spot",
+    "family": "materials",
+    "widget_type": "scatterchartspot",
+    "helpers": [
+      "scatter_chart_spot",
+      "scatterchartspot"
+    ],
+    "properties": [
+      "x",
+      "y",
+      "radius",
+      "color"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "scatter_chart_spot",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "scatterchartspot",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Screenshot",
+    "slug": "control-screenshot",
+    "family": "shared",
+    "widget_type": "screenshot",
+    "helpers": [
+      "screenshot"
+    ],
+    "properties": [
+      "badge",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "key",
+      "opacity",
+      "rtl",
+      "tooltip",
+      "visible"
+    ],
+    "events": [],
+    "methods": [
+      {
+        "name": "capture",
+        "parameters": [
+          [
+            "key",
+            "pixel_ratio"
+          ],
+          [
+            "key",
+            "delay"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
+    "helper_signatures": [
+      {
+        "name": "screenshot",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Shadow",
+    "slug": "control-shadow",
+    "family": "shared",
+    "widget_type": "shadow",
+    "helpers": [
+      "shadow"
+    ],
+    "properties": [
+      "color",
+      "data",
+      "elevation",
+      "key",
+      "path",
+      "transparent_occluder"
+    ],
+    "events": [],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "shadow",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SimpleAttribution",
+    "slug": "control-simple-attribution",
+    "family": "materials",
+    "widget_type": "simpleattribution",
+    "helpers": [
+      "simple_attribution",
+      "simpleattribution"
+    ],
+    "properties": [
+      "alignment",
+      "bgcolor",
+      "data",
+      "key",
+      "text"
+    ],
+    "events": [
+      "on_click"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "simple_attribution",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "simpleattribution",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SnackBarAction",
+    "slug": "control-snack-bar-action",
+    "family": "materials",
+    "widget_type": "snackbaraction",
+    "helpers": [
+      "snack_bar_action",
+      "snackbaraction"
+    ],
+    "properties": [
+      "badge",
+      "bgcolor",
+      "col",
+      "data",
+      "disabled",
+      "disabled_bgcolor",
+      "disabled_text_color",
+      "expand",
+      "expand_loose",
+      "key",
+      "label",
+      "opacity",
+      "rtl",
+      "text_color",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_click"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "snack_bar_action",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "snackbaraction",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SubmenuButton",
+    "slug": "control-submenu-button",
+    "family": "materials",
+    "widget_type": "submenubutton",
+    "helpers": [
+      "submenu_button",
+      "submenubutton"
+    ],
+    "properties": [
+      "align",
+      "alignment_offset",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "leading",
+      "left",
+      "margin",
+      "menu_style",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "style",
+      "tooltip",
+      "top",
+      "trailing",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_blur",
+      "on_close",
+      "on_focus",
+      "on_hover",
+      "on_open",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "submenu_button",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "submenubutton",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "TileLayer",
+    "slug": "control-tile-layer",
+    "family": "materials",
+    "widget_type": "tilelayer",
+    "helpers": [
+      "tile_layer",
+      "tilelayer"
+    ],
+    "properties": [
+      "additional_options",
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "display_mode",
+      "enable_retina_mode",
+      "enable_tms",
+      "errorImageSrc",
+      "evict_error_tile_strategy",
+      "expand",
+      "expand_loose",
+      "fallback_url",
+      "height",
+      "keep_buffer",
+      "key",
+      "left",
+      "margin",
+      "max_native_zoom",
+      "max_zoom",
+      "min_native_zoom",
+      "min_zoom",
+      "offset",
+      "opacity",
+      "pan_buffer",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "subdomains",
+      "tile_bounds",
+      "tile_size",
+      "tooltip",
+      "top",
+      "url_template",
+      "user_agent_package_name",
+      "visible",
+      "width",
+      "zoom_offset",
+      "zoom_reverse"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_image_error",
+      "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "tile_layer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "tilelayer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
     ]
   },
   {
@@ -7154,140 +13005,26 @@
       "on_confirm_pop",
       "on_scroll",
       "on_size_change"
+    ],
+    "methods": [],
+    "helper_signatures": [
+      {
+        "name": "view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
     ]
-  },
-  {
-    "title": "WindowDragArea",
-    "slug": "control-window-drag-area",
-    "family": "shared",
-    "widget_type": "windowdragarea",
-    "helpers": [
-      "window_drag_area"
-    ],
-    "properties": [
-      "align",
-      "animate_align",
-      "animate_margin",
-      "animate_offset",
-      "animate_opacity",
-      "animate_position",
-      "animate_rotation",
-      "animate_scale",
-      "animate_size",
-      "aspect_ratio",
-      "badge",
-      "bottom",
-      "col",
-      "content",
-      "data",
-      "disabled",
-      "expand",
-      "expand_loose",
-      "height",
-      "key",
-      "left",
-      "margin",
-      "maximizable",
-      "offset",
-      "opacity",
-      "right",
-      "rotate",
-      "rtl",
-      "scale",
-      "size_change_interval",
-      "tooltip",
-      "top",
-      "visible",
-      "width"
-    ],
-    "events": [
-      "on_animation_end",
-      "on_double_tap",
-      "on_drag_end",
-      "on_drag_start",
-      "on_size_change"
-    ]
-  },
-  {
-    "title": "CodeEditor",
-    "slug": "control-code-editor",
-    "family": "materials",
-    "widget_type": "codeeditor",
-    "helpers": [
-      "code_editor"
-    ],
-    "properties": [
-      "adaptive",
-      "autocomplete",
-      "autocomplete_words",
-      "autofocus",
-      "badge",
-      "code_theme",
-      "col",
-      "data",
-      "disabled",
-      "expand",
-      "expand_loose",
-      "gutter_style",
-      "height",
-      "issues",
-      "key",
-      "language",
-      "opacity",
-      "padding",
-      "read_only",
-      "rtl",
-      "selection",
-      "text_style",
-      "tooltip",
-      "value",
-      "visible",
-      "width"
-    ],
-    "events": [
-      "on_blur",
-      "on_change",
-      "on_focus",
-      "on_selection_change"
-    ]
-  },
-  {
-    "title": "Rive",
-    "slug": "control-rive",
-    "family": "materials",
-    "widget_type": "rive",
-    "helpers": [
-      "rive"
-    ],
-    "properties": [
-      "adaptive",
-      "alignment",
-      "animations",
-      "artboard",
-      "aspect_ratio",
-      "badge",
-      "clip_rect",
-      "col",
-      "data",
-      "disabled",
-      "enable_antialiasing",
-      "expand",
-      "expand_loose",
-      "fit",
-      "headers",
-      "height",
-      "key",
-      "opacity",
-      "placeholder",
-      "rtl",
-      "speed_multiplier",
-      "src",
-      "state_machines",
-      "tooltip",
-      "use_artboard_size",
-      "visible",
-      "width"
-    ],
-    "events": []
   }
 ]

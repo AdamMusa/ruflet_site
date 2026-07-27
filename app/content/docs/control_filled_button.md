@@ -14,6 +14,7 @@ filled_button(
 ## Common properties
 
 - `content`
+- `url`
 - `on_click`
 - `width`
 - `height`
@@ -32,3 +33,5 @@ filled_button(
 ## Notes
 
 - Use `filled_button` when the primary action needs stronger emphasis
+- Use `url:` to open a link through the client `url_launcher`; use `on_click:`
+  for application actions.

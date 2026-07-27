@@ -35,7 +35,7 @@ dialog = alert_dialog(
   open: false,
   title: text("Delete item?"),
   actions: [
-    text_button(content: text("Cancel"), on_click: ->(_event) { page.close_dialog(dialog) }),
+    text_button(content: text("Cancel"), on_click: ->(_event) { page.pop_dialog }),
     filled_button(content: text("Delete"), on_click: ->(_event) { delete_item })
   ]
 )
@@ -43,28 +43,39 @@ dialog = alert_dialog(
 page.show_dialog(dialog)
 ```
 
-Use `page.close_dialog(dialog)` to close a specific dialog or
-`page.pop_dialog` to close the latest open dialog.
+Use `page.pop_dialog` to close the latest open dialog.
 
 ## Bottom sheets
 
-Assign a bottom sheet through the page API:
-
 ```ruby
-page.bottom_sheet = bottom_sheet(
-  open: true,
-  content: container(padding: 24, content: text("Sheet content"))
+page.show_bottom_sheet(
+  bottom_sheet(content: container(padding: 24, content: text("Sheet content")))
 )
 ```
 
 ## Snackbars
 
 ```ruby
-page.snack_bar = snack_bar(
-  open: true,
-  content: text("Changes saved")
+page.show_snack_bar(
+  snack_bar(content: text("Changes saved"))
 )
 ```
+
+## Banners
+
+```ruby
+page.show_banner(
+  banner(
+    content: text("You are offline"),
+    actions: [text_button(content: text("Dismiss"), on_click: ->(_event) { page.close_banner })]
+  )
+)
+```
+
+The `show_dialog`, `show_snack_bar`, `show_bottom_sheet`, and `show_banner`
+methods all mount the control and open it. (Assigning `page.snack_bar`,
+`page.bottom_sheet`, or `page.dialog` directly also works, but the control must
+be built with `open: true` to display.)
 
 Use transient feedback for action results. Keep validation errors near the
 affected input when the user needs to correct them.

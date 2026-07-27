@@ -7,6 +7,11 @@ class DocsController < ApplicationController
   end
 
   def show
+    if %w[api-surface dsl-reference runtime-reference].include?(params[:slug])
+      redirect_to doc_path("reference"), status: :moved_permanently
+      return
+    end
+
     load_doc(params[:slug])
 
     respond_to do |format|

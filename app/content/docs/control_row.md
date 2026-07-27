@@ -9,7 +9,7 @@ row(
   spacing: 8,
   alignment: Ruflet::MainAxisAlignment::CENTER,
   children: [
-    icon(icon: "add"),
+    icon("add"),
     text(value: "Create")
   ]
 )

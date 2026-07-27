@@ -11,7 +11,7 @@ page.add(
       content: column(
         spacing: 16,
         children: [
-          text("Profile", size: 28, weight: "bold"),
+          text(value: "Profile", style: { size: 28, weight: "w700" }),
           text_field(label: "Display name"),
           row(
             spacing: 12,
@@ -38,6 +38,17 @@ page.add(
 
 Most controls use `children:` for a list or `content:` for one nested control.
 Some compatibility helpers also accept `controls:`.
+
+## Text styling
+
+Pass text styles as a Ruby hash on `style:`:
+
+```ruby
+text(value: "Dashboard", style: { size: 28, weight: "w700" })
+```
+
+This is the normal Ruflet application API: call the DSL helper and pass a
+plain Ruby hash.
 
 ## Sizing
 

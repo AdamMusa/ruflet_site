@@ -9,14 +9,15 @@ of the control it decorates.
 ```ruby
 icon_button(
   "notifications",
-  badge: badge(text: "3"),
+  badge: badge("3"),
   on_click: ->(_e) { open_inbox }
 )
 ```
 
 ## Common properties
 
-- `text` — the label inside the badge
+- `label` — the label control or value inside the badge; the first positional
+  argument maps to this property
 - `label_visible` — show / hide the badge
 - `bgcolor`
 - `text_color`
