@@ -54,6 +54,30 @@ class RufletServiceApiSyncTest < ActiveSupport::TestCase
     assert_includes @catalog.fetch("common_control_methods").map { |method| method.fetch("name") }, "on"
   end
 
+  test "every source service has a dedicated complete documentation page" do
+    @services.each_value do |service|
+      slug = "service-#{service.fetch('helper').tr('_', '-')}"
+      page = DocsCatalog.find(slug)
+
+      assert_equal slug, page.slug
+      assert_equal "Services", page.section
+      assert_includes page.content, "page.#{service.fetch('helper')}"
+      service.fetch("properties").each { |property| assert_includes page.content, "`#{property}`" }
+      service.fetch("events").each { |event| assert_includes page.content, "`#{event}`" }
+      (service.fetch("methods") + service.fetch("proxy_methods")).each do |method|
+        assert_includes page.content, "`#{method.fetch('name')}"
+      end
+    end
+  end
+
+  test "service pages retain every mapped Page convenience signature" do
+    DocsCatalog::SERVICE_CONVENIENCE_METHODS.each do |helper, method_names|
+      page = DocsCatalog.find("service-#{helper.tr('_', '-')}")
+
+      method_names.each { |name| assert_includes page.content, "page.#{name}" }
+    end
+  end
+
   private
 
   def method_names(helper)

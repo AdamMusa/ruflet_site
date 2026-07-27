@@ -6,6 +6,45 @@ class DocsCatalog
 
   SOURCE_ROOT = Rails.root.join("app/content/docs")
   CONTROL_CATALOG_PATH = Rails.root.join("config/control_catalog.json")
+  SERVICE_CATALOG_PATH = Rails.root.join("config/service_catalog.json")
+  RUNTIME_CATALOG_PATH = Rails.root.join("config/runtime_catalog.json")
+
+  SERVICE_CONVENIENCE_METHODS = {
+    "battery" => %w[get_battery_level get_battery_state is_in_battery_save_mode battery_save_mode?],
+    "clipboard" => %w[set_clipboard get_clipboard set_clipboard_files get_clipboard_files set_clipboard_image get_clipboard_image],
+    "connectivity" => %w[get_connectivity],
+    "file_picker" => %w[pick_files save_file get_directory_path upload upload_files],
+    "haptic_feedback" => %w[heavy_impact medium_impact light_impact selection_click vibrate],
+    "share" => %w[share_text share_uri share_files],
+    "storage_paths" => %w[get_application_cache_directory get_application_documents_directory get_application_support_directory get_downloads_directory get_external_cache_directories get_external_storage_directories get_external_storage_directory get_library_directory get_temporary_directory get_console_log_filename],
+    "url_launcher" => %w[launch_url can_launch_url close_in_app_web_view open_window supports_launch_mode supports_close_for_launch_mode]
+  }.freeze
+
+  SERVICE_PROTECTED_ACCESS = {
+    "accelerometer" => %w[motion], "barometer" => %w[motion],
+    "gyroscope" => %w[motion], "magnetometer" => %w[motion],
+    "shake_detector" => %w[motion], "user_accelerometer" => %w[motion]
+  }.freeze
+
+  EXTENSION_CATALOG = [
+    { key: "audio", title: "Audio", package: "flet_audio", kind: "Media control", summary: "Play audio from a URL, asset, or base64 source.", controls: %w[control-audio], example: 'audio(src: "assets/notification.mp3", autoplay: true)' },
+    { key: "audio_recorder", title: "Audio Recorder", package: "flet_audio_recorder", kind: "Device service", summary: "Record microphone input, inspect recorder state, and receive streams or uploads.", services: %w[audio_recorder], required_services: %w[microphone], example: "recorder = page.audio_recorder\nrecorder.start_recording(on_result: ->(result, error) { })" },
+    { key: "camera", title: "Camera", package: "flet_camera", kind: "Device service", summary: "Display a native camera preview and receive camera state or image events.", services: %w[camera], required_services: %w[camera], example: "page.camera(\n  preview_enabled: true,\n  on_stream_image: ->(event) { puts event.data }\n)" },
+    { key: "charts", title: "Charts", package: "flet_charts", kind: "Control family", summary: "Build interactive bar, line, pie, scatter, candlestick, and radar charts.", controls: %w[control-bar-chart control-bar-chart-group control-bar-chart-rod control-bar-chart-rod-stack-item control-line-chart control-line-chart-data control-line-chart-data-point control-pie-chart control-pie-chart-section control-scatter-chart control-scatter-chart-spot control-candlestick-chart control-candlestick-chart-spot control-radar-chart control-radar-chart-title control-radar-data-set control-radar-data-set-entry control-chart-axis control-chart-axis-label], example: "bar_chart(groups: [])" },
+    { key: "code_editor", title: "Code Editor", package: "flet_code_editor", kind: "Editing control", summary: "Edit syntax-highlighted source code and handle value, selection, and focus changes.", controls: %w[control-code-editor], example: 'code_editor(value: "puts :hello", language: "ruby")' },
+    { key: "color_pickers", title: "Color Pickers", package: "flet_color_pickers", kind: "Control family", summary: "Provide color, hue-ring, slide, material, block, and multiple-choice color pickers.", wire_types: %w[ColorPicker HueRingPicker SlidePicker MaterialPicker BlockPicker MultipleChoiceBlockPicker], properties: %w[available_colors color color_history color_model color_picker_height color_picker_width colors display_thumb_color enable_alpha enable_label hex_input_bar hsv_color hue_ring_stroke_width indicator_alignment_begin indicator_border_radius indicator_size label_text_style label_types palette_type picker_area_border_radius picker_area_height_percent portrait_only show_indicator show_label show_params show_slider_text slider_size slider_text_style], events: %w[on_color_change on_colors_change on_history_change on_hsv_color_change on_primary_change], example: 'control("ColorPicker", color: "#2563eb", enable_alpha: true)' },
+    { key: "datatable2", title: "DataTable2", package: "flet_datatable2", kind: "Data control", summary: "Render a table with fixed rows or columns and richer scrolling and sizing options.", controls: %w[control-data-column control-data-row control-data-cell], wire_types: %w[DataTable2], properties: %w[bgcolor border border_radius bottom_margin checkbox_alignment checkbox_horizontal_margin clip_behavior column_spacing columns data_row_height data_text_style divider_thickness empty fixed_columns_color fixed_corner_color fixed_left_columns fixed_top_rows gradient heading_row_decoration heading_row_height heading_text_style horizontal_lines horizontal_margin lm_ratio min_width rows show_bottom_border show_checkbox_column show_heading_checkbox sm_ratio sort_arrow_animation_duration sort_arrow_icon sort_arrow_icon_color sort_ascending sort_column_index vertical_lines visible_horizontal_scroll_bar visible_vertical_scroll_bar], events: %w[on_double_tap on_long_press on_secondary_tap on_secondary_tap_down on_select_all on_select_change on_sort on_tap on_tap_cancel on_tap_down], example: 'control("DataTable2", columns: [], rows: [], fixed_top_rows: 1)' },
+    { key: "flashlight", title: "Flashlight", package: "flet_flashlight", kind: "Device service", summary: "Check flashlight availability and turn the device torch on or off.", services: %w[flashlight], required_services: %w[camera], example: "torch = page.flashlight\ntorch.on(on_result: ->(result, error) { })" },
+    { key: "geolocator", title: "Geolocator", package: "flet_geolocator", kind: "Device service", summary: "Request location access, read positions, and subscribe to position changes.", services: %w[geolocator], required_services: %w[location], example: "location = page.geolocator\nlocation.get_current_position(on_result: ->(position, error) { })" },
+    { key: "lottie", title: "Lottie", package: "flet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", wire_types: %w[Lottie], properties: %w[alignment animate background_loading enable_layers_opacity enable_merge_paths error_content filter_quality fit headers repeat reverse src], events: %w[on_error on_load], example: 'control("Lottie", src: "assets/success.json", repeat: true)' },
+    { key: "map", title: "Map", package: "flet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution], example: "map(children: [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\")])" },
+    { key: "permission_handler", title: "Permission Handler", package: "flet_permission_handler", kind: "Device service", summary: "Inspect and request operating-system permissions at the moment a user needs them.", services: %w[permission_handler], example: "permissions = page.permission_handler\npermissions.request(\"camera\", on_result: ->(status, error) { })" },
+    { key: "qrcode_scanner", title: "QR Code Scanner", package: "ruflet_qrcode_scanner", kind: "Scanner control", summary: "Scan QR codes and supported barcodes with the native camera.", required_services: %w[camera], guide: "qrcode-scanner", example: "qrcode_scanner(\n  formats: [:qr_code],\n  on_detect: ->(event) { puts event.value }\n)" },
+    { key: "rive", title: "Rive", package: "flet_rive", kind: "Animation control", summary: "Render Rive artboards, animations, and state machines.", controls: %w[control-rive], example: 'rive(src: "assets/animation.riv", animations: ["idle"])' },
+    { key: "secure_storage", title: "Secure Storage", package: "flet_secure_storage", kind: "Storage service", summary: "Store, retrieve, enumerate, and remove sensitive values using platform-secure storage.", services: %w[secure_storage], example: "storage = page.secure_storage\nstorage.set(\"token\", token, on_result: ->(result, error) { })" },
+    { key: "video", title: "Video", package: "flet_video", kind: "Media control", summary: "Play video with configurable playlists, controls, aspect ratio, and playback events.", controls: %w[control-video], example: 'video(playlist: [{ resource: "assets/demo.mp4" }])' },
+    { key: "webview", title: "WebView", package: "flet_webview", kind: "Web content control", summary: "Embed web content and control navigation in a native WebView.", controls: %w[control-web-view], example: 'web_view(url: "https://ruflet.dev")' }
+  ].freeze
 
   def self.sections
     @sections ||= [
@@ -86,7 +125,8 @@ class DocsCatalog
         id: "services",
         title: "Services",
         entries: [
-          entry("services-and-plugins", "Services and Device APIs", "Use page convenience methods and persistent services to access client capabilities.", SOURCE_ROOT.join("services_and_plugins.md"), "Services")
+          entry("services-and-plugins", "Services and Device APIs", "Use page convenience methods and persistent services to access client capabilities.", SOURCE_ROOT.join("services_and_plugins.md"), "Services"),
+          *service_entries
         ]
       ),
       Section.new(
@@ -94,7 +134,7 @@ class DocsCatalog
         title: "Extensions",
         entries: [
           entry("extensions", "Extension Catalog", "Enable optional Ruflet client packages and find the Ruby APIs they provide.", SOURCE_ROOT.join("extensions.md"), "Extensions"),
-          entry("qrcode-scanner", "QRCodeScanner", "Scan QR codes and barcodes with the first-party Ruflet Flet extension.", SOURCE_ROOT.join("control_qrcode_scanner.md"), "Extensions"),
+          *extension_entries,
           entry("extension-authoring", "Extension Authoring", "Build typed Ruflet controls as standard Flet Flutter extension packages.", SOURCE_ROOT.join("extension_authoring.md"), "Extensions")
         ]
       )
@@ -149,6 +189,18 @@ class DocsCatalog
     @control_catalog ||= JSON.parse(CONTROL_CATALOG_PATH.read, symbolize_names: true).sort_by { |control| control[:title] }
   end
 
+  def self.service_catalog
+    @service_catalog ||= JSON.parse(SERVICE_CATALOG_PATH.read, symbolize_names: true)
+  end
+
+  def self.extension_catalog
+    EXTENSION_CATALOG
+  end
+
+  def self.runtime_catalog
+    @runtime_catalog ||= JSON.parse(RUNTIME_CATALOG_PATH.read, symbolize_names: true)
+  end
+
   def self.entry(slug, title, summary, source, section, content = nil)
     Entry.new(slug: slug, title: title, summary: summary, source: source, section: section, content: content)
   end
@@ -185,6 +237,168 @@ class DocsCatalog
       summary = source ? nil : generated_control_summary(control)
       entry(control[:slug], control[:title], summary, nil, "Controls", content)
     end
+  end
+
+  def self.service_entries
+    service_catalog.fetch(:services).sort_by { |service| service[:title] }.map do |service|
+      entry("service-#{service[:helper].tr('_', '-')}", service[:title], "Complete `page.#{service[:helper]}` service reference.", nil, "Services", generated_service_markdown(service))
+    end
+  end
+
+  def self.extension_entries
+    extension_catalog.reject { |extension| Array(extension[:services]).any? }.sort_by { |extension| extension[:title] }.map do |extension|
+      if extension[:guide]
+        entry(extension[:guide], extension[:title], extension[:summary], SOURCE_ROOT.join("control_qrcode_scanner.md"), "Extensions")
+      else
+        entry("extension-#{extension[:key].tr('_', '-')}", extension[:title], extension[:summary], nil, "Extensions", generated_extension_markdown(extension))
+      end
+    end
+  end
+
+  def self.generated_service_markdown(service)
+    helper = service.fetch(:helper)
+    extension = extension_catalog.find { |candidate| Array(candidate[:services]).include?(helper) }
+    lines = [
+      "# #{service.fetch(:title)} service", "",
+      "Create or retrieve this service with `page.#{helper}(**properties)`. Ruflet reuses the registered service unless you supply a different `id`.", "",
+      "## Example", "", "```ruby", *service_example(service), "```", "",
+      "## Page accessor", "", "- `page.#{format_api_method(service.fetch(:page_accessor))}`", "",
+      "## Properties", ""
+    ]
+    Array(service[:properties]).each { |property| lines << describe(property, "properties") }
+    lines << "- None." if Array(service[:properties]).empty?
+    lines << ""
+    if Array(service[:events]).any?
+      lines.concat(["## Events", ""])
+      Array(service[:events]).each { |event| lines << describe(event, "events") }
+      lines << ""
+    end
+    methods = Array(service[:methods])
+    if methods.any?
+      lines.concat(["## Service methods", ""])
+      methods.each { |method| lines << "- `#{format_api_method(method)}`" }
+      lines << ""
+    end
+    proxies = Array(service[:proxy_methods])
+    if proxies.any?
+      lines.concat(["## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods:", ""])
+      proxies.each { |method| lines << "- `#{format_api_method(method)}`" }
+      lines << ""
+    end
+    convenience_methods = SERVICE_CONVENIENCE_METHODS.fetch(helper, []).filter_map do |name|
+      runtime_catalog.fetch(:page).find { |method| method[:name] == name }
+    end
+    if convenience_methods.any?
+      lines.concat(["## Page convenience methods", "", "Use these one-shot Page calls when you do not need to keep the service object:", ""])
+      convenience_methods.each { |method| lines << "- `page.#{format_api_method(method)}`" }
+      lines << ""
+    end
+    lines.concat([
+      "## Result and error handling", "",
+      "Client calls are asynchronous. When a method accepts `on_result:`, handle both callback values: `|result, error|`. Availability and returned data can vary by platform.", "",
+      "## Common service API", "",
+      "The service also supports the common Ruflet control API: #{service_catalog.fetch(:common_control_methods).map { |method| "`#{format_api_method(method)}`" }.join(', ')}.", "",
+      "Use the named methods above for application code; common control methods mainly support event registration, updates, and runtime integration.", "",
+      "## Wire reference", "",
+      "- Service helper: `#{helper}`",
+      "- Wire type: `#{service.fetch(:widget_type)}`"
+    ])
+    aliases = Array(service[:aliases])
+    lines << "- Aliases: #{aliases.map { |name| "`#{name}`" }.join(', ')}" if aliases.any?
+    if extension
+      lines.concat([
+        "", "## Client extension setup", "",
+        "This service is implemented by the `#{extension.fetch(:package)}` Flet extension. Enable it in `ruflet.yaml`, then rebuild the client:", "",
+        "```yaml", "extensions:", "  - #{extension.fetch(:key)}", "```", "",
+        "Application code uses `page.#{helper}`; do not add the package directly to your app's Flutter dependencies."
+      ])
+      required = (Array(extension[:required_services]) + SERVICE_PROTECTED_ACCESS.fetch(helper, [])).uniq
+      if required.any?
+        lines.concat(["", "Declare protected access in `services.yaml`:", "", "```yaml", "services:"])
+        required.each { |name| lines << "  - #{name}:" << "      description: Explain why your app needs #{name.tr('_', ' ')} access." }
+        lines << "```"
+      end
+    elsif SERVICE_PROTECTED_ACCESS.key?(helper)
+      lines.concat(["", "## Protected device access", "", "Declare motion access in `services.yaml`, then rebuild the native client:", "", "```yaml", "services:", "  - motion:", "      description: Explain why your app reads motion sensor data.", "```"])
+    end
+    lines.join("\n")
+  end
+
+  def self.service_example(service)
+    helper = service.fetch(:helper)
+    event = Array(service[:events]).first
+    method = (Array(service[:methods]) + Array(service[:proxy_methods])).first
+    lines = ["service = page.#{helper}#{event ? "(" : ""}"]
+    if event
+      lines << "  #{event}: ->(event) { puts event.data.inspect }"
+      lines << ")"
+    end
+    if method
+      lines << "service.#{example_method_call(method)}"
+    end
+    lines
+  end
+
+  def self.example_method_call(method)
+    arguments = Array(method[:parameters]).filter_map do |kind, name|
+      next unless %w[req keyreq].include?(kind.to_s)
+
+      value = case name.to_s
+      when /latitude|longitude|brightness|position/ then "0"
+      when /files/ then "[]"
+      when /configuration|options/ then "{}"
+      when /value/ then '"value"'
+      else '"sample"'
+      end
+      kind.to_s == "keyreq" ? "#{name}: #{value}" : value
+    end
+    has_callback = Array(method[:parameters]).any? { |kind, name| kind.to_s == "key" && name.to_s == "on_result" }
+    arguments << "on_result: ->(result, error) { puts(error || result).inspect }" if has_callback
+    "#{method[:name]}(#{arguments.join(', ')})"
+  end
+
+  def self.generated_extension_markdown(extension)
+    lines = [
+      "# #{extension.fetch(:title)} extension", "", extension.fetch(:summary), "",
+      "## Enable the extension", "", "Add the extension key to `ruflet.yaml`:", "", "```yaml", "extensions:", "  - #{extension.fetch(:key)}", "```", "",
+      "Run `ruflet run` during development or `ruflet build <target>` for a release. Extension packages are compiled into the Ruflet client, so rebuild the client after changing this list.", "",
+      "## Ruby DSL example", "", "```ruby", extension.fetch(:example), "```", "",
+      "## API provided", "",
+      "- Extension key: `#{extension.fetch(:key)}`",
+      "- Flet package: `#{extension.fetch(:package)}`",
+      "- Kind: #{extension.fetch(:kind)}"
+    ]
+    Array(extension[:controls]).each do |slug|
+      control = control_catalog.find { |candidate| candidate[:slug] == slug }
+      lines << "- [#{control ? control[:title] : slug} control reference](/docs/#{slug}) — complete helpers, properties, events, and methods."
+    end
+    Array(extension[:services]).each do |helper|
+      service = service_catalog.fetch(:services).find { |candidate| candidate[:helper] == helper }
+      lines << "- [#{service ? service[:title] : helper} service reference](/docs/service-#{helper.tr('_', '-')}) — complete properties, events, and callable methods."
+    end
+    if Array(extension[:wire_types]).any?
+      lines << "- Wire controls: #{Array(extension[:wire_types]).map { |name| "`#{name}`" }.join(', ')}"
+    end
+    if Array(extension[:properties]).any?
+      lines.concat(["", "## Properties", ""])
+      Array(extension[:properties]).each { |property| lines << describe(property, "properties") }
+    end
+    if Array(extension[:events]).any?
+      lines.concat(["", "## Events", ""])
+      Array(extension[:events]).each { |event| lines << describe(event, "events") }
+    end
+    lines.concat(["", "## Permissions and platforms", ""])
+    required = Array(extension[:required_services])
+    if required.any?
+      lines << "This extension uses protected device access. Declare it in `services.yaml` with a user-facing explanation:"
+      lines.concat(["", "```yaml", "services:"])
+      required.each { |service| lines << "  - #{service}:" << "      description: Explain why your app needs #{service.tr('_', ' ')} access." }
+      lines.concat(["```", "", "Request access when the user starts the related action. Android, Apple platforms, desktop, and web can differ in capability and permission behavior; handle errors and unsupported results."])
+    else
+      lines << "No protected service declaration is added automatically. Platform support still follows the underlying Flet extension, so test every target you ship."
+    end
+    lines.concat(["", "## Build behavior", "", "Ruflet resolves the extension key to `#{extension.fetch(:package)}` and includes that Flet package through the client extension pipeline. Application code uses the Ruby DSL shown above; do not add the package directly to your app's Flutter dependencies."])
+    lines.join("\n")
   end
 
   def self.source_for_slug(slug)
@@ -512,6 +726,8 @@ class DocsCatalog
   end
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
+                       :service_entries, :extension_entries, :generated_service_markdown,
+                       :generated_extension_markdown, :service_example, :example_method_call,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description,

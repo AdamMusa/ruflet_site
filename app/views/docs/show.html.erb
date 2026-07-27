@@ -116,6 +116,18 @@
           </div>
         <% end %>
 
+        <% if %w[services-and-plugins extensions].include?(@doc.slug) %>
+          <% catalog_section = DocsCatalog.sections.find { |section| section.id == (@doc.slug == "extensions" ? "extensions" : "services") } %>
+          <% catalog_entries = catalog_section.entries.reject { |entry| entry.slug == @doc.slug || entry.slug == "extension-authoring" } %>
+          <div class="docs-controls-grid" aria-label="<%= catalog_section.title %> reference pages">
+            <% catalog_entries.each do |entry| %>
+              <%= link_to doc_path(entry.slug), class: "docs-control-card" do %>
+                <span class="docs-control-card-title"><%= entry.title %></span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if @previous_doc || @next_doc %>
           <div class="mt-12 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-2">
             <% if @previous_doc %>

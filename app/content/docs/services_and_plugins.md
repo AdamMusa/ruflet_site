@@ -126,7 +126,6 @@ are framework integration details.
 | Service | Properties | Events | Service-specific methods |
 |---|---|---|---|
 | `accelerometer`, `barometer`, `gyroscope`, `magnetometer`, `user_accelerometer` | `cancel_on_error`, `data`, `enabled`, `interval`, `key` | `on_error`, `on_reading` | Invoke through events and generic `page.invoke` when necessary. |
-| `audio` | `autoplay`, `balance`, `data`, `key`, `opacity`, `playback_rate`, `release_mode`, `rtl`, `src`, `src_base64`, `tooltip`, `visible`, `volume` | `on_duration_change`, `on_error`, `on_loaded`, `on_position_change`, `on_seek_complete`, `on_state_change` | `get_current_position`, `get_duration`, `pause`, `play(position: 0, ...)`, `release`, `resume`, `seek(position_milliseconds, ...)` |
 | `audio_recorder` | `configuration`, `data`, `key` | `on_state_change`, `on_stream`, `on_upload` | `cancel_recording`, `get_input_devices`, `has_permission`, `is_paused`, `is_recording`, `is_supported_encoder`, `pause_recording`, `resume_recording`, `start_recording`, `stop_recording` |
 | `battery` | `data`, `key` | `on_state_change` | Prefer Page battery convenience methods. |
 | `camera` | Common visual properties, `preview_enabled` | `on_animation_end`, `on_error`, `on_size_change`, `on_state_change`, `on_stream_image` | — |
@@ -250,9 +249,10 @@ services:
       description: Reads motion sensor data.
 ```
 
-During a native build, Ruflet uses these declarations to include the required
-client package, Android permissions, Apple usage descriptions, and macOS
-entitlements.
+During a native build, Ruflet uses these declarations to select the required
+client extensions and configure Android permissions and Apple usage
+descriptions. Platform templates can also carry baseline declarations, but
+applications should not rely on those in place of explicit service config.
 
 Supported protected service declarations are:
 

@@ -18,28 +18,32 @@ extensions:
 
 | Key | Ruby API provided | Kind |
 |---|---|---|
-| `audio` | `audio(...)` | Media control |
-| `audio_recorder` | `page.audio_recorder(...)` | Device service |
-| `camera` | `camera(...)` | Camera control |
-| `charts` | Bar, line, pie, scatter, candlestick, and radar chart helpers | Control family |
-| `code_editor` | `code_editor(...)` | Editing control |
-| `color_pickers` | Color picker helpers | Control family |
-| `datatable2` | DataTable2 helpers | Control family |
-| `flashlight` | `page.flashlight` | Device service |
-| `geolocator` | `page.geolocator(...)` | Device service |
-| `lottie` | `lottie(...)` | Animation control |
-| `map` | `map(...)` and map-layer helpers | Control family |
-| `permission_handler` | `page.permission_handler(...)` | Device service |
-| `qrcode_scanner` | `qrcode_scanner(...)` | Scanner control |
-| `rive` | `rive(...)` | Animation control |
-| `secure_storage` | `page.secure_storage` | Storage service |
-| `video` | `video(...)` | Media control |
-| `webview` | `web_view(...)` | Web content control |
+| [`audio`](/docs/extension-audio) | `audio(...)` | Media control |
+| [`audio_recorder`](/docs/service-audio-recorder) | `page.audio_recorder(...)` | Device service; documented under Services |
+| [`camera`](/docs/service-camera) | `page.camera(...)` | Device service; documented under Services |
+| [`charts`](/docs/extension-charts) | Bar, line, pie, scatter, candlestick, and radar chart helpers | Control family |
+| [`code_editor`](/docs/extension-code-editor) | `code_editor(...)` | Editing control |
+| [`color_pickers`](/docs/extension-color-pickers) | `control("ColorPicker", ...)` and related wire controls | Control family |
+| [`datatable2`](/docs/extension-datatable2) | `control("DataTable2", ...)` | Data control |
+| [`flashlight`](/docs/service-flashlight) | `page.flashlight` | Device service; documented under Services |
+| [`geolocator`](/docs/service-geolocator) | `page.geolocator(...)` | Device service; documented under Services |
+| [`lottie`](/docs/extension-lottie) | `control("Lottie", ...)` | Animation control |
+| [`map`](/docs/extension-map) | `map(...)` and map-layer helpers | Control family |
+| [`permission_handler`](/docs/service-permission-handler) | `page.permission_handler(...)` | Device service; documented under Services |
+| [`qrcode_scanner`](/docs/qrcode-scanner) | `qrcode_scanner(...)` | Scanner control |
+| [`rive`](/docs/extension-rive) | `rive(...)` | Animation control |
+| [`secure_storage`](/docs/service-secure-storage) | `page.secure_storage` | Storage service; documented under Services |
+| [`video`](/docs/extension-video) | `video(...)` | Media control |
+| [`webview`](/docs/extension-webview) | `web_view(...)` | Web content control |
 
 Controls and widgets remain documented under
 [Controls](/docs/component-reference), even when an extension supplies their
 Flutter implementation. Runtime service APIs remain under
 [Services](/docs/services-and-plugins).
+
+Service-backed extensions do not have duplicate extension reference pages.
+Their catalog links open the authoritative service page, which includes both
+the complete Ruby API and the required client build setup.
 
 ## Permissions
 
