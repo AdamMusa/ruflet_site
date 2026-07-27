@@ -1,6 +1,6 @@
 # Installation
 
-Ruflet requires Ruby and installs through RubyGems:
+Ruflet requires Ruby 3.1 or newer and installs through RubyGems:
 
 ```bash
 gem install ruflet
@@ -31,9 +31,9 @@ You do not need Ruflet Explorer for `--web`, `--desktop`, or packaged builds.
 ## Project dependencies
 
 Projects created by `ruflet new` use Bundler and include the runtime gems in
-their `Gemfile`. Run application commands through the project bundle:
+their `Gemfile`. Install dependencies once, then run Ruflet commands directly:
 
 ```bash
 bundle install
-bundle exec ruflet run main.rb
+ruflet run main.rb
 ```

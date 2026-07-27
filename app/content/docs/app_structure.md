@@ -27,7 +27,7 @@ require "ruflet"
 
 Ruflet.run do |page|
   count = 0
-  label = text("0", size: 40)
+  label = text(value: "0", style: { size: 40 })
 
   page.add(
     column(
@@ -128,3 +128,6 @@ require editing that workspace.
 
 Build artifacts are exported under `build/`. Treat the managed client and
 generated artifacts as tooling output, not application source.
+
+See [Configuration Reference](/docs/configuration-reference) for every
+supported metadata, extension, asset, build, service, and environment key.

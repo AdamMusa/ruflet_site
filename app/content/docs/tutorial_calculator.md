@@ -320,7 +320,7 @@ keypad_row(page, "+/-", "0", ".", "=")
 ## Run your version
 
 ```bash
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 ## What you learned

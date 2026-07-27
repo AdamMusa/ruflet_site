@@ -17,7 +17,7 @@ features:
 ruflet new example_app
 cd example_app
 bundle install
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 Replace `main.rb` with an example or build it step by step from a tutorial.

@@ -10,7 +10,7 @@ Mobile is Ruflet's default target for local development.
 ## Run your app
 
 ```bash
-bundle exec ruflet run main.rb
+ruflet run main.rb
 ```
 
 The terminal output includes:

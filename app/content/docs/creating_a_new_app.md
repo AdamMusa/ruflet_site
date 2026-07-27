@@ -6,7 +6,7 @@ Create a Ruby-first Ruflet project with:
 ruflet new my_app
 cd my_app
 bundle install
-bundle exec ruflet run main.rb
+ruflet run main.rb
 ```
 
 `ruflet create my_app` is an alias for `ruflet new my_app`.
@@ -36,18 +36,18 @@ my_app/
 Mobile is the default development target:
 
 ```bash
-bundle exec ruflet run main.rb
+ruflet run main.rb
 ```
 
 Launch the managed web or desktop client with:
 
 ```bash
-bundle exec ruflet run main.rb --web
-bundle exec ruflet run main.rb --desktop
+ruflet run main.rb --web
+ruflet run main.rb --desktop
 ```
 
-Use `bundle exec` inside an application so the CLI and runtime gems come from
-that project's bundle.
+Run `bundle install` after creating an application, then use the `ruflet`
+command directly inside the project.
 
 ## Next step
 

@@ -7,7 +7,7 @@ gem install ruflet
 ruflet new my_app
 cd my_app
 bundle install
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 Generated projects contain `main.rb`, `ruflet.yaml`, `services.yaml`, a
@@ -16,9 +16,9 @@ Generated projects contain `main.rb`, `ruflet.yaml`, `services.yaml`, a
 ## Development targets
 
 ```bash
-bundle exec ruflet run main.rb
-bundle exec ruflet run main.rb --web
-bundle exec ruflet run main.rb --desktop
+ruflet run main.rb
+ruflet run main.rb --web
+ruflet run main.rb --desktop
 ```
 
 The first command starts mobile development mode. The other commands launch a

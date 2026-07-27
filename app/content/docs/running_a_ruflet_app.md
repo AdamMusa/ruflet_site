@@ -1,9 +1,9 @@
 # Running a Ruflet App
 
-Run a project's Ruby entrypoint through Bundler:
+Run a project's Ruby entrypoint with the Ruflet CLI:
 
 ```bash
-bundle exec ruflet run main.rb
+ruflet run main.rb
 ```
 
 Mobile is the default target. Ruflet starts the Ruby server and prints the
@@ -12,8 +12,8 @@ connection details used by Ruflet Explorer.
 ## Web and desktop
 
 ```bash
-bundle exec ruflet run main.rb --web
-bundle exec ruflet run main.rb --desktop
+ruflet run main.rb --web
+ruflet run main.rb --desktop
 ```
 
 The web command starts a same-origin local web client. The desktop command
@@ -24,9 +24,9 @@ starts the cached desktop client for the host platform.
 `main` and `main.rb` both resolve to the same entrypoint:
 
 ```bash
-bundle exec ruflet run main
-bundle exec ruflet run path/to/app.rb
-bundle exec ruflet run main.rb --port 9000
+ruflet run main
+ruflet run path/to/app.rb
+ruflet run main.rb --port 9000
 ```
 
 If the requested port is unavailable, Ruflet selects an available port and

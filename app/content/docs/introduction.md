@@ -13,7 +13,7 @@ gem install ruflet
 ruflet new my_app
 cd my_app
 bundle install
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 ```ruby
@@ -21,7 +21,7 @@ require "ruflet"
 
 Ruflet.run do |page|
   count = 0
-  label = text("0", size: 40)
+  label = text(value: "0", style: { size: 40 })
 
   page.add(
     column(

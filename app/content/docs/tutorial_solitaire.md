@@ -202,7 +202,7 @@ That order makes the example far easier to absorb.
 ## Run the application
 
 ```bash
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 ## What you learned

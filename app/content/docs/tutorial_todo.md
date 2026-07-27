@@ -255,7 +255,7 @@ Those are polish layers you can add after the core flow works.
 ## Run the application
 
 ```bash
-bundle exec ruflet run main.rb --web
+ruflet run main.rb --web
 ```
 
 ## What you learned
