@@ -27,7 +27,7 @@ extensions:
 | [`datatable2`](/docs/extension-datatable2) | `control("DataTable2", ...)` | Data control |
 | [`flashlight`](/docs/service-flashlight) | `page.flashlight` | Device service; documented under Services |
 | [`geolocator`](/docs/service-geolocator) | `page.geolocator(...)` | Device service; documented under Services |
-| [`lottie`](/docs/extension-lottie) | `control("Lottie", ...)` | Animation control |
+| [`lottie`](/docs/extension-lottie) | `lottie(...)` | Animation control |
 | [`map`](/docs/extension-map) | `map(...)` and map-layer helpers | Control family |
 | [`permission_handler`](/docs/service-permission-handler) | `page.permission_handler(...)` | Device service; documented under Services |
 | [`qrcode_scanner`](/docs/qrcode-scanner) | `qrcode_scanner(...)` | Scanner control |

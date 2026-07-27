@@ -13026,5 +13026,82 @@
         ]
       }
     ]
+  },
+  {
+    "title": "Lottie",
+    "slug": "control-lottie",
+    "family": "materials",
+    "widget_type": "lottie",
+    "helpers": [
+      "lottie"
+    ],
+    "helper_signatures": [
+      {
+        "name": "lottie",
+        "parameters": [
+          [
+            "opt",
+            "src"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "alignment",
+      "animate",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "background_loading",
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "enable_layers_opacity",
+      "enable_merge_paths",
+      "error_content",
+      "expand",
+      "expand_loose",
+      "filter_quality",
+      "fit",
+      "headers",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "repeat",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "src",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_error",
+      "on_load",
+      "on_size_change"
+    ],
+    "methods": []
   }
 ]

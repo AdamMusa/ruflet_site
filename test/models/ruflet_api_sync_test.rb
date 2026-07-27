@@ -76,4 +76,16 @@ class RufletApiSyncTest < ActiveSupport::TestCase
     assert_includes entries.fetch("PolygonMarker").fetch(:properties), "label_text_style"
     assert_includes entries.fetch("SimpleAttribution").fetch(:events), "on_click"
   end
+
+  test "Lottie is documented as a first-class DSL control" do
+    lottie = DocsCatalog.control_catalog.find { |control| control.fetch(:title) == "Lottie" }
+
+    assert_equal %w[lottie], lottie.fetch(:helpers)
+    assert_includes lottie.fetch(:properties), "src"
+    assert_includes lottie.fetch(:properties), "repeat"
+    assert_includes lottie.fetch(:events), "on_load"
+    assert_includes lottie.fetch(:events), "on_error"
+    assert_includes DocsCatalog.find("extension-lottie").content, 'lottie(src: "assets/success.json", repeat: true)'
+    refute_includes DocsCatalog.find("extension-lottie").content, 'control("Lottie"'
+  end
 end

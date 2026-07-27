@@ -382,6 +382,20 @@ def map_extension_contracts
   end
 end
 
+def lottie_extension_contract
+  root = CORE_LIB.join("../../../ruflet_client/flet_packages/flet_lottie/lib/src").expand_path
+  source = root.join("lottie.dart")
+  abort "Ruflet Lottie client source not found at #{source}" unless source.file?
+
+  common = JSON.parse(COMMON_PROPERTIES_PATH.read)
+  attributes = dart_control_attributes(source, receivers: ["widget.control"])
+  attributes = (attributes + common + %w[data key]).uniq.sort
+  {
+    "properties" => attributes.reject { |name| name.start_with?("on_") },
+    "events" => attributes.select { |name| name.start_with?("on_") }
+  }
+end
+
 def runtime_catalog(controls, services)
   documented_helpers = controls.flat_map { |entry| entry.fetch("helpers") }
   documented_helpers.concat(
@@ -561,6 +575,7 @@ generated_by_title.fetch("AutoCompleteSuggestion")["helpers"] |= ["autocomplete_
 map_extension_contracts.each do |title, contract|
   generated_by_title.fetch(title).merge!(contract)
 end
+generated_by_title.fetch("Lottie").merge!(lottie_extension_contract)
 generated_by_title.each_value do |entry|
   entry["helpers"].sort!
   entry["helper_signatures"] = helper_signatures(entry.fetch("helpers"))

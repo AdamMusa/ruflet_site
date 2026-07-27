@@ -36,7 +36,7 @@ class DocsCatalog
     { key: "datatable2", title: "DataTable2", package: "flet_datatable2", kind: "Data control", summary: "Render a table with fixed rows or columns and richer scrolling and sizing options.", controls: %w[control-data-column control-data-row control-data-cell], wire_types: %w[DataTable2], properties: %w[bgcolor border border_radius bottom_margin checkbox_alignment checkbox_horizontal_margin clip_behavior column_spacing columns data_row_height data_text_style divider_thickness empty fixed_columns_color fixed_corner_color fixed_left_columns fixed_top_rows gradient heading_row_decoration heading_row_height heading_text_style horizontal_lines horizontal_margin lm_ratio min_width rows show_bottom_border show_checkbox_column show_heading_checkbox sm_ratio sort_arrow_animation_duration sort_arrow_icon sort_arrow_icon_color sort_ascending sort_column_index vertical_lines visible_horizontal_scroll_bar visible_vertical_scroll_bar], events: %w[on_double_tap on_long_press on_secondary_tap on_secondary_tap_down on_select_all on_select_change on_sort on_tap on_tap_cancel on_tap_down], example: 'control("DataTable2", columns: [], rows: [], fixed_top_rows: 1)' },
     { key: "flashlight", title: "Flashlight", package: "flet_flashlight", kind: "Device service", summary: "Check flashlight availability and turn the device torch on or off.", services: %w[flashlight], required_services: %w[camera], example: "torch = page.flashlight\ntorch.on(on_result: ->(result, error) { })" },
     { key: "geolocator", title: "Geolocator", package: "flet_geolocator", kind: "Device service", summary: "Request location access, read positions, and subscribe to position changes.", services: %w[geolocator], required_services: %w[location], example: "location = page.geolocator\nlocation.get_current_position(on_result: ->(position, error) { })" },
-    { key: "lottie", title: "Lottie", package: "flet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", wire_types: %w[Lottie], properties: %w[alignment animate background_loading enable_layers_opacity enable_merge_paths error_content filter_quality fit headers repeat reverse src], events: %w[on_error on_load], example: 'control("Lottie", src: "assets/success.json", repeat: true)' },
+    { key: "lottie", title: "Lottie", package: "flet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", controls: %w[control-lottie], example: 'lottie(src: "assets/success.json", repeat: true)' },
     { key: "map", title: "Map", package: "flet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution], example: "map(children: [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\")])" },
     { key: "permission_handler", title: "Permission Handler", package: "flet_permission_handler", kind: "Device service", summary: "Inspect and request operating-system permissions at the moment a user needs them.", services: %w[permission_handler], example: "permissions = page.permission_handler\npermissions.request(\"camera\", on_result: ->(status, error) { })" },
     { key: "qrcode_scanner", title: "QR Code Scanner", package: "ruflet_qrcode_scanner", kind: "Scanner control", summary: "Scan QR codes and supported barcodes with the native camera.", required_services: %w[camera], guide: "qrcode-scanner", example: "qrcode_scanner(\n  formats: [:qr_code],\n  on_detect: ->(event) { puts event.value }\n)" },
@@ -646,6 +646,13 @@ class DocsCatalog
         '  icon: "search",',
         '  tooltip: "Search",',
         "  on_click: ->(event) {}",
+        ")"
+      ],
+      "lottie" => [
+        "lottie(",
+        '  src: "assets/success.json",',
+        "  repeat: true,",
+        "  on_load: ->(event) {}",
         ")"
       ],
       "overlay" => [
