@@ -60,13 +60,15 @@ extensions:
   - lottie
   - map
   - permission_handler
+  - qrcode_scanner
   - rive
   - secure_storage
   - video
   - webview
 ```
 
-Rebuild after changing extensions. Protected service declarations can add
+Selecting `qrcode_scanner` also adds the required camera declarations. Rebuild
+after changing extensions. Protected service declarations can add
 required extensions automatically, so applications normally declare device
 permissions in `services.yaml` instead of duplicating them here.
 

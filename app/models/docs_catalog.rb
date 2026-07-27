@@ -58,6 +58,7 @@ class DocsCatalog
           entry("rails-native-services", "Rails Service Actions", "Trigger sharing, clipboard, URL-launching, and haptic actions from annotated Rails HTML.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
           entry("rails-webview-apps", "WebView Apps", "Wrap Rails views in a native WebView shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
+          entry("extension-authoring", "Extension Authoring", "Build typed Ruflet controls as standard Flet Flutter extension packages.", SOURCE_ROOT.join("extension_authoring.md"), "Integrations"),
           entry("services-and-plugins", "Services and Device APIs", "Use client services, request device access, and configure optional extensions.", SOURCE_ROOT.join("services_and_plugins.md"), "Integrations")
         ]
       ),
@@ -74,6 +75,7 @@ class DocsCatalog
           entry("navigation-feedback", "Navigation and Feedback", "Views, dialogs, snackbars, bottom sheets, and other navigation and feedback patterns.", SOURCE_ROOT.join("navigation_feedback.md"), "Reference"),
           entry("charts-and-canvas", "Charts and Canvas", "Bar, line, pie, scatter, candlestick, and radar charts, plus canvas drawing primitives.", SOURCE_ROOT.join("charts_and_canvas.md"), "Reference"),
           entry("maps", "Maps", "Interactive maps with tile layers, markers, circles, and shapes.", SOURCE_ROOT.join("maps.md"), "Reference"),
+          entry("qrcode-scanner", "QRCodeScanner", "Scan QR codes and barcodes with the first-party Ruflet Flet extension.", SOURCE_ROOT.join("control_qrcode_scanner.md"), "Reference"),
           *control_entries
         ]
       )
