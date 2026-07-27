@@ -57,7 +57,9 @@ end
 - `scan_window` — `{ left:, top:, right:, bottom: }` or `{ x:, y:, width:, height: }`.
 - `tap_to_focus` — enable focus by tapping the preview (default `false`).
 - `torch_enabled` — start with the torch enabled (default `false`).
-- `zoom_scale` — initial zoom scale (default `1.0`).
+- `zoom_scale` — optional initial zoom using the normalized `0.0`–`1.0` range.
+  It is unset by default, preserving the camera's normal 1x zoom. `1.0` means
+  maximum zoom, not 1x.
 
 Supported format names are `all`, `unknown`, `aztec`, `codabar`, `code_39`,
 `code_93`, `code_128`, `data_bar`, `data_bar_expanded`, `data_bar_limited`,
