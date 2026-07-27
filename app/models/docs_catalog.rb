@@ -26,24 +26,281 @@ class DocsCatalog
     "shake_detector" => %w[motion], "user_accelerometer" => %w[motion]
   }.freeze
 
+  SERVICE_EXAMPLES = {
+    "accelerometer" => <<~'RUBY',
+      reading = text(value: "Move the device")
+      page.add(reading)
+      page.accelerometer(
+        interval: 200,
+        on_reading: ->(event) { page.update(reading, value: event.data.inspect) },
+        on_error: ->(event) { page.update(reading, value: "Motion error: #{event.data}") }
+      )
+    RUBY
+    "audio_recorder" => <<~'RUBY',
+      status = text(value: "Recorder ready")
+      page.add(status)
+      recorder = page.audio_recorder(
+        on_state_change: ->(event) { page.update(status, value: event.data.to_s) }
+      )
+      recorder.has_permission(on_result: ->(allowed, error) {
+        if error
+          page.update(status, value: error.to_s)
+        elsif allowed
+          recorder.start_recording(
+            output_path: "voice-note.m4a",
+            configuration: { encoder: "aac_lc" },
+            on_result: ->(_result, start_error) {
+              page.update(status, value: start_error ? start_error.to_s : "Recording")
+            }
+          )
+        end
+      })
+    RUBY
+    "barometer" => <<~'RUBY',
+      pressure = text(value: "Waiting for pressure data")
+      page.add(pressure)
+      page.barometer(
+        interval: 500,
+        on_reading: ->(event) { page.update(pressure, value: "Pressure: #{event.data}") },
+        on_error: ->(event) { page.update(pressure, value: event.data.to_s) }
+      )
+    RUBY
+    "battery" => <<~'RUBY',
+      battery = text(value: "Reading battery…")
+      page.add(battery)
+      page.get_battery_level(on_result: ->(level, error) {
+        value = error ? error.to_s : "Battery: #{level}%"
+        page.update(battery, value: value)
+      })
+    RUBY
+    "camera" => <<~'RUBY',
+      preview = page.camera(
+        preview_enabled: true,
+        expand: true,
+        on_state_change: ->(event) { puts "Camera: #{event.data}" },
+        on_error: ->(event) { puts "Camera error: #{event.data}" }
+      )
+      page.add(preview)
+    RUBY
+    "clipboard" => <<~'RUBY',
+      result = text(value: "Nothing copied yet")
+      page.add(result)
+      page.set_clipboard("Copied from Ruflet", on_result: ->(_saved, save_error) {
+        next page.update(result, value: save_error.to_s) if save_error
+
+        page.get_clipboard(on_result: ->(value, read_error) {
+          page.update(result, value: read_error ? read_error.to_s : value.to_s)
+        })
+      })
+    RUBY
+    "connectivity" => <<~'RUBY',
+      network = text(value: "Checking connection…")
+      page.add(network)
+      page.connectivity(
+        on_change: ->(event) {
+          connections = Array(event.data).join(", ")
+          page.update(network, value: connections.empty? ? "Offline" : connections)
+        }
+      )
+      page.get_connectivity(on_result: ->(value, error) {
+        page.update(network, value: error ? error.to_s : Array(value).join(", "))
+      })
+    RUBY
+    "file_picker" => <<~'RUBY',
+      selected = text(value: "No files selected")
+      page.add(selected)
+      page.pick_files(
+        allow_multiple: true,
+        file_type: "image",
+        on_result: ->(files, error) {
+          names = Array(files).map { |file| file["name"] || file[:name] }
+          page.update(selected, value: error ? error.to_s : names.join(", "))
+        }
+      )
+    RUBY
+    "flashlight" => <<~'RUBY',
+      status = text(value: "Checking flashlight…")
+      page.add(status)
+      flashlight = page.flashlight
+      flashlight.is_available(on_result: ->(available, error) {
+        if error || !available
+          page.update(status, value: error ? error.to_s : "Flashlight unavailable")
+        else
+          flashlight.on(on_result: ->(_result, on_error) {
+            page.update(status, value: on_error ? on_error.to_s : "Flashlight on")
+          })
+        end
+      })
+    RUBY
+    "geolocator" => <<~'RUBY',
+      location = text(value: "Location not requested")
+      page.add(location)
+      geolocator = page.geolocator
+      geolocator.request_permission(on_result: ->(_permission, permission_error) {
+        next page.update(location, value: permission_error.to_s) if permission_error
+
+        geolocator.get_current_position(on_result: ->(position, error) {
+          page.update(location, value: error ? error.to_s : position.inspect)
+        })
+      })
+    RUBY
+    "gyroscope" => <<~'RUBY',
+      rotation = text(value: "Rotate the device")
+      page.add(rotation)
+      page.gyroscope(
+        interval: 200,
+        on_reading: ->(event) { page.update(rotation, value: event.data.inspect) },
+        on_error: ->(event) { page.update(rotation, value: event.data.to_s) }
+      )
+    RUBY
+    "haptic_feedback" => <<~'RUBY',
+      page.add(
+        button(
+          "Confirm",
+          on_click: ->(_event) {
+            page.medium_impact(on_result: ->(_result, error) { warn error if error })
+          }
+        )
+      )
+    RUBY
+    "magnetometer" => <<~'RUBY',
+      magnetic_field = text(value: "Reading magnetic field…")
+      page.add(magnetic_field)
+      page.magnetometer(
+        interval: 250,
+        on_reading: ->(event) { page.update(magnetic_field, value: event.data.inspect) },
+        on_error: ->(event) { page.update(magnetic_field, value: event.data.to_s) }
+      )
+    RUBY
+    "permission_handler" => <<~'RUBY',
+      status = text(value: "Camera permission not requested")
+      page.add(status)
+      permissions = page.permission_handler
+      permissions.request("camera", on_result: ->(permission, error) {
+        page.update(status, value: error ? error.to_s : "Camera: #{permission}")
+      })
+    RUBY
+    "screen_brightness" => <<~'RUBY',
+      status = text(value: "Reading brightness…")
+      page.add(status)
+      brightness = page.screen_brightness
+      brightness.get_application_screen_brightness(on_result: ->(value, error) {
+        next page.update(status, value: error.to_s) if error
+
+        brightness.set_application_screen_brightness(0.8, on_result: ->(_result, set_error) {
+          message = set_error ? set_error.to_s : "Brightness changed from #{value} to 0.8"
+          page.update(status, value: message)
+        })
+      })
+    RUBY
+    "secure_storage" => <<~'RUBY',
+      status = text(value: "Saving token…")
+      page.add(status)
+      storage = page.secure_storage
+      storage.set("access_token", token, on_result: ->(_saved, save_error) {
+        next page.update(status, value: save_error.to_s) if save_error
+
+        storage.get("access_token", on_result: ->(value, read_error) {
+          page.update(status, value: read_error ? read_error.to_s : "Token loaded: #{value}")
+        })
+      })
+    RUBY
+    "semantics_service" => <<~'RUBY',
+      accessibility = page.semantics_service
+      accessibility.announce_message(
+        "Your changes were saved",
+        assertiveness: "polite",
+        on_result: ->(_result, error) { warn error if error }
+      )
+    RUBY
+    "shake_detector" => <<~'RUBY',
+      status = text(value: "Shake the device to refresh")
+      page.add(status)
+      page.shake_detector(
+        minimum_shake_count: 2,
+        on_shake: ->(_event) { page.update(status, value: "Refreshing…") }
+      )
+    RUBY
+    "share" => <<~'RUBY',
+      status = text(value: "Ready to share")
+      page.add(status)
+      page.share_text(
+        "Try Ruflet: https://ruflet.dev",
+        title: "Ruflet",
+        subject: "Ruby apps for every screen",
+        on_result: ->(result, error) {
+          page.update(status, value: error ? error.to_s : "Share result: #{result}")
+        }
+      )
+    RUBY
+    "shared_preferences" => <<~'RUBY',
+      status = text(value: "Saving preference…")
+      page.add(status)
+      preferences = page.shared_preferences
+      preferences.set("theme", "dark", on_result: ->(_saved, save_error) {
+        next page.update(status, value: save_error.to_s) if save_error
+
+        preferences.get("theme", on_result: ->(value, read_error) {
+          page.update(status, value: read_error ? read_error.to_s : "Theme: #{value}")
+        })
+      })
+    RUBY
+    "storage_paths" => <<~'RUBY',
+      path = text(value: "Finding documents directory…")
+      page.add(path)
+      page.get_application_documents_directory(on_result: ->(directory, error) {
+        page.update(path, value: error ? error.to_s : directory.to_s)
+      })
+    RUBY
+    "url_launcher" => <<~'RUBY',
+      status = text(value: "Ready to open Ruflet")
+      page.add(status)
+      page.launch_url(
+        "https://ruflet.dev",
+        mode: "externalApplication",
+        on_result: ->(opened, error) {
+          page.update(status, value: error ? error.to_s : "Opened: #{opened}")
+        }
+      )
+    RUBY
+    "user_accelerometer" => <<~'RUBY',
+      movement = text(value: "Waiting for user movement")
+      page.add(movement)
+      page.user_accelerometer(
+        interval: 200,
+        on_reading: ->(event) { page.update(movement, value: event.data.inspect) },
+        on_error: ->(event) { page.update(movement, value: event.data.to_s) }
+      )
+    RUBY
+    "wakelock" => <<~'RUBY'
+      status = text(value: "Keeping the screen awake…")
+      page.add(status)
+      wakelock = page.wakelock
+      wakelock.enable(on_result: ->(_result, error) {
+        page.update(status, value: error ? error.to_s : "Wakelock enabled")
+      })
+    RUBY
+  }.freeze
+
   EXTENSION_CATALOG = [
-    { key: "audio", title: "Audio", package: "flet_audio", kind: "Media control", summary: "Play audio from a URL, asset, or base64 source.", controls: %w[control-audio], example: 'audio(src: "assets/notification.mp3", autoplay: true)' },
+    { key: "audio", title: "Audio", package: "flet_audio", kind: "Media control", summary: "Play audio from a URL, asset, or base64 source.", controls: %w[control-audio], example: "player = audio(\n  src: \"assets/notification.mp3\",\n  on_error: ->(event) { warn event.data }\n)\npage.add(player)\npage.add(button(\"Play\", on_click: ->(_event) { player.play }))" },
     { key: "audio_recorder", title: "Audio Recorder", package: "flet_audio_recorder", kind: "Device service", summary: "Record microphone input, inspect recorder state, and receive streams or uploads.", services: %w[audio_recorder], required_services: %w[microphone], example: "recorder = page.audio_recorder\nrecorder.start_recording(on_result: ->(result, error) { })" },
     { key: "camera", title: "Camera", package: "flet_camera", kind: "Device service", summary: "Display a native camera preview and receive camera state or image events.", services: %w[camera], required_services: %w[camera], example: "page.camera(\n  preview_enabled: true,\n  on_stream_image: ->(event) { puts event.data }\n)" },
-    { key: "charts", title: "Charts", package: "flet_charts", kind: "Control family", summary: "Build interactive bar, line, pie, scatter, candlestick, and radar charts.", controls: %w[control-bar-chart control-bar-chart-group control-bar-chart-rod control-bar-chart-rod-stack-item control-line-chart control-line-chart-data control-line-chart-data-point control-pie-chart control-pie-chart-section control-scatter-chart control-scatter-chart-spot control-candlestick-chart control-candlestick-chart-spot control-radar-chart control-radar-chart-title control-radar-data-set control-radar-data-set-entry control-chart-axis control-chart-axis-label], example: "bar_chart(groups: [])" },
-    { key: "code_editor", title: "Code Editor", package: "flet_code_editor", kind: "Editing control", summary: "Edit syntax-highlighted source code and handle value, selection, and focus changes.", controls: %w[control-code-editor], example: 'code_editor(value: "puts :hello", language: "ruby")' },
-    { key: "color_pickers", title: "Color Pickers", package: "flet_color_pickers", kind: "Control family", summary: "Provide color, hue-ring, slide, material, block, and multiple-choice color pickers.", wire_types: %w[ColorPicker HueRingPicker SlidePicker MaterialPicker BlockPicker MultipleChoiceBlockPicker], properties: %w[available_colors color color_history color_model color_picker_height color_picker_width colors display_thumb_color enable_alpha enable_label hex_input_bar hsv_color hue_ring_stroke_width indicator_alignment_begin indicator_border_radius indicator_size label_text_style label_types palette_type picker_area_border_radius picker_area_height_percent portrait_only show_indicator show_label show_params show_slider_text slider_size slider_text_style], events: %w[on_color_change on_colors_change on_history_change on_hsv_color_change on_primary_change], example: 'control("ColorPicker", color: "#2563eb", enable_alpha: true)' },
-    { key: "datatable2", title: "DataTable2", package: "flet_datatable2", kind: "Data control", summary: "Render a table with fixed rows or columns and richer scrolling and sizing options.", controls: %w[control-data-column control-data-row control-data-cell], wire_types: %w[DataTable2], properties: %w[bgcolor border border_radius bottom_margin checkbox_alignment checkbox_horizontal_margin clip_behavior column_spacing columns data_row_height data_text_style divider_thickness empty fixed_columns_color fixed_corner_color fixed_left_columns fixed_top_rows gradient heading_row_decoration heading_row_height heading_text_style horizontal_lines horizontal_margin lm_ratio min_width rows show_bottom_border show_checkbox_column show_heading_checkbox sm_ratio sort_arrow_animation_duration sort_arrow_icon sort_arrow_icon_color sort_ascending sort_column_index vertical_lines visible_horizontal_scroll_bar visible_vertical_scroll_bar], events: %w[on_double_tap on_long_press on_secondary_tap on_secondary_tap_down on_select_all on_select_change on_sort on_tap on_tap_cancel on_tap_down], example: 'control("DataTable2", columns: [], rows: [], fixed_top_rows: 1)' },
+    { key: "charts", title: "Charts", package: "flet_charts", kind: "Control family", summary: "Build interactive bar, line, pie, scatter, candlestick, and radar charts.", controls: %w[control-bar-chart control-bar-chart-group control-bar-chart-rod control-bar-chart-rod-stack-item control-line-chart control-line-chart-data control-line-chart-data-point control-pie-chart control-pie-chart-section control-scatter-chart control-scatter-chart-spot control-candlestick-chart control-candlestick-chart-spot control-radar-chart control-radar-chart-title control-radar-data-set control-radar-data-set-entry control-chart-axis control-chart-axis-label], example: "sales = bar_chart(\n  min_y: 0,\n  max_y: 100,\n  groups: [\n    bar_chart_group(x: 0, rods: [bar_chart_rod(from_y: 0, to_y: 72, color: \"#2563eb\")]),\n    bar_chart_group(x: 1, rods: [bar_chart_rod(from_y: 0, to_y: 91, color: \"#7c3aed\")])\n  ],\n  on_event: ->(event) { puts event.data.inspect }\n)\npage.add(sales)" },
+    { key: "code_editor", title: "Code Editor", package: "flet_code_editor", kind: "Editing control", summary: "Edit syntax-highlighted source code and handle value, selection, and focus changes.", controls: %w[control-code-editor], example: "status = text(value: \"Start typing Ruby\")\neditor = code_editor(\n  value: \"puts :hello\",\n  language: \"ruby\",\n  expand: true,\n  on_change: ->(event) { page.update(status, value: event.value.to_s) }\n)\npage.add(column(children: [editor, status]))" },
+    { key: "color_pickers", title: "Color Pickers", package: "flet_color_pickers", kind: "Control family", summary: "Provide color, hue-ring, slide, material, block, and multiple-choice color pickers.", wire_types: %w[ColorPicker HueRingPicker SlidePicker MaterialPicker BlockPicker MultipleChoiceBlockPicker], properties: %w[available_colors color color_history color_model color_picker_height color_picker_width colors display_thumb_color enable_alpha enable_label hex_input_bar hsv_color hue_ring_stroke_width indicator_alignment_begin indicator_border_radius indicator_size label_text_style label_types palette_type picker_area_border_radius picker_area_height_percent portrait_only show_indicator show_label show_params show_slider_text slider_size slider_text_style], events: %w[on_color_change on_colors_change on_history_change on_hsv_color_change on_primary_change], example: "selected = text(value: \"#2563eb\")\npicker = control(\n  \"ColorPicker\",\n  color: \"#2563eb\",\n  enable_alpha: true,\n  on_color_change: ->(event) { page.update(selected, value: event.value.to_s) }\n)\npage.add(column(children: [picker, selected]))" },
+    { key: "datatable2", title: "DataTable2", package: "flet_datatable2", kind: "Data control", summary: "Render a table with fixed rows or columns and richer scrolling and sizing options.", controls: %w[control-data-column control-data-row control-data-cell], wire_types: %w[DataTable2], properties: %w[bgcolor border border_radius bottom_margin checkbox_alignment checkbox_horizontal_margin clip_behavior column_spacing columns data_row_height data_text_style divider_thickness empty fixed_columns_color fixed_corner_color fixed_left_columns fixed_top_rows gradient heading_row_decoration heading_row_height heading_text_style horizontal_lines horizontal_margin lm_ratio min_width rows show_bottom_border show_checkbox_column show_heading_checkbox sm_ratio sort_arrow_animation_duration sort_arrow_icon sort_arrow_icon_color sort_ascending sort_column_index vertical_lines visible_horizontal_scroll_bar visible_vertical_scroll_bar], events: %w[on_double_tap on_long_press on_secondary_tap on_secondary_tap_down on_select_all on_select_change on_sort on_tap on_tap_cancel on_tap_down], example: "table = control(\n  \"DataTable2\",\n  fixed_top_rows: 1,\n  columns: [data_column(label: text(value: \"Name\"))],\n  rows: [data_row(cells: [data_cell(content: text(value: \"Ruflet\"))])],\n  on_select_all: ->(event) { puts event.value }\n)\npage.add(table)" },
     { key: "flashlight", title: "Flashlight", package: "flet_flashlight", kind: "Device service", summary: "Check flashlight availability and turn the device torch on or off.", services: %w[flashlight], required_services: %w[camera], example: "torch = page.flashlight\ntorch.on(on_result: ->(result, error) { })" },
     { key: "geolocator", title: "Geolocator", package: "flet_geolocator", kind: "Device service", summary: "Request location access, read positions, and subscribe to position changes.", services: %w[geolocator], required_services: %w[location], example: "location = page.geolocator\nlocation.get_current_position(on_result: ->(position, error) { })" },
-    { key: "lottie", title: "Lottie", package: "flet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", controls: %w[control-lottie], example: 'lottie(src: "assets/success.json", repeat: true)' },
-    { key: "map", title: "Map", package: "flet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution], example: "map(children: [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\")])" },
+    { key: "lottie", title: "Lottie", package: "flet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", controls: %w[control-lottie], example: "animation = lottie(\n  src: \"assets/success.json\",\n  repeat: false,\n  on_load: ->(_event) { puts \"Animation loaded\" },\n  on_error: ->(event) { warn event.data }\n)\npage.add(animation)" },
+    { key: "map", title: "Map", package: "flet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution], example: "office = { latitude: 40.7128, longitude: -74.0060 }\nmap_view = map(\n  [\n    tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),\n    marker_layer([marker(coordinates: office, content: icon(\"location_on\"))])\n  ],\n  initial_center: office,\n  initial_zoom: 13,\n  on_tap: ->(event) { puts event.data.inspect }\n)\npage.add(map_view)" },
     { key: "permission_handler", title: "Permission Handler", package: "flet_permission_handler", kind: "Device service", summary: "Inspect and request operating-system permissions at the moment a user needs them.", services: %w[permission_handler], example: "permissions = page.permission_handler\npermissions.request(\"camera\", on_result: ->(status, error) { })" },
     { key: "qrcode_scanner", title: "QR Code Scanner", package: "ruflet_qrcode_scanner", kind: "Scanner control", summary: "Scan QR codes and supported barcodes with the native camera.", required_services: %w[camera], guide: "qrcode-scanner", example: "qrcode_scanner(\n  formats: [:qr_code],\n  on_detect: ->(event) { puts event.value }\n)" },
-    { key: "rive", title: "Rive", package: "flet_rive", kind: "Animation control", summary: "Render Rive artboards, animations, and state machines.", controls: %w[control-rive], example: 'rive(src: "assets/animation.riv", animations: ["idle"])' },
+    { key: "rive", title: "Rive", package: "flet_rive", kind: "Animation control", summary: "Render Rive artboards, animations, and state machines.", controls: %w[control-rive], example: "mascot = rive(\n  src: \"assets/animation.riv\",\n  animations: [\"idle\"],\n  fit: \"contain\",\n  expand: true\n)\npage.add(mascot)" },
     { key: "secure_storage", title: "Secure Storage", package: "flet_secure_storage", kind: "Storage service", summary: "Store, retrieve, enumerate, and remove sensitive values using platform-secure storage.", services: %w[secure_storage], example: "storage = page.secure_storage\nstorage.set(\"token\", token, on_result: ->(result, error) { })" },
-    { key: "video", title: "Video", package: "flet_video", kind: "Media control", summary: "Play video with configurable playlists, controls, aspect ratio, and playback events.", controls: %w[control-video], example: 'video(playlist: [{ resource: "assets/demo.mp4" }])' },
-    { key: "webview", title: "WebView", package: "flet_webview", kind: "Web content control", summary: "Embed web content and control navigation in a native WebView.", controls: %w[control-web-view], example: 'web_view(url: "https://ruflet.dev")' }
+    { key: "video", title: "Video", package: "flet_video", kind: "Media control", summary: "Play video with configurable playlists, controls, aspect ratio, and playback events.", controls: %w[control-video], example: "player = video(\n  playlist: [{ resource: \"assets/demo.mp4\" }],\n  show_controls: true,\n  on_error: ->(event) { warn event.data }\n)\npage.add(player)\npage.add(button(\"Play or pause\", on_click: ->(_event) { player.play_or_pause }))" },
+    { key: "webview", title: "WebView", package: "flet_webview", kind: "Web content control", summary: "Embed web content and control navigation in a native WebView.", controls: %w[control-web-view], example: "browser = web_view(\n  url: \"https://ruflet.dev\",\n  expand: true,\n  on_page_ended: ->(event) { puts \"Loaded \#{event.value}\" },\n  on_web_resource_error: ->(event) { warn event.data }
+)\npage.add(browser)\nbrowser.get_title(on_result: ->(title, error) { puts(error || title) })" }
   ].freeze
 
   def self.sections
@@ -325,36 +582,7 @@ class DocsCatalog
   end
 
   def self.service_example(service)
-    helper = service.fetch(:helper)
-    event = Array(service[:events]).first
-    method = (Array(service[:methods]) + Array(service[:proxy_methods])).first
-    lines = ["service = page.#{helper}#{event ? "(" : ""}"]
-    if event
-      lines << "  #{event}: ->(event) { puts event.data.inspect }"
-      lines << ")"
-    end
-    if method
-      lines << "service.#{example_method_call(method)}"
-    end
-    lines
-  end
-
-  def self.example_method_call(method)
-    arguments = Array(method[:parameters]).filter_map do |kind, name|
-      next unless %w[req keyreq].include?(kind.to_s)
-
-      value = case name.to_s
-      when /latitude|longitude|brightness|position/ then "0"
-      when /files/ then "[]"
-      when /configuration|options/ then "{}"
-      when /value/ then '"value"'
-      else '"sample"'
-      end
-      kind.to_s == "keyreq" ? "#{name}: #{value}" : value
-    end
-    has_callback = Array(method[:parameters]).any? { |kind, name| kind.to_s == "key" && name.to_s == "on_result" }
-    arguments << "on_result: ->(result, error) { puts(error || result).inspect }" if has_callback
-    "#{method[:name]}(#{arguments.join(', ')})"
+    SERVICE_EXAMPLES.fetch(service.fetch(:helper)).lines(chomp: true)
   end
 
   def self.generated_extension_markdown(extension)
@@ -734,7 +962,7 @@ class DocsCatalog
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :service_entries, :extension_entries, :generated_service_markdown,
-                       :generated_extension_markdown, :service_example, :example_method_call,
+                       :generated_extension_markdown, :service_example,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description,

@@ -78,6 +78,23 @@ class RufletServiceApiSyncTest < ActiveSupport::TestCase
     end
   end
 
+  test "every service has a concrete highlighted Ruby example" do
+    assert_equal @services.keys.sort, DocsCatalog::SERVICE_EXAMPLES.keys.sort
+
+    @services.each_key do |helper|
+      example = DocsCatalog::SERVICE_EXAMPLES.fetch(helper)
+      page = DocsCatalog.find("service-#{helper.tr('_', '-')}")
+      rendered = MarkdownRenderer.render(page.content).html
+
+      assert_operator example.lines.length, :>=, 3, helper
+      assert_includes example, "page."
+      refute_includes example, "service = page."
+      RubyVM::InstructionSequence.compile(example)
+      assert_includes rendered, 'class="docs-code-block language-ruby"'
+      assert_includes rendered, '<span class="tok-'
+    end
+  end
+
   private
 
   def method_names(helper)

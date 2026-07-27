@@ -85,7 +85,8 @@ class RufletApiSyncTest < ActiveSupport::TestCase
     assert_includes lottie.fetch(:properties), "repeat"
     assert_includes lottie.fetch(:events), "on_load"
     assert_includes lottie.fetch(:events), "on_error"
-    assert_includes DocsCatalog.find("extension-lottie").content, 'lottie(src: "assets/success.json", repeat: true)'
+    assert_includes DocsCatalog.find("extension-lottie").content, "animation = lottie("
+    assert_includes DocsCatalog.find("extension-lottie").content, 'src: "assets/success.json"'
     refute_includes DocsCatalog.find("extension-lottie").content, 'control("Lottie"'
   end
 end

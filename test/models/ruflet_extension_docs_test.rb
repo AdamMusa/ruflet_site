@@ -42,4 +42,18 @@ class RufletExtensionDocsTest < ActiveSupport::TestCase
       Array(extension[:services]).each { |helper| assert_includes page.content, "/docs/service-#{helper.tr('_', '-')}" }
     end
   end
+
+  test "every control extension has a usable highlighted Ruby example" do
+    DocsCatalog.extension_catalog.reject { |extension| Array(extension[:services]).any? }.each do |extension|
+      example = extension.fetch(:example)
+      slug = extension[:guide] || "extension-#{extension.fetch(:key).tr('_', '-')}"
+      page = DocsCatalog.find(slug)
+      rendered = MarkdownRenderer.render(page.content || page.source.read).html
+
+      RubyVM::InstructionSequence.compile(example)
+      assert_operator example.lines.length, :>=, 3, extension.fetch(:key)
+      assert_includes rendered, 'class="docs-code-block language-ruby"'
+      assert_includes rendered, '<span class="tok-'
+    end
+  end
 end
