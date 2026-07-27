@@ -43,9 +43,9 @@ module Showcase
               :list_tile,
               bgcolor: color_surface(page),
               content_padding: { left: 12, right: 12, top: 8, bottom: 8 },
-              leading: icon(icon: component.fetch(:icon), color: color_icon(page)),
+              leading: icon(component.fetch(:icon), color: color_icon(page)),
               title: text(value: component.fetch(:label), style: { size: 16, color: color_text(page) }),
-              trailing: icon(icon: Ruflet::MaterialIcons::CHEVRON_RIGHT, color: color_subtle(page)),
+              trailing: icon(Ruflet::MaterialIcons::CHEVRON_RIGHT, color: color_subtle(page)),
               on_click: ->(_e) { page.go("/components/#{slug}") }
             )
           end
@@ -124,9 +124,9 @@ module Showcase
         row(
           spacing: 12,
           children: [
-            icon(icon: Ruflet::MaterialIcons::HOME, color: "#74c0fc"),
-            icon(icon: Ruflet::MaterialIcons::SETTINGS, color: "#adb5bd"),
-            icon(icon: Ruflet::MaterialIcons::CHECK_CIRCLE, color: "#69db7c")
+            icon(Ruflet::MaterialIcons::HOME, color: "#74c0fc"),
+            icon(Ruflet::MaterialIcons::SETTINGS, color: "#adb5bd"),
+            icon(Ruflet::MaterialIcons::CHECK_CIRCLE, color: "#69db7c")
           ]
         )
       when "image"
@@ -291,7 +291,7 @@ module Showcase
                   spacing: 6,
                   horizontal_alignment: "center",
                   children: [
-                    icon(icon: Ruflet::MaterialIcons[:widgets], color: "#9dccff"),
+                    icon(Ruflet::MaterialIcons[:widgets], color: "#9dccff"),
                     text(value: "Item #{index}", style: { size: 13, color: color_text(page) })
                   ]
                 )
@@ -311,7 +311,7 @@ module Showcase
               spacing: 12,
               horizontal_alignment: "center",
               children: [
-                icon(icon: Ruflet::MaterialIcons[:open_with], color: "#74c0fc", size: 48),
+                icon(Ruflet::MaterialIcons[:open_with], color: "#74c0fc", size: 48),
                 text(value: "Pinch, scroll, or drag", style: { size: 16, weight: "w700", color: color_text(page) }),
                 text(value: "InteractiveViewer content", style: { size: 13, color: color_subtle(page) })
               ]
@@ -327,10 +327,10 @@ module Showcase
       when "list-tile"
         control(
           :list_tile,
-          leading: icon(icon: Ruflet::MaterialIcons::INFO),
+          leading: icon(Ruflet::MaterialIcons::INFO),
           title: text(value: "ListTile title"),
           subtitle: text(value: "Subtitle"),
-          trailing: icon(icon: Ruflet::MaterialIcons::CHEVRON_RIGHT)
+          trailing: icon(Ruflet::MaterialIcons::CHEVRON_RIGHT)
         )
       when "switch"
         control(:switch, label: "Enabled", value: true, on_change: ->(_e) { page.update(status, value: "Switch changed") })

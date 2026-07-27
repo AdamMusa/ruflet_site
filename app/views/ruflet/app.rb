@@ -28,7 +28,7 @@ module Showcase
       page.theme_mode = theme_mode
 
       page.on_route_change = ->(_e) { render(page) }
-      page.on_platform_brightness_change = ->(_e) { render(page) }
+      page.on(:platform_brightness_change) { |_event| render(page) }
 
       render(page)
     end

@@ -70,7 +70,7 @@ module Showcase
         content: row(
           spacing: 8,
           children: [
-            icon(icon: Ruflet::MaterialIcons.const_get(name)),
+            icon(Ruflet::MaterialIcons.const_get(name)),
             container(
               expand: true,
               content: text(value: name, max_lines: 1, ellipsis: true)

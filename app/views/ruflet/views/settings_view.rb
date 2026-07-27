@@ -53,7 +53,7 @@ module Showcase
                     control(
                       :list_tile,
                       bgcolor: color_surface(page),
-                      leading: icon(icon: Ruflet::MaterialIcons::VIBRATION, color: color_icon(page)),
+                      leading: icon(Ruflet::MaterialIcons::VIBRATION, color: color_icon(page)),
                       title: text(value: "Shake device", style: { color: color_text(page) }),
                       trailing: gestures_shake,
                       on_click: ->(_e) {
@@ -64,7 +64,7 @@ module Showcase
                     control(
                       :list_tile,
                       bgcolor: color_surface(page),
-                      leading: icon(icon: Ruflet::MaterialIcons::PAN_TOOL_ALT, color: color_icon(page)),
+                      leading: icon(Ruflet::MaterialIcons::PAN_TOOL_ALT, color: color_icon(page)),
                       title: text(value: "Long press with two fingers", style: { color: color_text(page) }),
                       trailing: gestures_long_press,
                       on_click: ->(_e) {
@@ -128,7 +128,7 @@ module Showcase
               expand: true,
               spacing: 12,
               children: [
-                icon(icon: icon_value, color: selected ? color_accent(page) : color_icon(page)),
+                icon(icon_value, color: selected ? color_accent(page) : color_icon(page)),
                 column(
                   expand: true,
                   spacing: 2,

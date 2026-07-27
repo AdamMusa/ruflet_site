@@ -1,6 +1,8 @@
 require "test_helper"
 
 class NewsletterWelcomeEmailJobTest < ActiveJob::TestCase
+  include ActionMailer::TestHelper
+
   test "sends welcome email" do
     subscription = newsletter_subscriptions(:one)
 

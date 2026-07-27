@@ -19,7 +19,7 @@ module Showcase
                 coordinates: center,
                 width: 44,
                 height: 44,
-                content: icon(icon: Ruflet::MaterialIcons::LOCATION_ON, color: "#ff5a5f")
+                content: icon(Ruflet::MaterialIcons::LOCATION_ON, color: "#ff5a5f")
               )
             ]
           ),

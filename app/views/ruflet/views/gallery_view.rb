@@ -58,9 +58,9 @@ module Showcase
         :list_tile,
         bgcolor: color_surface(page),
         content_padding: { left: 12, right: 12, top: 8, bottom: 8 },
-        leading: icon(icon: icon_value, color: color_icon(page)),
+        leading: icon(icon_value, color: color_icon(page)),
         title: text(value: title, style: { size: 16, color: color_text(page) }),
-        trailing: icon(icon: Ruflet::MaterialIcons::CHEVRON_RIGHT, color: color_subtle(page)),
+        trailing: icon(Ruflet::MaterialIcons::CHEVRON_RIGHT, color: color_subtle(page)),
         on_click: ->(_e) { page.go(route) }
       )
     end
