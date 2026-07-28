@@ -9,13 +9,33 @@ Windows, and Linux.
 ruflet build apk
 ruflet build aab
 ruflet build ios
+ruflet build ipa
 ruflet build web
 ruflet build macos
 ruflet build windows
 ruflet build linux
 ```
 
-`android` is an alias for an Android APK build.
+`android` is an alias for an Android APK build. `ipa` produces the iOS archive
+you upload to App Store Connect, where `ios` produces an app for a device.
+
+## Naming the app
+
+The identity every build uses comes from `ruflet.yaml`:
+
+```yaml
+app:
+  name: My App
+  package_name: my_app
+  organization: com.example
+  version: 1.0.0+1
+  description: A new Ruflet app.
+```
+
+From these Ruflet derives the display name, the bundle identifier
+(`com.example.my_app`), and the version and build number written into each
+platform. A mobile build stops if the name, package name, or organization is
+missing.
 
 ## Server-driven builds
 
@@ -28,6 +48,10 @@ app:
 ```
 
 Do not use `localhost` in a build intended for another device.
+
+`backend_url` may be omitted for web and desktop clients, which learn their
+server at launch: a web client from the origin it is served from, a desktop
+client from the URL its launcher passes.
 
 ## Self-contained builds
 

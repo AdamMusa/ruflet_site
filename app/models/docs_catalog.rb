@@ -335,8 +335,8 @@ class DocsCatalog
         title: "Publishing",
         entries: [
           entry("build-and-release", "Build and Release", "Server-driven and self-contained builds, platform targets, assets, and release expectations.", SOURCE_ROOT.join("build_and_release.md"), "Publishing"),
-          entry("publishing-android", "Android", "Package Android builds with Ruflet and decide between server-driven and self-contained delivery.", SOURCE_ROOT.join("publishing_android.md"), "Publishing"),
-          entry("publishing-ios", "iOS", "Prepare iOS builds, client capabilities, and the right expectations for device testing.", SOURCE_ROOT.join("publishing_ios.md"), "Publishing"),
+          entry("publishing-android", "Android", "Package Android builds, configure release signing, and decide between server-driven and self-contained delivery.", SOURCE_ROOT.join("publishing_android.md"), "Publishing"),
+          entry("publishing-ios", "iOS", "Prepare iOS builds and archives, configure signing, and set the right expectations for device testing.", SOURCE_ROOT.join("publishing_ios.md"), "Publishing"),
           entry("publishing-desktop", "Desktop", "Ship Ruflet apps for macOS, Windows, and Linux with one Ruby app layer.", SOURCE_ROOT.join("publishing_desktop.md"), "Publishing"),
           entry("publishing-web", "Web", "Run and ship Ruflet apps for the web with the same Ruby codebase.", SOURCE_ROOT.join("publishing_web.md"), "Publishing")
         ]
