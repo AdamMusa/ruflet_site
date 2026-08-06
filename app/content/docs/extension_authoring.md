@@ -61,12 +61,9 @@ the matching `on_<event>` flag and call `control.triggerEvent` with JSON-safe
 data. Mounted Ruby methods call `runtime_page.invoke` and should accept
 `timeout:` and `on_result:`.
 
-## Client registration
+## Use the extension
 
-Add the extension under `extensions:` in `ruflet.yaml`. Ruflet adds its Flutter
-dependency, import, and `Extension()` registration when it builds the client.
-Rebuild after changing the extension list.
+Add the extension under `extensions:` in `ruflet.yaml`, then rebuild your app.
 
-For public, private, monorepo, or local packages, see
-[Use an extension Ruflet does not bundle](/docs/extensions#use-an-extension-ruflet-does-not-bundle)
-for the supported configuration.
+For an extension Ruflet does not include, follow [Use an extension Ruflet does
+not bundle](/docs/extensions#use-an-extension-ruflet-does-not-bundle).
