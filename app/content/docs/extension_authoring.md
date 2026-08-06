@@ -63,21 +63,10 @@ data. Mounted Ruby methods call `runtime_page.invoke` and should accept
 
 ## Client registration
 
-A bundled extension needs four client declarations: its dependency in
-`pubspec.yaml`, its Dart import, `Extension()` in the Flet extension list, and
-its key in `ruflet.yaml`. Native capabilities also need permission mapping.
-Changing an extension requires a rebuild or full Flutter restart.
+Add the extension under `extensions:` in `ruflet.yaml`. Ruflet adds its Flutter
+dependency, import, and `Extension()` registration when it builds the client.
+Rebuild after changing the extension list.
 
-Test the Ruby helper in every supported DSL context, rejected properties,
-serialized event names, and invoke method names. On the Flutter side, test
-configuration parsing, `createWidget` routing, events, methods, and lifecycle
-behavior. The official [Flet user-extension guide](https://flet.dev/docs/extend/user-extensions/)
-describes the underlying Flutter contract.
-
-Ruflet does not need to bundle the finished package. Publish it to a public or
-private Git repository and declare its package name and source under
-`extensions:`. Ruflet adds the dependency, import, and `Extension()`
-registration during the client build. See
+For public, private, monorepo, or local packages, see
 [Use an extension Ruflet does not bundle](/docs/extensions#use-an-extension-ruflet-does-not-bundle)
-for Git, private-repository authentication, Rails configuration, monorepo, and
-local-path examples.
+for the supported configuration.
