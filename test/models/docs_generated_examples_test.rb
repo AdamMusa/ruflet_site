@@ -29,4 +29,12 @@ class DocsGeneratedExamplesTest < ActiveSupport::TestCase
 
     assert_empty entries_without_url.map { |entry| entry[:slug] }
   end
+
+  test "app bar docs attach the bar to the page instead of a view" do
+    content = DocsCatalog.find("control-app-bar").content
+
+    assert_includes content, "page.appbar = app_bar("
+    assert_includes content, "page.add("
+    refute_match(/view\(\s*appbar:/m, content)
+  end
 end

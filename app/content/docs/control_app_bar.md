@@ -5,7 +5,7 @@ A material design app bar.
 ## Example
 
 ```ruby
-app_bar(
+page.appbar = app_bar(
   leading: icon(Ruflet::MaterialIcons::MENU),
   title: text(value: "Dashboard"),
   bgcolor: "#1f2937",
@@ -30,22 +30,23 @@ app_bar(
 
 ## Usage
 
-`app_bar` is usually assigned inside a `view`:
+Create the app bar with the free `app_bar(...)` helper and attach it to the
+page with `page.appbar=`:
 
 ```ruby
-view(
-  appbar: app_bar(
-    title: text(value: "Gallery", style: { size: 20 }),
-    actions: []
-  ),
-  controls: [
-    container(content: text(value: "Body"))
-  ]
+page.appbar = app_bar(
+  title: text(value: "Gallery", style: { size: 20 }),
+  actions: []
+)
+
+page.add(
+  container(content: text(value: "Body"))
 )
 ```
 
 ## Notes
 
+- Attach an app bar with `page.appbar = app_bar(...)`; do not add it to `view(...)`
 - `title` is a control, usually `text(...)`
 - `actions` takes an array of controls
 - `leading` is commonly an `icon_button(...)` or `icon(...)`
