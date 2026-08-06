@@ -56,4 +56,16 @@ class RufletExtensionDocsTest < ActiveSupport::TestCase
       assert_includes rendered, '<span class="tok-'
     end
   end
+
+  test "extension catalog documents private packages Ruflet does not bundle" do
+    content = DocsCatalog.find("extensions").source.read
+
+    assert_includes content, "## Use an extension Ruflet does not bundle"
+    assert_includes content, "git@github.com:acme/acme_widgets.git"
+    assert_includes content, "config.extensions = ["
+    assert_includes content, "path: packages/acme_widgets"
+    assert_includes content, '<acme-rating value="4" maximum="5">'
+    assert_includes content, "Ruflet does not copy or store repository credentials"
+    assert_includes content, "Do not put a personal access token"
+  end
 end

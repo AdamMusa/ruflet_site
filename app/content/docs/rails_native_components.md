@@ -124,6 +124,11 @@ so its package is included in the client build.
 <%= camera id: "profile-camera", preview_enabled: true, expand: true %>
 ```
 
+An extension does not need to be built into Ruflet's catalog. Point the Rails
+configuration at its public or private Git repository, then use its wire type
+as a normal ERB tag. See
+[Private and external extensions](/docs/extensions#use-an-extension-ruflet-does-not-bundle).
+
 | Family | Helpers |
 | --- | --- |
 | Media and animation | `video`, `lottie`, `rive`, `spinkit` |

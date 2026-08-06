@@ -73,3 +73,11 @@ serialized event names, and invoke method names. On the Flutter side, test
 configuration parsing, `createWidget` routing, events, methods, and lifecycle
 behavior. The official [Flet user-extension guide](https://flet.dev/docs/extend/user-extensions/)
 describes the underlying Flutter contract.
+
+Ruflet does not need to bundle the finished package. Publish it to a public or
+private Git repository and declare its package name and source under
+`extensions:`. Ruflet adds the dependency, import, and `Extension()`
+registration during the client build. See
+[Use an extension Ruflet does not bundle](/docs/extensions#use-an-extension-ruflet-does-not-bundle)
+for Git, private-repository authentication, Rails configuration, monorepo, and
+local-path examples.
