@@ -71,6 +71,8 @@
 
           <% nav_sections.each do |section| %>
             <% section_open = section.entries.any? { |entry| entry.slug == @doc.slug } %>
+            <% entries_by_parent = section.entries.select(&:parent_slug).group_by(&:parent_slug) %>
+            <% root_entries = section.entries.reject(&:parent_slug) %>
             <details class="docs-sidebar-group" <%= "open" if section_open %>>
               <summary class="docs-sidebar-group-summary">
                 <span><%= section.title %></span>
@@ -78,10 +80,22 @@
               </summary>
 
               <ul class="docs-sidebar-group-list">
-                <% section.entries.each do |entry| %>
+                <% root_entries.each do |entry| %>
                   <li>
                     <%= link_to doc_path(entry.slug), class: "docs-sidebar-group-link #{entry.slug == @doc.slug ? 'docs-sidebar-group-link-active' : ''}", data: { action: "click->docs-nav#closeSidebar" } do %>
                       <%= entry.title %>
+                    <% end %>
+
+                    <% if entries_by_parent[entry.slug].present? %>
+                      <ul class="docs-sidebar-subgroup-list" aria-label="<%= entry.title %>">
+                        <% entries_by_parent.fetch(entry.slug).each do |child| %>
+                          <li>
+                            <%= link_to doc_path(child.slug), class: "docs-sidebar-group-link docs-sidebar-subgroup-link #{child.slug == @doc.slug ? 'docs-sidebar-group-link-active' : ''}", data: { action: "click->docs-nav#closeSidebar" } do %>
+                              <%= child.title %>
+                            <% end %>
+                          </li>
+                        <% end %>
+                      </ul>
                     <% end %>
                   </li>
                 <% end %>

@@ -30,6 +30,20 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     refute_includes reference.entries.map(&:slug), "rails-api-reference"
   end
 
+  test "catalog entries can belong to a parent documentation page" do
+    entry = DocsCatalog.send(
+      :entry,
+      "child",
+      "Child",
+      "Nested documentation",
+      Rails.root.join("README.md"),
+      "Test",
+      parent_slug: "parent"
+    )
+
+    assert_equal "parent", entry.parent_slug
+  end
+
   test "groups controls services and extensions separately" do
     controls = DocsCatalog.sections.find { |section| section.id == "controls" }
     services = DocsCatalog.sections.find { |section| section.id == "services" }

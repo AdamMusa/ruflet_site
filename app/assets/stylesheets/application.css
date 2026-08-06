@@ -609,6 +609,19 @@
   color: #22b5ff;
 }
 
+.docs-sidebar-subgroup-list {
+  margin: -0.15rem 0 0.35rem 1rem;
+  padding: 0 0 0 0.75rem;
+  border-left: 1px solid rgba(148, 163, 184, 0.25);
+  list-style: none;
+}
+
+.docs-sidebar-subgroup-link {
+  padding-left: 0.75rem;
+  color: #aeb8c7;
+  font-size: 0.84rem;
+}
+
 .docs-toc-link {
   display: block;
   padding: 0;

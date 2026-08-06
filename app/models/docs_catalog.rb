@@ -1,7 +1,7 @@
 require "json"
 
 class DocsCatalog
-  Entry = Struct.new(:slug, :title, :summary, :source, :section, :content, keyword_init: true)
+  Entry = Struct.new(:slug, :title, :summary, :source, :section, :content, :parent_slug, keyword_init: true)
   Section = Struct.new(:id, :title, :entries, keyword_init: true)
 
   SOURCE_ROOT = Rails.root.join("app/content/docs")
@@ -458,8 +458,16 @@ class DocsCatalog
     @runtime_catalog ||= JSON.parse(RUNTIME_CATALOG_PATH.read, symbolize_names: true)
   end
 
-  def self.entry(slug, title, summary, source, section, content = nil)
-    Entry.new(slug: slug, title: title, summary: summary, source: source, section: section, content: content)
+  def self.entry(slug, title, summary, source, section, content = nil, parent_slug: nil)
+    Entry.new(
+      slug: slug,
+      title: title,
+      summary: summary,
+      source: source,
+      section: section,
+      content: content,
+      parent_slug: parent_slug
+    )
   end
 
   def self.first_paragraph(markdown)
