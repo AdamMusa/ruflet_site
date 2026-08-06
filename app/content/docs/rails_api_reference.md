@@ -62,28 +62,23 @@ the Rails app's source of truth.
 ## Endpoints and mounted apps
 
 ```text
-Ruflet::Rails.endpoint(app_file: nil) { |page| ... }
-Ruflet::Rails.app(file_path)
-Ruflet::Rails.web_app(app_file: nil, build_dir: nil) { |page| ... }
-Ruflet::Rails.web_app_entrypoint(app_file: nil)
+Ruflet::Rails.native(app_file = nil) { |page| ... }
+Ruflet::Rails.web(app_file: nil, build_dir: nil) { |page| ... }
 ```
 
-- `endpoint` returns a Rack endpoint for native and desktop WebSocket clients.
-  Supply exactly one source: `app_file:` or a block.
-- `app(file_path)` is shorthand for `endpoint(app_file: file_path)`.
-- `web_app` returns a mountable Rack application that serves the Flutter web
-  build and WebSocket on the same mount. Supply exactly one app source;
-  `build_dir:` selects a non-default web build.
-- `web_app_entrypoint` returns the loader callable used for an app file. Most
-  applications call `web_app` instead.
+- `native` returns a Rack endpoint for native and desktop WebSocket clients.
+  Pass an app file or a block.
+- `web` returns a mountable Rack application that serves the Flutter web build
+  and WebSocket on the same mount. Pass `app_file:` or a block; `build_dir:`
+  selects a non-default web build.
 
 ```ruby
 Rails.application.routes.draw do
   match "/ws",
-    to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")),
+    to: Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb")),
     via: :all
 
-  mount Ruflet::Rails.web_app(
+  mount Ruflet::Rails.web(
     app_file: Rails.root.join("app/views/ruflet/main.rb")
   ), at: "/ruflet"
 end
@@ -125,7 +120,7 @@ declared services mount on the Ruflet page. See
 ## Native WebView shell
 
 ```ruby
-Ruflet::Rails.native_app(
+Ruflet::Rails.native_shell(
   page,
   start_url:,
   title: nil,
@@ -136,7 +131,7 @@ Ruflet::Rails.native_app(
 )
 ```
 
-`native_app` starts a managed native shell whose body is a WebView. It returns
+`native_shell` starts a managed native shell whose body is a WebView. It returns
 the started `Ruflet::Rails::NativeApp`. `start_url:` is required. The shell
 tracks navigation, reads Ruflet annotations from loaded Rails HTML, and can
 promote annotated app bars, drawers, navigation, overlays, and actions to
@@ -144,7 +139,7 @@ native controls.
 
 ```ruby
 Ruflet.run do |page|
-  Ruflet::Rails.native_app(
+  Ruflet::Rails.native_shell(
     page,
     start_url: "#{Ruflet::Rails.backend_url}/dashboard",
     title: "Dashboard"
@@ -152,7 +147,7 @@ Ruflet.run do |page|
 end
 ```
 
-`native_app` itself does not convert the page body. Rails pages inside it remain
+`native_shell` itself does not convert the page body. Rails pages inside it remain
 web content; only annotated shell elements are promoted to native controls.
 Use `erb_to_native` for a native control tree.
 
@@ -214,7 +209,7 @@ ruflet_haptic_button(label, style: "selection", **attributes)
 
 `ruflet_frame` embeds a mounted Ruflet web app in an iframe. The remaining
 helpers emit ordinary HTML plus `data-ruflet-*` annotations. Browsers keep
-normal HTML behavior; `native_app` reads the annotations and builds native
+normal HTML behavior; `native_shell` reads the annotations and builds native
 shell controls or platform actions. These are separate from the component
 helpers used by `erb_to_native`. Extra keyword attributes use dashed HTML
 names.

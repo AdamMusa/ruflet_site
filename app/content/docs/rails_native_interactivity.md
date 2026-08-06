@@ -1,6 +1,6 @@
 # Rails Navigation and Actions
 
-`Ruflet::Rails.native_app` hosts normal Rails pages. Links and forms therefore
+`Ruflet::Rails.native_shell` hosts normal Rails pages. Links and forms therefore
 keep their normal browser behavior unless a supported view helper adds a
 native-shell annotation.
 

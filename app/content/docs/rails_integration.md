@@ -60,33 +60,32 @@ This split keeps server-only code and gems out of the installed app while the
 Rails side uses the normal server-side Ruby ecosystem. The complete example lives in
 `RufletApp/demo/hybride.rb` and connects to `ruflet_rails_demo`.
 
-## Choose a delivery API
+## Connect clients to Rails
 
 ### Native and desktop endpoint
 
-Use `Ruflet::Rails.app` to expose an app file to native and desktop clients:
+Use `Ruflet::Rails.native` to expose an app file to native and desktop clients:
 
 ```ruby
 match "/ws",
-  to: Ruflet::Rails.app(Rails.root.join("app/views/ruflet/main.rb")),
+  to: Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb")),
   via: :all
 ```
 
-`app(path)` is shorthand for `endpoint(app_file: path)`. `endpoint` accepts
-exactly one source: an app file or a block.
+Pass either an app file or a block:
 
 ```ruby
-Ruflet::Rails.endpoint(app_file: Rails.root.join("app/views/ruflet/main.rb"))
-Ruflet::Rails.endpoint { |page| Dashboard.render(page) }
+Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb"))
+Ruflet::Rails.native { |page| Dashboard.render(page) }
 ```
 
 ### Mounted Ruflet web app
 
-Mount `web_app` when Rails should serve the Flutter web frontend and its
+Mount `web` when Rails should serve the Flutter web frontend and its
 WebSocket from one route:
 
 ```ruby
-mount Ruflet::Rails.web_app(
+mount Ruflet::Rails.web(
   app_file: Rails.root.join("app/views/ruflet/main.rb")
 ), at: "/app"
 ```
@@ -97,47 +96,16 @@ Install the prebuilt web frontend with:
 rake ruflet:web
 ```
 
-### ERB rendered as native controls
+## Render Rails views
 
-Use `erb_to_native` when Rails routes, controllers, and ERB templates should
-produce a real native control tree:
+Choose one renderer for the Rails-powered section:
 
-```ruby
-# app/views/ruflet/main.rb
-Ruflet.run do |page|
-  Ruflet::Rails.erb_to_native(
-    page,
-    start_url: "#{Ruflet::Rails.backend_url}/mobile",
-    title: "My app"
-  )
-end
-```
-
-Links navigate the native view stack, forms submit through Rails, and service
-actions invoke the device. Route dispatch is in-process; no WebView or second
-HTTP connection is used. Start with [ERB to Native](/docs/rails-erb-to-native),
-then use the complete [Widgets](/docs/rails-native-components) and
-[Services](/docs/rails-native-services) references.
-
-### Rails HTML in a native WebView shell
-
-Use `native_app` when the body should remain normal Rails HTML in a WebView but
-the surrounding app bar and navigation should be native:
-
-```ruby
-# app/views/ruflet/main.rb
-Ruflet.run do |page|
-  Ruflet::Rails.native_app(
-    page,
-    start_url: "#{Ruflet::Rails.backend_url}/dashboard",
-    title: "Dashboard"
-  )
-end
-```
-
-The shell reads annotations emitted by Ruflet's WebView helpers. The page body
-remains HTML. Choose `erb_to_native` instead when the body itself should be
-native controls.
+- [ERB to Native](/docs/rails-erb-to-native) turns Rails routes and templates
+  into real native Ruflet widgets. Its [Widgets](/docs/rails-native-components)
+  and [Services](/docs/rails-native-services) references document the complete
+  ERB API.
+- [WebView Apps](/docs/rails-webview-apps) keeps existing Rails pages as HTML
+  inside a managed native shell.
 
 ## Configuration and builds
 

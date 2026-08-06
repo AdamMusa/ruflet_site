@@ -1,6 +1,6 @@
 # WebView Apps
 
-`Ruflet::Rails.native_app` wraps Rails pages in a managed native shell. The
+`Ruflet::Rails.native_shell` wraps Rails pages in a managed native shell. The
 page body remains an HTML WebView while Ruflet owns the native view stack,
 loading state, and shell chrome declared by supported Rails view helpers.
 
@@ -11,7 +11,7 @@ The `webview` extension is required in the built client.
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  Ruflet::Rails.native_app(
+  Ruflet::Rails.native_shell(
     page,
     start_url: "#{Ruflet::Rails.backend_url}/dashboard",
     title: "Dashboard",
@@ -23,7 +23,7 @@ end
 The full signature is:
 
 ```ruby
-Ruflet::Rails.native_app(
+Ruflet::Rails.native_shell(
   page,
   start_url:,
   title: nil,
@@ -92,10 +92,10 @@ embedding where relevant and every URL is reachable from the device.
 
 ## Choosing a Rails API
 
-- Use `Ruflet::Rails.endpoint` or `app` for Ruby-built Ruflet controls on native
+- Use `Ruflet::Rails.native` for Ruby-built Ruflet controls on native
   and desktop clients.
-- Use `Ruflet::Rails.web_app` for a Ruflet control app mounted on a Rails route.
-- Use `Ruflet::Rails.native_app` for Rails HTML in a native WebView shell.
+- Use `Ruflet::Rails.web` for a Ruflet control app mounted on a Rails route.
+- Use `Ruflet::Rails.native_shell` for Rails HTML in a native WebView shell.
 
 See [Rails API Reference](/docs/rails-api-reference) for the WebView helper
 signatures. For Rails ERB rendered as native widgets instead, see

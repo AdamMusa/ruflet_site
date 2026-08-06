@@ -1,6 +1,6 @@
 # Styling Rails Pages
 
-Pages displayed by `Ruflet::Rails.native_app` remain HTML inside a WebView.
+Pages displayed by `Ruflet::Rails.native_shell` remain HTML inside a WebView.
 Style them with the same CSS, asset pipeline, import maps, JavaScript, and
 responsive techniques used by the browser version of the Rails application.
 

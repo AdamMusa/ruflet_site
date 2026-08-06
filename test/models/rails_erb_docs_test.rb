@@ -62,10 +62,30 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     integration = DocsCatalog.find("rails-integration").source.read
     api = DocsCatalog.find("rails-api-reference").source.read
 
-    assert_includes integration, "Ruflet::Rails.erb_to_native"
-    assert_includes integration, "Ruflet::Rails.native_app"
+    assert_includes integration, "/docs/rails-erb-to-native"
+    assert_includes integration, "/docs/rails-webview-apps"
+    refute_includes integration, "Ruflet::Rails.erb_to_native("
+    refute_includes integration, "Ruflet::Rails.native_shell("
     assert_includes api, "Ruflet::Rails.erb_to_native"
-    assert_includes api, "Ruflet::Rails.native_app"
+    assert_includes api, "Ruflet::Rails.native_shell"
+  end
+
+  test "Rails docs use the current connection API" do
+    integration = DocsCatalog.find("rails-integration").source.read
+    api = DocsCatalog.find("rails-api-reference").source.read
+    content = [integration, api].join("\n")
+
+    assert_includes integration, "Ruflet::Rails.native("
+    assert_includes integration, "Ruflet::Rails.web("
+
+    %w[
+      Ruflet::Rails.app(
+      Ruflet::Rails.endpoint(
+      Ruflet::Rails.web_app(
+      Ruflet::Rails.native_app(
+    ].each do |retired_call|
+      refute_includes content, retired_call
+    end
   end
 
   test "Rails integration documents hybrid self-contained apps" do

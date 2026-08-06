@@ -16,7 +16,7 @@ rake ruflet:web
 
 ```ruby
 # config/routes.rb
-mount Ruflet::Rails.web_app(
+mount Ruflet::Rails.web(
   app_file: Rails.root.join("app/views/ruflet/main.rb")
 ), at: "/ruflet"
 ```
@@ -36,7 +36,7 @@ Embed the mounted app inside another Rails page when useful:
 ```ruby
 # app/views/ruflet/main.rb
 Ruflet.run do |page|
-  Ruflet::Rails.native_app(
+  Ruflet::Rails.native_shell(
     page,
     start_url: "#{Ruflet::Rails.backend_url}/dashboard",
     title: "Dashboard"
@@ -50,13 +50,13 @@ supported `data-ruflet-*` annotations for native chrome and platform actions.
 
 ## Choose between them
 
-- Use `web_app` when the UI is built with Ruflet controls and should run in a
+- Use `web` when the UI is built with Ruflet controls and should run in a
   browser under a Rails route.
-- Use `native_app` when an existing Rails website should remain HTML while
+- Use `native_shell` when an existing Rails website should remain HTML while
   gaining native app chrome and selected platform actions.
 - Use `erb_to_native` when Rails routes and ERB should render native controls
   without a WebView.
-- Use `endpoint` or `app` for Ruby-driven Ruflet controls rendered by native or
+- Use `native` for Ruby-driven Ruflet controls rendered by native or
   desktop clients.
 
 See [Rails API Reference](/docs/rails-api-reference) for exact signatures and
