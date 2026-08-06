@@ -44,6 +44,16 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "parent", entry.parent_slug
   end
 
+  test "shows ERB to Native components and services as nested navigation" do
+    get doc_url("rails-erb-to-native")
+
+    assert_response :success
+    assert_select "ul[aria-label='ERB to Native']" do
+      assert_select "a[href='#{doc_path("rails-native-components")}']", text: "Components"
+      assert_select "a[href='#{doc_path("rails-native-services")}']", text: "Services"
+    end
+  end
+
   test "groups controls services and extensions separately" do
     controls = DocsCatalog.sections.find { |section| section.id == "controls" }
     services = DocsCatalog.sections.find { |section| section.id == "services" }

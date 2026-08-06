@@ -1,60 +1,161 @@
-# Rails View Helpers
+# ERB to Native: Components
 
-`ruflet_rails` includes helpers in Action View. `ruflet_frame` embeds a mounted
-Ruflet web app. The other helpers emit ordinary HTML plus annotations read by
-`Ruflet::Rails.native_app`.
+Every helper on this page emits ERB markup that
+`Ruflet::Rails.erb_to_native` transforms into real native Ruflet controls. All
+helpers accept component properties as keyword arguments unless their
+signature says otherwise. Attributes use snake case in Ruby.
 
-## Embed a Ruflet web app
+## Layout
+
+| Helper | Native purpose |
+| --- | --- |
+| `column`, `row` | Vertical or horizontal flex layout. |
+| `stack` | Overlay children. |
+| `container`, `section` | Box layout; `section` is a semantic alias in ERB. |
+| `card` | Material card containing child content. |
+| `center` | Center one child. |
+| `list` | Scrollable native list view. |
+| `grid` | Scrollable native grid view. |
+| `spacer` | Expanded empty space in a flex layout. |
+| `divider` | Native divider. |
 
 ```erb
-<%= ruflet_frame "/ruflet", height: 640, width: "100%", title: "Ruflet app" %>
-```
-
-`ruflet_frame` also accepts `style:` and extra iframe attributes.
-
-## App bar
-
-```erb
-<%= ruflet_appbar "Inbox" do %>
-  <%= ruflet_appbar_action "search", search_path, nav: :push %>
+<%= column class: "p-6 gap-4" do %>
+  <%= row class: "gap-3 items-center" do %>
+    <%= icon "check_circle", color: "#22c55e" %>
+    <%= text "Saved" %>
+  <% end %>
+  <%= divider %>
 <% end %>
 ```
 
-`ruflet_appbar` accepts `payload:`, `leading:`, `actions:`, and HTML
-attributes. App-bar actions accept an icon, optional URL, `nav:`, and payload.
+## Content
 
-## Bottom navigation
+| Helper | Signature and behavior |
+| --- | --- |
+| `text` | `text(value = nil, **attrs)` renders native text. |
+| `markdown` | `markdown(value = nil, **attrs)` renders Markdown. |
+| `icon` | `icon(name, **attrs)` renders a Material icon. |
+| `image` | `image(src, **attrs)` renders a native image. |
+| `heading` | `heading(value = nil, level: 1, **attrs)` selects heading level 1–6. |
+| `h1`, `h2`, `h3`, `h4`, `h5`, `h6` | Native text with the matching heading defaults. |
+
+Plain `span`, `p`, and `label` tags are also transformed into native text.
+Plain `div`, `article`, `main`, `header`, `footer`, and `aside` tags become
+native containers, which makes gradual conversion of conventional ERB easier.
+
+## Actions and navigation
+
+| Helper | Signature and behavior |
+| --- | --- |
+| `button` | `button(label = nil, **attrs)`; use `on_click:`, `href:`, or `service:`. |
+| `link` | `link(label, href, **attrs)` pushes, replaces, resets, or pops a native screen. |
+| `appbar` | `appbar(title = nil, **attrs)` declares the screen app bar. |
+| `appbar_action` | `appbar_action(icon, href = nil, **attrs)` adds an app-bar action. |
+| `fab` | `fab(label = nil, **attrs)` declares the screen floating action button. |
+| `bottom_nav` | Declares native bottom navigation. |
+| `nav_item` | Adds a destination with `icon:`, `label:`, `href:`, and `selected:`. |
 
 ```erb
-<%= ruflet_bottom_nav do %>
-  <%= ruflet_nav_item "Home", root_path, icon: "home", selected: current_page?(root_path) %>
-  <%= ruflet_nav_item "Account", account_path, icon: "person" %>
+<%= appbar "Inbox" do %>
+  <%= appbar_action "search", search_path %>
+<% end %>
+
+<%= bottom_nav do %>
+  <%= nav_item icon: "inbox", label: "Inbox", href: inbox_path, selected: true %>
+  <%= nav_item icon: "person", label: "Account", href: account_path %>
 <% end %>
 ```
 
-Items require `label`, `href`, and `icon:`. They also accept `selected:`,
-`color:`, `size:`, and `payload:`.
+## Material and data-entry components
 
-## Drawer and navigation rail
+| Helper | Native purpose |
+| --- | --- |
+| `badge` | Label or notification badge around content. |
+| `tooltip` | Native tooltip around its child. |
+| `avatar` | Circle avatar with text, image, icon, or child content. |
+| `chip` | Material chip with optional selection or delete actions. |
+| `progress` | Linear progress bar. |
+| `switch`, `checkbox`, `slider`, `radio` | Native selection controls. |
+| `list_tile` | Leading/title/subtitle/trailing row with navigation or actions. |
+| `expansion_tile` | Expandable native section. |
+| `radio_group` | Named native radio group. |
+| `segmented_button` | Segments supplied as values or `{ value:, label:, icon: }` hashes. |
+| `tabs`, `tab` | Native tabs and their content. |
+
+`textfield` and `text-field` tags are also supported directly for single-line
+or multiline native input.
+
+## Forms
+
+| Helper | Signature and behavior |
+| --- | --- |
+| `form` | `form(action:, method: "post", **attrs)` collects its named fields. |
+| `input` | `input(name = nil, **attrs)` supports text, checkbox, range, radio, submit, and hidden types. |
+| `textarea` | `textarea(name = nil, value = nil, **attrs)` renders multiline input. |
+| `dropdown` | `dropdown(name = nil, options: [], value: nil, **attrs)` renders native selection. |
+| `submit` | `submit(label = "Submit", **attrs)` submits the enclosing form. |
+
+Conventional `select`, `option`, `ul`, `ol`, and table markup (`table`,
+`thead`, `tbody`, `tfoot`, `tr`, `th`, `td`) is transformed into the matching
+native controls as well.
+
+## Extension controls
+
+These visible extension helpers render inline. The matching extension must be
+declared in the Rails Ruflet configuration so it is included in the client.
+
+| Family | Helpers |
+| --- | --- |
+| Media and animation | `video`, `lottie`, `rive`, `spinkit` |
+| Editing and web | `code_editor`, `web_view`, `color_picker` |
+| Device view | `camera` |
+| Map | `map` |
+| Charts | `bar_chart`, `line_chart`, `pie_chart`, `scatter_chart`, `candlestick_chart`, `radar_chart` |
+
+## Compound extension children
+
+Map helpers are `tile_layer`, `marker_layer`, `marker`, `circle_layer`,
+`circle_marker`, `polyline_layer`, `polyline_marker`, `polygon_layer`,
+`polygon_marker`, and `simple_attribution`.
+
+Chart data helpers are `bar_chart_group`, `bar_chart_rod`,
+`bar_chart_rod_stack_item`, `line_chart_data`, `line_chart_data_point`,
+`pie_chart_section`, `candlestick_chart_spot`, `scatter_chart_spot`,
+`radar_dataset`, `radar_dataset_entry`, `radar_chart_title`, `chart_axis`, and
+`chart_axis_label`.
 
 ```erb
-<%= ruflet_drawer do %>
-  <%= ruflet_drawer_item "Home", root_path, icon: "home" %>
-  <%= ruflet_drawer_item "Settings", settings_path, icon: "settings", nav: :push %>
-<% end %>
-
-<%= ruflet_navigation_rail extended: true, breakpoint: 720 do %>
-  <%= ruflet_rail_item "Inbox", inbox_path, icon: "mail" %>
+<%= map expand: true do %>
+  <%= tile_layer url_template: "https://tile.openstreetmap.org/{z}/{x}/{y}.png" %>
+  <%= marker_layer do %>
+    <%= marker coordinates: { latitude: 40.7128, longitude: -74.0060 } do %>
+      <%= icon "location_on", color: "#ef4444" %>
+    <% end %>
+  <% end %>
 <% end %>
 ```
 
-`ruflet_rail` is an alias for `ruflet_navigation_rail`. Use Rails route state
-to set `selected:` on destination helpers.
+## Every Ruflet control
 
-## Platform actions
+Named helpers cover the common Rails UI and extension families. `widget`
+opens the complete Ruflet control registry, including controls that do not
+have a dedicated ERB helper:
 
-The view helpers for share, clipboard, URL launching, and haptics are covered
-in [Rails Service Actions](/docs/rails-native-services).
+```erb
+<%= widget "progress-ring", value: 0.65, width: 48, height: 48 %>
+<%= widget "date-picker", value: @task.due_on&.iso8601 %>
+```
 
-See [Rails API Reference](/docs/rails-api-reference) for every signature and
-default.
+The tag DSL has the same fallback, so this is equivalent:
+
+```erb
+<progress-ring value="0.65" width="48" height="48"></progress-ring>
+```
+
+Unknown tags are looked up in the core control registry and built with their
+real schema. See the [complete Component Reference](/docs/component-reference)
+for every available control, property, event, and method.
+
+Continue with [ERB-to-native Services](/docs/rails-native-services) or return
+to the [ERB-to-native overview](/docs/rails-erb-to-native).

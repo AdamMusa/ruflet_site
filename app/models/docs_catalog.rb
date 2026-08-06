@@ -346,12 +346,13 @@ class DocsCatalog
         title: "Integrations",
         entries: [
           entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
+          entry("rails-erb-to-native", "ERB to Native", "Render Rails routes and ERB templates as real native Ruflet controls without a WebView.", SOURCE_ROOT.join("rails_erb_to_native.md"), "Integrations"),
+          entry("rails-native-components", "Components", "Every ERB helper, extension control, compound child, and generic Ruflet component available to ERB-to-native screens.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations", parent_slug: "rails-erb-to-native"),
+          entry("rails-native-services", "Services", "Declare native services and invoke device capabilities from ERB-to-native screens.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
           entry("rails-native-html", "Mounted Rails Web Apps", "Serve a Ruflet web app from Rails or place Rails pages inside the supported native WebView shell.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
           entry("rails-native-styling", "Styling Rails Pages", "Style Rails HTML normally when it is displayed inside a Ruflet native WebView shell.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
-          entry("rails-native-components", "Rails View Helpers", "Annotate Rails HTML with the supported app bar, navigation, drawer, rail, and frame helpers.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations"),
           entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
-          entry("rails-native-services", "Rails Service Actions", "Trigger sharing, clipboard, URL-launching, and haptic actions from annotated Rails HTML.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve reachable Rails asset URLs and embed mounted Ruflet web apps.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
           entry("rails-webview-apps", "WebView Apps", "Wrap Rails views in a native WebView shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations")
         ]

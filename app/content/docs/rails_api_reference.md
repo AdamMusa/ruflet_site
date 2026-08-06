@@ -1,8 +1,9 @@
 # Rails API Reference
 
-`ruflet_rails` integrates Ruflet 0.0.19 with Rails 7.0 or newer through routes,
-assets, sessions, views, and build tasks. Add the gem, install the integration,
-then choose a WebSocket endpoint, mounted web app, or native WebView shell.
+`ruflet_rails` integrates Ruflet with Rails through routes, assets, sessions,
+views, and build tasks. Add the gem, install the integration, then choose a
+WebSocket endpoint, mounted web app, native ERB renderer, or native WebView
+shell.
 
 ```ruby
 # Gemfile
@@ -88,6 +89,39 @@ Rails.application.routes.draw do
 end
 ```
 
+## ERB to native controls
+
+```ruby
+Ruflet::Rails.erb_to_native(
+  page,
+  start_url:,
+  title: nil,
+  fetcher: nil
+)
+```
+
+`erb_to_native` returns a started `Ruflet::Rails::HtmlDsl::HtmlApp`.
+`start_url:` is required and points to a normal Rails route. The default
+fetcher dispatches that route in-process through Rails. `title:` supplies a
+fallback screen title, and `fetcher:` is available for isolated tests.
+
+```ruby
+Ruflet.run do |page|
+  Ruflet::Rails.erb_to_native(
+    page,
+    start_url: "#{Ruflet::Rails.backend_url}/mobile",
+    title: "My app"
+  )
+end
+```
+
+The rendered ERB is parsed into native controls. Links manage the native view
+stack, actions invoke Rails routes, forms submit named field values, and
+declared services mount on the Ruflet page. See
+[ERB to Native](/docs/rails-erb-to-native),
+[Components](/docs/rails-native-components), and
+[Services](/docs/rails-native-services).
+
 ## Native WebView shell
 
 ```ruby
@@ -118,9 +152,9 @@ Ruflet.run do |page|
 end
 ```
 
-This release does not provide an HTML-to-native renderer. Rails pages inside
-`native_app` remain web content; only the annotated shell elements are promoted
-to native controls.
+`native_app` itself does not convert the page body. Rails pages inside it remain
+web content; only annotated shell elements are promoted to native controls.
+Use `erb_to_native` for a native control tree.
 
 ## Assets and backend URLs
 
@@ -147,7 +181,7 @@ Ruflet::Rails.broadcast { |page| ... }
 `Ruflet::Rails.broadcast` is the module-level shortcut and yields each
 connected page. Session registration methods are managed by the endpoint.
 
-## ERB view helpers
+## Native WebView shell helpers
 
 The helpers are included in Action View.
 
@@ -181,7 +215,8 @@ ruflet_haptic_button(label, style: "selection", **attributes)
 `ruflet_frame` embeds a mounted Ruflet web app in an iframe. The remaining
 helpers emit ordinary HTML plus `data-ruflet-*` annotations. Browsers keep
 normal HTML behavior; `native_app` reads the annotations and builds native
-shell controls or platform actions. Extra keyword attributes use dashed HTML
+shell controls or platform actions. These are separate from the component
+helpers used by `erb_to_native`. Extra keyword attributes use dashed HTML
 names.
 
 ## Rails tasks
@@ -202,5 +237,6 @@ rake ruflet:build[apk|android|ios|aab|desktop|macos|windows|linux]
   `ruflet:web`, not built by this task.
 
 See [Rails Integration](/docs/rails-integration) for setup examples,
+[ERB to Native](/docs/rails-erb-to-native) for native Rails views,
 [WebView Apps](/docs/rails-webview-apps) for the shell workflow, and
 [Rails Assets and URLs](/docs/rails-assets) for deployment details.

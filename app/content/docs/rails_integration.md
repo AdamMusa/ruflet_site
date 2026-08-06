@@ -1,8 +1,9 @@
 # Rails Integration
 
 `ruflet_rails` lets a Rails process serve Ruflet mobile, desktop, and web
-clients. Ruflet entrypoints can use Rails models and application services, and
-Rails views can be displayed inside a managed native WebView shell.
+clients. Ruflet entrypoints can use Rails models and application services.
+Rails views can render directly into native controls with ERB to Native or
+remain HTML inside a managed native WebView shell.
 
 ## Install
 
@@ -58,7 +59,29 @@ Install the prebuilt web frontend with:
 rake ruflet:web
 ```
 
-### Rails pages in a native shell
+### ERB rendered as native controls
+
+Use `erb_to_native` when Rails routes, controllers, and ERB templates should
+produce a real native control tree:
+
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.erb_to_native(
+    page,
+    start_url: "#{Ruflet::Rails.backend_url}/mobile",
+    title: "My app"
+  )
+end
+```
+
+Links navigate the native view stack, forms submit through Rails, and service
+actions invoke the device. Route dispatch is in-process; no WebView or second
+HTTP connection is used. Start with [ERB to Native](/docs/rails-erb-to-native),
+then use the complete [Components](/docs/rails-native-components) and
+[Services](/docs/rails-native-services) references.
+
+### Rails HTML in a native WebView shell
 
 Use `native_app` when the body should remain normal Rails HTML in a WebView but
 the surrounding app bar and navigation should be native:
@@ -74,8 +97,9 @@ Ruflet.run do |page|
 end
 ```
 
-The shell reads annotations emitted by Ruflet's Rails view helpers. It does not
-convert an arbitrary Rails page into a native control tree.
+The shell reads annotations emitted by Ruflet's WebView helpers. The page body
+remains HTML. Choose `erb_to_native` instead when the body itself should be
+native controls.
 
 ## Configuration and builds
 
@@ -100,7 +124,9 @@ Rails build task.
 ## Continue
 
 - [Rails API Reference](/docs/rails-api-reference)
+- [ERB to Native](/docs/rails-erb-to-native)
+- [ERB-to-native Components](/docs/rails-native-components)
+- [ERB-to-native Services](/docs/rails-native-services)
 - [Mounted Rails Web Apps](/docs/rails-native-html)
 - [WebView Apps](/docs/rails-webview-apps)
-- [Rails View Helpers](/docs/rails-native-components)
 - [Rails Assets and URLs](/docs/rails-assets)

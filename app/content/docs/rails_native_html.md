@@ -1,8 +1,10 @@
 # Mounted Rails Web Apps
 
-Ruflet 0.0.19 supports two web-based Rails integrations: mount a Ruflet web
-frontend inside Rails, or display ordinary Rails pages inside a managed native
-WebView shell. Rails HTML is not converted into a native control tree.
+Ruflet supports two web-based Rails integrations: mount a Ruflet web frontend
+inside Rails, or display ordinary Rails pages inside a managed native WebView
+shell. These modes keep HTML as HTML. Use
+[`erb_to_native`](/docs/rails-erb-to-native) when Rails ERB should become a
+native control tree.
 
 ## Mount a Ruflet web app
 
@@ -52,6 +54,8 @@ supported `data-ruflet-*` annotations for native chrome and platform actions.
   browser under a Rails route.
 - Use `native_app` when an existing Rails website should remain HTML while
   gaining native app chrome and selected platform actions.
+- Use `erb_to_native` when Rails routes and ERB should render native controls
+  without a WebView.
 - Use `endpoint` or `app` for Ruby-driven Ruflet controls rendered by native or
   desktop clients.
 
