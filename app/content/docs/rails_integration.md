@@ -22,6 +22,44 @@ The generator creates `app/views/ruflet/main.rb`,
 `--desktop`, or `--client web|desktop|all|none` to install a prebuilt client at
 the same time.
 
+## Hybrid Ruflet and Rails
+
+A Ruflet app built with `--self` can keep its shell, navigation, offline
+screens, and small local workflows inside the app. When a feature needs Rails,
+Active Record, background jobs, or a CRuby gem that the embedded runtime does
+not support, display that feature from a server-driven Rails endpoint with
+`ruflet_app`.
+
+```ruby
+RAILS_URL = "https://app.example.com"
+
+Ruflet.run do |page|
+  page.add(
+    column(
+      expand: true,
+      controls: [
+        text("This header runs in the local Ruflet app"),
+        ruflet_app(
+          url: RAILS_URL,
+          expand: true,
+          app_startup_screen_message: "Connecting to Rails…",
+          reconnect_timeout_ms: 10_000
+        )
+      ]
+    )
+  )
+end
+```
+
+Pass the reachable HTTP or HTTPS base URL, not `/ws`. The Rails app exposes its
+Ruflet endpoint at `/ws`, and the client manages that connection. Local screens
+remain part of the self-contained app; the Rails section requires network
+access to the server.
+
+This split keeps server-only code and gems out of the installed app while the
+Rails side uses the normal server-side Ruby ecosystem. The complete example lives in
+`RufletApp/demo/hybride.rb` and connects to `ruflet_rails_demo`.
+
 ## Choose a delivery API
 
 ### Native and desktop endpoint

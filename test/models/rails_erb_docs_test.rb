@@ -67,4 +67,14 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     assert_includes api, "Ruflet::Rails.erb_to_native"
     assert_includes api, "Ruflet::Rails.native_app"
   end
+
+  test "Rails integration documents hybrid self-contained apps" do
+    integration = DocsCatalog.find("rails-integration").source.read
+
+    assert_includes integration, "## Hybrid Ruflet and Rails"
+    assert_includes integration, "ruflet_app("
+    assert_includes integration, "embedded runtime"
+    assert_includes integration, "HTTP or HTTPS base URL"
+    assert_includes integration, "RufletApp/demo/hybride.rb"
+  end
 end
