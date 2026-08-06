@@ -37,4 +37,21 @@ class DocsGeneratedExamplesTest < ActiveSupport::TestCase
     assert_includes content, "page.add("
     refute_match(/view\(\s*appbar:/m, content)
   end
+
+  test "composite widget docs include complete usage examples" do
+    expected_snippets = {
+      "control-marker-layer" => [ "page.add(", "map(", "marker_layer([", "marker(", "tile_layer(" ],
+      "control-menu-bar" => [ "page.add(", "menu_bar([", "submenu_button(", "menu_item_button(" ],
+      "control-polygon-marker" => [ "page.add(", "map(", "polygon_marker(", "polygon_layer([", "tile_layer(" ]
+    }
+
+    expected_snippets.each do |slug, snippets|
+      content = DocsCatalog.find(slug).content
+      example = content[/## Example\s+```ruby\n(.*?)```/m, 1]
+
+      assert example, "Expected #{slug} to include a Ruby example"
+      RubyVM::InstructionSequence.compile(example)
+      snippets.each { |snippet| assert_includes example, snippet, "Expected #{slug} usage to include #{snippet}" }
+    end
+  end
 end
