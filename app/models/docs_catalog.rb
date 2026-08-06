@@ -347,7 +347,7 @@ class DocsCatalog
         entries: [
           entry("rails-integration", "Rails Integration", "Use Ruflet inside Rails with `ruflet_rails`, generated config, mounting, and app builds from Rails.", SOURCE_ROOT.join("rails_integration.md"), "Integrations"),
           entry("rails-erb-to-native", "ERB to Native", "Render Rails routes and ERB templates as real native Ruflet controls without a WebView.", SOURCE_ROOT.join("rails_erb_to_native.md"), "Integrations"),
-          entry("rails-native-components", "Components", "Every ERB helper, extension control, compound child, and generic Ruflet component available to ERB-to-native screens.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations", parent_slug: "rails-erb-to-native"),
+          entry("rails-native-components", "Widgets", "Use every Ruflet widget from ERB with normal native tags or Rails view helpers.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-native-services", "Services", "Declare native services and invoke device capabilities from ERB-to-native screens.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
           entry("rails-native-html", "Mounted Rails Web Apps", "Serve a Ruflet web app from Rails or place Rails pages inside the supported native WebView shell.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
@@ -369,9 +369,9 @@ class DocsCatalog
       ),
       Section.new(
         id: "controls",
-        title: "Controls (Components & Widgets)",
+        title: "Widgets",
         entries: [
-          entry("component-reference", "Controls", "Browse Ruflet controls and open dedicated reference pages for each component.", SOURCE_ROOT.join("component_reference.md"), "Controls"),
+          entry("component-reference", "All Widgets", "Browse every Ruflet widget and open its properties, events, methods, and examples.", SOURCE_ROOT.join("component_reference.md"), "Widgets"),
           entry("controls-and-layout", "Controls and Layout", "How controls, containers, and the layout model fit together.", SOURCE_ROOT.join("controls_and_layout.md"), "Controls"),
           entry("navigation-feedback", "Navigation and Feedback", "Views, dialogs, snackbars, bottom sheets, and other navigation and feedback patterns.", SOURCE_ROOT.join("navigation_feedback.md"), "Controls"),
           entry("charts-and-canvas", "Charts and Canvas", "Bar, line, pie, scatter, candlestick, and radar charts, plus canvas drawing primitives.", SOURCE_ROOT.join("charts_and_canvas.md"), "Controls"),
@@ -501,7 +501,7 @@ class DocsCatalog
         generated_control_markdown(control)
       end
       summary = source ? nil : generated_control_summary(control)
-      entry(control[:slug], control[:title], summary, nil, "Controls", content)
+      entry(control[:slug], control[:title], summary, nil, "Widgets", content)
     end
   end
 

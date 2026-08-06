@@ -39,7 +39,7 @@
         <label id="docs-search-title" class="docs-search-label" for="docs-search-input">Search docs</label>
         <button type="button" class="docs-search-close" data-action="docs-nav#closeSearch" aria-label="Close search">×</button>
       </div>
-      <input id="docs-search-input" type="search" placeholder="Search components, guides..." autocomplete="off" class="docs-search-input" data-docs-nav-target="searchInput" data-action="input->docs-nav#search keydown->docs-nav#handleSearchKeydown">
+      <input id="docs-search-input" type="search" placeholder="Search widgets, guides..." autocomplete="off" class="docs-search-input" data-docs-nav-target="searchInput" data-action="input->docs-nav#search keydown->docs-nav#handleSearchKeydown">
       <div class="docs-search-results" data-docs-nav-target="searchResults" role="listbox" aria-label="Documentation search results"></div>
     </div>
   </div>
@@ -120,8 +120,8 @@
           <%= @rendered_doc.html %>
         </div>
 
-        <% if @doc.slug == "component-reference" && @control_catalog.any? %>
-          <div class="docs-controls-grid" aria-label="Controls catalog">
+        <% if %w[component-reference rails-native-components].include?(@doc.slug) && @control_catalog.any? %>
+          <div class="docs-controls-grid" aria-label="Widgets catalog">
             <% @control_catalog.each do |control| %>
               <%= link_to doc_path(control[:slug]), class: "docs-control-card" do %>
                 <span class="docs-control-card-title"><%= control[:title] %></span>

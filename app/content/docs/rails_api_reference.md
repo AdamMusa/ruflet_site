@@ -119,7 +119,7 @@ The rendered ERB is parsed into native controls. Links manage the native view
 stack, actions invoke Rails routes, forms submit named field values, and
 declared services mount on the Ruflet page. See
 [ERB to Native](/docs/rails-erb-to-native),
-[Components](/docs/rails-native-components), and
+[Widgets](/docs/rails-native-components), and
 [Services](/docs/rails-native-services).
 
 ## Native WebView shell

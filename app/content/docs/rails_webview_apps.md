@@ -97,5 +97,6 @@ embedding where relevant and every URL is reachable from the device.
 - Use `Ruflet::Rails.web_app` for a Ruflet control app mounted on a Rails route.
 - Use `Ruflet::Rails.native_app` for Rails HTML in a native WebView shell.
 
-See [Rails API Reference](/docs/rails-api-reference) and
-[Rails View Helpers](/docs/rails-native-components) for exact signatures.
+See [Rails API Reference](/docs/rails-api-reference) for the WebView helper
+signatures. For Rails ERB rendered as native widgets instead, see
+[ERB to Native](/docs/rails-erb-to-native).

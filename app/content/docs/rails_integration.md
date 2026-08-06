@@ -78,7 +78,7 @@ end
 Links navigate the native view stack, forms submit through Rails, and service
 actions invoke the device. Route dispatch is in-process; no WebView or second
 HTTP connection is used. Start with [ERB to Native](/docs/rails-erb-to-native),
-then use the complete [Components](/docs/rails-native-components) and
+then use the complete [Widgets](/docs/rails-native-components) and
 [Services](/docs/rails-native-services) references.
 
 ### Rails HTML in a native WebView shell
@@ -125,7 +125,7 @@ Rails build task.
 
 - [Rails API Reference](/docs/rails-api-reference)
 - [ERB to Native](/docs/rails-erb-to-native)
-- [ERB-to-native Components](/docs/rails-native-components)
+- [ERB-to-native Widgets](/docs/rails-native-components)
 - [ERB-to-native Services](/docs/rails-native-services)
 - [Mounted Rails Web Apps](/docs/rails-native-html)
 - [WebView Apps](/docs/rails-webview-apps)

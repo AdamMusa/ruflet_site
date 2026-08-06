@@ -81,7 +81,7 @@ position, transforms, gradients, visibility, scrolling, wrapping, animation,
 and image fitting. These tokens become control properties; they are not loaded
 as browser CSS.
 
-Use direct component attributes whenever a style is not represented by a class:
+Use direct widget attributes whenever a style is not represented by a class:
 
 ```erb
 <%= container class: "p-6 rounded-xl bg-slate-900", expand: true do %>
@@ -89,13 +89,15 @@ Use direct component attributes whenever a style is not represented by a class:
 <% end %>
 ```
 
-## Components and services
+## Widgets, services, and extensions
 
-- [Components](/docs/rails-native-components) lists every named ERB helper,
-  extension control, map/chart child, and access to the entire Ruflet control
-  registry.
-- [Services](/docs/rails-native-services) lists every declarative service and
-  the actions that ERB controls can invoke.
+- [Widgets](/docs/rails-native-components) explains normal ERB tags and lists
+  every Ruflet widget available to a native Rails view.
+- [Services](/docs/rails-native-services) use normal non-visual ERB tags such
+  as `<%= battery %>` and `<%= geolocator %>`.
+- Extensions use their normal ERB tags too, such as
+  `<%= lottie src: "loading.json" %>` or `<%= camera expand: true %>`. Declare
+  the extension in the Rails Ruflet configuration so the client includes it.
 
 ## Choose the correct Rails renderer
 

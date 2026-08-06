@@ -1,13 +1,13 @@
 # ERB to Native: Services
 
-ERB-to-native screens can mount Ruflet services and invoke native device
-actions from controls. Declare every long-lived or streaming service used by a
-screen, and invoke one-shot operations from a user action.
+Services use normal ERB helpers too. Add the service tag to the Rails template
+and Ruflet mounts the native service automatically; there is no separate Rails
+wrapper API. Invoke one-shot operations from a user action.
 
 ## Declare services
 
-Service helpers are non-visual: they register the service with the native page
-instead of adding a visible control.
+Service helpers are non-visual tags: they register the service with the native
+page instead of adding a visible widget.
 
 ```erb
 <%= battery %>
@@ -49,14 +49,14 @@ instead of adding a visible control.
 | `user_accelerometer` | Acceleration with gravity removed | [User Accelerometer](/docs/service-user-accelerometer) |
 | `wakelock` | Keep the display awake | [Wakelock](/docs/service-wakelock) |
 
-`camera` is a visible extension control rather than a non-visual helper; use
-the [`camera` component](/docs/rails-native-components), the full
+`camera` is a visible extension widget rather than a non-visual helper; use
+the [`camera` widget](/docs/rails-native-components), the full
 [Camera service reference](/docs/service-camera), and camera service actions
 together.
 
 ## Invoke a service from a control
 
-Set `service:` on `button`, `link`, or another clickable control. Other
+Set `service:` on `button`, `link`, or another clickable widget. Other
 attributes become the action payload. Use `result_target:` to write frequent
 or returned values into a native text control instead of opening a dialog.
 
@@ -146,4 +146,4 @@ service dispatcher, so the underlying Ruflet service methods remain reachable.
 For exact service properties, events, methods, and permission requirements,
 follow the service reference links above or open
 [Services and Device APIs](/docs/services-and-plugins). Continue with
-[ERB-to-native Components](/docs/rails-native-components).
+[ERB-to-native Widgets](/docs/rails-native-components).

@@ -1,7 +1,7 @@
 require "test_helper"
 
 class RailsErbDocsTest < ActiveSupport::TestCase
-  COMPONENT_HELPERS = %w[
+  WIDGET_HELPERS = %w[
     column row stack container section card center list grid spacer divider
     text markdown icon image heading h1 h2 h3 h4 h5 h6 button link appbar
     appbar_action fab bottom_nav nav_item badge tooltip avatar chip progress
@@ -25,14 +25,16 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     user_accelerometer wakelock
   ].freeze
 
-  test "component reference covers every named ERB helper" do
+  test "widget reference covers every named ERB helper" do
     content = DocsCatalog.find("rails-native-components").source.read
 
-    COMPONENT_HELPERS.each do |helper|
-      assert_includes content, "`#{helper}`", "Missing ERB component helper #{helper}"
+    WIDGET_HELPERS.each do |helper|
+      assert_includes content, "`#{helper}`", "Missing ERB widget helper #{helper}"
     end
 
-    assert_includes content, "/docs/component-reference"
+    assert_includes content, '<progress-ring value="0.65"'
+    assert_includes content, '<%= lottie src:'
+    assert_includes content, '<%= camera id:'
   end
 
   test "service reference covers every declarative ERB service" do
@@ -41,6 +43,8 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     DECLARATIVE_SERVICE_HELPERS.each do |helper|
       assert_includes content, "`#{helper}`", "Missing ERB service helper #{helper}"
     end
+
+    assert_includes content, "Services use normal ERB helpers too."
   end
 
   test "service reference links every core Ruflet service" do

@@ -7,7 +7,7 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "button[aria-controls='docs-search-dialog']", text: /Search docs/
     assert_select "#docs-search-dialog[role='dialog']"
-    assert_select "#docs-search-dialog input[type='search'][placeholder='Search components, guides...']"
+    assert_select "#docs-search-dialog input[type='search'][placeholder='Search widgets, guides...']"
     assert_match "data-docs-nav-search-index-value", response.body
     assert_match "TextField", response.body
     assert_match "control-text-field", response.body
@@ -44,14 +44,22 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "parent", entry.parent_slug
   end
 
-  test "shows ERB to Native components and services as nested navigation" do
+  test "shows ERB to Native widgets and services as nested navigation" do
     get doc_url("rails-erb-to-native")
 
     assert_response :success
     assert_select "ul[aria-label='ERB to Native']" do
-      assert_select "a[href='#{doc_path("rails-native-components")}']", text: "Components"
+      assert_select "a[href='#{doc_path("rails-native-components")}']", text: "Widgets"
       assert_select "a[href='#{doc_path("rails-native-services")}']", text: "Services"
     end
+  end
+
+  test "shows every Ruflet widget on the ERB to Native widgets page" do
+    get doc_url("rails-native-components")
+
+    assert_response :success
+    assert_select "h1", text: "ERB to Native: Widgets"
+    assert_select "[aria-label='Widgets catalog'] .docs-control-card", count: DocsCatalog.control_catalog.size
   end
 
   test "groups controls services and extensions separately" do
@@ -61,6 +69,7 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     integrations = DocsCatalog.sections.find { |section| section.id == "integrations" }
 
     assert_includes controls.entries.map(&:slug), "component-reference"
+    assert_equal "Widgets", controls.title
     assert_includes controls.entries.map(&:slug), "control-text"
     assert_includes services.entries.map(&:slug), "services-and-plugins"
     assert_includes extensions.entries.map(&:slug), "extensions"

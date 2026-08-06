@@ -1,9 +1,20 @@
-# ERB to Native: Components
+# ERB to Native: Widgets
 
 Every helper on this page emits ERB markup that
-`Ruflet::Rails.erb_to_native` transforms into real native Ruflet controls. All
-helpers accept component properties as keyword arguments unless their
-signature says otherwise. Attributes use snake case in Ruby.
+`Ruflet::Rails.erb_to_native` transforms into a real native Ruflet widget. Use
+widgets in ERB like normal Rails tags. Attributes use snake case in Ruby helper
+calls and dashed names in literal tags.
+
+```erb
+<%= column class: "p-6 gap-4" do %>
+  <%= text "Hello from Rails" %>
+  <%= button "Save", on_click: save_path %>
+<% end %>
+```
+
+Every Ruflet widget is supported. Common widgets have convenient Rails
+helpers, and every other widget works as a literal native tag or through
+`widget(...)`. The complete widget catalog appears at the bottom of this page.
 
 ## Layout
 
@@ -67,7 +78,7 @@ native containers, which makes gradual conversion of conventional ERB easier.
 <% end %>
 ```
 
-## Material and data-entry components
+## Material and data-entry widgets
 
 | Helper | Native purpose |
 | --- | --- |
@@ -100,10 +111,18 @@ Conventional `select`, `option`, `ul`, `ol`, and table markup (`table`,
 `thead`, `tbody`, `tfoot`, `tr`, `th`, `td`) is transformed into the matching
 native controls as well.
 
-## Extension controls
+## Extensions use normal ERB tags
 
-These visible extension helpers render inline. The matching extension must be
-declared in the Rails Ruflet configuration so it is included in the client.
+Extensions are not a different Rails API. Call an extension with its normal
+ERB helper just like any other widget, and Ruflet renders it natively. The
+matching extension only needs to be declared in the Rails Ruflet configuration
+so its package is included in the client build.
+
+```erb
+<%= lottie src: asset_url("loading.json"), width: 160, height: 160 %>
+<%= video playlist: [{ resource: video_url(@lesson) }], expand: true %>
+<%= camera id: "profile-camera", preview_enabled: true, expand: true %>
+```
 
 | Family | Helpers |
 | --- | --- |
@@ -136,26 +155,27 @@ Chart data helpers are `bar_chart_group`, `bar_chart_rod`,
 <% end %>
 ```
 
-## Every Ruflet control
+## Every Ruflet widget works as a tag
 
-Named helpers cover the common Rails UI and extension families. `widget`
-opens the complete Ruflet control registry, including controls that do not
-have a dedicated ERB helper:
+Named helpers cover common Rails UI and extension families. For every other
+widget, write its Ruflet name as a normal tag:
+
+```erb
+<progress-ring value="0.65" width="48" height="48"></progress-ring>
+<date-picker value="<%= @task.due_on&.iso8601 %>"></date-picker>
+```
+
+If Ruby composition is more convenient, `widget` reaches the same complete
+widget registry:
 
 ```erb
 <%= widget "progress-ring", value: 0.65, width: 48, height: 48 %>
 <%= widget "date-picker", value: @task.due_on&.iso8601 %>
 ```
 
-The tag DSL has the same fallback, so this is equivalent:
-
-```erb
-<progress-ring value="0.65" width="48" height="48"></progress-ring>
-```
-
 Unknown tags are looked up in the core control registry and built with their
-real schema. See the [complete Component Reference](/docs/component-reference)
-for every available control, property, event, and method.
+real schema. Browse every supported widget directly below; each card opens its
+properties, events, methods, and Ruby examples.
 
 Continue with [ERB-to-native Services](/docs/rails-native-services) or return
 to the [ERB-to-native overview](/docs/rails-erb-to-native).
