@@ -1,4 +1,4 @@
-# WebView Apps
+# Native Shell
 
 `Ruflet::Rails.native_shell` wraps Rails pages in a managed native shell. The
 page body remains an HTML WebView while Ruflet owns the native view stack,

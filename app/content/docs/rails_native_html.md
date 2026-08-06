@@ -60,4 +60,4 @@ supported `data-ruflet-*` annotations for native chrome and platform actions.
   desktop clients.
 
 See [Rails API Reference](/docs/rails-api-reference) for exact signatures and
-[WebView Apps](/docs/rails-webview-apps) for the managed shell.
+[Native Shell](/docs/rails-native-shell) for the managed shell.

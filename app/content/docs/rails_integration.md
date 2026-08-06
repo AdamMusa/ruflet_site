@@ -79,6 +79,9 @@ Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb"))
 Ruflet::Rails.native { |page| Dashboard.render(page) }
 ```
 
+The block receives the connected Ruflet page. `Dashboard` is an example of
+your own application renderer; it is not a class supplied by `ruflet_rails`.
+
 ### Mounted Ruflet web app
 
 Mount `web` when Rails should serve the Flutter web frontend and its
@@ -104,7 +107,7 @@ Choose one renderer for the Rails-powered section:
   into real native Ruflet widgets. Its [Widgets](/docs/rails-native-components)
   and [Services](/docs/rails-native-services) references document the complete
   ERB API.
-- [WebView Apps](/docs/rails-webview-apps) keeps existing Rails pages as HTML
+- [Native Shell](/docs/rails-native-shell) keeps existing Rails pages as HTML
   inside a managed native shell.
 
 ## Configuration and builds
@@ -134,5 +137,5 @@ Rails build task.
 - [ERB-to-native Widgets](/docs/rails-native-components)
 - [ERB-to-native Services](/docs/rails-native-services)
 - [Mounted Rails Web Apps](/docs/rails-native-html)
-- [WebView Apps](/docs/rails-webview-apps)
+- [Native Shell](/docs/rails-native-shell)
 - [Rails Assets and URLs](/docs/rails-assets)

@@ -63,7 +63,7 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     api = DocsCatalog.find("rails-api-reference").source.read
 
     assert_includes integration, "/docs/rails-erb-to-native"
-    assert_includes integration, "/docs/rails-webview-apps"
+    assert_includes integration, "/docs/rails-native-shell"
     refute_includes integration, "Ruflet::Rails.erb_to_native("
     refute_includes integration, "Ruflet::Rails.native_shell("
     assert_includes api, "Ruflet::Rails.erb_to_native"

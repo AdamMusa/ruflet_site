@@ -22,6 +22,20 @@ class DocsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "redirects the old WebView Apps page to Native Shell" do
+    get doc_url("rails-webview-apps")
+
+    assert_response :moved_permanently
+    assert_redirected_to doc_url("rails-native-shell")
+  end
+
+  test "names the managed WebView integration Native Shell" do
+    entry = DocsCatalog.find("rails-native-shell")
+
+    assert_equal "Native Shell", entry.title
+    assert_includes entry.source.read, "# Native Shell"
+  end
+
   test "groups the Rails API under integrations" do
     integrations = DocsCatalog.sections.find { |section| section.id == "integrations" }
     reference = DocsCatalog.sections.find { |section| section.id == "reference" }

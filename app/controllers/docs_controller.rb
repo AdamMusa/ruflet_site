@@ -7,6 +7,11 @@ class DocsController < ApplicationController
   end
 
   def show
+    if params[:slug] == "rails-webview-apps"
+      redirect_to doc_path("rails-native-shell"), status: :moved_permanently
+      return
+    end
+
     if %w[api-surface dsl-reference runtime-reference].include?(params[:slug])
       redirect_to doc_path("reference"), status: :moved_permanently
       return

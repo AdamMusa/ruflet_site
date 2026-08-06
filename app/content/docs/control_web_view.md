@@ -77,10 +77,10 @@ webview.run_javascript("document.querySelector('.web-banner')?.remove()")
 webview.get_current_url { |url, _err| page.update(label, value: url) }
 ```
 
-## Building webview apps
+## Building native shells
 
 To wrap a Rails website in a native shell and turn annotated link taps into
-native navigation, see [WebView Apps](/docs/rails-webview-apps).
+native navigation, see [Native Shell](/docs/rails-native-shell).
 `Ruflet::Rails.native_shell` provides the managed navigation stack.
 
 ## Reference

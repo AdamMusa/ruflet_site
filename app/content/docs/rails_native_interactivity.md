@@ -39,7 +39,7 @@ Use the supported share, copy, launch, and haptic helpers for actions that the
 native shell should intercept. Each still emits an ordinary link or button for
 the browser rendering.
 
-See [WebView Apps](/docs/rails-webview-apps) and
+See [Native Shell](/docs/rails-native-shell) and
 [Rails API Reference](/docs/rails-api-reference) for the WebView shell. For
 native widgets rendered from ERB instead, see
 [ERB to Native](/docs/rails-erb-to-native).

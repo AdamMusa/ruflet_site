@@ -233,5 +233,5 @@ rake ruflet:build[apk|android|ios|aab|desktop|macos|windows|linux]
 
 See [Rails Integration](/docs/rails-integration) for setup examples,
 [ERB to Native](/docs/rails-erb-to-native) for native Rails views,
-[WebView Apps](/docs/rails-webview-apps) for the shell workflow, and
+[Native Shell](/docs/rails-native-shell) for the shell workflow, and
 [Rails Assets and URLs](/docs/rails-assets) for deployment details.

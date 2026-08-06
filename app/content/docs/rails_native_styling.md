@@ -29,5 +29,5 @@ Ruflet does not interpret utility classes as native control properties in this
 release. If the screen must be a native control tree, build it with Ruflet's
 Ruby control helpers instead.
 
-See [WebView Apps](/docs/rails-webview-apps) for shell annotations and
+See [Native Shell](/docs/rails-native-shell) for shell annotations and
 [Rails Assets and URLs](/docs/rails-assets) for client-reachable assets.

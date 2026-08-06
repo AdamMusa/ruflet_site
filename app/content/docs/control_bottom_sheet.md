@@ -59,4 +59,4 @@ page.close_bottom_sheet(sheet)
 The lower-level equivalent is `page.update(sheet, open: false)`.
 
 For a modal that hosts your *website* content (e.g. an auth flow), see
-[Webview Apps](/docs/rails-webview-apps).
+[Native Shell](/docs/rails-native-shell).
