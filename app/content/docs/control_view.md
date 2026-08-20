@@ -5,12 +5,13 @@ A full-screen route surface used in page-based navigation.
 ## Example
 
 ```ruby
+page.appbar = app_bar(
+  title: text(value: "Home")
+)
+
 page.views = [
   view(
     route: "/home",
-    appbar: app_bar(
-      title: text(value: "Home")
-    ),
     controls: [
       container(
         padding: 16,
@@ -24,7 +25,6 @@ page.views = [
 ## Common properties
 
 - `route`
-- `appbar`
 - `controls`
 - `padding`
 - `bgcolor`
@@ -45,5 +45,6 @@ view(
 
 ## Notes
 
+- Attach the top app bar to the page with `page.appbar = app_bar(...)`
 - `page.views` usually holds the current navigation stack
 - `controls` takes an array of child controls

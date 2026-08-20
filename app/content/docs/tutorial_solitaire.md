@@ -175,7 +175,8 @@ body = container(
   )
 )
 
-@page.add(body, appbar: app_bar(title: text("Solitaire")))
+@page.appbar = app_bar(title: text("Solitaire"))
+@page.add(body)
 ```
 
 That is the architectural payoff:
