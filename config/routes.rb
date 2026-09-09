@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   # Native screens run inside this connection; website routes stay separate.
   match "/ws", to: Ruflet::Rails.native { |page|
     Ruflet::Rails.erb_to_native(page, start_url: "/native", fetcher: NativeScreenSource.new)
-    page.update(page.views.first, bgcolor: "#FFFFFF", padding: 0)
   }, via: :all
 
   resources :newsletter_subscriptions, only: :create
