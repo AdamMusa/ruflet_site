@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   mount_avo at: "/admin"
 
-  # Native mobile/desktop clients connect here. The home screen is declared in
-  # app/views/ruflet/main.rb (dev code) — explicitly mounted, not auto-mounted.
-
-  # Web frontend: serves the prebuilt web client from frontend/ (rake ruflet:web)
-  # and answers the WebSocket on the same mount point.
+  # Native screens run inside this connection; website routes stay separate.
+  match "/ws", to: Ruflet::Rails.native { |page|
+    Ruflet::Rails.erb_to_native(page, start_url: "/native", fetcher: NativeScreenSource.new)
+    page.update(page.views.first, bgcolor: "#FFFFFF", padding: 0)
+  }, via: :all
 
   resources :newsletter_subscriptions, only: :create
   resource :session
