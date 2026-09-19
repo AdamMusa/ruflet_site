@@ -347,7 +347,7 @@ GEM
     ruflet (0.0.23)
       rqrcode (~> 2.2)
     ruflet_core (0.0.23)
-    ruflet_rails (0.0.23)
+    ruflet_rails (0.0.24)
       rails (>= 7.0)
       ruflet (>= 0.0.23)
       ruflet_core (>= 0.0.23)
@@ -465,7 +465,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.1.2)
   rubocop-rails-omakase
-  ruflet_rails (~> 0.0.23)
+  ruflet_rails (~> 0.0.24)
   selenium-webdriver
   solid_cable
   solid_cache
@@ -604,7 +604,7 @@ CHECKSUMS
   rubyzip (3.4.1) sha256=0a79e745b5c25872ebd148457df5665da8530ed8626c993b01457128f173ca02
   ruflet (0.0.23) sha256=1ac926d0af6049d71ab29c675f69752e8866f67ebe598e4fc5fb6052b32ed9a7
   ruflet_core (0.0.23) sha256=0bf671a359bb81935ad10442da9ec3c160f00212f03d7b370954dc415da6524d
-  ruflet_rails (0.0.23) sha256=af988315abe6e71d5052367bd0997406814b9aafd00e6302e2b7d474dd5fe259
+  ruflet_rails (0.0.24)
   ruflet_server (0.0.23) sha256=ee919ae95975f090696e39bf7aa441b12b8f7144108779423a0b426e74f791b9
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-webdriver (4.46.0) sha256=cb6cfa6f79eac041749df0b14cdcb0e9fe5df3715a64c77bfaa56b345b99f957

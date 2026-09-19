@@ -1,16 +1,17 @@
-<%# Match Ruflet Explorer's component-dialog presentation while keeping this
-    example entirely inside the native ERB DSL. %>
+<%# The same title/content/actions shape used by Ruflet Explorer. %>
 <%= text "The dialog is closed.", id: "dialog-status", class: "text-sm text-slate-500 select-text" %>
 <%= button "Open dialog", icon: "chat_bubble", service: "control", target: "demo-dialog",
            method: "update", open: "true", variant: "filled" %>
 
-<%= alert_dialog id: "demo-dialog", modal: true, adaptive: true do %>
-  <%= column class: "gap-4" do %>
-    <%= text "Dialog", class: "text-xl font-semibold" %>
-    <%= text "Hello world from a Ruflet dialog." %>
-    <%= row class: "justify-end" do %>
-      <%= button "Close", service: "control", target: "demo-dialog", method: "update",
-                 open: "false", variant: "text" %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= alert_dialog(
+      id: "demo-dialog",
+      modal: true,
+      title: text("Dialog"),
+      content: text("Hello world from a Ruflet dialog."),
+      actions: [
+        text_button(
+          text("Close"), service: "control", target: "demo-dialog", method: "update",
+                         open: "false"
+        )
+      ]
+    ) %>
