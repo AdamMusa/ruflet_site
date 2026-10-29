@@ -49,6 +49,9 @@ page instead of adding a visible widget.
 | `user_accelerometer` | Acceleration with gravity removed | [User Accelerometer](/docs/service-user-accelerometer) |
 | `wakelock` | Keep the display awake | [Wakelock](/docs/service-wakelock) |
 
+The web-only [Browser Context Menu](/docs/service-browser-context-menu) service
+has no ERB tag. Use it from Ruby with `page.service(:browser_context_menu)`.
+
 `camera` is a visible extension widget rather than a non-visual helper; use
 the [`camera` widget](/docs/rails-native-components), the full
 [Camera service reference](/docs/service-camera), and camera service actions

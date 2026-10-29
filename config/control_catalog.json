@@ -345,21 +345,30 @@
     "properties": [
       "adaptive",
       "badge",
+      "barrier_color",
       "bgcolor",
       "col",
       "content",
       "data",
       "disabled",
+      "dismissible",
+      "draggable",
       "expand",
       "expand_loose",
+      "fullscreen",
       "height",
       "key",
+      "maintain_bottom_view_insets_padding",
       "modal",
       "opacity",
       "open",
       "padding",
       "rtl",
+      "scrollable",
+      "show_drag_handle",
+      "size_constraints",
       "tooltip",
+      "use_safe_area",
       "visible"
     ],
     "events": [
@@ -935,6 +944,7 @@
       "bgcolor",
       "bgcolor_activated",
       "bottom",
+      "chevron",
       "col",
       "data",
       "disabled",
@@ -1717,6 +1727,7 @@
       "suffix_style",
       "suffix_visibility_mode",
       "text_align",
+      "text_input_action",
       "text_size",
       "text_style",
       "text_vertical_align",
@@ -1988,7 +1999,8 @@
       "title_padding",
       "title_text_style",
       "tooltip",
-      "visible"
+      "visible",
+      "inset_animation"
     ],
     "events": [
       "on_dismiss"
@@ -2058,7 +2070,17 @@
       "toolbar_opacity",
       "toolbar_text_style",
       "tooltip",
-      "visible"
+      "visible",
+      "automatic_background_visibility",
+      "automatically_imply_title",
+      "border",
+      "brightness",
+      "enable_background_filter_blur",
+      "large",
+      "padding",
+      "previous_page_title",
+      "trailing",
+      "transition_between_routes"
     ],
     "events": [],
     "methods": [],
@@ -2519,10 +2541,13 @@
       "expand",
       "expand_loose",
       "fullscreen",
+      "height",
       "key",
       "maintain_bottom_view_insets_padding",
+      "modal",
       "opacity",
       "open",
+      "padding",
       "rtl",
       "scrollable",
       "shape",
@@ -2617,7 +2642,18 @@
       "top",
       "url",
       "visible",
-      "width"
+      "width",
+      "alignment",
+      "border_radius",
+      "disabled_bgcolor",
+      "focus_color",
+      "min_size",
+      "mouse_cursor",
+      "opacity_on_click",
+      "padding",
+      "size",
+      "default",
+      "destructive"
     ],
     "events": [
       "on_animation_end",
@@ -2791,7 +2827,8 @@
       "value",
       "visible",
       "visual_density",
-      "width"
+      "width",
+      "spacing"
     ],
     "events": [
       "on_animation_end",
@@ -2864,6 +2901,7 @@
       "leading_size_constraints",
       "left",
       "margin",
+      "mouse_cursor",
       "offset",
       "opacity",
       "padding",
@@ -3048,6 +3086,7 @@
       "margin",
       "offset",
       "opacity",
+      "opacity_on_click",
       "padding",
       "right",
       "rotate",
@@ -3151,7 +3190,10 @@
       "tooltip",
       "top",
       "visible",
-      "width"
+      "width",
+      "actions",
+      "adaptive",
+      "enable_haptic_feedback"
     ],
     "events": [
       "on_animation_end",
@@ -3530,12 +3572,43 @@
       "switch_to_input_icon",
       "tooltip",
       "value",
-      "visible"
+      "visible",
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "bgcolor",
+      "bottom",
+      "date_order",
+      "height",
+      "item_extent",
+      "left",
+      "margin",
+      "maximum_year",
+      "minimum_year",
+      "minute_interval",
+      "offset",
+      "right",
+      "rotate",
+      "scale",
+      "show_day_of_week",
+      "size_change_interval",
+      "top",
+      "use_24h_format",
+      "width"
     ],
     "events": [
       "on_change",
       "on_dismiss",
-      "on_entry_mode_change"
+      "on_entry_mode_change",
+      "on_animation_end",
+      "on_size_change"
     ],
     "methods": [],
     "helper_signatures": [
@@ -3679,7 +3752,9 @@
     "family": "materials",
     "widget_type": "dropdown",
     "helpers": [
-      "dropdown"
+      "dropdown",
+      "dropdown_m2",
+      "dropdownm2"
     ],
     "properties": [
       "align",
@@ -3755,7 +3830,44 @@
       "trailing_icon",
       "value",
       "visible",
-      "width"
+      "width",
+      "align_label_with_hint",
+      "alignment",
+      "collapsed",
+      "counter",
+      "counter_style",
+      "disabled_hint_content",
+      "enable_feedback",
+      "error",
+      "error_max_lines",
+      "fit_parent_size",
+      "focus_color",
+      "focused_bgcolor",
+      "focused_color",
+      "helper",
+      "helper_max_lines",
+      "hint_content",
+      "hint_fade_duration",
+      "hint_max_lines",
+      "icon",
+      "item_height",
+      "max_menu_height",
+      "options_fill_horizontally",
+      "padding",
+      "prefix",
+      "prefix_icon",
+      "prefix_icon_size_constraints",
+      "prefix_style",
+      "select_icon",
+      "select_icon_disabled_color",
+      "select_icon_enabled_color",
+      "select_icon_size",
+      "size_constraints",
+      "suffix",
+      "suffix_icon",
+      "suffix_icon_size_constraints",
+      "suffix_style",
+      "text_vertical_align"
     ],
     "events": [
       "on_animation_end",
@@ -3763,7 +3875,9 @@
       "on_focus",
       "on_select",
       "on_size_change",
-      "on_text_change"
+      "on_text_change",
+      "on_change",
+      "on_click"
     ],
     "methods": [],
     "helper_signatures": [
@@ -3779,124 +3893,7 @@
             "props"
           ]
         ]
-      }
-    ]
-  },
-  {
-    "title": "DropdownM2",
-    "slug": "control-dropdown-m-2",
-    "family": "materials",
-    "widget_type": "dropdownm2",
-    "helpers": [
-      "dropdown_m2",
-      "dropdownm2"
-    ],
-    "properties": [
-      "align",
-      "align_label_with_hint",
-      "alignment",
-      "animate_align",
-      "animate_margin",
-      "animate_offset",
-      "animate_opacity",
-      "animate_position",
-      "animate_rotation",
-      "animate_scale",
-      "animate_size",
-      "aspect_ratio",
-      "autofocus",
-      "badge",
-      "bgcolor",
-      "border",
-      "border_color",
-      "border_radius",
-      "border_width",
-      "bottom",
-      "col",
-      "collapsed",
-      "color",
-      "content_padding",
-      "counter",
-      "counter_style",
-      "data",
-      "dense",
-      "disabled",
-      "disabled_hint_content",
-      "elevation",
-      "enable_feedback",
-      "error",
-      "error_max_lines",
-      "error_style",
-      "expand",
-      "expand_loose",
-      "fill_color",
-      "filled",
-      "fit_parent_size",
-      "focus_color",
-      "focused_bgcolor",
-      "focused_border_color",
-      "focused_border_width",
-      "focused_color",
-      "height",
-      "helper",
-      "helper_max_lines",
-      "helper_style",
-      "hint_content",
-      "hint_fade_duration",
-      "hint_max_lines",
-      "hint_style",
-      "hint_text",
-      "hover_color",
-      "icon",
-      "item_height",
-      "key",
-      "label",
-      "label_style",
-      "left",
-      "margin",
-      "max_menu_height",
-      "offset",
-      "opacity",
-      "options",
-      "options_fill_horizontally",
-      "padding",
-      "prefix",
-      "prefix_icon",
-      "prefix_icon_size_constraints",
-      "prefix_style",
-      "right",
-      "rotate",
-      "rtl",
-      "scale",
-      "select_icon",
-      "select_icon_disabled_color",
-      "select_icon_enabled_color",
-      "select_icon_size",
-      "size_change_interval",
-      "size_constraints",
-      "suffix",
-      "suffix_icon",
-      "suffix_icon_size_constraints",
-      "suffix_style",
-      "text_size",
-      "text_style",
-      "text_vertical_align",
-      "tooltip",
-      "top",
-      "value",
-      "visible",
-      "width"
-    ],
-    "events": [
-      "on_animation_end",
-      "on_blur",
-      "on_change",
-      "on_click",
-      "on_focus",
-      "on_size_change"
-    ],
-    "methods": [],
-    "helper_signatures": [
+      },
       {
         "name": "dropdown_m2",
         "parameters": [
@@ -4302,7 +4299,16 @@
       "top",
       "url",
       "visible",
-      "width"
+      "width",
+      "alignment",
+      "border_radius",
+      "disabled_bgcolor",
+      "focus_color",
+      "min_size",
+      "mouse_cursor",
+      "opacity_on_click",
+      "padding",
+      "size"
     ],
     "events": [
       "on_animation_end",
@@ -4500,7 +4506,16 @@
       "top",
       "url",
       "visible",
-      "width"
+      "width",
+      "alignment",
+      "border_radius",
+      "disabled_bgcolor",
+      "focus_color",
+      "min_size",
+      "mouse_cursor",
+      "opacity_on_click",
+      "padding",
+      "size"
     ],
     "events": [
       "on_animation_end",
@@ -4879,6 +4894,7 @@
       "badge",
       "bgcolor",
       "bottom",
+      "chevron",
       "col",
       "content_padding",
       "data",
@@ -4887,6 +4903,7 @@
       "enable_feedback",
       "expand",
       "expand_loose",
+      "focus_color",
       "height",
       "horizontal_spacing",
       "hover_color",
@@ -4927,7 +4944,13 @@
       "url",
       "visible",
       "visual_density",
-      "width"
+      "width",
+      "additional_info",
+      "bgcolor_activated",
+      "leading_size",
+      "leading_to_title",
+      "notched",
+      "padding"
     ],
     "events": [
       "on_animation_end",
@@ -5159,7 +5182,10 @@
       "tooltip",
       "top",
       "visible",
-      "width"
+      "width",
+      "active_color",
+      "icon_size",
+      "inactive_color"
     ],
     "events": [
       "on_animation_end",
@@ -5572,7 +5598,18 @@
       "top",
       "url",
       "visible",
-      "width"
+      "width",
+      "alignment",
+      "bgcolor",
+      "border_radius",
+      "color",
+      "disabled_bgcolor",
+      "focus_color",
+      "min_size",
+      "mouse_cursor",
+      "opacity_on_click",
+      "padding",
+      "size"
     ],
     "events": [
       "on_animation_end",
@@ -6011,7 +6048,10 @@
       "value",
       "visible",
       "width",
-      "year_2023"
+      "year_2023",
+      "animating",
+      "progress",
+      "radius"
     ],
     "events": [
       "on_animation_end",
@@ -6094,7 +6134,9 @@
       "value",
       "visible",
       "visual_density",
-      "width"
+      "width",
+      "inactive_color",
+      "use_checkmark_style"
     ],
     "events": [
       "on_animation_end",
@@ -6298,6 +6340,7 @@
       "horizontal",
       "item_extent",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "mouse_cursor",
@@ -6613,7 +6656,18 @@
       "tooltip",
       "top",
       "visible",
-      "width"
+      "width",
+      "border_color",
+      "click_color",
+      "controls",
+      "disabled_color",
+      "disabled_text_color",
+      "selected_color",
+      "selected_index",
+      "unselected_color",
+      "bgcolor",
+      "proportional_width",
+      "thumb_color"
     ],
     "events": [
       "on_animation_end",
@@ -6924,14 +6978,21 @@
       "track_outline_width",
       "value",
       "visible",
-      "width"
+      "width",
+      "active_thumb_image",
+      "active_thumb_image_src",
+      "inactive_thumb_image",
+      "inactive_thumb_image_src",
+      "off_label_color",
+      "on_label_color"
     ],
     "events": [
       "on_animation_end",
       "on_blur",
       "on_change",
       "on_focus",
-      "on_size_change"
+      "on_size_change",
+      "on_image_error"
     ],
     "methods": [],
     "helper_signatures": [
@@ -7244,7 +7305,33 @@
       "on_change",
       "on_size_change"
     ],
-    "methods": [],
+    "methods": [
+      {
+        "name": "move_to",
+        "parameters": [
+          [
+            "req",
+            "index"
+          ],
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
     "helper_signatures": [
       {
         "name": "tabs",
@@ -7314,7 +7401,18 @@
       "top",
       "url",
       "visible",
-      "width"
+      "width",
+      "alignment",
+      "bgcolor",
+      "border_radius",
+      "color",
+      "disabled_bgcolor",
+      "focus_color",
+      "min_size",
+      "mouse_cursor",
+      "opacity_on_click",
+      "padding",
+      "size"
     ],
     "events": [
       "on_animation_end",
@@ -7477,6 +7575,7 @@
       "suffix_icon_size_constraints",
       "suffix_style",
       "text_align",
+      "text_input_action",
       "text_size",
       "text_style",
       "text_vertical_align",
@@ -7484,7 +7583,18 @@
       "top",
       "value",
       "visible",
-      "width"
+      "width",
+      "blend_mode",
+      "clear_button_semantics_label",
+      "clear_button_visibility_mode",
+      "gradient",
+      "image",
+      "padding",
+      "placeholder_style",
+      "placeholder_text",
+      "prefix_visibility_mode",
+      "shadows",
+      "suffix_visibility_mode"
     ],
     "events": [
       "on_animation_end",
@@ -7652,49 +7762,8 @@
     "helpers": [
       "video"
     ],
-    "properties": [
-      "alignment",
-      "aspect_ratio",
-      "autoplay",
-      "configuration",
-      "data",
-      "fill_color",
-      "filter_quality",
-      "fit",
-      "fullscreen",
-      "height",
-      "key",
-      "muted",
-      "opacity",
-      "pause_upon_entering_background_mode",
-      "pitch",
-      "playlist",
-      "playlist_mode",
-      "playback_rate",
-      "resume_upon_entering_foreground_mode",
-      "rtl",
-      "show_controls",
-      "shuffle_playlist",
-      "subtitle_configuration",
-      "title",
-      "tooltip",
-      "visible",
-      "volume",
-      "wakelock",
-      "width"
-    ],
-    "events": [
-      "on_completed",
-      "on_complete",
-      "on_enter_fullscreen",
-      "on_error",
-      "on_exit_fullscreen",
-      "on_load",
-      "on_loaded",
-      "on_state_change",
-      "on_track_change",
-      "on_track_changed"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [
       {
         "name": "get_current_position",
@@ -7920,32 +7989,8 @@
       "web_view",
       "webview"
     ],
-    "properties": [
-      "bgcolor",
-      "data",
-      "enable_javascript",
-      "expand",
-      "height",
-      "key",
-      "method",
-      "opacity",
-      "prevent_links",
-      "rtl",
-      "tooltip",
-      "url",
-      "visible",
-      "width"
-    ],
-    "events": [
-      "on_page_ended",
-      "on_page_started",
-      "on_web_resource_error",
-      "on_progress",
-      "on_url_change",
-      "on_scroll",
-      "on_console_message",
-      "on_javascript_alert_dialog"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [
       {
         "name": "can_go_back",
@@ -8280,7 +8325,51 @@
       "on_resize",
       "on_size_change"
     ],
-    "methods": [],
+    "methods": [
+      {
+        "name": "capture",
+        "parameters": [
+          [
+            "key",
+            "pixel_ratio"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "clear_capture",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "get_capture",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
     "helper_signatures": [
       {
         "name": "canvas",
@@ -8378,6 +8467,7 @@
       "align",
       "alignment",
       "animate_align",
+      "animate_changes",
       "animate_margin",
       "animate_offset",
       "animate_opacity",
@@ -8393,16 +8483,24 @@
       "controls",
       "data",
       "disabled",
+      "end_reached_threshold",
       "expand",
       "expand_loose",
       "height",
       "horizontal_alignment",
       "intrinsic_width",
+      "item_animation",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "offset",
       "opacity",
+      "refresh_bgcolor",
+      "refresh_color",
+      "refresh_displacement",
+      "refresh_timeout",
+      "refresh_trigger_distance",
       "right",
       "rotate",
       "rtl",
@@ -8422,6 +8520,8 @@
     ],
     "events": [
       "on_animation_end",
+      "on_end_reached",
+      "on_refresh",
       "on_scroll",
       "on_size_change"
     ],
@@ -8855,17 +8955,24 @@
       "controls",
       "data",
       "disabled",
+      "end_reached_threshold",
       "expand",
       "expand_loose",
       "height",
       "horizontal",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "max_extent",
       "offset",
       "opacity",
       "padding",
+      "refresh_bgcolor",
+      "refresh_color",
+      "refresh_displacement",
+      "refresh_timeout",
+      "refresh_trigger_distance",
       "reverse",
       "right",
       "rotate",
@@ -8885,6 +8992,8 @@
     ],
     "events": [
       "on_animation_end",
+      "on_end_reached",
+      "on_refresh",
       "on_scroll",
       "on_size_change"
     ],
@@ -9403,6 +9512,7 @@
       "adaptive",
       "align",
       "animate_align",
+      "animate_changes",
       "animate_margin",
       "animate_offset",
       "animate_opacity",
@@ -9422,19 +9532,27 @@
       "data",
       "disabled",
       "divider_thickness",
+      "end_reached_threshold",
       "expand",
       "expand_loose",
       "first_item_prototype",
       "height",
       "horizontal",
+      "item_animation",
       "item_extent",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "offset",
       "opacity",
       "padding",
       "prototype_item",
+      "refresh_bgcolor",
+      "refresh_color",
+      "refresh_displacement",
+      "refresh_timeout",
+      "refresh_trigger_distance",
       "reverse",
       "right",
       "rotate",
@@ -9452,6 +9570,8 @@
     ],
     "events": [
       "on_animation_end",
+      "on_end_reached",
+      "on_refresh",
       "on_scroll",
       "on_size_change"
     ],
@@ -9700,6 +9820,8 @@
       "animate_rotation",
       "animate_scale",
       "animate_size",
+      "animation_curve",
+      "animation_duration",
       "aspect_ratio",
       "badge",
       "bottom",
@@ -9739,7 +9861,109 @@
       "on_change",
       "on_size_change"
     ],
-    "methods": [],
+    "methods": [
+      {
+        "name": "go_to_page",
+        "parameters": [
+          [
+            "req",
+            "index"
+          ],
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "jump_to",
+        "parameters": [
+          [
+            "req",
+            "value"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "jump_to_page",
+        "parameters": [
+          [
+            "req",
+            "index"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "next_page",
+        "parameters": [
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "previous_page",
+        "parameters": [
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ],
     "helper_signatures": [
       {
         "name": "page_view",
@@ -10127,11 +10351,13 @@
       "controls",
       "data",
       "disabled",
+      "end_reached_threshold",
       "expand",
       "expand_loose",
       "height",
       "intrinsic_height",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "offset",
@@ -10156,6 +10382,7 @@
     ],
     "events": [
       "on_animation_end",
+      "on_end_reached",
       "on_scroll",
       "on_size_change"
     ],
@@ -11177,26 +11404,8 @@
       "bar_chart",
       "barchart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "min_y",
-      "max_y",
-      "min_x",
-      "max_x",
-      "groups",
-      "left_axis",
-      "right_axis",
-      "top_axis",
-      "bottom_axis",
-      "horizontal_grid_lines",
-      "vertical_grid_lines",
-      "border",
-      "tooltip"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -11228,12 +11437,7 @@
       "bar_chart_group",
       "barchartgroup"
     ],
-    "properties": [
-      "x",
-      "rods",
-      "bars_space",
-      "showing_tooltip_indicators"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11266,15 +11470,7 @@
       "bar_chart_rod",
       "barchartrod"
     ],
-    "properties": [
-      "from_y",
-      "to_y",
-      "width",
-      "color",
-      "gradient",
-      "border_radius",
-      "rod_stack_items"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11307,12 +11503,7 @@
       "bar_chart_rod_stack_item",
       "barchartrodstackitem"
     ],
-    "properties": [
-      "from_y",
-      "to_y",
-      "color",
-      "border_side"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11345,23 +11536,8 @@
       "candlestick_chart",
       "candlestickchart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "min_x",
-      "max_x",
-      "min_y",
-      "max_y",
-      "spots",
-      "left_axis",
-      "right_axis",
-      "top_axis",
-      "bottom_axis",
-      "tooltip"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -11393,14 +11569,7 @@
       "candlestick_chart_spot",
       "candlestickchartspot"
     ],
-    "properties": [
-      "x",
-      "open",
-      "high",
-      "low",
-      "close",
-      "selected"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11433,13 +11602,7 @@
       "chart_axis",
       "chartaxis"
     ],
-    "properties": [
-      "title",
-      "labels",
-      "label_size",
-      "title_size",
-      "show_labels"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11472,10 +11635,7 @@
       "chart_axis_label",
       "chartaxislabel"
     ],
-    "properties": [
-      "value",
-      "label"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11595,24 +11755,8 @@
       "line_chart",
       "linechart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "min_y",
-      "max_y",
-      "min_x",
-      "max_x",
-      "data_series",
-      "left_axis",
-      "right_axis",
-      "top_axis",
-      "bottom_axis",
-      "interactive",
-      "tooltip"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -11644,14 +11788,7 @@
       "line_chart_data",
       "linechartdata"
     ],
-    "properties": [
-      "points",
-      "color",
-      "gradient",
-      "stroke_width",
-      "curved",
-      "rounded_stroke_cap"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11684,10 +11821,7 @@
       "line_chart_data_point",
       "linechartdatapoint"
     ],
-    "properties": [
-      "x",
-      "y"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -11984,17 +12118,8 @@
       "pie_chart",
       "piechart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "sections",
-      "sections_space",
-      "center_space_radius",
-      "tooltip"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -12026,15 +12151,7 @@
       "pie_chart_section",
       "piechartsection"
     ],
-    "properties": [
-      "value",
-      "title",
-      "color",
-      "radius",
-      "title_style",
-      "badge_widget",
-      "badge_position_percentage_offset"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -12258,15 +12375,8 @@
       "radar_chart",
       "radarchart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "titles",
-      "data_sets"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -12298,11 +12408,7 @@
       "radar_chart_title",
       "radarcharttitle"
     ],
-    "properties": [
-      "text",
-      "angle",
-      "position_percentage_offset"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -12335,12 +12441,7 @@
       "radar_data_set",
       "radardataset"
     ],
-    "properties": [
-      "entries",
-      "border_color",
-      "fill_color",
-      "border_width"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -12373,9 +12474,7 @@
       "radar_data_set_entry",
       "radardatasetentry"
     ],
-    "properties": [
-      "value"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -12487,22 +12586,8 @@
       "scatter_chart",
       "scatterchart"
     ],
-    "properties": [
-      "width",
-      "height",
-      "min_x",
-      "max_x",
-      "min_y",
-      "max_y",
-      "spots",
-      "left_axis",
-      "right_axis",
-      "top_axis",
-      "bottom_axis"
-    ],
-    "events": [
-      "on_event"
-    ],
+    "properties": [],
+    "events": [],
     "methods": [],
     "helper_signatures": [
       {
@@ -12534,12 +12619,7 @@
       "scatter_chart_spot",
       "scatterchartspot"
     ],
-    "properties": [
-      "x",
-      "y",
-      "radius",
-      "color"
-    ],
+    "properties": [],
     "events": [],
     "methods": [],
     "helper_signatures": [
@@ -12876,6 +12956,7 @@
       "enable_retina_mode",
       "enable_tms",
       "errorImageSrc",
+      "error_image_src",
       "evict_error_tile_strategy",
       "expand",
       "expand_loose",
@@ -12961,6 +13042,7 @@
       "bgcolor",
       "bottom",
       "bottom_appbar",
+      "bottom_sheet",
       "can_pop",
       "col",
       "controls",
@@ -12969,6 +13051,7 @@
       "disabled",
       "drawer",
       "end_drawer",
+      "end_reached_threshold",
       "expand",
       "expand_loose",
       "floating_action_button",
@@ -12978,12 +13061,18 @@
       "height",
       "horizontal_alignment",
       "key",
+      "keyboard_dismiss_behavior",
       "left",
       "margin",
       "navigation_bar",
       "offset",
       "opacity",
       "padding",
+      "refresh_bgcolor",
+      "refresh_color",
+      "refresh_displacement",
+      "refresh_timeout",
+      "refresh_trigger_distance",
       "right",
       "rotate",
       "route",
@@ -13003,6 +13092,8 @@
     "events": [
       "on_animation_end",
       "on_confirm_pop",
+      "on_end_reached",
+      "on_refresh",
       "on_scroll",
       "on_size_change"
     ],
@@ -13100,6 +13191,2297 @@
       "on_animation_end",
       "on_error",
       "on_load",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "AboutDialog",
+    "slug": "control-about-dialog",
+    "family": "materials",
+    "widget_type": "aboutdialog",
+    "helpers": [
+      "about_dialog",
+      "aboutdialog"
+    ],
+    "helper_signatures": [
+      {
+        "name": "about_dialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "aboutdialog",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "application_icon",
+      "application_legalese",
+      "application_name",
+      "application_version",
+      "barrier_color",
+      "controls",
+      "data",
+      "key",
+      "modal",
+      "open",
+      "view",
+      "visible"
+    ],
+    "events": [
+      "on_dismiss"
+    ],
+    "methods": []
+  },
+  {
+    "title": "ActionSheet",
+    "slug": "control-action-sheet",
+    "family": "materials",
+    "widget_type": "actionsheet",
+    "helpers": [
+      "action_sheet",
+      "actionsheet"
+    ],
+    "helper_signatures": [
+      {
+        "name": "action_sheet",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "actionsheet",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "actions",
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "cancel",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "message",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "title",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "ActionSheetAction",
+    "slug": "control-action-sheet-action",
+    "family": "materials",
+    "widget_type": "actionsheetaction",
+    "helpers": [
+      "action_sheet_action",
+      "actionsheetaction"
+    ],
+    "helper_signatures": [
+      {
+        "name": "action_sheet_action",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "actionsheetaction",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "default",
+      "destructive",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "BannerAd",
+    "slug": "control-banner-ad",
+    "family": "materials",
+    "widget_type": "bannerad",
+    "helpers": [
+      "banner_ad",
+      "bannerad"
+    ],
+    "helper_signatures": [
+      {
+        "name": "banner_ad",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "bannerad",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "BlockPicker",
+    "slug": "control-block-picker",
+    "family": "materials",
+    "widget_type": "blockpicker",
+    "helpers": [
+      "block_picker",
+      "blockpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "block_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "blockpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "CarouselView",
+    "slug": "control-carousel-view",
+    "family": "materials",
+    "widget_type": "carouselview",
+    "helpers": [
+      "carousel_view",
+      "carouselview"
+    ],
+    "helper_signatures": [
+      {
+        "name": "carousel_view",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "carouselview",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "consume_max_weight",
+      "controls",
+      "data",
+      "disabled",
+      "elevation",
+      "enable_splash",
+      "expand",
+      "expand_loose",
+      "flex_weights",
+      "height",
+      "horizontal",
+      "initial_item",
+      "item_clip_behavior",
+      "item_extent",
+      "item_snapping",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "overlay_color",
+      "padding",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "shape",
+      "shrink_extent",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_item_click",
+      "on_size_change"
+    ],
+    "methods": [
+      {
+        "name": "animate_to_item",
+        "parameters": [
+          [
+            "req",
+            "index"
+          ],
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ColorPicker",
+    "slug": "control-color-picker",
+    "family": "materials",
+    "widget_type": "colorpicker",
+    "helpers": [
+      "color_picker",
+      "colorpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "color_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "colorpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "ContextMenuAction",
+    "slug": "control-context-menu-action",
+    "family": "materials",
+    "widget_type": "contextmenuaction",
+    "helpers": [
+      "context_menu_action",
+      "contextmenuaction"
+    ],
+    "helper_signatures": [
+      {
+        "name": "context_menu_action",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "contextmenuaction",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "adaptive",
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "checked",
+      "col",
+      "content",
+      "data",
+      "default",
+      "destructive",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "icon",
+      "key",
+      "left",
+      "margin",
+      "mouse_cursor",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "trailing_icon",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_click",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "CustomScrollView",
+    "slug": "control-custom-scroll-view",
+    "family": "shared",
+    "widget_type": "customscrollview",
+    "helpers": [
+      "custom_scroll_view",
+      "customscrollview"
+    ],
+    "helper_signatures": [
+      {
+        "name": "custom_scroll_view",
+        "parameters": [
+          [
+            "opt",
+            "slivers"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "customscrollview",
+        "parameters": [
+          [
+            "opt",
+            "slivers"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "anchor",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "auto_scroll",
+      "badge",
+      "bottom",
+      "cache_extent",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "horizontal",
+      "key",
+      "keyboard_dismiss_behavior",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "reverse",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "scroll",
+      "scroll_interval",
+      "semantic_child_count",
+      "size_change_interval",
+      "slivers",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_scroll",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "DataColumn2",
+    "slug": "control-data-column-2",
+    "family": "materials",
+    "widget_type": "datacolumn2",
+    "helpers": [
+      "data_column2",
+      "datacolumn2"
+    ],
+    "helper_signatures": [
+      {
+        "name": "data_column2",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datacolumn2",
+        "parameters": [
+          [
+            "opt",
+            "label"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "DataRow2",
+    "slug": "control-data-row-2",
+    "family": "materials",
+    "widget_type": "datarow2",
+    "helpers": [
+      "data_row2",
+      "datarow2"
+    ],
+    "helper_signatures": [
+      {
+        "name": "data_row2",
+        "parameters": [
+          [
+            "opt",
+            "cells"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datarow2",
+        "parameters": [
+          [
+            "opt",
+            "cells"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "DataTable2",
+    "slug": "control-data-table-2",
+    "family": "materials",
+    "widget_type": "datatable2",
+    "helpers": [
+      "data_table2",
+      "datatable2"
+    ],
+    "helper_signatures": [
+      {
+        "name": "data_table2",
+        "parameters": [
+          [
+            "opt",
+            "columns"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "datatable2",
+        "parameters": [
+          [
+            "opt",
+            "columns"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "DraggableScrollableSheet",
+    "slug": "control-draggable-scrollable-sheet",
+    "family": "shared",
+    "widget_type": "draggablescrollablesheet",
+    "helpers": [
+      "draggable_scrollable_sheet",
+      "draggablescrollablesheet"
+    ],
+    "helper_signatures": [
+      {
+        "name": "draggable_scrollable_sheet",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "draggablescrollablesheet",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "border_radius",
+      "bottom",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "elevation",
+      "expand",
+      "expand_loose",
+      "extent_change_interval",
+      "header",
+      "height",
+      "initial_child_size",
+      "key",
+      "left",
+      "margin",
+      "max_child_size",
+      "min_child_size",
+      "offset",
+      "opacity",
+      "padding",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "should_close_on_min_extent",
+      "show_drag_handle",
+      "size_change_interval",
+      "snap",
+      "snap_animation_duration",
+      "snap_sizes",
+      "spacing",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_extent_change",
+      "on_size_change"
+    ],
+    "methods": [
+      {
+        "name": "animate_to",
+        "parameters": [
+          [
+            "req",
+            "size"
+          ],
+          [
+            "key",
+            "duration"
+          ],
+          [
+            "key",
+            "curve"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      },
+      {
+        "name": "jump_to",
+        "parameters": [
+          [
+            "req",
+            "size"
+          ],
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "FittedBox",
+    "slug": "control-fitted-box",
+    "family": "shared",
+    "widget_type": "fittedbox",
+    "helpers": [
+      "fitted_box",
+      "fittedbox"
+    ],
+    "helper_signatures": [
+      {
+        "name": "fitted_box",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "fittedbox",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "alignment",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fit",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "FormRow",
+    "slug": "control-form-row",
+    "family": "shared",
+    "widget_type": "formrow",
+    "helpers": [
+      "form_row",
+      "formrow"
+    ],
+    "helper_signatures": [
+      {
+        "name": "form_row",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "formrow",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "error",
+      "expand",
+      "expand_loose",
+      "height",
+      "helper",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "padding",
+      "prefix",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "HueRingPicker",
+    "slug": "control-hue-ring-picker",
+    "family": "materials",
+    "widget_type": "hueringpicker",
+    "helpers": [
+      "hue_ring_picker",
+      "hueringpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "hue_ring_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "hueringpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "ImageSourceAttribution",
+    "slug": "control-image-source-attribution",
+    "family": "materials",
+    "widget_type": "imagesourceattribution",
+    "helpers": [
+      "image_source_attribution",
+      "imagesourceattribution"
+    ],
+    "helper_signatures": [
+      {
+        "name": "image_source_attribution",
+        "parameters": [
+          [
+            "opt",
+            "image"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "imagesourceattribution",
+        "parameters": [
+          [
+            "opt",
+            "image"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "IndexedStack",
+    "slug": "control-indexed-stack",
+    "family": "shared",
+    "widget_type": "indexedstack",
+    "helpers": [
+      "indexed_stack",
+      "indexedstack"
+    ],
+    "helper_signatures": [
+      {
+        "name": "indexed_stack",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "indexedstack",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "alignment",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "fit",
+      "height",
+      "index",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "InterstitialAd",
+    "slug": "control-interstitial-ad",
+    "family": "materials",
+    "widget_type": "interstitialad",
+    "helpers": [
+      "interstitial_ad",
+      "interstitialad"
+    ],
+    "helper_signatures": [
+      {
+        "name": "interstitial_ad",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "interstitialad",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": [
+      {
+        "name": "show",
+        "parameters": [
+          [
+            "key",
+            "timeout"
+          ],
+          [
+            "key",
+            "on_result"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ListSection",
+    "slug": "control-list-section",
+    "family": "shared",
+    "widget_type": "listsection",
+    "helpers": [
+      "list_section",
+      "listsection"
+    ],
+    "helper_signatures": [
+      {
+        "name": "list_section",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "listsection",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "additional_divider_margin",
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "border_radius",
+      "bottom",
+      "clip_behavior",
+      "col",
+      "controls",
+      "data",
+      "disabled",
+      "divider_margin",
+      "expand",
+      "expand_loose",
+      "footer",
+      "has_leading",
+      "header",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rows_bgcolor",
+      "rtl",
+      "scale",
+      "separator_color",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "top_margin",
+      "variant",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "MapLayer",
+    "slug": "control-map-layer",
+    "family": "materials",
+    "widget_type": "maplayer",
+    "helpers": [
+      "map_layer",
+      "maplayer"
+    ],
+    "helper_signatures": [
+      {
+        "name": "map_layer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "maplayer",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "MaterialPicker",
+    "slug": "control-material-picker",
+    "family": "materials",
+    "widget_type": "materialpicker",
+    "helpers": [
+      "material_picker",
+      "materialpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "material_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "materialpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "MultipleChoiceBlockPicker",
+    "slug": "control-multiple-choice-block-picker",
+    "family": "materials",
+    "widget_type": "multiplechoiceblockpicker",
+    "helpers": [
+      "multiple_choice_block_picker",
+      "multiplechoiceblockpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "multiple_choice_block_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "multiplechoiceblockpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "NativeAd",
+    "slug": "control-native-ad",
+    "family": "materials",
+    "widget_type": "nativead",
+    "helpers": [
+      "native_ad",
+      "nativead"
+    ],
+    "helper_signatures": [
+      {
+        "name": "native_ad",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "nativead",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "Option",
+    "slug": "control-option",
+    "family": "materials",
+    "widget_type": "option",
+    "helpers": [
+      "option"
+    ],
+    "helper_signatures": [
+      {
+        "name": "option",
+        "parameters": [
+          [
+            "opt",
+            "key"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "alignment",
+      "badge",
+      "col",
+      "content",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "key",
+      "opacity",
+      "rtl",
+      "text",
+      "text_style",
+      "tooltip",
+      "visible"
+    ],
+    "events": [
+      "on_click"
+    ],
+    "methods": []
+  },
+  {
+    "title": "Picker",
+    "slug": "control-picker",
+    "family": "materials",
+    "widget_type": "picker",
+    "helpers": [
+      "picker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "picker",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "controls",
+      "data",
+      "default_selection_overlay_bgcolor",
+      "diameter_ratio",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "item_extent",
+      "key",
+      "left",
+      "looping",
+      "magnification",
+      "margin",
+      "off_axis_fraction",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "selected_index",
+      "selection_overlay",
+      "size_change_interval",
+      "squeeze",
+      "tooltip",
+      "top",
+      "use_magnifier",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "RichAttribution",
+    "slug": "control-rich-attribution",
+    "family": "materials",
+    "widget_type": "richattribution",
+    "helpers": [
+      "rich_attribution",
+      "richattribution"
+    ],
+    "helper_signatures": [
+      {
+        "name": "rich_attribution",
+        "parameters": [
+          [
+            "opt",
+            "attributions"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "richattribution",
+        "parameters": [
+          [
+            "opt",
+            "attributions"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "RufletApp",
+    "slug": "control-ruflet-app",
+    "family": "shared",
+    "widget_type": "ruflet_app",
+    "helpers": [
+      "ruflet_app",
+      "rufletapp"
+    ],
+    "helper_signatures": [
+      {
+        "name": "ruflet_app",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "rufletapp",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "app_error_message",
+      "app_startup_screen_message",
+      "args",
+      "aspect_ratio",
+      "badge",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "force_pyodide",
+      "height",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "reconnect_interval_ms",
+      "reconnect_timeout_ms",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "show_app_startup_screen",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "url",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_error",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "SlidePicker",
+    "slug": "control-slide-picker",
+    "family": "materials",
+    "widget_type": "slidepicker",
+    "helpers": [
+      "slide_picker",
+      "slidepicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "slide_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "slidepicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "SliverAppBar",
+    "slug": "control-sliver-app-bar",
+    "family": "shared",
+    "widget_type": "sliverappbar",
+    "helpers": [
+      "sliver_app_bar",
+      "sliverappbar"
+    ],
+    "helper_signatures": [
+      {
+        "name": "sliver_app_bar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "sliverappbar",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "actions",
+      "always_show_middle",
+      "automatically_imply_leading",
+      "bgcolor",
+      "border",
+      "bottom",
+      "bottom_height",
+      "center_title",
+      "collapsed_height",
+      "color",
+      "data",
+      "elevation",
+      "expanded_height",
+      "flexible_space",
+      "floating",
+      "key",
+      "leading",
+      "pinned",
+      "previous_page_title",
+      "scrolled_under_elevation",
+      "shadow_color",
+      "snap",
+      "stretch",
+      "title",
+      "toolbar_height",
+      "transition_between_routes",
+      "variant",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "SliverFillRemaining",
+    "slug": "control-sliver-fill-remaining",
+    "family": "shared",
+    "widget_type": "sliverfillremaining",
+    "helpers": [
+      "sliver_fill_remaining",
+      "sliverfillremaining"
+    ],
+    "helper_signatures": [
+      {
+        "name": "sliver_fill_remaining",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "sliverfillremaining",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "content",
+      "data",
+      "fill_overscroll",
+      "has_scroll_body",
+      "key",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "SliverGrid",
+    "slug": "control-sliver-grid",
+    "family": "shared",
+    "widget_type": "slivergrid",
+    "helpers": [
+      "sliver_grid",
+      "slivergrid"
+    ],
+    "helper_signatures": [
+      {
+        "name": "sliver_grid",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "slivergrid",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "bgcolor",
+      "child_aspect_ratio",
+      "controls",
+      "data",
+      "header",
+      "key",
+      "max_extent",
+      "padding",
+      "run_spacing",
+      "runs_count",
+      "spacing",
+      "sticky_header",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "SliverList",
+    "slug": "control-sliver-list",
+    "family": "shared",
+    "widget_type": "sliverlist",
+    "helpers": [
+      "sliver_list",
+      "sliverlist"
+    ],
+    "helper_signatures": [
+      {
+        "name": "sliver_list",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "sliverlist",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "bgcolor",
+      "build_controls_on_demand",
+      "controls",
+      "data",
+      "divider_thickness",
+      "header",
+      "item_extent",
+      "key",
+      "padding",
+      "spacing",
+      "sticky_header",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "SliverToBoxAdapter",
+    "slug": "control-sliver-to-box-adapter",
+    "family": "shared",
+    "widget_type": "slivertoboxadapter",
+    "helpers": [
+      "sliver_to_box_adapter",
+      "slivertoboxadapter"
+    ],
+    "helper_signatures": [
+      {
+        "name": "sliver_to_box_adapter",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "slivertoboxadapter",
+        "parameters": [
+          [
+            "opt",
+            "content"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "content",
+      "data",
+      "key",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "Table",
+    "slug": "control-table",
+    "family": "shared",
+    "widget_type": "table",
+    "helpers": [
+      "table"
+    ],
+    "helper_signatures": [
+      {
+        "name": "table",
+        "parameters": [
+          [
+            "opt",
+            "rows"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "border_color",
+      "border_radius",
+      "border_width",
+      "bottom",
+      "cell_padding",
+      "col",
+      "column_widths",
+      "controls",
+      "data",
+      "default_column_width",
+      "default_vertical_alignment",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "inner_borders",
+      "key",
+      "left",
+      "margin",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rows",
+      "rtl",
+      "scale",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_size_change"
+    ],
+    "methods": []
+  },
+  {
+    "title": "TableRow",
+    "slug": "control-table-row",
+    "family": "shared",
+    "widget_type": "tablerow",
+    "helpers": [
+      "table_row",
+      "tablerow"
+    ],
+    "helper_signatures": [
+      {
+        "name": "table_row",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      },
+      {
+        "name": "tablerow",
+        "parameters": [
+          [
+            "opt",
+            "children"
+          ],
+          [
+            "keyrest",
+            "props"
+          ],
+          [
+            "block",
+            "block"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "bgcolor",
+      "controls",
+      "data",
+      "key",
+      "visible"
+    ],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "TextSourceAttribution",
+    "slug": "control-text-source-attribution",
+    "family": "materials",
+    "widget_type": "textsourceattribution",
+    "helpers": [
+      "text_source_attribution",
+      "textsourceattribution"
+    ],
+    "helper_signatures": [
+      {
+        "name": "text_source_attribution",
+        "parameters": [
+          [
+            "opt",
+            "text"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "textsourceattribution",
+        "parameters": [
+          [
+            "opt",
+            "text"
+          ],
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [],
+    "events": [],
+    "methods": []
+  },
+  {
+    "title": "TimerPicker",
+    "slug": "control-timer-picker",
+    "family": "materials",
+    "widget_type": "timerpicker",
+    "helpers": [
+      "timer_picker",
+      "timerpicker"
+    ],
+    "helper_signatures": [
+      {
+        "name": "timer_picker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      },
+      {
+        "name": "timerpicker",
+        "parameters": [
+          [
+            "keyrest",
+            "props"
+          ]
+        ]
+      }
+    ],
+    "properties": [
+      "align",
+      "alignment",
+      "animate_align",
+      "animate_margin",
+      "animate_offset",
+      "animate_opacity",
+      "animate_position",
+      "animate_rotation",
+      "animate_scale",
+      "animate_size",
+      "aspect_ratio",
+      "badge",
+      "bgcolor",
+      "bottom",
+      "col",
+      "data",
+      "disabled",
+      "expand",
+      "expand_loose",
+      "height",
+      "item_extent",
+      "key",
+      "left",
+      "margin",
+      "minute_interval",
+      "mode",
+      "offset",
+      "opacity",
+      "right",
+      "rotate",
+      "rtl",
+      "scale",
+      "second_interval",
+      "size_change_interval",
+      "tooltip",
+      "top",
+      "value",
+      "visible",
+      "width"
+    ],
+    "events": [
+      "on_animation_end",
+      "on_change",
       "on_size_change"
     ],
     "methods": []

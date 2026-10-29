@@ -73,6 +73,16 @@ class DocsCatalog
         page.update(battery, value: value)
       })
     RUBY
+    "browser_context_menu" => <<~'RUBY',
+      context_menu = page.service(:browser_context_menu)
+      page.add(
+        switch(
+          label: "Browser context menu",
+          value: true,
+          on_change: ->(event) { event.data.to_s == "true" ? context_menu.enable : context_menu.disable }
+        )
+      )
+    RUBY
     "camera" => <<~'RUBY',
       preview = page.camera(
         preview_enabled: true,

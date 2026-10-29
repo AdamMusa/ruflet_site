@@ -1,5 +1,5 @@
 {
-  "version": "0.0.19",
+  "version": "0.0.23",
   "ruflet": [
     {
       "name": "app",
@@ -483,6 +483,26 @@
         [
           "opt",
           "banner_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_bottom_sheet",
+      "parameters": [
+        [
+          "opt",
+          "bottom_sheet_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "close_bottomsheet",
+      "parameters": [
+        [
+          "opt",
+          "bottom_sheet_control"
         ]
       ],
       "internal": false
@@ -1438,6 +1458,11 @@
       "internal": false
     },
     {
+      "name": "prepare_for_reconnect!",
+      "parameters": [],
+      "internal": false
+    },
+    {
       "name": "push_route",
       "parameters": [
         [
@@ -1909,6 +1934,16 @@
     },
     {
       "name": "show_bottom_sheet",
+      "parameters": [
+        [
+          "req",
+          "bottom_sheet_control"
+        ]
+      ],
+      "internal": false
+    },
+    {
+      "name": "show_bottomsheet",
       "parameters": [
         [
           "req",
@@ -2407,6 +2442,10 @@
     },
     {
       "name": "typed_data",
+      "parameters": []
+    },
+    {
+      "name": "value",
       "parameters": []
     }
   ],
@@ -4866,6 +4905,10 @@
             "port"
           ],
           [
+            "key",
+            "in_process_bridge"
+          ],
+          [
             "block",
             "app_block"
           ]
@@ -4952,6 +4995,32 @@
       ]
     },
     {
+      "name": "base_page",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "basepage",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
       "name": "control",
       "parameters": [
         [
@@ -4977,6 +5046,19 @@
       "parameters": []
     },
     {
+      "name": "dialogs",
+      "parameters": [
+        [
+          "opt",
+          "controls"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
       "name": "duration",
       "parameters": [
         [
@@ -4997,6 +5079,23 @@
     {
       "name": "page",
       "parameters": [
+        [
+          "keyrest",
+          "props"
+        ],
+        [
+          "block",
+          "block"
+        ]
+      ]
+    },
+    {
+      "name": "pagelet",
+      "parameters": [
+        [
+          "opt",
+          "content"
+        ],
         [
           "keyrest",
           "props"
@@ -5153,6 +5252,32 @@
       ]
     },
     {
+      "name": "service_registry",
+      "parameters": [
+        [
+          "opt",
+          "services"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
+      "name": "serviceregistry",
+      "parameters": [
+        [
+          "opt",
+          "services"
+        ],
+        [
+          "keyrest",
+          "props"
+        ]
+      ]
+    },
+    {
       "name": "spinkit",
       "parameters": [
         [
@@ -5175,6 +5300,15 @@
         [
           "block",
           "block"
+        ]
+      ]
+    },
+    {
+      "name": "window",
+      "parameters": [
+        [
+          "keyrest",
+          "props"
         ]
       ]
     }
@@ -5365,6 +5499,36 @@
         {
           "name": "open_view",
           "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tabs",
+      "methods": [
+        {
+          "name": "move_to",
+          "parameters": [
+            [
+              "req",
+              "index"
+            ],
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
+            ],
             [
               "key",
               "timeout"
@@ -5762,6 +5926,54 @@
       ]
     },
     {
+      "title": "Canvas",
+      "methods": [
+        {
+          "name": "capture",
+          "parameters": [
+            [
+              "key",
+              "pixel_ratio"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "clear_capture",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_capture",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "title": "InteractiveViewer",
       "methods": [
         {
@@ -5838,6 +6050,112 @@
             [
               "req",
               "factor"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "PageView",
+      "methods": [
+        {
+          "name": "go_to_page",
+          "parameters": [
+            [
+              "req",
+              "index"
+            ],
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "jump_to",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "jump_to_page",
+          "parameters": [
+            [
+              "req",
+              "index"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "next_page",
+          "parameters": [
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "previous_page",
+          "parameters": [
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
             ],
             [
               "key",
@@ -5965,6 +6283,101 @@
               "key",
               "delay"
             ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "CarouselView",
+      "methods": [
+        {
+          "name": "animate_to_item",
+          "parameters": [
+            [
+              "req",
+              "index"
+            ],
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "DraggableScrollableSheet",
+      "methods": [
+        {
+          "name": "animate_to",
+          "parameters": [
+            [
+              "req",
+              "size"
+            ],
+            [
+              "key",
+              "duration"
+            ],
+            [
+              "key",
+              "curve"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "jump_to",
+          "parameters": [
+            [
+              "req",
+              "size"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "InterstitialAd",
+      "methods": [
+        {
+          "name": "show",
+          "parameters": [
             [
               "key",
               "timeout"

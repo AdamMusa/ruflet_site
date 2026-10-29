@@ -349,7 +349,47 @@
       "events": [
         "on_state_change"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "get_battery_level",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_battery_state",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_in_battery_save_mode",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "battery",
@@ -359,6 +399,60 @@
             "props"
           ]
         ]
+      }
+    },
+    {
+      "title": "BrowserContextMenu",
+      "helper": "browser_context_menu",
+      "aliases": [
+        "browsercontextmenu"
+      ],
+      "widget_type": "browsercontextmenu",
+      "properties": [
+        "data",
+        "key"
+      ],
+      "events": [],
+      "methods": [
+        {
+          "name": "disable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "disabled",
+          "parameters": []
+        },
+        {
+          "name": "disabled?",
+          "parameters": []
+        },
+        {
+          "name": "enable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
+      "proxy_methods": [],
+      "page_accessor": {
+        "name": "browser_context_menu",
+        "parameters": []
       }
     },
     {
@@ -409,7 +503,436 @@
         "on_state_change",
         "on_stream_image"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "get_available_cameras",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_exposure_offset_step_size",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_max_exposure_offset",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_max_zoom_level",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_min_exposure_offset",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_min_zoom_level",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "initialize_camera",
+          "parameters": [
+            [
+              "req",
+              "description"
+            ],
+            [
+              "req",
+              "resolution_preset"
+            ],
+            [
+              "key",
+              "enable_audio"
+            ],
+            [
+              "key",
+              "fps"
+            ],
+            [
+              "key",
+              "video_bitrate"
+            ],
+            [
+              "key",
+              "audio_bitrate"
+            ],
+            [
+              "key",
+              "image_format_group"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "lock_capture_orientation",
+          "parameters": [
+            [
+              "opt",
+              "orientation"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pause_preview",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pause_video_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "prepare_for_video_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "resume_preview",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "resume_video_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_description",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_exposure_mode",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_exposure_offset",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_exposure_point",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_flash_mode",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_focus_mode",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_focus_point",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_zoom_level",
+          "parameters": [
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "start_image_stream",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "start_video_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "stop_image_stream",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "stop_video_recording",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "supports_image_streaming",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "take_picture",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "unlock_capture_orientation",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "camera",
@@ -546,7 +1069,21 @@
       "events": [
         "on_change"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "get_connectivity",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "connectivity",
@@ -573,7 +1110,120 @@
         "on_result",
         "on_upload"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "get_directory_path",
+          "parameters": [
+            [
+              "key",
+              "dialog_title"
+            ],
+            [
+              "key",
+              "initial_directory"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "pick_files",
+          "parameters": [
+            [
+              "key",
+              "dialog_title"
+            ],
+            [
+              "key",
+              "initial_directory"
+            ],
+            [
+              "key",
+              "file_type"
+            ],
+            [
+              "key",
+              "allowed_extensions"
+            ],
+            [
+              "key",
+              "allow_multiple"
+            ],
+            [
+              "key",
+              "with_data"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "save_file",
+          "parameters": [
+            [
+              "key",
+              "dialog_title"
+            ],
+            [
+              "key",
+              "file_name"
+            ],
+            [
+              "key",
+              "initial_directory"
+            ],
+            [
+              "key",
+              "file_type"
+            ],
+            [
+              "key",
+              "allowed_extensions"
+            ],
+            [
+              "key",
+              "src_bytes"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "upload",
+          "parameters": [
+            [
+              "req",
+              "files"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "file_picker",
@@ -597,7 +1247,47 @@
       "events": [
         "on_error"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "is_available",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "off",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "on",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [
         {
           "name": "is_available",
@@ -840,7 +1530,73 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "heavy_impact",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "light_impact",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "medium_impact",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "selection_click",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "vibrate",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "haptic_feedback",
@@ -967,7 +1723,154 @@
         "on_application_screen_brightness_change",
         "on_system_screen_brightness_change"
       ],
-      "methods": [],
+      "methods": [
+        {
+          "name": "can_change_system_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_application_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_system_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_animate",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_auto_reset",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "reset_application_screen_brightness",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_animate",
+          "parameters": [
+            [
+              "req",
+              "animate"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_application_screen_brightness",
+          "parameters": [
+            [
+              "req",
+              "brightness"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_auto_reset",
+          "parameters": [
+            [
+              "req",
+              "auto_reset"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set_system_screen_brightness",
+          "parameters": [
+            [
+              "req",
+              "brightness"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [
         {
           "name": "can_change_system_screen_brightness",
@@ -1365,7 +2268,127 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "share_files",
+          "parameters": [
+            [
+              "req",
+              "files"
+            ],
+            [
+              "key",
+              "title"
+            ],
+            [
+              "key",
+              "text"
+            ],
+            [
+              "key",
+              "subject"
+            ],
+            [
+              "key",
+              "preview_thumbnail"
+            ],
+            [
+              "key",
+              "share_position_origin"
+            ],
+            [
+              "key",
+              "download_fallback_enabled"
+            ],
+            [
+              "key",
+              "mail_to_fallback_enabled"
+            ],
+            [
+              "key",
+              "excluded_cupertino_activities"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "share_text",
+          "parameters": [
+            [
+              "req",
+              "text"
+            ],
+            [
+              "key",
+              "title"
+            ],
+            [
+              "key",
+              "subject"
+            ],
+            [
+              "key",
+              "preview_thumbnail"
+            ],
+            [
+              "key",
+              "share_position_origin"
+            ],
+            [
+              "key",
+              "download_fallback_enabled"
+            ],
+            [
+              "key",
+              "mail_to_fallback_enabled"
+            ],
+            [
+              "key",
+              "excluded_cupertino_activities"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "share_uri",
+          "parameters": [
+            [
+              "req",
+              "uri"
+            ],
+            [
+              "key",
+              "share_position_origin"
+            ],
+            [
+              "key",
+              "excluded_cupertino_activities"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "share",
@@ -1389,7 +2412,110 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "clear",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "contains_key",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_keys",
+          "parameters": [
+            [
+              "req",
+              "key_prefix"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "remove",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "set",
+          "parameters": [
+            [
+              "req",
+              "key"
+            ],
+            [
+              "req",
+              "value"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [
         {
           "name": "clear",
@@ -1516,7 +2642,138 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "get_application_cache_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_application_documents_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_application_support_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_console_log_filename",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_downloads_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_external_cache_directories",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_external_storage_directories",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_external_storage_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_library_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "get_temporary_directory",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "storage_paths",
@@ -1540,7 +2797,134 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "can_launch_url",
+          "parameters": [
+            [
+              "req",
+              "url"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "close_in_app_web_view",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "launch_url",
+          "parameters": [
+            [
+              "req",
+              "url"
+            ],
+            [
+              "key",
+              "mode"
+            ],
+            [
+              "key",
+              "web_view_configuration"
+            ],
+            [
+              "key",
+              "browser_configuration"
+            ],
+            [
+              "key",
+              "web_only_window_name"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "open_window",
+          "parameters": [
+            [
+              "req",
+              "url"
+            ],
+            [
+              "key",
+              "title"
+            ],
+            [
+              "key",
+              "width"
+            ],
+            [
+              "key",
+              "height"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "supports_close_for_launch_mode",
+          "parameters": [
+            [
+              "req",
+              "mode"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "supports_launch_mode",
+          "parameters": [
+            [
+              "req",
+              "mode"
+            ],
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [],
       "page_accessor": {
         "name": "url_launcher",
@@ -1592,7 +2976,47 @@
         "key"
       ],
       "events": [],
-      "methods": [],
+      "methods": [
+        {
+          "name": "disable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "enable",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        },
+        {
+          "name": "is_enabled",
+          "parameters": [
+            [
+              "key",
+              "timeout"
+            ],
+            [
+              "key",
+              "on_result"
+            ]
+          ]
+        }
+      ],
       "proxy_methods": [
         {
           "name": "disable",
