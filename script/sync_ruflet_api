@@ -347,9 +347,37 @@ def dart_control_attributes(path, receivers: %w[control])
   source.scan(/(?:#{receiver})\s*\.(?:get(?:<[^>]+>)?[A-Za-z]*|buildWidget|buildWidgets|buildTextOrWidget|children)\(\s*"([^"]+)"/).flatten.uniq
 end
 
+# The Flutter client moved out of the ruflet repo into ruflet-engine, where
+# each Flet extension is packaged as packages/ruflet_<name>. Older ruflet
+# checkouts still carry it under ruflet_client/flet_packages/flet_<name>.
+def engine_root_candidates
+  explicit = ENV["RUFLET_ENGINE_ROOT"].to_s.strip
+  return [ Pathname.new(explicit).expand_path ] unless explicit.empty?
+
+  [
+    # Izeesoft-style workspace: RailsApp/ruflet and FlutterApp/ruflet-engine.
+    DOCS_ROOT.join("../../FlutterApp/ruflet-engine").expand_path,
+    # Conventional sibling checkouts.
+    DOCS_ROOT.join("../ruflet-engine").expand_path,
+    CORE_LIB.join("../../../../ruflet-engine").expand_path
+  ]
+end
+
+def client_package_source(name)
+  candidates = engine_root_candidates.map { |root| root.join("packages/ruflet_#{name}/lib/src") }
+  legacy = CORE_LIB.join("../../../ruflet_client/flet_packages/flet_#{name}/lib/src").expand_path
+  ENV["RUFLET_ENGINE_ROOT"].to_s.strip.empty? ? candidates.unshift(legacy) : candidates.push(legacy)
+
+  candidates.find(&:directory?) ||
+    abort("Ruflet #{name} client source not found (looked in #{candidates.join(', ')}). Set RUFLET_ENGINE_ROOT to a ruflet-engine checkout.")
+end
+
+def first_existing_source(root, *names)
+  names.map { |name| root.join(name) }.find(&:file?) || root.join(names.last)
+end
+
 def map_extension_contracts
-  root = CORE_LIB.join("../../../ruflet_client/flet_packages/flet_map/lib/src").expand_path
-  abort "Ruflet map client source not found at #{root}" unless root.directory?
+  root = client_package_source("map")
 
   common = JSON.parse(COMMON_PROPERTIES_PATH.read)
   map_attributes = dart_control_attributes(root.join("map.dart"), receivers: ["widget.control"])
@@ -366,7 +394,9 @@ def map_extension_contracts
     "PolylineMarker" => dart_control_attributes(root.join("polyline_layer.dart"), receivers: ["polyline"]),
     "PolygonLayer" => dart_control_attributes(root.join("polygon_layer.dart")),
     "PolygonMarker" => dart_control_attributes(root.join("polygon_layer.dart"), receivers: ["polygon"]),
-    "SimpleAttribution" => dart_control_attributes(root.join("simple_attribution.dart"), receivers: ["control"])
+    # ruflet-engine splits the adaptive attribution into design-specific files;
+    # the Material renderer carries the same Ruby contract as the old client.
+    "SimpleAttribution" => dart_control_attributes(first_existing_source(root, "material_simple_attribution.dart", "simple_attribution.dart"), receivers: ["control"])
   }
 
   contracts.each_value { |attributes| attributes.replace((attributes + %w[data key]).uniq.sort) }
@@ -383,8 +413,7 @@ def map_extension_contracts
 end
 
 def lottie_extension_contract
-  root = CORE_LIB.join("../../../ruflet_client/flet_packages/flet_lottie/lib/src").expand_path
-  source = root.join("lottie.dart")
+  source = client_package_source("lottie").join("lottie.dart")
   abort "Ruflet Lottie client source not found at #{source}" unless source.file?
 
   common = JSON.parse(COMMON_PROPERTIES_PATH.read)
@@ -628,7 +657,7 @@ if ARGV.delete("--check")
   stale << SERVICE_CATALOG_PATH unless SERVICE_CATALOG_PATH.file? && SERVICE_CATALOG_PATH.read == service_output
   stale << RUNTIME_CATALOG_PATH unless RUNTIME_CATALOG_PATH.file? && RUNTIME_CATALOG_PATH.read == runtime_output
   if stale.empty?
-    puts "Ruflet API catalogs are current (#{merged.length} controls, 24 services)."
+    puts "Ruflet API catalogs are current (#{merged.length} controls, #{services.fetch('services').length} services)."
     exit 0
   end
 
@@ -639,4 +668,4 @@ end
 CONTROL_CATALOG_PATH.write(control_output)
 SERVICE_CATALOG_PATH.write(service_output)
 RUNTIME_CATALOG_PATH.write(runtime_output)
-puts "Updated Ruflet API catalogs (#{merged.length} controls, 24 services)."
+puts "Updated Ruflet API catalogs (#{merged.length} controls, #{services.fetch('services').length} services)."

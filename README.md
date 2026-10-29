@@ -35,8 +35,10 @@ script/sync_ruflet_api --check
 bin/rails test
 ```
 
-The API reference targets Ruflet 0.0.19. `script/sync_ruflet_api` reads a
+The API reference targets Ruflet 0.0.23. `script/sync_ruflet_api` reads a
 nearby Ruflet checkout or the installed gem and maintains the checked-in
 control and service catalogs. Set `RUFLET_SOURCE_ROOT` to audit a particular
-checkout. When Ruflet changes, regenerate the catalogs and update the reference
+checkout. The map and Lottie extension contracts are read from the Flutter
+client in a nearby `ruflet-engine` checkout; set `RUFLET_ENGINE_ROOT` to choose
+one. When Ruflet changes, regenerate the catalogs and update the reference
 prose together so examples continue to describe the released APIs.
