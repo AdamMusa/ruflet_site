@@ -35,8 +35,26 @@ script/sync_ruflet_api --check
 bin/rails test
 ```
 
-The API reference targets Ruflet 0.0.19. `script/sync_ruflet_api` reads a
-nearby Ruflet checkout or the installed gem and maintains the checked-in
-control and service catalogs. Set `RUFLET_SOURCE_ROOT` to audit a particular
-checkout. When Ruflet changes, regenerate the catalogs and update the reference
-prose together so examples continue to describe the released APIs.
+The API reference targets Ruflet 0.0.23 as it stands on `main` (commit
+`51bea9b`), which becomes the 0.0.24 release, rendered by ruflet-engine
+`codex/engine-initialization` (commit `a463293`).
+
+`script/sync_ruflet_api` maintains the checked-in control, service, and
+runtime catalogs in `config/`. It reads two sources:
+
+- Ruby controls and services from a Ruflet checkout
+  ([AdamMusa/ruflet](https://github.com/AdamMusa/ruflet)), or from the
+  installed `ruflet_core` gem. Set `RUFLET_SOURCE_ROOT` to choose a checkout.
+- Extension contracts (maps, charts, video, and similar) from the Flutter
+  renderer in [AdamMusa/ruflet-engine](https://github.com/AdamMusa/ruflet-engine).
+  Set `RUFLET_ENGINE_ROOT` to choose a checkout. Without it, the script looks
+  for a `ruflet-engine` directory next to the Ruflet checkout or this site.
+
+```bash
+RUFLET_SOURCE_ROOT=../ruflet RUFLET_ENGINE_ROOT=../ruflet-engine script/sync_ruflet_api
+```
+
+CI checks the catalogs against the exact Ruflet and ruflet-engine commits named
+in `.github/workflows/ci.yml`. When you regenerate the catalogs, update those
+two refs and the commits above, and update the reference prose in the same
+change so examples keep describing the released APIs.

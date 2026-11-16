@@ -77,7 +77,7 @@ class MarkdownRenderer
         next
       end
 
-      paragraph = [line.strip]
+      paragraph = [ line.strip ]
       index += 1
       while index < @lines.length && !@lines[index].strip.empty? && !block_start?(@lines[index])
         paragraph << @lines[index].strip
@@ -135,7 +135,7 @@ class MarkdownRenderer
   end
 
   def render_code_block(code, language)
-    classes = ["docs-code-block", ("language-#{language}" unless language.empty?)].compact.join(" ")
+    classes = [ "docs-code-block", ("language-#{language}" unless language.empty?) ].compact.join(" ")
 
     <<~HTML.chomp
       <div class="docs-code-block-wrap" data-controller="copy-code" style="position: relative; margin: 1.5rem 0 1.75rem;">

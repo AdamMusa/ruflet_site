@@ -36,6 +36,7 @@ page instead of adding a visible widget.
 | `geolocator` | Position, permission, settings, and distance | [Geolocator](/docs/service-geolocator) |
 | `gyroscope` | Rotation-rate stream | [Gyroscope](/docs/service-gyroscope) |
 | `haptic_feedback` | Impact, selection, and vibration feedback | [Haptic Feedback](/docs/service-haptic-feedback) |
+| `local_authentication` | Biometric or device-credential authentication | [Local Authentication](/docs/service-local-authentication) |
 | `magnetometer` | Magnetic-field stream | [Magnetometer](/docs/service-magnetometer) |
 | `permission_handler` | Inspect and request OS permissions | [Permission Handler](/docs/service-permission-handler) |
 | `screen_brightness` | Application and system brightness | [Screen Brightness](/docs/service-screen-brightness) |
@@ -48,6 +49,9 @@ page instead of adding a visible widget.
 | `url_launcher` | External URLs, windows, and in-app browser control | [URL Launcher](/docs/service-url-launcher) |
 | `user_accelerometer` | Acceleration with gravity removed | [User Accelerometer](/docs/service-user-accelerometer) |
 | `wakelock` | Keep the display awake | [Wakelock](/docs/service-wakelock) |
+
+The web-only [Browser Context Menu service](/docs/service-browser-context-menu)
+has no ERB tag; reach it from Ruby with `page.service(:browser_context_menu)`.
 
 `camera` is a visible extension widget rather than a non-visual helper; use
 the [`camera` widget](/docs/rails-native-components), the full

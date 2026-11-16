@@ -3,11 +3,11 @@ require "json"
 
 class RufletServiceApiSyncTest < ActiveSupport::TestCase
   EXPECTED_HELPERS = %w[
-    accelerometer audio_recorder barometer battery camera clipboard connectivity
-    file_picker flashlight geolocator gyroscope haptic_feedback magnetometer
-    permission_handler screen_brightness secure_storage semantics_service
-    shake_detector share shared_preferences storage_paths url_launcher
-    user_accelerometer wakelock
+    accelerometer audio_recorder barometer battery browser_context_menu camera
+    clipboard connectivity file_picker flashlight geolocator gyroscope
+    haptic_feedback local_authentication magnetometer permission_handler
+    screen_brightness secure_storage semantics_service shake_detector share
+    shared_preferences storage_paths url_launcher user_accelerometer wakelock
   ].freeze
 
   setup do
@@ -17,7 +17,7 @@ class RufletServiceApiSyncTest < ActiveSupport::TestCase
 
   test "all public service helpers have one source-generated entry" do
     assert_equal EXPECTED_HELPERS, @services.keys.sort
-    assert_equal 24, @services.length
+    assert_equal 26, @services.length
 
     @services.each do |helper, service|
       assert_equal helper, service.dig("page_accessor", "name")
