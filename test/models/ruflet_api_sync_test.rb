@@ -10,7 +10,7 @@ class RufletApiSyncTest < ActiveSupport::TestCase
     PolygonLayer PolygonMarker PolylineLayer PolylineMarker RadarChart
     RadarChartTitle RadarDataSet RadarDataSetEntry RotatedBox ScatterChart
     ScatterChartSpot Screenshot Shadow SimpleAttribution SnackBarAction
-    SubmenuButton TileLayer View
+    Spinkit SubmenuButton TileLayer View
   ].freeze
 
   IMPLEMENTATION_ONLY_CONTROLS = %w[
@@ -32,7 +32,8 @@ class RufletApiSyncTest < ActiveSupport::TestCase
 
     assert_empty REQUIRED_PUBLIC_CONTROLS - titles
     assert_empty IMPLEMENTATION_ONLY_CONTROLS & titles
-    refute_includes titles, "Spinkit"
+    # ruflet-engine has no MapLayer renderer; see UNSUPPORTED_CONTROL_CLASSES.
+    refute_includes titles, "MapLayer"
   end
 
   test "delegating builder aliases stay attached to their real control" do

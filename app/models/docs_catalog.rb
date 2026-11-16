@@ -73,6 +73,14 @@ class DocsCatalog
         page.update(battery, value: value)
       })
     RUBY
+    "browser_context_menu" => <<~'RUBY',
+      status = text(value: "Right-click uses the browser menu")
+      page.add(status)
+      menu = page.service(:browser_context_menu)
+      menu.disable(on_result: ->(_result, error) {
+        page.update(status, value: error ? error.to_s : "Browser menu disabled: #{menu.disabled?}")
+      })
+    RUBY
     "camera" => <<~'RUBY',
       preview = page.camera(
         preview_enabled: true,
@@ -161,6 +169,23 @@ class DocsCatalog
             page.medium_impact(on_result: ->(_result, error) { warn error if error })
           }
         )
+      )
+    RUBY
+    "local_authentication" => <<~'RUBY',
+      status = text(value: "Notes are locked")
+      page.add(status)
+      auth = page.local_authentication
+      auth.authenticate(
+        localized_reason: "Unlock your notes",
+        biometric_only: false,
+        on_result: ->(unlocked, error) {
+          message = if error
+            "Not unlocked: #{Ruflet::LocalAuthError.from_error(error).code || error}"
+          else
+            unlocked ? "Notes unlocked" : "Authentication failed, try again"
+          end
+          page.update(status, value: message)
+        }
       )
     RUBY
     "magnetometer" => <<~'RUBY',
@@ -524,9 +549,15 @@ class DocsCatalog
   def self.generated_service_markdown(service)
     helper = service.fetch(:helper)
     extension = extension_catalog.find { |candidate| Array(candidate[:services]).include?(helper) }
+    accessor_takes_properties = Array(service.dig(:page_accessor, :parameters)).any?
+    intro = if accessor_takes_properties
+      "Create or retrieve this service with `page.#{helper}(**properties)`. Ruflet reuses the registered service unless you supply a different `id`."
+    else
+      "Create or retrieve this service with `page.service(:#{helper})`, or declare it with the `#{helper}` DSL helper. `page.#{helper}` itself reads the page's `#{helper}` view property and does not create the service."
+    end
     lines = [
       "# #{service.fetch(:title)} service", "",
-      "Create or retrieve this service with `page.#{helper}(**properties)`. Ruflet reuses the registered service unless you supply a different `id`.", "",
+      intro, "",
       "## Example", "", "```ruby", *service_example(service), "```", "",
       "## Page accessor", "", "- `page.#{format_api_method(service.fetch(:page_accessor))}`", "",
       "## Properties", ""
@@ -535,19 +566,19 @@ class DocsCatalog
     lines << "- None." if Array(service[:properties]).empty?
     lines << ""
     if Array(service[:events]).any?
-      lines.concat(["## Events", ""])
+      lines.concat([ "## Events", "" ])
       Array(service[:events]).each { |event| lines << describe(event, "events") }
       lines << ""
     end
     methods = Array(service[:methods])
     if methods.any?
-      lines.concat(["## Service methods", ""])
+      lines.concat([ "## Service methods", "" ])
       methods.each { |method| lines << "- `#{format_api_method(method)}`" }
       lines << ""
     end
     proxies = Array(service[:proxy_methods])
     if proxies.any?
-      lines.concat(["## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods:", ""])
+      lines.concat([ "## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods:", "" ])
       proxies.each { |method| lines << "- `#{format_api_method(method)}`" }
       lines << ""
     end
@@ -555,7 +586,7 @@ class DocsCatalog
       runtime_catalog.fetch(:page).find { |method| method[:name] == name }
     end
     if convenience_methods.any?
-      lines.concat(["## Page convenience methods", "", "Use these one-shot Page calls when you do not need to keep the service object:", ""])
+      lines.concat([ "## Page convenience methods", "", "Use these one-shot Page calls when you do not need to keep the service object:", "" ])
       convenience_methods.each { |method| lines << "- `page.#{format_api_method(method)}`" }
       lines << ""
     end
@@ -580,12 +611,12 @@ class DocsCatalog
       ])
       required = (Array(extension[:required_services]) + SERVICE_PROTECTED_ACCESS.fetch(helper, [])).uniq
       if required.any?
-        lines.concat(["", "Declare protected access in `services.yaml`:", "", "```yaml", "services:"])
+        lines.concat([ "", "Declare protected access in `services.yaml`:", "", "```yaml", "services:" ])
         required.each { |name| lines << "  - #{name}:" << "      description: Explain why your app needs #{name.tr('_', ' ')} access." }
         lines << "```"
       end
     elsif SERVICE_PROTECTED_ACCESS.key?(helper)
-      lines.concat(["", "## Protected device access", "", "Declare motion access in `services.yaml`, then rebuild the native client:", "", "```yaml", "services:", "  - motion:", "      description: Explain why your app reads motion sensor data.", "```"])
+      lines.concat([ "", "## Protected device access", "", "Declare motion access in `services.yaml`, then rebuild the native client:", "", "```yaml", "services:", "  - motion:", "      description: Explain why your app reads motion sensor data.", "```" ])
     end
     lines.join("\n")
   end
@@ -617,24 +648,24 @@ class DocsCatalog
       lines << "- Wire controls: #{Array(extension[:wire_types]).map { |name| "`#{name}`" }.join(', ')}"
     end
     if Array(extension[:properties]).any?
-      lines.concat(["", "## Properties", ""])
+      lines.concat([ "", "## Properties", "" ])
       Array(extension[:properties]).each { |property| lines << describe(property, "properties") }
     end
     if Array(extension[:events]).any?
-      lines.concat(["", "## Events", ""])
+      lines.concat([ "", "## Events", "" ])
       Array(extension[:events]).each { |event| lines << describe(event, "events") }
     end
-    lines.concat(["", "## Permissions and platforms", ""])
+    lines.concat([ "", "## Permissions and platforms", "" ])
     required = Array(extension[:required_services])
     if required.any?
       lines << "This extension uses protected device access. Declare it in `services.yaml` with a user-facing explanation:"
-      lines.concat(["", "```yaml", "services:"])
+      lines.concat([ "", "```yaml", "services:" ])
       required.each { |service| lines << "  - #{service}:" << "      description: Explain why your app needs #{service.tr('_', ' ')} access." }
-      lines.concat(["```", "", "Request access when the user starts the related action. Android, Apple platforms, desktop, and web can differ in capability and permission behavior; handle errors and unsupported results."])
+      lines.concat([ "```", "", "Request access when the user starts the related action. Android, Apple platforms, desktop, and web can differ in capability and permission behavior; handle errors and unsupported results." ])
     else
       lines << "No protected service declaration is added automatically. Platform support still follows the underlying Flet extension, so test every target you ship."
     end
-    lines.concat(["", "## Build behavior", "", "Ruflet resolves the extension key to `#{extension.fetch(:package)}` and includes that Flet package through the client extension pipeline. Application code uses the Ruby DSL shown above; do not add the package directly to your app's Flutter dependencies."])
+    lines.concat([ "", "## Build behavior", "", "Ruflet resolves the extension key to `#{extension.fetch(:package)}` and includes that Flet package through the client extension pipeline. Application code uses the Ruby DSL shown above; do not add the package directly to your app's Flutter dependencies." ])
     lines.join("\n")
   end
 
@@ -766,7 +797,7 @@ class DocsCatalog
   end
 
   def self.generated_control_api_appendix(control)
-    lines = ["## Complete API", ""]
+    lines = [ "## Complete API", "" ]
     lines << "### Helpers"
     lines << ""
     helper_signatures = Array(control[:helper_signatures])

@@ -33,8 +33,8 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     end
 
     assert_includes content, '<progress-ring value="0.65"'
-    assert_includes content, '<%= lottie src:'
-    assert_includes content, '<%= camera id:'
+    assert_includes content, "<%= lottie src:"
+    assert_includes content, "<%= camera id:"
   end
 
   test "service reference covers every declarative ERB service" do
@@ -73,7 +73,7 @@ class RailsErbDocsTest < ActiveSupport::TestCase
   test "Rails docs use the current connection API" do
     integration = DocsCatalog.find("rails-integration").source.read
     api = DocsCatalog.find("rails-api-reference").source.read
-    content = [integration, api].join("\n")
+    content = [ integration, api ].join("\n")
 
     assert_includes integration, "Ruflet::Rails.native("
     assert_includes integration, "Ruflet::Rails.web("

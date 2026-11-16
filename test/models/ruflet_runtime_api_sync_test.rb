@@ -23,5 +23,4 @@ class RufletRuntimeApiSyncTest < ActiveSupport::TestCase
       assert_equal helpers.sort, signatures.sort, control.fetch(:title)
     end
   end
-
 end

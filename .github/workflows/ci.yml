@@ -7,7 +7,7 @@ on:
 
 jobs:
   scan_ruby:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -25,7 +25,7 @@ jobs:
         run: bin/bundler-audit
       
   scan_js:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -40,7 +40,7 @@ jobs:
         run: bin/importmap audit
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
@@ -66,7 +66,7 @@ jobs:
         run: bin/rubocop -f github
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # services:
     #  redis:
@@ -83,15 +83,37 @@ jobs:
         with:
           bundler-cache: true
 
+      # The API catalogs in config/ are generated from these exact Ruflet and
+      # ruflet-engine commits. When you regenerate them with
+      # script/sync_ruflet_api, update both refs to the commits you synced from.
+      - name: Check out Ruflet source
+        uses: actions/checkout@v6
+        with:
+          repository: AdamMusa/ruflet
+          ref: 51bea9b1730c0165d206afbe5f46a2973beaaf59
+          path: .ruflet-sources/ruflet
+          sparse-checkout: |
+            packages/ruflet_core
+            packages/ruflet_server
+
+      - name: Check out ruflet-engine source
+        uses: actions/checkout@v6
+        with:
+          repository: AdamMusa/ruflet-engine
+          ref: a4632931a307761c5b8060e529307a4f0a5cb4ba
+          path: .ruflet-sources/ruflet-engine
+
       - name: Run tests
         env:
           RAILS_ENV: test
+          RUFLET_SOURCE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet
+          RUFLET_ENGINE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-engine
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test
 
   system-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # services:
     #  redis:
@@ -108,7 +130,10 @@ jobs:
         with:
           bundler-cache: true
 
+      # The site has no system tests yet; `rails test:system` raises LoadError
+      # when test/system does not exist.
       - name: Run System Tests
+        if: hashFiles('test/system/**/*_test.rb') != ''
         env:
           RAILS_ENV: test
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
