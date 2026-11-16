@@ -32,8 +32,8 @@ Show a spinner while loading, then swap in content:
 body = column(children: [progress_ring()])
 page.add(body)
 
-records = load_records          # slow work
-page.update(body, children: records.map { |r| text(r.name) })
+records = %w[Invoices Receipts Reports] # the result of slow work
+page.update(body, children: records.map { |name| text(name) })
 ```
 
 For a horizontal bar, `progress_bar(value: 0.6)`.

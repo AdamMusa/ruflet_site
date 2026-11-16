@@ -1,0 +1,132 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Runs documentation examples against the Ruflet source the catalogs describe.
+#
+#   script/check_doc_examples examples.json
+#   script/check_doc_examples < examples.json
+#
+# The input is a JSON object of {"label" => "ruby source"}. Each example runs
+# in a fresh Ruflet::Page with no client: `page` is in scope, DSL helpers work
+# as they do in an app, `require "ruflet"` is a no-op and `Ruflet.run` yields
+# the page. Event handlers are built but not called.
+#
+# Two checks run on every example:
+#
+# 1. It must execute without raising. Typed controls raise on unknown
+#    keywords, so this catches misspelled or removed properties.
+# 2. Every keyword passed to a cataloged control helper must be one of that
+#    control's documented properties, events, or helper parameters. Open
+#    extension controls (charts, video, ...) accept any keyword at runtime, so
+#    only this static check catches typos there.
+#
+# Prints a JSON object of {"label" => "problem"} for failing examples and
+# exits 1 when there are any. Ruflet is loaded from RUFLET_SOURCE_ROOT (see
+# script/support/ruflet_source.rb).
+
+require "json"
+require "prism"
+require_relative "support/ruflet_source"
+
+RufletSource.load!(server: false)
+
+CATALOG_PATH = RufletSource::DOCS_ROOT.join("config/control_catalog.json")
+
+# Keywords every control helper accepts besides its schema: the control id,
+# Ruflet's common attributes, and the Ruby-only form options.
+UNIVERSAL_KEYWORDS = %w[id ref flip transform validator on_saved autovalidate_mode].freeze
+
+def allowed_keywords_by_helper
+  JSON.parse(CATALOG_PATH.read(encoding: "UTF-8")).each_with_object({}) do |control, index|
+    signatures = control.fetch("helper_signatures", []).to_h { |signature| [signature.fetch("name"), signature] }
+    control.fetch("helpers").each do |helper|
+      parameters = signatures.dig(helper, "parameters") || []
+      # Positional parameters (`column(children = nil, **props)`) are accepted
+      # as keywords too.
+      named = parameters.reject { |kind, _| %w[rest keyrest block].include?(kind) }.map(&:last)
+      index[helper] = {
+        title: control.fetch("title"),
+        allowed: (control.fetch("properties") + control.fetch("events") + named + UNIVERSAL_KEYWORDS).to_set,
+        # A helper whose schema is empty and that forwards **props has no
+        # contract to check against.
+        open: control.fetch("properties").empty? && parameters.any? { |kind, _| kind == "keyrest" }
+      }
+    end
+  end
+end
+
+# Keyword arguments of calls to cataloged helpers that the control does not
+# accept. Calls with an explicit receiver (`page.update`, `menu.disable`) are
+# methods, not helpers, and are skipped.
+class KeywordCheck < Prism::Visitor
+  attr_reader :problems
+
+  def initialize(index)
+    super()
+    @index = index
+    @problems = []
+  end
+
+  def visit_call_node(node)
+    contract = node.receiver.nil? && @index[node.name.to_s]
+    if contract && !contract[:open] && node.arguments
+      node.arguments.arguments.grep(Prism::KeywordHashNode).each do |hash|
+        hash.elements.grep(Prism::AssocNode).each do |assoc|
+          next unless assoc.key.is_a?(Prism::SymbolNode)
+
+          name = assoc.key.unescaped
+          next if contract[:allowed].include?(name)
+
+          @problems << "`#{node.name}` (#{contract[:title]}) does not document `#{name}:` (line #{assoc.location.start_line})"
+        end
+      end
+    end
+    super
+  end
+end
+
+# Evaluates examples with `page` in scope. Helpers resolve through Ruflet's
+# shared forwarders, as they do inside an app's `Ruflet.run` block.
+class ExampleContext
+  include Ruflet::UI::SharedControlForwarders
+
+  def run(source, page)
+    binding.tap { |scope| scope.local_variable_set(:page, page) }.eval(source, "(example)", 1)
+  end
+end
+
+def build_page
+  Ruflet::Page.new(session_id: "docs", client_details: { "route" => "/" }, sender: ->(_action, _payload) {})
+end
+
+def run_example(source)
+  page = build_page
+  Ruflet.with_run_interceptor(->(entrypoint:, **) { entrypoint.call(page) }) do
+    ExampleContext.new.run(source.gsub(/^\s*require\s+["']ruflet["']\s*$/, ""), page)
+  end
+  nil
+rescue Exception => e # rubocop:disable Lint/RescueException -- report SyntaxError/ScriptError too
+  "#{e.class}: #{e.message.lines.first.to_s.strip}"
+end
+
+input = ARGV.first ? File.read(ARGV.first, encoding: "UTF-8") : $stdin.read.force_encoding("UTF-8")
+examples = JSON.parse(input)
+index = allowed_keywords_by_helper
+
+failures = examples.each_with_object({}) do |(label, source), result|
+  parsed = Prism.parse(source)
+  if parsed.failure?
+    result[label] = "SyntaxError: #{parsed.errors.first.message} (line #{parsed.errors.first.location.start_line})"
+    next
+  end
+
+  checker = KeywordCheck.new(index)
+  parsed.value.accept(checker)
+  problems = checker.problems
+  error = run_example(source)
+  problems.unshift(error) if error
+  result[label] = problems.join("; ") if problems.any?
+end
+
+puts JSON.pretty_generate(failures)
+exit(failures.empty? ? 0 : 1)

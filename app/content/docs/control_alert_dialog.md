@@ -36,8 +36,11 @@ dialog = alert_dialog(
 Show the dialog with:
 
 ```ruby
-page.show_dialog(dialog)
+page.add(button("Say hello", on_click: ->(_e) { page.show_dialog(dialog) }))
 ```
+
+`page.close_dialog` (or `page.pop_dialog`) closes the most recently opened
+dialog; pass a dialog to close a specific one.
 
 ## Notes
 

@@ -56,7 +56,7 @@ iOS/Android/macOS.
 - `clear_cache` / `clear_local_storage` — clear browser storage.
 - `enable_zoom` / `disable_zoom` — toggle pinch-zoom.
 - `set_javascript_mode(mode)` — set the JavaScript execution mode.
-- `get_current_url { |url, _err| }` / `get_title { ... }` / `get_user_agent { ... }` — read state into the block.
+- `get_current_url { |url, _err| }` / `get_title { ... }` / `get_user_agent { ... }` — read state into the block. These take a block, not the `on_result:` keyword other Ruflet methods use, and the WebView must be mounted first.
 
 ### Injecting JavaScript
 
@@ -74,7 +74,10 @@ webview.run_javascript("document.querySelector('.web-banner')?.remove()")
 ### Reading a value back
 
 ```ruby
-webview.get_current_url { |url, _err| page.update(label, value: url) }
+label = text(value: "Loading…")
+webview = web_view(url: "https://ruflet.dev", expand: true)
+page.add(column(expand: true, children: [label, webview]))
+webview.get_current_url { |url, _err| page.update(label, value: url.to_s) }
 ```
 
 ## Building native shells

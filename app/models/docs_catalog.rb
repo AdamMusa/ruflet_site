@@ -222,6 +222,7 @@ class DocsCatalog
       status = text(value: "Saving token…")
       page.add(status)
       storage = page.secure_storage
+      token = "example-session-token"
       storage.set("access_token", token, on_result: ->(_saved, save_error) {
         next page.update(status, value: save_error.to_s) if save_error
 
@@ -325,7 +326,7 @@ class DocsCatalog
     { key: "secure_storage", title: "Secure Storage", package: "flet_secure_storage", kind: "Storage service", summary: "Store, retrieve, enumerate, and remove sensitive values using platform-secure storage.", services: %w[secure_storage], example: "storage = page.secure_storage\nstorage.set(\"token\", token, on_result: ->(result, error) { })" },
     { key: "video", title: "Video", package: "flet_video", kind: "Media control", summary: "Play video with configurable playlists, controls, aspect ratio, and playback events.", controls: %w[control-video], example: "player = video(\n  playlist: [{ resource: \"assets/demo.mp4\" }],\n  show_controls: true,\n  on_error: ->(event) { warn event.data }\n)\npage.add(player)\npage.add(button(\"Play or pause\", on_click: ->(_event) { player.play_or_pause }))" },
     { key: "webview", title: "WebView", package: "flet_webview", kind: "Web content control", summary: "Embed web content and control navigation in a native WebView.", controls: %w[control-web-view], example: "browser = web_view(\n  url: \"https://ruflet.dev\",\n  expand: true,\n  on_page_ended: ->(event) { puts \"Loaded \#{event.value}\" },\n  on_web_resource_error: ->(event) { warn event.data }
-)\npage.add(browser)\nbrowser.get_title(on_result: ->(title, error) { puts(error || title) })" }
+)\npage.add(browser)\nbrowser.get_title { |title, error| puts(error || title) }" }
   ].freeze
 
   def self.sections
@@ -434,6 +435,22 @@ class DocsCatalog
 
   def self.all_entries
     sections.flat_map(&:entries)
+  end
+
+  REFERENCE_SECTIONS = %w[Widgets Services Extensions].freeze
+
+  # Every Ruby code block on the control, service, and extension reference
+  # pages, as {"slug block N" => source}. script/check_doc_examples runs them.
+  def self.reference_examples
+    all_entries.each_with_object({}) do |entry, examples|
+      next unless REFERENCE_SECTIONS.include?(entry.section)
+      next if %w[component-reference services-and-plugins extensions extension-authoring].include?(entry.slug)
+
+      markdown = entry.content || entry.source&.read.to_s
+      markdown.scan(/```ruby\n(.*?)```/m).flatten.each_with_index do |source, index|
+        examples["#{entry.slug} block #{index + 1}"] = source
+      end
+    end
   end
 
   def self.search_index

@@ -34,5 +34,6 @@ list_tile(
 [`column`](/docs/control-column):
 
 ```ruby
-column(children: people.map { |p| list_tile(title: text(p.name)) })
+people = ["Ada Lovelace", "Grace Hopper", "Yukihiro Matsumoto"]
+page.add(column(children: people.map { |name| list_tile(title: text(name)) }))
 ```

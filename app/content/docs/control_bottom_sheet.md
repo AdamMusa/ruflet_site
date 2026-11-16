@@ -15,7 +15,7 @@ sheet = bottom_sheet(
       spacing: 12,
       children: [
         text(value: "Share", style: { size: 18, weight: "w700" }),
-        filled_button(content: text("Copy link"), on_click: ->(_e) { copy_link })
+        filled_button(content: text("Done"), on_click: ->(_e) { page.close_bottom_sheet(sheet) })
       ]
     )
   )
@@ -53,6 +53,8 @@ you want to close a specific instance: `page.close_bottom_sheet(sheet)`.
 Prefer the page helper:
 
 ```ruby
+sheet = bottom_sheet(content: text(value: "Saved to your library"))
+page.show_bottom_sheet(sheet)
 page.close_bottom_sheet(sheet)
 ```
 

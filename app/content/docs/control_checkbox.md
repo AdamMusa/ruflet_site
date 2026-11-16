@@ -21,11 +21,17 @@ checkbox(
 ## Usage
 
 ```ruby
-checkbox(
-  label: "I agree",
+accepted = false
+submit = filled_button("Continue", disabled: true)
+terms = checkbox(
+  label: "I agree to the terms",
   value: accepted,
-  on_change: ->(event) { accepted = event.value }
+  on_change: ->(event) {
+    accepted = event.value
+    page.update(submit, disabled: !accepted)
+  }
 )
+page.add(column(children: [terms, submit]))
 ```
 
 ## Notes

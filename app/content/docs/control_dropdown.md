@@ -51,13 +51,15 @@ dropdown_option(key: "us", text: "United States", leading_icon: "flag")
 
 ## Usage
 
-Read the choice from `control.value`:
+Read the choice in `on_select` from `event.value`. Ruflet also stores the
+latest client value on the control, in `field.props["value"]`:
 
 ```ruby
+size = text(value: "No size chosen")
 field = dropdown(
   label: "Size",
-  options: [dropdown_option(key: "s", text: "Small"), dropdown_option(key: "l", text: "Large")]
+  options: [dropdown_option(key: "s", text: "Small"), dropdown_option(key: "l", text: "Large")],
+  on_select: ->(event) { page.update(size, value: "Size: #{event.value}") }
 )
-# later:
-field.value # => "s"
+page.add(column(children: [field, size]))
 ```

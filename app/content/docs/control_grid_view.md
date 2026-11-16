@@ -32,7 +32,7 @@ grid_view(
 grid_view(
   runs_count: 3,
   spacing: 12,
-  children: items.map { |item| text(value: item[:name]) }
+  children: %w[Ruby Rails Ruflet Flutter Dart Swift].map { |name| text(value: name) }
 )
 ```
 

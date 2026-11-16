@@ -24,8 +24,15 @@ switch(
 
 ## Usage
 
+The latest client value is stored on the control, in `toggle.props["value"]`.
+React to changes with `on_change`:
+
 ```ruby
-toggle = switch(label: "Dark mode", value: false)
-# later:
-toggle.value # => false
+mode = text(value: "Light mode")
+toggle = switch(
+  label: "Dark mode",
+  value: false,
+  on_change: ->(event) { page.update(mode, value: event.value ? "Dark mode" : "Light mode") }
+)
+page.add(column(children: [toggle, mode]))
 ```

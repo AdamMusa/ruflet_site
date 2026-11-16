@@ -10,7 +10,7 @@ list_view(
   expand: true,
   spacing: 4,
   padding: 8,
-  children: messages.map { |m| list_tile(title: text(m.subject), subtitle: text(m.preview)) }
+  children: (1..20).map { |n| list_tile(title: text("Message #{n}"), subtitle: text("Preview of message #{n}")) }
 )
 ```
 

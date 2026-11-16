@@ -25,7 +25,8 @@ radio_group(
 ## Usage
 
 ```ruby
-radio_group(
+plan = "basic"
+choice = radio_group(
   value: plan,
   on_change: ->(e) { plan = e.data },
   content: column(
@@ -35,6 +36,7 @@ radio_group(
     ]
   )
 )
+page.add(choice)
 ```
 
 ## Notes
