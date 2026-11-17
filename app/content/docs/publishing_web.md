@@ -13,12 +13,13 @@ when possible.
 
 ```bash
 ruflet build web
-ruflet build web --self
 ```
 
-A server-driven web build requires `app.backend_url` in `ruflet.yaml`. A
-self-contained web build packages the Ruby project with the client runtime.
+A web build is always server-driven: the embedded Ruby runtime has no browser
+implementation, so `--self` is not supported for web. The client learns its
+server from the origin it is served from, so `app.backend_url` in `ruflet.yaml`
+may be omitted; when it is set, the build uses that URL instead.
 
 Deploy the exported web build with the hosting and caching rules appropriate
-for a Flutter web application. Ensure the configured backend URL is reachable
-from users' browsers when using server-driven mode.
+for a Flutter web application. Ensure the Ruby backend is reachable from users'
+browsers.

@@ -1,37 +1,47 @@
-# Mounted Rails Web Apps
+# Choosing a Rails Mode
 
-Ruflet supports two web-based Rails integrations: mount a Ruflet web frontend
-inside Rails, or display ordinary Rails pages inside a managed native WebView
-shell. These modes keep HTML as HTML. Use
-[`erb_to_native`](/docs/rails-erb-to-native) when Rails ERB should become a
-native control tree.
-
-## Mount a Ruflet web app
-
-Install the prebuilt frontend and mount an app file:
-
-```bash
-rake ruflet:web
-```
+`ruflet_rails` offers three ways to build a Ruflet app on Rails. All three run
+behind the one WebSocket route that the generator adds:
 
 ```ruby
 # config/routes.rb
-mount Ruflet::Rails.web(
-  app_file: Rails.root.join("app/views/ruflet/main.rb")
-), at: "/ruflet"
+match "/ws",
+  to: Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb")),
+  via: :all
 ```
 
-The mount serves the web assets and WebSocket on the same route. It accepts
-exactly one app source: `app_file:` or a block. Use `build_dir:` only when the
-web build is stored outside the default location.
+The entrypoint that route runs decides how screens are built.
 
-Embed the mounted app inside another Rails page when useful:
+## Ruby controls
 
-```erb
-<%= ruflet_frame "/ruflet", height: 640, title: "Account app" %>
+Write the UI with Ruflet controls, as in any Ruflet app. Handlers can call your
+models and services directly:
+
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  page.add(text("Hello from Rails"))
+end
 ```
 
-## Display Rails HTML in a native shell
+## ERB as native controls
+
+Keep screens in Rails ERB and render them as native controls, with no WebView:
+
+```ruby
+# app/views/ruflet/main.rb
+Ruflet.run do |page|
+  Ruflet::Rails.erb_to_native(page, start_url: "/native")
+end
+```
+
+`/native` runs `NativeController#home` and renders its template. Each screen
+path names a controller action by convention; see
+[ERB to Native](/docs/rails-erb-to-native).
+
+## Rails HTML in a native shell
+
+Keep an existing Rails website as HTML inside a managed native WebView shell:
 
 ```ruby
 # app/views/ruflet/main.rb
@@ -50,14 +60,11 @@ supported `data-ruflet-*` annotations for native chrome and platform actions.
 
 ## Choose between them
 
-- Use `web` when the UI is built with Ruflet controls and should run in a
-  browser under a Rails route.
+- Use Ruby controls when the UI is written in Ruflet's Ruby DSL.
+- Use `erb_to_native` when Rails ERB should render native controls without a
+  WebView.
 - Use `native_shell` when an existing Rails website should remain HTML while
   gaining native app chrome and selected platform actions.
-- Use `erb_to_native` when Rails routes and ERB should render native controls
-  without a WebView.
-- Use `native` for Ruby-driven Ruflet controls rendered by native or
-  desktop clients.
 
 See [Rails API Reference](/docs/rails-api-reference) for exact signatures and
 [Native Shell](/docs/rails-native-shell) for the managed shell.

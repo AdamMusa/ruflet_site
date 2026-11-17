@@ -9,7 +9,7 @@ a dialog through the page.
 picker = time_picker(
   value: "09:30",
   help_text: "Pick a start time",
-  on_change: ->(event) { page.update(label, value: event.control.value) }
+  on_change: ->(event) { page.update(label, value: event.control.props["value"]) }
 )
 
 filled_button(content: text("Set time"), on_click: ->(_e) { page.show_dialog(picker) })
@@ -26,5 +26,6 @@ filled_button(content: text("Set time"), on_click: ->(_e) { page.show_dialog(pic
 
 ## Usage
 
-Read the choice with `control.value`. The picker auto-confirms on the client and
-fires `on_change`; reopen it with `page.show_dialog`.
+Read the choice in the handler with `event.control.props["value"]`. The picker
+auto-confirms on the client and fires `on_change`; reopen it with
+`page.show_dialog`.

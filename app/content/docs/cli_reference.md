@@ -1,6 +1,6 @@
 # CLI Reference
 
-This reference describes the Ruflet 0.0.19 command-line interface. Run Ruflet
+This reference describes the Ruflet command-line interface. Run Ruflet
 commands directly with the installed `ruflet` executable.
 
 ```text
@@ -77,14 +77,23 @@ client-side debugging; normal app development uses `ruflet run`.
 ## Build
 
 ```text
-ruflet build <apk|android|ios|aab|web|macos|windows|linux>
-             [--self] [-v|--verbose] [additional Flutter options]
+ruflet build <apk|android|aab|ios|ipa|web|macos|windows|linux>
+             [--lite|--full|--self] [-v|--verbose] [additional Flutter options]
 ```
 
-`android` is an alias for an APK build. Builds are server-driven by default and
-require a reachable backend URL. `--self` embeds the Ruby project for a
-self-contained build. Ruflet forwards remaining build options to Flutter after
-preparing extensions, permissions, assets, and runtime mode.
+`android` is an alias for an APK build, and `ipa` builds the uploadable iOS
+archive. Builds are server-driven by default. Mobile builds require a reachable
+backend URL; web and desktop clients resolve their server at launch.
+
+- `--self` embeds the Ruby project for a self-contained build with the lite
+  runtime. `--lite` selects the same profile.
+- `--full` embeds full CRuby with the project's locked gems and implies
+  `--self`.
+- `--lite` and `--full` are mutually exclusive, and a web build cannot be
+  self-contained.
+
+Ruflet forwards remaining build options to Flutter after preparing extensions,
+permissions, assets, and runtime mode.
 
 ## Install
 

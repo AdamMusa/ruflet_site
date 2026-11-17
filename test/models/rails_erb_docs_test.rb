@@ -72,19 +72,45 @@ class RailsErbDocsTest < ActiveSupport::TestCase
 
   test "Rails docs use the current connection API" do
     integration = DocsCatalog.find("rails-integration").source.read
-    api = DocsCatalog.find("rails-api-reference").source.read
-    content = [ integration, api ].join("\n")
 
     assert_includes integration, "Ruflet::Rails.native("
-    assert_includes integration, "Ruflet::Rails.web("
+    refute_includes integration, "Ruflet::Rails.web("
+  end
 
-    %w[
-      Ruflet::Rails.app(
-      Ruflet::Rails.endpoint(
-      Ruflet::Rails.web_app(
-      Ruflet::Rails.native_app(
-    ].each do |retired_call|
-      refute_includes content, retired_call
+  # Ruflet 0.0.22 left three Rails APIs: native, erb_to_native and native_shell.
+  # The mounted web app, its rake task and iframe helper, and the older entry
+  # point names must not come back into the Rails pages.
+  RETIRED_RAILS_API = [
+    "Ruflet::Rails.web(", "Ruflet::Rails.web`", "ruflet_frame", "ruflet:web",
+    "Ruflet::Rails.app(", "Ruflet::Rails.endpoint(", "Ruflet::Rails.web_app(",
+    "Ruflet::Rails.native_app(", "`native_app`", "`web_app`", "`endpoint`",
+    "--client web", "[--web]"
+  ].freeze
+
+  test "Rails pages document only the supported Rails APIs" do
+    rails_pages = DocsCatalog.all_entries.select { |entry| entry.slug.start_with?("rails-") }
+    assert_operator rails_pages.length, :>=, 10
+
+    rails_pages.each do |entry|
+      content = entry.source.read
+
+      RETIRED_RAILS_API.each do |retired|
+        refute_includes content, retired, "#{entry.slug} documents the retired #{retired}"
+      end
+    end
+  end
+
+  test "ERB to Native documents convention screens without a request cycle" do
+    content = DocsCatalog.find("rails-erb-to-native").source.read
+    api = DocsCatalog.find("rails-api-reference").source.read
+
+    assert_includes content, "`/native/counter` runs `NativeController#counter`"
+    assert_match(/stripped, not\s+obeyed/, content)
+    assert_includes api, %(start_url: "/")
+    refute_includes content, "start_url:` is required"
+    [ content, api ].each do |page|
+      refute_includes page, "Rack dispatcher"
+      refute_includes page, "in-process through Rails"
     end
   end
 
