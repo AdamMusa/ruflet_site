@@ -27,16 +27,12 @@ app:
 - `name` is the project and package-safe app name.
 - `display_name` is the user-facing name.
 - `package_name` is the generated package name.
-- `organization` sets the reverse-domain organization. `org` is an accepted
-  alias.
+- `organization` sets the reverse-domain organization. `org` is an accepted alias.
 - `version` is the release version and build number.
 - `description` and `company_name` supply package metadata.
-- `bundle_identifier` supplies a shared Apple bundle id. The platform-specific
-  `android_application_id`, `ios_bundle_identifier`,
-  `macos_bundle_identifier`, and `linux_application_id` override generated ids.
+- `bundle_identifier` supplies a shared Apple bundle id. The platform-specific `android_application_id`, `ios_bundle_identifier`, `macos_bundle_identifier`, and `linux_application_id` override generated ids.
 - `short_name` is used by platforms with a shorter display-name field.
-- `backend_url` is required for server-driven builds and must be reachable from
-  the installed client.
+- `backend_url` is required for server-driven builds and must be reachable from the installed client.
 
 For compatibility, Ruflet also accepts `backend_url`, `server_url`, or
 `ruflet_client_url` at the document root or under `app`. Prefer
@@ -48,6 +44,7 @@ Extensions add optional client packages. Supported keys are:
 
 ```yaml
 extensions:
+  - ads
   - audio
   - audio_recorder
   - camera
@@ -63,11 +60,24 @@ extensions:
   - qrcode_scanner
   - rive
   - secure_storage
+  - spinkit
   - video
   - webview
 ```
 
-Selecting `qrcode_scanner` also adds the required camera declarations. Rebuild
+`local_auth` adds the [Local Authentication service](/docs/service-local-authentication). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+Some extensions also add the `services.yaml` declaration they need:
+
+- `audio_recorder` adds `microphone`.
+- `camera` adds `camera`.
+- `flashlight` adds `camera`.
+- `geolocator` adds `location`.
+- `qrcode_scanner` adds `camera`.
+- `local_auth` adds `biometrics`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+A declaration added this way has no `description`, so Ruflet writes a generic
+usage description. Declare the service yourself to supply the text. Rebuild
 after changing extensions. Protected service declarations can add
 required extensions automatically, so applications normally declare device
 permissions in `services.yaml` instead of duplicating them here.
@@ -109,6 +119,9 @@ Build-level asset keys override their counterparts under `assets`.
 `splash_color_dark` is accepted as a compatibility alias for
 `splash_dark_color`.
 
+`full_runtime_path` points `--full` builds at a CRuby runtime distribution.
+See [Self-contained builds](/docs/build-and-release#self-contained-builds).
+
 ## `services.yaml`
 
 Keep protected device access in `services.yaml`. When both configuration files
@@ -130,6 +143,17 @@ The supported declarations are `camera`, `microphone`, `location`, and
 `motion`. A declaration can be a string or a mapping with a user-facing
 `description`. Ruflet uses these entries to add client extensions, Android
 permissions, iOS usage-description keys, and related platform configuration.
+Each declaration selects the extensions it needs:
+
+- `camera` adds `camera` and `permission_handler`.
+- `microphone` adds `audio_recorder` and `permission_handler`.
+- `location` adds `geolocator` and `permission_handler`.
+- `motion` adds `permission_handler`.
+- `biometrics` adds `local_auth` and the iOS Face ID usage description. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+See [Android Builds](/docs/publishing-android#permissions) and
+[iOS Builds](/docs/publishing-ios#permissions-and-usage-descriptions) for the
+platform keys each declaration writes.
 
 Request access only in response to the related user action, and write a
 description that explains the benefit rather than restating the permission
@@ -138,13 +162,11 @@ name.
 ## Environment variables
 
 - `RUFLET_CONFIG` selects a project configuration file.
-- `RUFLET_PORT` supplies the server port when code or the CLI does not override
-  it.
+- `RUFLET_PORT` supplies the server port when code or the CLI does not override it.
 - `RUFLET_HOST` supplies the host for `Ruflet::App`.
-- `RUFLET_CLIENT_DIR` selects an existing managed Flutter client directory for
-  build and debug commands.
-- `RUFLET_FLUTTER_VERSION` selects the managed Flutter SDK version before
-  Ruflet falls back to the project's `.fvmrc` and then its built-in default.
+- `RUFLET_CLIENT_DIR` selects an existing managed Flutter client directory for build and debug commands.
+- `RUFLET_FLUTTER_VERSION` selects the managed Flutter SDK version before Ruflet falls back to the project's `.fvmrc` and then its built-in default.
+- `RUFLET_FULL_RUNTIME_PATH` selects the CRuby runtime distribution for `--full` builds and overrides `build.full_runtime_path`.
 
 Rails applications normally configure build metadata in
 `config/initializers/ruflet.rb`; see [Rails API Reference](/docs/rails-api-reference).

@@ -30,7 +30,19 @@ services:
       description: Shows nearby locations.
 ```
 
-Ruflet adds the corresponding Android permissions during client preparation.
+Ruflet adds the matching permissions to `AndroidManifest.xml` during client
+preparation, and removes them when the declaration is removed:
+
+- `camera` adds `android.permission.CAMERA`.
+- `microphone` adds `android.permission.RECORD_AUDIO`.
+- `location` adds `android.permission.ACCESS_COARSE_LOCATION` and `android.permission.ACCESS_FINE_LOCATION`.
+- `motion` adds `android.permission.ACTIVITY_RECOGNITION` and `android.permission.HIGH_SAMPLING_RATE_SENSORS`.
+
+While the `local_auth` extension is selected, directly or through a
+`biometrics` declaration, the build switches the generated `MainActivity` from
+`FlutterActivity` to `FlutterFragmentActivity`, which the Android biometric
+prompt needs, and switches it back once `local_auth` is removed.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Release signing
 

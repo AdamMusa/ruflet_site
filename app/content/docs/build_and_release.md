@@ -60,9 +60,25 @@ Use `--self` to package the Ruby project with the client:
 ```bash
 ruflet build android --self
 ruflet build ios --self
+ruflet build ipa --self
 ```
 
 Choose this mode when the app should run without a remote Ruflet server.
+
+`--self` embeds the lite Ruby runtime by default. Pass `--full` instead to
+embed full CRuby together with the gems locked in the project's
+`Gemfile.lock`:
+
+```bash
+ruflet build android --full
+ruflet build ipa --full
+```
+
+- `--lite` selects the default runtime explicitly. `--lite` and `--full` each imply `--self` and cannot be combined.
+- `--full` needs a CRuby runtime distribution: set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to a `ruby_runtime` package that contains `ruflet-full-runtime.json`.
+- Web builds cannot be self-contained. A web client runs no embedded Ruby, so `ruflet build web --self` stops with `--self is not supported for web`.
+
+Every build option is listed in the [CLI Reference](/docs/cli-reference).
 
 ## Extensions and permissions
 

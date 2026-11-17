@@ -26,7 +26,7 @@ helpers, and every other widget works as a literal native tag or through
 | `card` | Material card containing child content. |
 | `center` | Center one child. |
 | `list` | Scrollable native list view. |
-| `grid` | Scrollable native grid view. |
+| `grid` | Scrollable native grid view, or a responsive row with `grid-cols-N`. |
 | `spacer` | Expanded empty space in a flex layout. |
 | `divider` | Native divider. |
 
@@ -39,6 +39,19 @@ helpers, and every other widget works as a literal native tag or through
   <%= divider %>
 <% end %>
 ```
+
+Give `grid` a `grid-cols-N` class to lay its children out on a 12-column
+`responsive_row` instead of a grid view. Each child gets `12 / N` columns,
+rounded, and `col-span-N` on a child multiplies its share, up to the full row:
+
+```erb
+<%= grid class: "grid-cols-3" do %>
+  <%= card do %><%= text "Open" %><% end %>
+  <%= card class: "col-span-2" do %><%= text "Revenue this week" %><% end %>
+<% end %>
+```
+
+Here the first card takes 4 of 12 columns and the second takes 8.
 
 ## Content
 
@@ -181,6 +194,9 @@ widget registry:
 Unknown tags are looked up in the core control registry and built with their
 real schema. Browse every supported widget directly below; each card opens its
 properties, events, methods, and Ruby examples.
+
+Widgets added after 0.0.23, such as `<stepper>`, `<carousel-view>`, and
+`<indexed-stack>`, also work as tags and helpers. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Continue with [ERB-to-native Services](/docs/rails-native-services) or return
 to the [ERB-to-native overview](/docs/rails-erb-to-native).

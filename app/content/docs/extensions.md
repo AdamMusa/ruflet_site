@@ -33,12 +33,12 @@ During the build Ruflet:
 
 1. adds `acme_widgets` to the generated Flutter client's dependencies;
 2. imports `package:acme_widgets/acme_widgets.dart`; and
-3. registers `acme_widgets.Extension()` with Flet.
+3. adds `acme_widgets.Extension()` to the client's `RufletExtension` list.
 
 The package name must be a valid Dart identifier and match all three places:
 the extension key, `name:` in the package's `pubspec.yaml`, and its public
 `lib/acme_widgets.dart` library. That library must expose an `Extension` class
-implementing Flet's extension contract.
+that extends `RufletExtension` from `package:ruflet/ruflet.dart`.
 
 `ref:` is preferred for reproducible builds and accepts a commit, branch, or
 tag understood by Git. Ruflet also accepts `branch:` or `tag:` as aliases.
@@ -49,15 +49,10 @@ Ruflet does not copy or store repository credentials. Flutter's package tool
 invokes Git, so the machine running `ruflet build` must already be able to
 clone the private repository.
 
-- For SSH URLs, load a read-only deploy key or developer key into the SSH
-  agent and configure the Git host in `known_hosts`.
-- For HTTPS URLs, use the operating system's Git credential helper or a CI
-  secret supplied to Git at build time.
-- Do not put a personal access token in `ruflet.yaml`, a Rails initializer, or
-  the repository URL. Those values can appear in source control and build
-  logs.
-- Give build credentials read-only access and pin production builds to a
-  commit SHA or immutable tag.
+- For SSH URLs, load a read-only deploy key or developer key into the SSH agent and configure the Git host in `known_hosts`.
+- For HTTPS URLs, use the operating system's Git credential helper or a CI secret supplied to Git at build time.
+- Do not put a personal access token in `ruflet.yaml`, a Rails initializer, or the repository URL. Those values can appear in source control and build logs.
+- Give build credentials read-only access and pin production builds to a commit SHA or immutable tag.
 
 Verify authentication before building:
 
@@ -141,6 +136,7 @@ release configuration.
 
 | Key | Ruby API provided | Kind |
 |---|---|---|
+| [`ads`](/docs/control-banner-ad) | `banner_ad(...)` and `interstitial_ad(...)` | Control family |
 | [`audio`](/docs/extension-audio) | `audio(...)` | Media control |
 | [`audio_recorder`](/docs/service-audio-recorder) | `page.audio_recorder(...)` | Device service; documented under Services |
 | [`camera`](/docs/service-camera) | `page.camera(...)` | Device service; documented under Services |
@@ -150,12 +146,14 @@ release configuration.
 | [`datatable2`](/docs/extension-datatable2) | `control("DataTable2", ...)` | Data control |
 | [`flashlight`](/docs/service-flashlight) | `page.flashlight` | Device service; documented under Services |
 | [`geolocator`](/docs/service-geolocator) | `page.geolocator(...)` | Device service; documented under Services |
+| [`local_auth`](/docs/service-local-authentication) | `page.local_authentication(...)` | Device service; documented under Services. **Requires the next Ruflet release** (on `main`, not in 0.0.23). |
 | [`lottie`](/docs/extension-lottie) | `lottie(...)` | Animation control |
 | [`map`](/docs/extension-map) | `map(...)` and map-layer helpers | Control family |
 | [`permission_handler`](/docs/service-permission-handler) | `page.permission_handler(...)` | Device service; documented under Services |
 | [`qrcode_scanner`](/docs/qrcode-scanner) | `qrcode_scanner(...)` | Scanner control |
 | [`rive`](/docs/extension-rive) | `rive(...)` | Animation control |
 | [`secure_storage`](/docs/service-secure-storage) | `page.secure_storage` | Storage service; documented under Services |
+| [`spinkit`](/docs/control-spinkit) | `spinkit(...)` | Animation control |
 | [`video`](/docs/extension-video) | `video(...)` | Media control |
 | [`webview`](/docs/extension-webview) | `web_view(...)` | Web content control |
 
@@ -181,15 +179,16 @@ services:
 ```
 
 Ruflet uses service declarations to configure platform permissions and include
-required packages. `qrcode_scanner` also adds its camera declarations when it
-is selected directly. Request access only when the user starts the related
-action.
+required packages. Selecting `audio_recorder`, `camera`, `flashlight`,
+`geolocator`, or `qrcode_scanner` directly also adds the declaration it needs;
+see [Configuration](/docs/configuration-reference#extensions). Request access
+only when the user starts the related action.
 
 ## First-party QR scanner
 
 The first Ruflet-owned extension is
-[`ruflet_qrcode_scanner`](/docs/qrcode-scanner). It follows Flet's extension
-contract and uses the normal Ruby DSL:
+[`ruflet_qrcode_scanner`](/docs/qrcode-scanner). Its `Extension` class extends
+`RufletExtension`, and it uses the normal Ruby DSL:
 
 ```ruby
 scanner = qrcode_scanner(
