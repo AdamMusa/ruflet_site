@@ -16,7 +16,6 @@ page.add(
         [
           popup_menu_item("Rename", icon: "edit", on_click: ->(_event) { page.update(status, value: "Renaming") }),
           popup_menu_item("Duplicate", icon: "content_copy", on_click: ->(_event) { page.update(status, value: "Duplicated") }),
-          popup_menu_item(),
           popup_menu_item("Pinned", checked: pinned, on_click: ->(event) {
             pinned = !pinned
             page.update(event.control, checked: pinned)
@@ -47,3 +46,13 @@ Handle each item's own `on_click`. The button's `on_select` reports the chosen
 item's internal id, which is rarely useful, so act in the item handlers as
 above. A `checked` item keeps its check mark until you update `checked`, so
 hold the state in Ruby, as the "Pinned" item does.
+
+On iOS and macOS the menu opens as a Cupertino sheet that shows only each
+item's `content` (its text): no `icon` and no check mark. An item without
+`content`, such as a `popup_menu_item()` divider, draws an error box there, so
+give every item text when the app runs on Apple platforms. `menu_position`,
+`menu_padding`, `bgcolor`, `elevation` and `shape` style the menu on Android,
+web, Windows and Linux only.
+
+On iOS and macOS, the button fires `on_select` when an item is chosen and
+`on_cancel` when the sheet closes without a choice. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

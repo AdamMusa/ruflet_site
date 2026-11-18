@@ -442,7 +442,13 @@
     "control-dropdown": {
       "properties": [
         "expanded_insets",
+        "max_menu_height",
+        "prefix_icon",
+        "select_icon",
         "selected_suffix"
+      ],
+      "events": [
+        "on_change"
       ]
     },
     "control-expansion-panel-list": {

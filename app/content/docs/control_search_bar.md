@@ -50,3 +50,13 @@ Tapping the bar does not open the view by itself: call `open_view` from
 `on_tap`, as above. `close_view(text)` closes the view and puts `text` in the
 bar; always pass the text you want to keep. `focus` moves keyboard focus to the
 bar.
+
+On iOS and macOS there is no separate search view: the bar lists its
+suggestions under itself while it is focused and not empty.
+`full_screen`, `divider_color`, `capitalization`, `keyboard_type` and the
+`view_*` properties apply on Android, web, Windows and Linux only.
+
+On iOS and macOS, `open_view` focuses the bar and lists the suggestions before
+the user types, and `close_view(text)` puts `text` in the bar and hides them;
+with 0.0.23 both do nothing there, so a picked suggestion leaves the typed query
+in the bar. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

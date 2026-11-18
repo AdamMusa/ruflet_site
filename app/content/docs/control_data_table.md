@@ -9,13 +9,17 @@ Build it from [`data_column`](/docs/control-data-column) headers and
 
 ```ruby
 fruits = [["Apple", 12], ["Mango", 4], ["Cherry", 30]]
+sort_index = nil
+ascending = true
 table = nil
 rows_for = ->(items) {
   items.map { |name, qty| data_row([data_cell(text(name)), data_cell(text(qty.to_s))]) }
 }
 sort_by_column = ->(event) {
   index = event.data["ci"].to_i
-  ascending = event.data["asc"]
+  # The same column again flips the direction; another column starts ascending.
+  ascending = index == sort_index ? !ascending : true
+  sort_index = index
   sorted = fruits.sort_by { |row| row[index] }
   sorted.reverse! unless ascending
   page.update(table, rows: rows_for.call(sorted), sort_column_index: index, sort_ascending: ascending)
@@ -43,11 +47,16 @@ page.add(table)
 
 ## Usage
 
-The table does not sort itself. A column's `on_sort` receives
-`event.data["ci"]` (the column index) and `event.data["asc"]` (the new
-direction); sort your data, then update `rows` together with
-`sort_column_index` and `sort_ascending`, as above. `numeric: true`
+The table does not sort itself. A column's `on_sort` receives the column
+index in `event.data["ci"]`. Keep the direction in Ruby, as above: tapping the
+sorted column again flips it, and another column starts ascending. Then update
+`rows` together with `sort_column_index` and `sort_ascending`. `numeric: true`
 right-aligns a column.
+
+`event.data["asc"]` is the new direction on Android, web, Windows and Linux.
+On iOS and macOS it is the table's current `sort_ascending` (`false` until you
+set it), so passing `asc` back as `sort_ascending` never changes the direction
+there.
 
 For fixed header rows or columns on large tables, use the `datatable2`
 [DataTable2 extension](/docs/extension-datatable2).
