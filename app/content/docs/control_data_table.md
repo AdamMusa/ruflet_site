@@ -1,0 +1,53 @@
+# DataTable
+
+A table with a header row, data rows and optional sorting and row selection.
+Build it from [`data_column`](/docs/control-data-column) headers and
+[`data_row`](/docs/control-data-row) rows of
+[`data_cell`](/docs/control-data-cell) values.
+
+## Example
+
+```ruby
+fruits = [["Apple", 12], ["Mango", 4], ["Cherry", 30]]
+table = nil
+rows_for = ->(items) {
+  items.map { |name, qty| data_row([data_cell(text(name)), data_cell(text(qty.to_s))]) }
+}
+sort_by_column = ->(event) {
+  index = event.data["ci"].to_i
+  ascending = event.data["asc"]
+  sorted = fruits.sort_by { |row| row[index] }
+  sorted.reverse! unless ascending
+  page.update(table, rows: rows_for.call(sorted), sort_column_index: index, sort_ascending: ascending)
+}
+table = data_table(
+  [
+    data_column(text("Fruit"), on_sort: sort_by_column),
+    data_column(text("Quantity"), numeric: true, on_sort: sort_by_column)
+  ],
+  rows: rows_for.call(fruits)
+)
+page.add(table)
+```
+
+## Common properties
+
+- `columns` — the `data_column(label, numeric:, on_sort:)` headers; the first positional argument sets them
+- `rows` — `data_row(cells, selected:, on_select_change:)` rows of `data_cell(content)`
+- `sort_column_index` / `sort_ascending` — which column shows the sort arrow, and its direction
+- `show_checkbox_column` / `on_select_all` — row selection with a header checkbox
+- `column_spacing` / `horizontal_margin` / `data_row_min_height` / `data_row_max_height` / `heading_row_height`
+- `border` / `border_radius` / `vertical_lines` / `divider_thickness`
+- `horizontal_lines` — lines between rows; the 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `heading_row_color` / `data_row_color` / `heading_text_style` / `data_text_style`
+
+## Usage
+
+The table does not sort itself. A column's `on_sort` receives
+`event.data["ci"]` (the column index) and `event.data["asc"]` (the new
+direction); sort your data, then update `rows` together with
+`sort_column_index` and `sort_ascending`, as above. `numeric: true`
+right-aligns a column.
+
+For fixed header rows or columns on large tables, use the `datatable2`
+[DataTable2 extension](/docs/extension-datatable2).

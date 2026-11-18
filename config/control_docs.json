@@ -1,0 +1,49 @@
+{
+  "control-popup-menu-item": {
+    "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark (the item's `on_click` then gets the new state as `event.data`), and leave out both text and icon for a divider.",
+    "example": [
+      "sort = text(value: \"Sorted by name\")",
+      "page.add(",
+      "  row(",
+      "    children: [",
+      "      sort,",
+      "      popup_menu_button(",
+      "        [",
+      "          popup_menu_item(\"Name\", icon: \"sort_by_alpha\", on_click: ->(_event) { page.update(sort, value: \"Sorted by name\") }),",
+      "          popup_menu_item(\"Date\", icon: \"event\", on_click: ->(_event) { page.update(sort, value: \"Sorted by date\") }),",
+      "          popup_menu_item(),",
+      "          popup_menu_item(",
+      "            \"Newest first\",",
+      "            checked: true,",
+      "            on_click: ->(event) {",
+      "              page.update(event.control, checked: event.data)",
+      "              page.update(sort, value: event.data ? \"Newest first\" : \"Oldest first\")",
+      "            }",
+      "          )",
+      "        ],",
+      "        icon: \"sort\"",
+      "      )",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-segment": {
+    "summary": "One option of a [`segmented_button`](/docs/control-segmented-button). `value` is required, and is what the button reports in `selected` and `on_change`; `label` and `icon` are what the user sees.",
+    "example": [
+      "layout = text(value: \"Layout: list\")",
+      "page.add(",
+      "  segmented_button(",
+      "    [",
+      "      segment(\"list\", label: \"List\", icon: icon(\"view_list\")),",
+      "      segment(\"grid\", label: \"Grid\", icon: icon(\"grid_view\"), tooltip: \"Show a grid\"),",
+      "      segment(\"map\", label: \"Map\", icon: icon(\"map\"), disabled: true)",
+      "    ],",
+      "    selected: [\"list\"],",
+      "    on_change: ->(event) { page.update(layout, value: \"Layout: #{Array(event.data).first}\") }",
+      "  )",
+      ")",
+      "page.add(layout)"
+    ]
+  }
+}
