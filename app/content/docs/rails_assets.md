@@ -16,8 +16,10 @@ end
 
 `Ruflet::Rails.backend_url` resolves an explicit `host:` first, then
 `config.backend_url`, then the host of the active Ruflet request. A Rails app
-does not need `ruflet.yaml` for this; only the desktop launcher falls back to
-it when no `config.backend_url` is set.
+does not need `ruflet.yaml` for this. Two tools fall back to it: the desktop
+launcher when no `config.backend_url` is set, and `rake ruflet:build` when the
+initializer sets none of the values it passes to the build (backend URL, app
+name, services, extensions, or icon, splash, and theme settings).
 
 For development on a physical device, use the computer's LAN address instead
 of `localhost`. The generated initializer reads `RUFLET_BACKEND_URL`, so you can

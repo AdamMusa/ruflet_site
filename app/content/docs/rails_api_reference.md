@@ -92,7 +92,8 @@ Ruflet::Rails.erb_to_native(
 `start_url:` is the path of the first screen. It defaults to `"/"`, which names
 no controller, so pass a screen path; a full URL is accepted and only its path
 is used. Screen paths name controller actions by convention: `/native` runs
-`NativeController#home` and `/native/counter` runs `NativeController#counter`.
+`NativeController#home` (or `#index`, then `#show`, when there is no `home`),
+and `/native/counter` runs `NativeController#counter`.
 The action runs inside the WebSocket session, with no Rails route, request, or
 CSRF token involved. `title:` supplies a fallback screen title, and `fetcher:`
 replaces the screen source in isolated tests.

@@ -35,9 +35,9 @@ Ruflet.run do |page|
 end
 ```
 
-`/native` runs `NativeController#home` and renders its template. Each screen
-path names a controller action by convention; see
-[ERB to Native](/docs/rails-erb-to-native).
+`/native` runs `NativeController#home` (or `#index`, then `#show`, when there
+is no `home`) and renders its template. Each screen path names a controller
+action by convention; see [ERB to Native](/docs/rails-erb-to-native).
 
 ## Rails HTML in a native shell
 

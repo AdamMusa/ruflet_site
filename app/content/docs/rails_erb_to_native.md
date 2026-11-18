@@ -22,8 +22,9 @@ end
 
 `start_url:` names the first screen. It defaults to `"/"`, which names no
 controller, so pass a screen path. A full URL is accepted and only its path is
-used: this example opens `MobileController#home`. `title:` is optional, and a
-custom `fetcher:` can be injected in tests.
+used, so this example opens the `/mobile` screen. That runs
+`MobileController#home`; without `home`, it tries `#index`, then `#show`.
+`title:` is optional, and a custom `fetcher:` can be injected in tests.
 
 ## How screens are found
 
@@ -47,11 +48,22 @@ class TasksController < ApplicationController
   def show
     @task = Task.find(params[:id])
   end
+
+  def new
+    @task = Task.new
+  end
+
+  def create
+    Task.create!(title: params[:title], priority: params[:priority])
+    redirect_to "/tasks"
+  end
 end
 ```
 
-With this controller, `/tasks` renders `app/views/tasks/index.html.erb` and
-`/tasks/show/42` renders `show.html.erb` for task 42.
+With this controller, `/tasks` renders `app/views/tasks/index.html.erb`,
+`/tasks/show/42` renders `show.html.erb` for task 42, and `/tasks/new` renders
+the form in `new.html.erb`. `/tasks/create` saves the task and redirects to
+`/tasks`.
 
 Ruflet calls the action inside the WebSocket session and keeps the controller
 instance for the whole session, so `@count` survives from one tap to the next.
@@ -98,15 +110,16 @@ becomes a bare attribute, and `nil` or `false` is omitted.
   `"replace"`, or `"back"` when the stack behavior should differ.
 - `on_click: "/native/counter/increment"` runs
   `NativeController#counter_increment` and re-renders the current native
-  screen. A relative path such as `"counter_increment"` resolves against the
-  current screen. A leading verb such as `post:` or `delete:` is stripped, not
-  obeyed.
+  screen. A relative path resolves like a relative URL: from `/native/counter`,
+  `"counter_increment"` becomes `/native/counter_increment`. A leading verb
+  such as `post:` or `delete:` is stripped, not obeyed.
 - `form`, `input`, `textarea`, `dropdown`, and `submit` collect native field
   values into `params`, run the action named by the form's `action:`, and show
   the screen it renders or redirects to. Field names become `params` keys as
   written; they are not nested.
 
 ```erb
+<%# app/views/tasks/new.html.erb %>
 <%= form action: "/tasks/create", class: "gap-4" do %>
   <%= input "title", label: "Task", value: @task.title %>
   <%= dropdown "priority",
@@ -117,7 +130,8 @@ becomes a bare attribute, and `nil` or `false` is omitted.
 ```
 
 Submitting this form runs `TasksController#create` with `params[:title]` and
-`params[:priority]`.
+`params[:priority]`, and its `redirect_to "/tasks"` shows the task list with
+the new task.
 
 ## Styling
 

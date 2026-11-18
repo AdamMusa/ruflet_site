@@ -82,13 +82,27 @@ ruflet build <apk|android|aab|ios|ipa|web|macos|windows|linux>
 ```
 
 `android` is an alias for an APK build, and `ipa` builds the uploadable iOS
-archive. Builds are server-driven by default. Mobile builds require a reachable
-backend URL; web and desktop clients resolve their server at launch.
+archive. Builds are server-driven by default: the client connects to the
+`app.backend_url` set in `ruflet.yaml`.
 
-- `--self` embeds the Ruby project for a self-contained build with the lite
-  runtime. `--lite` selects the same profile.
-- `--full` embeds full CRuby with the project's locked gems and implies
-  `--self`.
+- A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails without
+  `app.backend_url`.
+- A `web`, `macos`, `windows`, or `linux` build can omit it. A web client then
+  connects to the origin it was loaded from. A desktop client connects to the
+  URL its launcher passes, as `ruflet run --desktop` does, or to
+  `http://localhost:8550` when it is started without one. Set
+  `app.backend_url` for a web build hosted apart from its Ruby backend and for
+  a desktop build you distribute.
+
+Self-contained builds embed the Ruby project:
+
+- `--self` embeds it with the lite runtime. `--lite` selects the same profile.
+- `--full` embeds full CRuby instead and implies `--self`. It needs a CRuby
+  runtime distribution: set `RUFLET_FULL_RUNTIME_PATH`, or
+  `build.full_runtime_path` in `ruflet.yaml`, to a `ruby_runtime` Flutter
+  package whose `ruflet-full-runtime.json` lists the target platform. A
+  project with a `Gemfile` also needs its `Gemfile.lock`, and the locked gems
+  outside the `development` and `test` groups are packaged with the app.
 - `--lite` and `--full` are mutually exclusive, and a web build cannot be
   self-contained.
 

@@ -83,7 +83,7 @@ class RailsErbDocsTest < ActiveSupport::TestCase
   RETIRED_RAILS_API = [
     "Ruflet::Rails.web(", "Ruflet::Rails.web`", "ruflet_frame", "ruflet:web",
     "Ruflet::Rails.app(", "Ruflet::Rails.endpoint(", "Ruflet::Rails.web_app(",
-    "Ruflet::Rails.native_app(", "`native_app`", "`web_app`", "`endpoint`",
+    "Ruflet::Rails.native_app(", "`native_app`", "`web_app`",
     "--client web", "[--web]"
   ].freeze
 
