@@ -1,0 +1,41 @@
+{
+  "note": "Catalog pages for APIs that are on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. Empty both lists when the next release ships.",
+  "released": "0.0.23",
+  "controls": [
+    "control-about-dialog",
+    "control-absorb-pointer",
+    "control-carousel-view",
+    "control-clip-oval",
+    "control-clip-r-superellipse",
+    "control-custom-scroll-view",
+    "control-draggable-scrollable-sheet",
+    "control-fade-transition",
+    "control-fitted-box",
+    "control-form",
+    "control-form-row",
+    "control-fractionally-sized-box",
+    "control-ignore-pointer",
+    "control-indexed-stack",
+    "control-intrinsic-height",
+    "control-intrinsic-width",
+    "control-list-section",
+    "control-nested-scroll-view",
+    "control-rotation-transition",
+    "control-scale-transition",
+    "control-size-transition",
+    "control-slide-transition",
+    "control-sliver-app-bar",
+    "control-sliver-fill-remaining",
+    "control-sliver-grid",
+    "control-sliver-list",
+    "control-sliver-padding",
+    "control-sliver-to-box-adapter",
+    "control-step",
+    "control-stepper",
+    "control-table",
+    "control-table-row"
+  ],
+  "services": [
+    "local_authentication"
+  ]
+}
