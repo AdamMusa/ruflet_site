@@ -52,6 +52,7 @@ page instead of adding a visible widget.
 
 The web-only [Browser Context Menu service](/docs/service-browser-context-menu)
 is reached from Ruby with `page.service(:browser_context_menu)`.
+
 `<%= browser_context_menu %>` declares it like the service tags above. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `camera` is a visible extension widget rather than a non-visual helper; use

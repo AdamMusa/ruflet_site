@@ -78,7 +78,7 @@ ruflet build ipa --full
 - `--full` needs a CRuby runtime distribution: set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to a `ruby_runtime` package that contains `ruflet-full-runtime.json`.
 - Web builds cannot be self-contained. A web client runs no embedded Ruby, so `ruflet build web --self` stops with `--self is not supported for web`.
 
-Every build option is listed in the [CLI Reference](/docs/cli-reference).
+See the [CLI Reference](/docs/cli-reference) for the other commands.
 
 ## Extensions and permissions
 

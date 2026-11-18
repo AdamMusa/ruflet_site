@@ -35,13 +35,15 @@ matching usage-description keys:
 - `microphone` writes `NSMicrophoneUsageDescription`.
 - `location` writes `NSLocationWhenInUseUsageDescription` and `NSLocationAlwaysAndWhenInUseUsageDescription`.
 - `motion` writes `NSMotionUsageDescription`.
+- `photo_library` writes `NSPhotoLibraryUsageDescription`.
 - `biometrics` writes `NSFaceIDUsageDescription`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Without a `description`, Ruflet writes a generic sentence such as "This app
 uses camera access for its Ruflet features." Before you submit, replace it
-with one that explains why the app needs access. Extensions that need a declaration
-add it themselves, with the generic text; see
-[Configuration](/docs/configuration-reference#extensions). Ruflet rewrites
+with one that explains why the app needs access. Selecting an extension such
+as `camera` or `geolocator` without its declaration also writes these keys
+with the generic text, and does not select the declaration's other packages;
+see [Configuration](/docs/configuration-reference#extensions). Ruflet rewrites
 these keys on every build, so removing a declaration removes its key.
 
 ## Signing

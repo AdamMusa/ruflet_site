@@ -1,38 +1,49 @@
 require "test_helper"
+require "ruflet/cli"
 
+# Checks the build-configuration pages against the mappings in Ruflet's build
+# command, read from the ruflet gem this site bundles: the published release
+# pinned in Gemfile.lock. Bumping that release fails these tests until the
+# pages describe it.
 class BuildConfigurationDocsTest < ActiveSupport::TestCase
-  # Keys of Ruflet's CLIENT_EXTENSION_MAP (packages/ruflet/lib/ruflet/cli/build_command.rb) in 0.0.23.
-  RELEASED_EXTENSION_KEYS = %w[
-    ads audio audio_recorder camera charts code_editor color_pickers datatable2
-    flashlight geolocator lottie map permission_handler qrcode_scanner rive
-    secure_storage spinkit video webview
-  ].freeze
-
-  IOS_USAGE_KEYS = %w[
-    NSCameraUsageDescription NSMicrophoneUsageDescription
-    NSLocationWhenInUseUsageDescription NSLocationAlwaysAndWhenInUseUsageDescription
-    NSMotionUsageDescription
-  ].freeze
-
-  ANDROID_PERMISSIONS = %w[
-    android.permission.CAMERA android.permission.RECORD_AUDIO
-    android.permission.ACCESS_COARSE_LOCATION android.permission.ACCESS_FINE_LOCATION
-    android.permission.ACTIVITY_RECOGNITION android.permission.HIGH_SAMPLING_RATE_SENSORS
-  ].freeze
+  BUILD = Ruflet::CLI::BuildCommand
+  MARKER = "**Requires the next Ruflet release**".freeze
 
   def source(slug) = DocsCatalog.find(slug).source.read
+
+  # The first list item that starts with prefix. Released behavior is never marked.
+  def released_item(content, prefix)
+    line = content.lines.find { |candidate| candidate.start_with?(prefix) }
+
+    assert line, "Missing list item starting with #{prefix.inspect} (ruflet #{Ruflet::VERSION})"
+    refute_includes line, MARKER, "#{prefix.inspect} works in ruflet #{Ruflet::VERSION} and must not be marked"
+    line
+  end
 
   test "configuration reference lists every released extension key" do
     listed = source("configuration-reference")[/^extensions:\n((?:  - \w+\n)+)/, 1].to_s.scan(/- (\w+)/).flatten
 
-    assert_equal RELEASED_EXTENSION_KEYS, listed
+    assert_equal BUILD::CLIENT_EXTENSION_MAP.keys.sort, listed, "ruflet #{Ruflet::VERSION}"
   end
 
   test "extension catalog has a row for every released extension key" do
     content = source("extensions")
 
-    RELEASED_EXTENSION_KEYS.each do |key|
+    BUILD::CLIENT_EXTENSION_MAP.each_key do |key|
       assert_match(/^\| \[`#{key}`\]\(/, content, "Missing extension row #{key}")
+    end
+  end
+
+  test "configuration reference states what extensions and declarations select" do
+    content = source("configuration-reference")
+
+    BUILD::EXTENSION_REQUIRED_SERVICES.each do |extension, services|
+      services.each { |service| released_item(content, "- `#{extension}` writes the `#{service}` ") }
+    end
+    BUILD::PROTECTED_SERVICE_EXTENSIONS.each do |service, extensions|
+      selected = extensions.map { |extension| "`#{extension}`" }.to_sentence
+
+      assert_equal "- `#{service}` adds #{selected}.", released_item(content, "- `#{service}` adds ").strip
     end
   end
 
@@ -40,14 +51,21 @@ class BuildConfigurationDocsTest < ActiveSupport::TestCase
     ios = source("publishing-ios")
     android = source("publishing-android")
 
-    IOS_USAGE_KEYS.each { |key| assert_includes ios, "`#{key}`" }
-    ANDROID_PERMISSIONS.each { |permission| assert_includes android, "`#{permission}`" }
+    BUILD::IOS_SERVICE_USAGE_KEYS.each do |service, keys|
+      line = released_item(ios, "- `#{service}` writes ")
+      Array(keys).each { |key| assert_includes line, "`#{key}`" }
+    end
+    BUILD::ANDROID_SERVICE_PERMISSIONS.each do |service, permissions|
+      line = released_item(android, "- `#{service}` adds ")
+      permissions.each { |permission| assert_includes line, "`#{permission}`" }
+    end
   end
 
   test "self-contained build docs cover runtime profiles and the web limit" do
     content = source("build-and-release")
 
-    %w[--self --lite --full].each { |flag| assert_includes content, "`#{flag}`" }
+    ([ "self" ] + BUILD::EMBEDDED_RUNTIME_PROFILES.map(&:to_s)).each { |flag| assert_includes content, "`--#{flag}`" }
+    assert_includes content, BUILD::FULL_RUNTIME_MANIFEST
     assert_includes content, "ruflet build ipa --self"
     assert_includes content, "--self is not supported for web"
     assert_includes content, "/docs/cli-reference"

@@ -180,9 +180,11 @@ services:
 
 Ruflet uses service declarations to configure platform permissions and include
 required packages. Selecting `audio_recorder`, `camera`, `flashlight`,
-`geolocator`, or `qrcode_scanner` directly also adds the declaration it needs;
-see [Configuration](/docs/configuration-reference#extensions). Request access
-only when the user starts the related action.
+`geolocator`, or `qrcode_scanner` directly writes the platform permissions of
+the matching declaration, with a generic usage description, but does not
+select that declaration's other packages, such as `permission_handler`; see
+[Configuration](/docs/configuration-reference#extensions). Request access only
+when the user starts the related action.
 
 ## First-party QR scanner
 

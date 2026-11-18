@@ -67,19 +67,22 @@ extensions:
 
 `local_auth` adds the [Local Authentication service](/docs/service-local-authentication). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-Some extensions also add the `services.yaml` declaration they need:
+Some extensions need device access. Selecting one writes the platform
+permissions and usage descriptions of a [`services.yaml`](#services-yaml)
+declaration, but it does not select that declaration's other extensions:
 
-- `audio_recorder` adds `microphone`.
-- `camera` adds `camera`.
-- `flashlight` adds `camera`.
-- `geolocator` adds `location`.
-- `qrcode_scanner` adds `camera`.
-- `local_auth` adds `biometrics`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `audio_recorder` writes the `microphone` permissions.
+- `camera` writes the `camera` permissions.
+- `flashlight` writes the `camera` permissions.
+- `geolocator` writes the `location` permissions.
+- `qrcode_scanner` writes the `camera` permissions.
+- `local_auth` writes the `biometrics` usage description. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-A declaration added this way has no `description`, so Ruflet writes a generic
-usage description. Declare the service yourself to supply the text. Rebuild
-after changing extensions. Protected service declarations can add
-required extensions automatically, so applications normally declare device
+These permissions get a generic usage description. To supply your own text,
+declare the service in `services.yaml` as well. The declaration also selects
+its extensions, such as the `permission_handler` that `page.permission_handler`
+needs. Rebuild after changing extensions. Protected service declarations can
+add required extensions automatically, so applications normally declare device
 permissions in `services.yaml` instead of duplicating them here.
 
 ## `assets`
@@ -139,9 +142,9 @@ services:
       description: Detects device movement.
 ```
 
-The supported declarations are `camera`, `microphone`, `location`, and
-`motion`. A declaration can be a string or a mapping with a user-facing
-`description`. Ruflet uses these entries to add client extensions, Android
+The supported declarations are `camera`, `microphone`, `location`, `motion`,
+and `photo_library`. A declaration can be a string or a mapping with a
+user-facing `description`. Ruflet uses these entries to add client extensions, Android
 permissions, iOS usage-description keys, and related platform configuration.
 Each declaration selects the extensions it needs:
 
@@ -149,7 +152,8 @@ Each declaration selects the extensions it needs:
 - `microphone` adds `audio_recorder` and `permission_handler`.
 - `location` adds `geolocator` and `permission_handler`.
 - `motion` adds `permission_handler`.
-- `biometrics` adds `local_auth` and the iOS Face ID usage description. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `photo_library` adds no extension. It only writes the iOS photo-library usage description.
+- `biometrics` adds `local_auth`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 See [Android Builds](/docs/publishing-android#permissions) and
 [iOS Builds](/docs/publishing-ios#permissions-and-usage-descriptions) for the
