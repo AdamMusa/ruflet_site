@@ -75,7 +75,7 @@ ruflet build ipa --full
 ```
 
 - `--lite` selects the default runtime explicitly. `--lite` and `--full` each imply `--self` and cannot be combined.
-- `--full` needs a CRuby runtime distribution: set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to a `ruby_runtime` package that contains `ruflet-full-runtime.json`.
+- `--full` needs a CRuby runtime distribution for the target platform: a `ruby_runtime` package whose `ruflet-full-runtime.json` sets `engine` to `cruby` and lists the platform under `platforms` (`ipa` counts as `ios`, `apk` and `aab` as `android`). Set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to it. Ruflet also checks the package named by `RUFLET_RUBY_RUNTIME_PATH` and, when run from a Ruflet source checkout, its `ruby_runtime`. Without a match the build stops with `--full needs a CRuby runtime distribution for <platform>`.
 - Web builds cannot be self-contained. A web client runs no embedded Ruby, so `ruflet build web --self` stops with `--self is not supported for web`.
 
 See the [CLI Reference](/docs/cli-reference) for the other commands.

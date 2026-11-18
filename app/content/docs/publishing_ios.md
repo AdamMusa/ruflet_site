@@ -44,7 +44,8 @@ with one that explains why the app needs access. Selecting an extension such
 as `camera` or `geolocator` without its declaration also writes these keys
 with the generic text, and does not select the declaration's other packages;
 see [Configuration](/docs/configuration-reference#extensions). Ruflet rewrites
-these keys on every build, so removing a declaration removes its key.
+these keys on every build, so removing a declaration removes its key unless a
+selected extension still writes it.
 
 ## Signing
 

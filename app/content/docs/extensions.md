@@ -33,7 +33,10 @@ During the build Ruflet:
 
 1. adds `acme_widgets` to the generated Flutter client's dependencies;
 2. imports `package:acme_widgets/acme_widgets.dart`; and
-3. adds `acme_widgets.Extension()` to the client's `RufletExtension` list.
+3. writes `acme_widgets.Extension(),` into the client's Dart entrypoints.
+
+The current build writes that line outside the client's `RufletExtension`
+list, so a client that uses a private extension does not compile.
 
 The package name must be a valid Dart identifier and match all three places:
 the extension key, `name:` in the package's `pubspec.yaml`, and its public

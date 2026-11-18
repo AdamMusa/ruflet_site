@@ -31,12 +31,16 @@ services:
 ```
 
 Ruflet adds the matching permissions to `AndroidManifest.xml` during client
-preparation, and removes them when the declaration is removed:
+preparation:
 
 - `camera` adds `android.permission.CAMERA`.
 - `microphone` adds `android.permission.RECORD_AUDIO`.
 - `location` adds `android.permission.ACCESS_COARSE_LOCATION` and `android.permission.ACCESS_FINE_LOCATION`.
 - `motion` adds `android.permission.ACTIVITY_RECOGNITION` and `android.permission.HIGH_SAMPLING_RATE_SENSORS`.
+
+Removing a declaration removes its permissions on the next build, unless a
+selected extension such as `camera` or `geolocator` still writes them; see
+[Configuration](/docs/configuration-reference#extensions).
 
 While the `local_auth` extension is selected, directly or through a
 `biometrics` declaration, the build switches the generated `MainActivity` from
