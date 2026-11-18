@@ -1,8 +1,8 @@
 # AutoComplete
 
 A text field that suggests matching entries as the user types. Ruflet filters
-the suggestions on the client: an entry matches when its value contains the
-typed text, ignoring case.
+the suggestions on the client: an entry matches when its `key` contains the
+typed text, ignoring case. The list shows each entry's `value`.
 
 ## Example
 
@@ -13,9 +13,9 @@ page.add(
     children: [
       auto_complete(
         [
-          auto_complete_suggestion(key: "fr", value: "France"),
-          auto_complete_suggestion(key: "de", value: "Germany"),
-          auto_complete_suggestion(key: "jp", value: "Japan")
+          auto_complete_suggestion(value: "France"),
+          auto_complete_suggestion(value: "Germany"),
+          auto_complete_suggestion(value: "Japan")
         ],
         on_select: ->(event) { page.update(picked, value: "Selected #{event.value}") }
       ),
@@ -36,5 +36,8 @@ page.add(
 ## Usage
 
 `auto_complete_suggestion` needs a `key` or a `value`; when one is missing it
-copies the other. Use the `key` for your own identifier and the `value` for the
-text the user sees.
+copies the other. Give only `value:`, as above, so that the user searches the
+same text they see. When you also pass a `key`, it must hold the searchable
+text: typing "Ger" does not find `key: "de", value: "Germany"`. After a pick,
+Material clients fill the field with the `value` and iOS and macOS with the
+`key`.

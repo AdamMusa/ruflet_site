@@ -18,6 +18,12 @@ class DocsCatalog
     controls: 'With 0.0.23 the client shows "Unknown control".',
     services: "On 0.0.23 `page.%<helper>s` raises NoMethodError."
   }.freeze
+  # Said before the inline marker on generated lines that 0.0.23 Ruby accepts
+  # but the 0.0.23 client does not act on (config/next_release.json "client_ignored").
+  NEXT_RELEASE_CLIENT_NOTES = {
+    "properties" => "The 0.0.23 client ignores it.",
+    "events" => "The 0.0.23 client never sends it."
+  }.freeze
 
   SERVICE_SUMMARIES = {
     "accelerometer" => "Stream accelerometer readings, gravity included, while the device moves.",
@@ -348,7 +354,7 @@ class DocsCatalog
   }.freeze
 
   EXTENSION_CATALOG = [
-    { key: "ads", title: "Ads", package: "ruflet_ads", kind: "Control family", summary: "Show Google Mobile Ads banner and interstitial ads in Android and iOS apps.", controls: %w[control-banner-ad control-interstitial-ad], example: "status = text(value: \"Loading ad…\")\nad = banner_ad(\n  on_load: ->(_event) { page.update(status, value: \"Ad loaded\") },\n  on_error: ->(event) { page.update(status, value: \"Ad failed: \#{event.data}\") }\n)\npage.add(column(children: [ad, status]))" },
+    { key: "ads", title: "Ads", package: "ruflet_ads", kind: "Control family", summary: "Show Google Mobile Ads banner, interstitial and native ads in Android and iOS apps.", controls: %w[control-banner-ad control-interstitial-ad control-native-ad], example: "status = text(value: \"Loading ad…\")\nad = banner_ad(\n  on_load: ->(_event) { page.update(status, value: \"Ad loaded\") },\n  on_error: ->(event) { page.update(status, value: \"Ad failed: \#{event.data}\") }\n)\npage.add(column(children: [ad, status]))" },
     { key: "audio", title: "Audio", package: "ruflet_audio", kind: "Media control", summary: "Play audio from a URL, asset, or base64 source.", controls: %w[control-audio], example: "player = audio(\n  src: \"assets/notification.mp3\",\n  on_error: ->(event) { warn event.data }\n)\npage.add(player)\npage.add(button(\"Play\", on_click: ->(_event) { player.play }))" },
     { key: "audio_recorder", title: "Audio Recorder", package: "ruflet_audio_recorder", kind: "Device service", summary: "Record microphone input, inspect recorder state, and receive streams or uploads.", services: %w[audio_recorder], required_services: %w[microphone], example: "recorder = page.audio_recorder\nrecorder.start_recording(on_result: ->(result, error) { })" },
     { key: "camera", title: "Camera", package: "ruflet_camera", kind: "Device service", summary: "Display a native camera preview and receive camera state or image events.", services: %w[camera], required_services: %w[camera], example: "page.camera(\n  preview_enabled: true,\n  on_stream_image: ->(event) { puts event.data }\n)" },
@@ -418,7 +424,7 @@ class DocsCatalog
           entry("rails-native-components", "Widgets", "Use every Ruflet widget from ERB with normal native tags or Rails view helpers.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-native-services", "Services", "Declare native services and invoke device capabilities from ERB-to-native screens.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
-          entry("rails-native-html", "Choosing a Rails Mode", "Pick between Ruby controls, ERB rendered as native controls, and Rails HTML in a native shell.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
+          entry("rails-native-html", page_heading(SOURCE_ROOT.join("rails_native_html.md")), "Rails HTML in a native Ruflet shell, and how it compares with the other Rails modes.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
           entry("rails-native-styling", "Styling Rails Pages", "Style Rails HTML normally when it is displayed inside a Ruflet native WebView shell.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
           entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve Rails asset URLs that a native Ruflet client can reach.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
@@ -485,10 +491,10 @@ class DocsCatalog
       {
         slug: entry.slug,
         title: entry.title,
-        summary: entry.summary.presence || first_paragraph(markdown),
+        summary: plain_inline_text(entry.summary).presence || first_paragraph(markdown),
         section: entry.section,
         url: Rails.application.routes.url_helpers.doc_path(entry.slug),
-        text: [ entry.title, entry.summary, entry.section, searchable_text(markdown) ].compact.join(" ")
+        text: [ entry.title, plain_inline_text(entry.summary).presence, entry.section, searchable_text(markdown) ].compact.join(" ")
       }
     end
   end
@@ -537,7 +543,22 @@ class DocsCatalog
   def self.next_release
     @next_release ||= begin
       config = NEXT_RELEASE_PATH.exist? ? JSON.parse(NEXT_RELEASE_PATH.read) : {}
-      { controls: Array(config["controls"]), services: Array(config["services"]) }
+      {
+        controls: Array(config["controls"]),
+        services: Array(config["services"]),
+        members: config.fetch("members", {}),
+        client_ignored: config.fetch("client_ignored", {})
+      }
+    end
+  end
+
+  # The inline marker for one generated property, event or method line of a
+  # control that exists in 0.0.23, or nil when the line works on 0.0.23.
+  def self.next_release_note(slug, kind, name)
+    if Array(next_release[:members].dig(slug, kind)).include?(name)
+      "#{NEXT_RELEASE_MARKER}."
+    elsif Array(next_release[:client_ignored].dig(slug, kind)).include?(name)
+      "#{NEXT_RELEASE_CLIENT_NOTES.fetch(kind)} #{NEXT_RELEASE_MARKER}."
     end
   end
 
@@ -574,6 +595,17 @@ class DocsCatalog
             .split(/\n{2,}/)
             .map { |block| clean_markdown(block) }
             .find(&:present?)
+  end
+
+  # The H1 of a hand-written page, so a nav title cannot drift from the page.
+  def self.page_heading(path)
+    path.read[/^# (.+)$/, 1].to_s.strip
+  end
+
+  # Search results show summaries as escaped text, so drop inline Markdown
+  # (links and code spans) but keep the words.
+  def self.plain_inline_text(text)
+    text.to_s.gsub(/\[([^\]]+)\]\([^)]+\)/, '\1').gsub(/`([^`]+)`/, '\1')
   end
 
   def self.searchable_text(markdown)
@@ -613,7 +645,10 @@ class DocsCatalog
       if next_release[:services].include?(helper)
         content = with_next_release_callout(content, format(NEXT_RELEASE_CONSEQUENCES.fetch(:services), helper: helper))
       end
-      entry("service-#{helper.tr('_', '-')}", service[:title], SERVICE_SUMMARIES.fetch(helper), nil, "Services", content)
+      # A service added by script/sync_ruflet_api before its summary is written
+      # still renders; docs_coverage_test.rb fails on the generic text.
+      summary = SERVICE_SUMMARIES.fetch(helper) { "Complete `page.#{helper}` service reference." }
+      entry("service-#{helper.tr('_', '-')}", service[:title], summary, nil, "Services", content)
     end
   end
 
@@ -803,6 +838,8 @@ class DocsCatalog
     desc ||= attribute_descriptions[kind]&.[](name.to_s) || heuristic_description(name.to_s, kind)
     desc ||= "Sets the #{name.to_s.tr('_', ' ')} property." if kind == "properties"
     desc ||= "Fired when #{name.to_s.sub(/\Aon_/, '').tr('_', ' ')} occurs." if kind == "events"
+    note = control && next_release_note(control[:slug], kind, name.to_s)
+    desc = "#{desc} #{note}" if note
     "- `#{name}` — #{desc}"
   end
 
@@ -921,7 +958,10 @@ class DocsCatalog
 
     lines << heading
     lines << ""
-    methods.each { |method| lines << "- `#{format_api_method(method)}`" }
+    methods.each do |method|
+      note = next_release_note(control[:slug], "methods", (method[:name] || method["name"]).to_s)
+      lines << [ "- `#{format_api_method(method)}`", note ].compact.join(" ")
+    end
     lines << ""
   end
 
@@ -1171,5 +1211,5 @@ class DocsCatalog
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description,
                        :generated_control_api_appendix, :append_control_methods, :format_api_method,
-                       :with_next_release_callout
+                       :with_next_release_callout, :next_release_note, :plain_inline_text, :page_heading
 end

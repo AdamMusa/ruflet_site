@@ -1,7 +1,8 @@
 {
   "control-popup-menu-item": {
-    "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark (the item's `on_click` then gets the new state as `event.data`), and leave out both text and icon for a divider.",
+    "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark. The client does not change it, so keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`, and the 0.0.23 iOS client sends none. Leave out both text and icon for a divider.",
     "example": [
+      "newest_first = true",
       "sort = text(value: \"Sorted by name\")",
       "page.add(",
       "  row(",
@@ -14,10 +15,11 @@
       "          popup_menu_item(),",
       "          popup_menu_item(",
       "            \"Newest first\",",
-      "            checked: true,",
+      "            checked: newest_first,",
       "            on_click: ->(event) {",
-      "              page.update(event.control, checked: event.data)",
-      "              page.update(sort, value: event.data ? \"Newest first\" : \"Oldest first\")",
+      "              newest_first = !newest_first",
+      "              page.update(event.control, checked: newest_first)",
+      "              page.update(sort, value: newest_first ? \"Newest first\" : \"Oldest first\")",
       "            }",
       "          )",
       "        ],",

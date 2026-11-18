@@ -2,8 +2,9 @@
 
 `cupertino_text_field` builds the same `TextField` control as
 [`text_field`](/docs/control-text-field), with iOS-style defaults such as
-7-point padding and a clear button. The client draws an iOS text field on iOS
-and macOS and a Material one elsewhere.
+7-point padding. It sends `clear_button_visibility_mode: "never"` unless you
+set another mode, so set one to get a clear button, as below. The client draws
+an iOS text field on iOS and macOS and a Material one elsewhere.
 
 ## Example
 

@@ -39,5 +39,6 @@ page.add(
 ## Usage
 
 Read the new state from `event.control.props["value"]`. The client updates
-`value` before it sends `on_change`, and on iOS the event itself carries no
-data.
+`value` before it sends `on_change`, on every platform. Do not rely on
+`event.data`: the 0.0.23 iOS client sends the event without data, and other
+clients send the new value, which Ruby receives as `nil` when it is `false`.

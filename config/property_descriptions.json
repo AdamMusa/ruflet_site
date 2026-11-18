@@ -84,7 +84,7 @@
     "animate_margin": "Animates margin changes.",
     "animate_align": "Animates alignment changes.",
     "size_change_interval": "Throttle interval for on_size_change, in ms.",
-    "action": "A client action, built with `Ruflet.client_action`, that the client runs inside the tap before it sends `on_click`. Use it for work browsers allow only during a user gesture, such as opening a link, copying to the clipboard or picking files. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "action": "A client action, built with `Ruflet.client_action`, that the client runs inside the tap before it sends `on_click`. Use it for work browsers allow only during a user gesture, such as opening a link, copying to the clipboard or picking files.",
     "spacing": "Space between the control's children, or between its parts such as a checkbox and its label, in logical pixels.",
     "run_spacing": "Space between lines of children when they wrap, in logical pixels.",
     "tight": "Takes only as much space along the main axis as the children need.",
@@ -93,10 +93,10 @@
     "scroll": "Makes the content scrollable when it overflows: `\"auto\"`, `\"adaptive\"`, `\"always\"` or `\"hidden\"` (no scrollbar).",
     "scroll_interval": "Minimum time between `on_scroll` events, in milliseconds (default 10).",
     "auto_scroll": "Scrolls to the end automatically whenever the children change, as in a chat or log view.",
-    "auto_scroll_animation": "How `auto_scroll` moves to the end: a duration in milliseconds, `{ duration:, curve: }`, or `false` to jump. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "keyboard_dismiss_behavior": "Whether scrolling closes the on-screen keyboard: `\"manual\"` (default) or `\"onDrag\"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "end_reached_threshold": "How close to the end, in logical pixels, the user must scroll before `on_end_reached` fires (default 200). **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "item_extent": "Fixed size of every item along the scroll direction, in logical pixels; it speeds up layout of long lists.",
+    "auto_scroll_animation": "How `auto_scroll` moves to the end: a duration in milliseconds, `{ duration:, curve: }`, or `false` to jump.",
+    "keyboard_dismiss_behavior": "Whether scrolling closes the on-screen keyboard: `\"manual\"` (default) or `\"onDrag\"`.",
+    "end_reached_threshold": "How close to the end, in logical pixels, the user must scroll before `on_end_reached` fires (default 200).",
+    "item_extent": "Size of each item along the scroll direction, in logical pixels, such as the row height of a picker wheel.",
     "cache_extent": "How far beyond the visible area, in logical pixels, the list builds items ahead of time.",
     "build_controls_on_demand": "Builds only the children that are scrolled into view (default `true`).",
     "semantic_child_count": "Number of items screen readers announce for the list.",
@@ -111,10 +111,10 @@
     "selected_index": "Index of the selected item, starting at 0.",
     "size": "Size of the control: a number in logical pixels for icons, text and indicators, or a size name such as `\"small\"` or `\"large\"` for buttons.",
     "min_size": "Minimum width and height of the button.",
-    "opacity_on_click": "Opacity, from 0.0 to 1.0, the button fades to while it is pressed.",
+    "opacity_on_click": "Opacity, from 0.0 to 1.0, the control fades to while it is pressed.",
     "icon_size": "Size of the icon, in logical pixels.",
     "radius": "Radius, in logical pixels.",
-    "gradient": "Gradient that fills the background instead of a solid `bgcolor`.",
+    "gradient": "Gradient that fills the control instead of a solid color.",
     "blend_mode": "How the control's color or shader is combined with what is behind it, for example `\"multiply\"` or `\"srcIn\"`.",
     "border_side": "Border line, for example `{ color: \"#d1d5db\", width: 1 }`.",
     "fit": "How the content is sized into the available space: a box fit such as `\"contain\"` or `\"cover\"` for images and animations, a stack fit such as `\"expand\"` for stacks.",
@@ -124,7 +124,7 @@
     "paint": "How a canvas shape is drawn (color, stroke width, fill or stroke, gradient), built with `paint(...)`.",
     "semantics_label": "Text that screen readers announce for the control.",
     "semantics_value": "Value that screen readers announce, such as a progress percentage.",
-    "exclude_from_semantics": "Hides the control's gestures from screen readers.",
+    "exclude_from_semantics": "Hides the control from screen readers; on a gesture detector, hides its gestures.",
     "dense": "Uses a more compact layout with less vertical space.",
     "direction": "Layout direction of the segments: `\"horizontal\"` (default) or `\"vertical\"`.",
     "variant": "Style variant of the control, for example `\"elevated\"`, `\"filled\"` or `\"outlined\"` for a card.",
@@ -138,7 +138,7 @@
     "maintain_state": "Keeps the hidden children alive while the control is collapsed.",
     "extended": "Shows each label beside its icon instead of under it.",
     "label_type": "Which destination labels are shown: `\"all\"`, `\"selected\"` or `\"none\"`.",
-    "group_alignment": "Vertical position of the destinations, from -1.0 (top) to 1.0 (bottom).",
+    "group_alignment": "How the groups of items are aligned.",
     "use_indicator": "Draws a highlight behind the selected destination.",
     "indicator_shape": "Shape of the highlight behind the selected destination.",
     "min_width": "Minimum width of the control, in logical pixels.",
@@ -152,11 +152,11 @@
     "transition": "Animation between the old and the new content: `\"fade\"` (default), `\"scale\"` or `\"rotation\"`.",
     "animating": "Runs the animation while true; set `false` to pause it.",
     "animation": "Animation applied when the chart data changes: a duration in milliseconds or `{ duration:, curve: }`.",
-    "begin": "Value the transition animation starts from. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "end": "Value the transition animation ends at. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "curve": "Easing curve of the animation, for example `\"easeInOut\"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "delay": "Time to wait before the animation starts, in milliseconds. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "sliding": "Selects the sliding iOS segmented control; set by `cupertino_sliding_segmented_button`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "begin": "Value the transition animation starts from.",
+    "end": "Value the transition animation ends at.",
+    "curve": "Easing curve of the animation, for example `\"easeInOut\"`.",
+    "delay": "Time to wait before the animation starts, in milliseconds.",
+    "sliding": "Selects the sliding iOS segmented control; set by `cupertino_sliding_segmented_button`.",
     "interval": "Time between sensor readings, in milliseconds.",
     "enabled": "Turns the sensor stream on or off.",
     "cancel_on_error": "Stops the sensor stream after the first error.",
@@ -209,7 +209,7 @@
     "smart_dashes_type": "Turns iOS smart dashes on or off.",
     "smart_quotes_type": "Turns iOS smart quotes on or off.",
     "shadows": "Drop shadows painted behind the control.",
-    "text_input_action": "The keyboard's action button, such as `\"next\"`, `\"search\"` or `\"done\"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "text_input_action": "The keyboard's action button, such as `\"next\"`, `\"search\"` or `\"done\"`.",
     "placeholder_text": "Prompt shown while the field is empty (Cupertino look only; `hint_text` takes precedence).",
     "clear_button_visibility_mode": "When the clear button shows: `\"never\"`, `\"editing\"`, `\"notEditing\"` or `\"always\"`.",
     "clear_button_semantics_label": "Label screen readers announce for the clear button.",
@@ -235,10 +235,10 @@
     "background_image_src": "Image drawn behind the avatar's content.",
     "background": "Control shown behind the content while it is swiped from start to end (right, or down); also used for the other direction when `secondary_background` is not set.",
     "secondary_background": "Control shown behind the content while it is swiped from end to start (left, or up).",
-    "dismiss_direction": "Which swipes dismiss the control: `\"horizontal\"` (default), `\"endToStart\"`, `\"startToEnd\"`, `\"vertical\"`, `\"up\"`, `\"down\"` or `\"none\"`.",
+    "dismiss_direction": "Which swipes dismiss the control: `\"horizontal\"`, `\"endToStart\"`, `\"startToEnd\"`, `\"vertical\"`, `\"up\"`, `\"down\"` or `\"none\"`.",
     "dismiss_thresholds": "Fraction of the width or height the control must travel before it is dismissed, per direction.",
-    "movement_duration": "Time the control takes to slide away or back, in milliseconds (default 200). The 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "resize_duration": "Time the space left by a dismissed control takes to close, in milliseconds (default 300). The 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "movement_duration": "Time the control takes to slide away or back, in milliseconds (default 200).",
+    "resize_duration": "Time the space left by a dismissed control takes to close, in milliseconds (default 300).",
     "cross_axis_end_offset": "Moves the control across the swipe direction, as a fraction of its size, as it is dismissed.",
     "drag_interval": "Minimum time between drag update events, in milliseconds.",
     "hover_interval": "Minimum time between hover events, in milliseconds.",
@@ -268,7 +268,7 @@
     "force_actions_below": "Puts the actions under the message instead of beside it.",
     "notch_margin": "Space between the floating action button and the notch, in logical pixels.",
     "full_screen": "Opens the search view full screen.",
-    "shrink_wrap": "Sizes the search view to its suggestions.",
+    "shrink_wrap": "Sizes the control to its content instead of filling the available space.",
     "bar_elevation": "Shadow depth of the search bar.",
     "bar_shape": "Shape of the search bar.",
     "bar_border_side": "Border of the search bar.",
@@ -281,7 +281,7 @@
     "view_leading": "Control shown at the start of the search view's header.",
     "view_trailing": "Controls shown at the end of the search view's header.",
     "view_size_constraints": "Size limits of the search view.",
-    "year_2023": "Uses the 2023 Material 3 design for the indicator; set `false` for the newer look.",
+    "year_2023": "Uses the 2023 Material 3 design; set `false` for the newer look.",
     "track_gap": "Gap between the active and inactive parts of the track, in logical pixels.",
     "affinity": "Where the expand icon sits: `\"leading\"`, `\"trailing\"` or `\"platform\"`.",
     "collapsed_shape": "Shape of the tile while collapsed.",
@@ -289,16 +289,16 @@
     "request": "Targeting options for the ad request, such as keywords.",
     "active_thumb_image_src": "Image drawn on the thumb while the switch is on.",
     "inactive_thumb_image_src": "Image drawn on the thumb while the switch is off.",
-    "item_count": "Number of items in the indicator, for variants that draw several. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "wave_type": "Where the wave starts for wave variants: `\"start\"`, `\"center\"` or `\"end\"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "item_count": "Number of items in the indicator, for variants that draw several.",
+    "wave_type": "Where the wave starts for wave variants: `\"start\"`, `\"center\"` or `\"end\"`.",
     "horizontal_grid_lines": "Horizontal grid lines across the chart, for example `{ interval: 10, color: \"#e5e7eb\", width: 1 }`.",
     "vertical_grid_lines": "Vertical grid lines across the chart, for example `{ interval: 1, color: \"#e5e7eb\", width: 1 }`.",
     "baseline_x": "x value the chart draws from.",
     "baseline_y": "y value the chart draws from, such as the bottom of the bars.",
     "coordinates": "Position on the map as `[latitude, longitude]` or `{ latitude:, longitude: }`; a list of positions for lines and shapes.",
-    "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40). **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "refresh_trigger_distance": "How far, in logical pixels, the user must pull on iOS to start a refresh. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "refresh_timeout": "Longest time, in milliseconds, the refresh indicator waits for `on_refresh` (default 30 seconds). **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40).",
+    "refresh_trigger_distance": "How far, in logical pixels, the user must pull on iOS to start a refresh.",
+    "refresh_timeout": "Longest time, in milliseconds, the refresh indicator waits for `on_refresh` (default 30 seconds).",
     "enable_alpha": "Lets the user pick a transparency value as well as a color.",
     "prefix_icon_size_constraints": "Size limits for the prefix icon.",
     "suffix_icon_size_constraints": "Size limits for the suffix icon.",
@@ -340,11 +340,11 @@
     "on_drag_start": "Fired when a drag begins.",
     "on_animation_end": "Fired when an animation completes.",
     "on_size_change": "Fired when the control's size changes.",
-    "on_action_result": "Fired when a client `action:` has finished; the event carries its result or error. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "on_end_reached": "Fired when the user scrolls near the end, for loading more items. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "on_refresh": "Fired when the user pulls down to refresh; the indicator spins until the handler returns. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "on_paste_files": "Fired when the user pastes files into the field; `event.files` lists them. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
-    "on_tap_outside_view": "Fired when the user taps outside the open search view. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "on_action_result": "Fired when a client `action:` has finished; the event carries its result or error.",
+    "on_end_reached": "Fired when the user scrolls near the end, for loading more items.",
+    "on_refresh": "Fired when the user pulls down to refresh; the indicator spins until the handler returns.",
+    "on_paste_files": "Fired when the user pastes files into the field; `event.files` lists them.",
+    "on_tap_outside_view": "Fired when the user taps outside the open search view.",
     "on_tap_outside_bar": "Fired when the user taps outside the search bar.",
     "on_reading": "Fired with each new sensor reading in `event.data`.",
     "on_event": "Fired on chart or map touch and pointer events; `event.data` describes the event.",
@@ -357,7 +357,7 @@
     "on_reorder": "Fired when an item is dropped in a new position; `event.old_index` and `event.new_index` give the move.",
     "on_reorder_start": "Fired when the user starts dragging an item.",
     "on_reorder_end": "Fired when the user drops a dragged item.",
-    "on_confirm_dismiss": "Fired before the control is dismissed. The client holds the dismissal until it gets a `confirm_dismiss` reply, and cancels it after five minutes without one.",
+    "on_confirm_dismiss": "Fired before the control is dismissed. Reply with `page.invoke(event.control, \"confirm_dismiss\", args: { dismiss: true })`, or `dismiss: false` to keep it; without a reply the client cancels the dismissal after five minutes.",
     "on_update": "Fired while the control is dragged, with the direction and progress.",
     "on_select_all": "Fired when the header checkbox selects or clears every row.",
     "on_select_change": "Fired when the row's checkbox is toggled.",
@@ -384,6 +384,54 @@
     "on_complete": "Fired when playback finishes."
   },
   "widget_overrides": {
+    "autocomplete": {
+      "on_select": "Fired when a suggestion is picked; `event.value` is its value and `event.selection` holds its key and value."
+    },
+    "barchart": {
+      "group_alignment": "How the bar groups are spread along the x axis, for example `\"spaceEvenly\"` or `\"center\"`."
+    },
+    "checkbox": {
+      "error": "Shows the checkbox in its error color."
+    },
+    "datacolumn2": {
+      "size": "Relative width of the column: `\"s\"` (default), `\"m\"` or `\"l\"`."
+    },
+    "draggable": {
+      "affinity": "Axis a drag must start along to pick the control up: `\"horizontal\"` or `\"vertical\"`."
+    },
+    "formrow": {
+      "prefix": "Label or control shown at the start of the row.",
+      "helper": "Text or control shown below the row.",
+      "error": "Error text or control shown below the row."
+    },
+    "navigationrail": {
+      "group_alignment": "Vertical position of the destinations, from -1.0 (top) to 1.0 (bottom)."
+    },
+    "popupmenubutton": {
+      "on_select": "Fired when an item is chosen; the data is the item's internal id, so handle each item's `on_click` instead."
+    },
+    "reorderablelistview": {
+      "spacing": "Space between items, in logical pixels."
+    },
+    "responsiverow": {
+      "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these."
+    },
+    "searchbar": {
+      "shrink_wrap": "Sizes the search view to its suggestions."
+    },
+    "semantics": {
+      "header": "Marks the content as a heading for screen readers.",
+      "expanded": "Tells screen readers whether the content is expanded.",
+      "on_tap_hint_text": "What screen readers say the tap action does, for example \"Open\".",
+      "on_long_press_hint_text": "What screen readers say the long-press action does.",
+      "hint_text": "What screen readers say acting on the control does, for example \"Opens the message\".",
+      "focus": "Tells screen readers whether the control has input focus.",
+      "textfield": "Tells screen readers that the content is a text field.",
+      "identifier": "An identifier for UI tests and platform accessibility tools; screen readers do not announce it."
+    },
+    "shimmer": {
+      "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`."
+    },
     "snackbar": {
       "action": "Label of the action button shown in the snack bar.",
       "duration": "How long the snack bar stays visible, in milliseconds."
@@ -392,34 +440,6 @@
       "variant": "The indicator style; set it with the variant keyword you pass to `spinkit`, such as `three_bounce:`.",
       "size": "Size of the indicator, in logical pixels (default 50).",
       "duration": "Length of one animation cycle, in milliseconds."
-    },
-    "semantics": {
-      "header": "Marks the content as a heading for screen readers.",
-      "expanded": "Tells screen readers whether the content is expanded."
-    },
-    "popupmenubutton": {
-      "on_select": "Fired when an item is chosen; the data is the item's internal id, so handle each item's `on_click` instead."
-    },
-    "autocomplete": {
-      "on_select": "Fired when a suggestion is picked; `event.value` is its value and `event.selection` holds its key and value."
-    },
-    "draggable": {
-      "affinity": "Axis a drag must start along to pick the control up: `\"horizontal\"` or `\"vertical\"`."
-    },
-    "checkbox": {
-      "error": "Shows the checkbox in its error color."
-    },
-    "datatable": {
-      "horizontal_lines": "Border line between rows, for example `{ color: \"#e5e7eb\", width: 1 }`. The 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23)."
-    },
-    "reorderablelistview": {
-      "spacing": "Space between items, in logical pixels. The 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23)."
-    },
-    "shimmer": {
-      "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`."
-    },
-    "responsiverow": {
-      "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these."
     }
   }
 }

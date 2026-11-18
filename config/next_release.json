@@ -1,5 +1,5 @@
 {
-  "note": "Catalog pages for APIs that are on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. Empty both lists when the next release ships.",
+  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them) and \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them). Empty every list when the next release ships.",
   "released": "0.0.23",
   "controls": [
     "control-about-dialog",
@@ -37,5 +37,492 @@
   ],
   "services": [
     "local_authentication"
-  ]
+  ],
+  "members": {
+    "control-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-canvas": {
+      "methods": [
+        "capture",
+        "clear_capture",
+        "get_capture"
+      ]
+    },
+    "control-chip": {
+      "properties": [
+        "mouse_cursor"
+      ]
+    },
+    "control-column": {
+      "properties": [
+        "animate_changes",
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "item_animation",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-container": {
+      "properties": [
+        "action",
+        "opacity_on_click"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-bottom-sheet": {
+      "properties": [
+        "barrier_color",
+        "dismissible",
+        "draggable",
+        "fullscreen",
+        "maintain_bottom_view_insets_padding",
+        "scrollable",
+        "show_drag_handle",
+        "size_constraints",
+        "use_safe_area"
+      ]
+    },
+    "control-cupertino-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-date-picker": {
+      "properties": [
+        "inline"
+      ]
+    },
+    "control-cupertino-dialog-action": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-filled-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-list-tile": {
+      "properties": [
+        "action",
+        "chevron"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-sliding-segmented-button": {
+      "properties": [
+        "sliding"
+      ]
+    },
+    "control-cupertino-text-field": {
+      "properties": [
+        "text_input_action"
+      ],
+      "events": [
+        "on_paste_files"
+      ]
+    },
+    "control-cupertino-tinted-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-date-picker": {
+      "properties": [
+        "inline"
+      ]
+    },
+    "control-dropdown": {
+      "properties": [
+        "menu_border_radius"
+      ]
+    },
+    "control-expansion-panel-list": {
+      "properties": [
+        "auto_scroll_animation"
+      ]
+    },
+    "control-filled-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-tonal-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-tonal-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-floating-action-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-grid-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-list-tile": {
+      "properties": [
+        "action",
+        "chevron",
+        "focus_color"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-list-view": {
+      "properties": [
+        "animate_changes",
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "item_animation",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-outlined-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-outlined-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-page-view": {
+      "properties": [
+        "animation_curve",
+        "animation_duration"
+      ],
+      "methods": [
+        "go_to_page",
+        "jump_to",
+        "jump_to_page",
+        "next_page",
+        "previous_page"
+      ]
+    },
+    "control-reorderable-list-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "keyboard_dismiss_behavior"
+      ]
+    },
+    "control-responsive-row": {
+      "properties": [
+        "auto_scroll_animation"
+      ]
+    },
+    "control-row": {
+      "properties": [
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior"
+      ],
+      "events": [
+        "on_end_reached"
+      ]
+    },
+    "control-search-bar": {
+      "events": [
+        "on_tap_outside_view"
+      ]
+    },
+    "control-segmented-button": {
+      "properties": [
+        "sliding"
+      ]
+    },
+    "control-semantics": {
+      "properties": [
+        "identifier"
+      ]
+    },
+    "control-spinkit": {
+      "properties": [
+        "border_width",
+        "item_count",
+        "line_width",
+        "wave_type"
+      ]
+    },
+    "control-tabs": {
+      "methods": [
+        "move_to"
+      ]
+    },
+    "control-text-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-text-field": {
+      "properties": [
+        "text_input_action"
+      ],
+      "events": [
+        "on_paste_files"
+      ]
+    },
+    "control-text-span": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "bottom_sheet",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    }
+  },
+  "client_ignored": {
+    "control-app-bar": {
+      "properties": [
+        "enable_background_filter_blur"
+      ]
+    },
+    "control-audio": {
+      "properties": [
+        "src_base64"
+      ]
+    },
+    "control-banner": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-chip": {
+      "properties": [
+        "delete_icon_tooltip"
+      ]
+    },
+    "control-cupertino-app-bar": {
+      "properties": [
+        "enable_background_filter_blur"
+      ]
+    },
+    "control-cupertino-sliding-segmented-button": {
+      "properties": [
+        "proportional_width"
+      ]
+    },
+    "control-cupertino-switch": {
+      "properties": [
+        "active_thumb_image",
+        "inactive_thumb_image"
+      ]
+    },
+    "control-cupertino-text-field": {
+      "properties": [
+        "prefix_icon_size_constraints",
+        "suffix_icon_size_constraints"
+      ]
+    },
+    "control-data-table": {
+      "properties": [
+        "horizontal_lines"
+      ]
+    },
+    "control-dismissible": {
+      "properties": [
+        "movement_duration",
+        "resize_duration"
+      ]
+    },
+    "control-dropdown": {
+      "properties": [
+        "expanded_insets",
+        "selected_suffix"
+      ]
+    },
+    "control-expansion-panel-list": {
+      "properties": [
+        "auto_scroll",
+        "expand_icon_color",
+        "scroll",
+        "scroll_interval"
+      ],
+      "events": [
+        "on_scroll"
+      ]
+    },
+    "control-image": {
+      "properties": [
+        "src_base64"
+      ]
+    },
+    "control-menu-item-button": {
+      "properties": [
+        "semantic_label"
+      ]
+    },
+    "control-navigation-bar": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-navigation-drawer": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-reorderable-list-view": {
+      "properties": [
+        "divider_thickness",
+        "prototype_item",
+        "spacing"
+      ]
+    },
+    "control-responsive-row": {
+      "properties": [
+        "auto_scroll",
+        "scroll",
+        "scroll_interval"
+      ],
+      "events": [
+        "on_scroll"
+      ]
+    },
+    "control-semantics": {
+      "properties": [
+        "focus",
+        "hint_text",
+        "on_long_press_hint_text",
+        "on_tap_hint_text",
+        "textfield"
+      ],
+      "events": [
+        "on_double_tap",
+        "on_long_press",
+        "on_tap"
+      ]
+    },
+    "control-switch": {
+      "properties": [
+        "active_thumb_image",
+        "inactive_thumb_image"
+      ]
+    },
+    "control-text": {
+      "properties": [
+        "font_family_fallback"
+      ]
+    },
+    "control-text-field": {
+      "properties": [
+        "prefix_icon_size_constraints",
+        "suffix_icon_size_constraints"
+      ]
+    }
+  }
 }

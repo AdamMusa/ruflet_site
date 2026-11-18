@@ -7,6 +7,7 @@ A button, usually a "more" icon, that opens a menu of
 
 ```ruby
 status = text(value: "Choose an action")
+pinned = false
 page.add(
   row(
     children: [
@@ -16,7 +17,11 @@ page.add(
           popup_menu_item("Rename", icon: "edit", on_click: ->(_event) { page.update(status, value: "Renaming") }),
           popup_menu_item("Duplicate", icon: "content_copy", on_click: ->(_event) { page.update(status, value: "Duplicated") }),
           popup_menu_item(),
-          popup_menu_item("Pinned", checked: false, on_click: ->(event) { page.update(status, value: "Pinned: #{event.data}") })
+          popup_menu_item("Pinned", checked: pinned, on_click: ->(event) {
+            pinned = !pinned
+            page.update(event.control, checked: pinned)
+            page.update(status, value: pinned ? "Pinned" : "Unpinned")
+          })
         ],
         icon: "more_vert",
         tooltip: "More actions"
@@ -40,4 +45,5 @@ page.add(
 
 Handle each item's own `on_click`. The button's `on_select` reports the chosen
 item's internal id, which is rarely useful, so act in the item handlers as
-above.
+above. A `checked` item keeps its check mark until you update `checked`, so
+hold the state in Ruby, as the "Pinned" item does.

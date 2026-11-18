@@ -154,7 +154,76 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_empty flagged.map(&:slug), "Only pages listed in config/next_release.json get the generated callout"
   end
 
+  test "next-release members name properties, events and methods of 0.0.23 controls" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    %w[members client_ignored].each do |list|
+      config.fetch(list).each do |slug, kinds|
+        control = catalog[slug]
+
+        assert control, "config/next_release.json #{list} lists #{slug}, which the catalog does not have"
+        refute_includes config.fetch("controls"), slug, "#{slug} is a next-release page; its callout already covers every line"
+        kinds.each do |kind, names|
+          known = Array(control[kind.to_sym]).map { |entry| entry.is_a?(Hash) ? entry[:name].to_s : entry.to_s }
+
+          assert_includes %w[properties events methods], kind
+          assert_empty names - known, "#{list} #{slug} #{kind} names entries the catalog does not list"
+        end
+      end
+    end
+  end
+
+  test "generated property, event and method lines carry the inline marker exactly when listed" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    wrong = []
+
+    DocsCatalog.control_catalog.reject { |control| config.fetch("controls").include?(control[:slug]) }.each do |control|
+      slug = control[:slug]
+      listed = %w[members client_ignored].each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |list, names|
+        config.fetch(list).fetch(slug, {}).each { |kind, entries| names[kind].concat(entries) }
+      end
+      seen = Hash.new { |hash, key| hash[key] = [] }
+
+      generated_api_lines(DocsCatalog.find(slug).content).each do |kind, name, line|
+        seen[kind] << name
+        expected = listed[kind].include?(name)
+        wrong << "#{slug} #{kind} #{name}: #{expected ? 'missing' : 'unexpected'} marker" if line.include?(marker) != expected
+      end
+      listed.each do |kind, names|
+        (names - seen[kind]).each { |name| wrong << "#{slug} #{kind} #{name}: listed but not rendered" }
+      end
+    end
+
+    assert_empty wrong, wrong.join("\n")
+  end
+
   private
+
+  # [kind, name, line] for each generated "- `name` — ..." or "- `name(...)`"
+  # line: the Properties, Events and Methods lists of a generated page, and the
+  # Complete API appendix of a prose page.
+  def generated_api_lines(content)
+    generated, kind =
+      if content.include?("\n## Complete API\n")
+        [ content.split("\n## Complete API\n", 2).last, nil ]
+      else
+        [ content.split(/^## Properties$/, 2).last, "properties" ]
+      end
+    generated.lines.filter_map do |line|
+      if line.start_with?("#")
+        kind = case line
+        when /Methods/ then "methods"
+        when /Events/ then "events"
+        when /properties/i then "properties"
+        end
+        next
+      end
+      name = line[/\A- `([a-z_0-9?!=]+)[`(]/, 1]
+      [ kind, name, line ] if kind && name
+    end
+  end
 
   def documented_control?(slug)
     return true if DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
