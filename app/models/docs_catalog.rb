@@ -418,7 +418,7 @@ class DocsCatalog
           entry("rails-native-components", "Widgets", "Use every Ruflet widget from ERB with normal native tags or Rails view helpers.", SOURCE_ROOT.join("rails_native_components.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-native-services", "Services", "Declare native services and invoke device capabilities from ERB-to-native screens.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
-          entry("rails-native-html", "Rails HTML in a WebView", "Keep Rails pages as HTML inside the native WebView shell, and choose between the Rails integration modes.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
+          entry("rails-native-html", "Choosing a Rails Mode", "Pick between Ruby controls, ERB rendered as native controls, and Rails HTML in a native shell.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
           entry("rails-native-styling", "Styling Rails Pages", "Style Rails HTML normally when it is displayed inside a Ruflet native WebView shell.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
           entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve Rails asset URLs that a native Ruflet client can reach.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
