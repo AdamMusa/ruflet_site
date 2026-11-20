@@ -42,8 +42,7 @@ you want to close a specific instance: `page.close_bottom_sheet(sheet)`.
 - `dismissible` — tap outside to close
 - `bgcolor`
 - `shape` / `elevation` — Android, web, Windows and Linux only
-- `draggable` / `show_drag_handle` / `use_safe_area` / `fullscreen` — on iOS and macOS these need the
-  next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `draggable` / `show_drag_handle` / `use_safe_area` / `fullscreen` — on iOS and macOS these need the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 
