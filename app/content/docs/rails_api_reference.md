@@ -1,9 +1,9 @@
 # Rails API Reference
 
 `ruflet_rails` integrates Ruflet with Rails through routes, assets, sessions,
-views, and build tasks. Add the gem, install the integration, then choose a
-WebSocket endpoint, mounted web app, native ERB renderer, or native WebView
-shell.
+views, and build tasks. Add the gem, install the integration, then serve one
+WebSocket endpoint whose entrypoint builds Ruby controls, renders ERB as native
+controls, or shows Rails HTML in a native WebView shell.
 
 ```ruby
 # Gemfile
@@ -18,14 +18,14 @@ bin/rails generate ruflet:install
 ## Generator
 
 ```text
-bin/rails generate ruflet:install [--web] [--desktop]
-                                  [--client web|desktop|all|none]
+bin/rails generate ruflet:install [--desktop] [--client desktop|none]
 ```
 
 The generator creates the Ruflet entrypoint and initializer and adds an
-explicit WebSocket route. `--web` also mounts and downloads the web client;
-`--desktop` downloads the desktop client. `--client` is the combined form and
-defaults to `none`.
+explicit WebSocket route. `--desktop` downloads the prebuilt desktop client and
+adds a `--desktop` flag to `bin/rails` and `bin/dev`, so
+`bin/rails server --desktop` launches it. `--client desktop` does the same;
+`--client` defaults to `none`, and any other value is an error.
 
 ## Configuration
 
@@ -59,28 +59,21 @@ end
 these settings to Ruflet's project configuration shape, so the initializer is
 the Rails app's source of truth.
 
-## Endpoints and mounted apps
+## WebSocket endpoint
 
 ```text
 Ruflet::Rails.native(app_file = nil) { |page| ... }
-Ruflet::Rails.web(app_file: nil, build_dir: nil) { |page| ... }
 ```
 
-- `native` returns a Rack endpoint for native and desktop WebSocket clients.
-  Pass an app file or a block.
-- `web` returns a mountable Rack application that serves the Flutter web build
-  and WebSocket on the same mount. Pass `app_file:` or a block; `build_dir:`
-  selects a non-default web build.
+`native` returns a Rack endpoint for native and desktop WebSocket clients.
+Pass an app file or a block, not both. The entrypoint it runs can build Ruby
+controls itself or hand the page to `erb_to_native` or `native_shell`.
 
 ```ruby
 Rails.application.routes.draw do
   match "/ws",
     to: Ruflet::Rails.native(Rails.root.join("app/views/ruflet/main.rb")),
     via: :all
-
-  mount Ruflet::Rails.web(
-    app_file: Rails.root.join("app/views/ruflet/main.rb")
-  ), at: "/ruflet"
 end
 ```
 
@@ -89,16 +82,21 @@ end
 ```ruby
 Ruflet::Rails.erb_to_native(
   page,
-  start_url:,
+  start_url: "/",
   title: nil,
   fetcher: nil
 )
 ```
 
 `erb_to_native` returns a started `Ruflet::Rails::HtmlDsl::HtmlApp`.
-`start_url:` is required and points to a normal Rails route. The default
-fetcher dispatches that route in-process through Rails. `title:` supplies a
-fallback screen title, and `fetcher:` is available for isolated tests.
+`start_url:` is the path of the first screen. It defaults to `"/"`, which names
+no controller, so pass a screen path; a full URL is accepted and only its path
+is used. Screen paths name controller actions by convention: `/native` runs
+`NativeController#home` (or `#index`, then `#show`, when there is no `home`),
+and `/native/counter` runs `NativeController#counter`.
+The action runs inside the WebSocket session, with no Rails route, request, or
+CSRF token involved. `title:` supplies a fallback screen title, and `fetcher:`
+replaces the screen source in isolated tests.
 
 ```ruby
 Ruflet.run do |page|
@@ -111,9 +109,9 @@ end
 ```
 
 The rendered ERB is parsed into native controls. Links manage the native view
-stack, actions invoke Rails routes, forms submit named field values, and
-declared services mount on the Ruflet page. See
-[ERB to Native](/docs/rails-erb-to-native),
+stack, actions call controller methods and re-render the screen, forms pass
+named field values as `params`, and declared services mount on the Ruflet
+page. See [ERB to Native](/docs/rails-erb-to-native),
 [Widgets](/docs/rails-native-components), and
 [Services](/docs/rails-native-services).
 
@@ -181,8 +179,6 @@ connected page. Session registration methods are managed by the endpoint.
 The helpers are included in Action View.
 
 ```text
-ruflet_frame(path, height: 600, width: "100%", title: "Ruflet", style: nil, **attributes)
-
 ruflet_appbar(title = nil, payload: {}, leading: nil, actions: nil, **attributes) { ... }
 ruflet_appbar_action(icon, href = nil, nav: :push, payload: {}, **attributes)
 
@@ -207,8 +203,7 @@ ruflet_launch_link(label, href, mode: nil, **attributes)
 ruflet_haptic_button(label, style: "selection", **attributes)
 ```
 
-`ruflet_frame` embeds a mounted Ruflet web app in an iframe. The remaining
-helpers emit ordinary HTML plus `data-ruflet-*` annotations. Browsers keep
+These helpers emit ordinary HTML plus `data-ruflet-*` annotations. Browsers keep
 normal HTML behavior; `native_shell` reads the annotations and builds native
 shell controls or platform actions. These are separate from the component
 helpers used by `erb_to_native`. Extra keyword attributes use dashed HTML
@@ -217,19 +212,17 @@ names.
 ## Rails tasks
 
 ```text
-rake ruflet:web
 rake ruflet:update[desktop|all]
 rake ruflet:install[DEVICE_ID]
 rake ruflet:build[apk|android|ios|aab|desktop|macos|windows|linux]
 ```
 
-- `ruflet:web` installs the prebuilt web client in `frontend/`.
 - `ruflet:update` refreshes the requested prebuilt client.
 - `ruflet:install` installs the last compatible mobile build, optionally on a
   named device.
 - `ruflet:build` serializes the Rails initializer and invokes the Ruflet CLI
-  for the selected native or desktop target. The web client is installed with
-  `ruflet:web`, not built by this task.
+  for the selected native or desktop target. `desktop` selects the host's
+  desktop platform.
 
 See [Rails Integration](/docs/rails-integration) for setup examples,
 [ERB to Native](/docs/rails-erb-to-native) for native Rails views,

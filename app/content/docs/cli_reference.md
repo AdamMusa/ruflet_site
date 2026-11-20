@@ -1,6 +1,6 @@
 # CLI Reference
 
-This reference describes the Ruflet 0.0.19 command-line interface. Run Ruflet
+This reference describes the Ruflet command-line interface. Run Ruflet
 commands directly with the installed `ruflet` executable.
 
 ```text
@@ -77,14 +77,40 @@ client-side debugging; normal app development uses `ruflet run`.
 ## Build
 
 ```text
-ruflet build <apk|android|ios|aab|web|macos|windows|linux>
-             [--self] [-v|--verbose] [additional Flutter options]
+ruflet build <apk|android|aab|ios|ipa|web|macos|windows|linux>
+             [--lite|--full|--self] [-v|--verbose] [additional Flutter options]
 ```
 
-`android` is an alias for an APK build. Builds are server-driven by default and
-require a reachable backend URL. `--self` embeds the Ruby project for a
-self-contained build. Ruflet forwards remaining build options to Flutter after
-preparing extensions, permissions, assets, and runtime mode.
+`android` is an alias for an APK build, and `ipa` builds the uploadable iOS
+archive. Builds are server-driven by default: the client connects to the
+`app.backend_url` set in `ruflet.yaml`.
+
+- A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails when
+  `ruflet.yaml` sets no backend URL. Set `app.backend_url`; the
+  [Configuration Reference](/docs/configuration-reference) lists the other
+  keys Ruflet also reads. A value without an `http`, `https`, `ws`, or `wss`
+  scheme, or without a host, counts as unset.
+- A `web`, `macos`, `windows`, or `linux` build can omit the backend URL. A
+  web client then connects to the origin it was loaded from. A desktop client
+  connects to the URL its launcher passes, as `ruflet run --desktop` does, or
+  to `http://localhost:8550` when it is started without one. Set
+  `app.backend_url` for a web build hosted apart from its Ruby backend and for
+  a desktop build you distribute.
+
+Self-contained builds embed the Ruby project:
+
+- `--self` embeds it with the lite runtime. `--lite` selects the same profile.
+- `--full` embeds full CRuby instead and implies `--self`. It needs a CRuby
+  runtime distribution: set `RUFLET_FULL_RUNTIME_PATH`, or
+  `build.full_runtime_path` in `ruflet.yaml`, to a `ruby_runtime` Flutter
+  package whose `ruflet-full-runtime.json` lists the target platform. A
+  project with a `Gemfile` also needs its `Gemfile.lock`, and the locked gems
+  outside the `development` and `test` groups are packaged with the app.
+- `--lite` and `--full` are mutually exclusive, and a web build cannot be
+  self-contained.
+
+Ruflet forwards remaining build options to Flutter after preparing extensions,
+permissions, assets, and runtime mode.
 
 ## Install
 
