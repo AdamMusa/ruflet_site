@@ -36,8 +36,9 @@ image(
 
 `src` takes a URL, a path in the app's assets, a Base64 string or bytes. A
 Base64 string in `src` works with every release.
-`src_base64:` is the same data under its own name; the 0.0.23 client ignores
-it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+`src_base64:` is the same data under its own name. The 0.0.23 client ignores
+it, so an image with only `src_base64:` shows the error box
+`Image must have "src" specified.` **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ```ruby
 # A 1x1 PNG, tinted and scaled up.

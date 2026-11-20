@@ -227,7 +227,7 @@
       "  max_scale: 4,",
       "  boundary_margin: 40,",
       "  expand: true,",
-      "  on_interaction_update: ->(event) { page.update(zoom, value: \"Zoom #{event.data[:s].round(2)}x\") }",
+      "  on_interaction_update: ->(event) { page.update(zoom, value: \"Pinch scale #{event.data[:s].round(2)}x\") }",
       ")",
       "",
       "page.add(",
