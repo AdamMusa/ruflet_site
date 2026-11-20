@@ -578,7 +578,7 @@
     },
     "browser_context_menu": {
       "methods": {
-        "disable": "Turns the browser's own right-click menu off, so the app's context menus can open. Only the web has this menu; other clients answer `nil` and do nothing. `on_result` receives `nil`.",
+        "disable": "Turns the browser's own right-click menu off, so the app's context menus can open. Only browsers have this menu: other clients answer with an error. `on_result` receives `nil`.",
         "enable": "Turns the browser's right-click menu back on. `on_result` receives `nil`.",
         "disabled": "Whether this service last sent `disable` (`false` until then). It is Ruby-side state, set when the call is sent, not read from the browser.",
         "disabled?": "Same as `disabled`."
@@ -649,7 +649,7 @@
       },
       "methods": {
         "pick_files": "Opens the file picker. Options: `dialog_title:`, `initial_directory:`, `file_type:` (`\"any\"`, `\"media\"`, `\"image\"`, `\"video\"`, `\"audio\"` or `\"custom\"`; `allowed_extensions:` such as `[\"pdf\"]` switches to `\"custom\"`), `allow_multiple:` and `with_data:`. `on_result` receives an Array of Hashes with `\"id\"`, `\"name\"`, `\"path\"` (`nil` on the web), `\"size\"` in bytes and `\"bytes\"` (only with `with_data: true`), or `[]` when the user cancels. The service waits `timeout:` seconds for the user, 10 by default; pass a longer one, or call `page.pick_files`, which has none.",
-        "save_file": "Opens a save dialog. Takes the `pick_files` options plus `file_name:` and `src_bytes:` (the contents, a binary String or an Array of byte Integers). Android, iOS and the web need `src_bytes:` and write the file themselves; the web also needs `file_name:`. Desktop only picks the location. `on_result` receives the chosen path, or `nil` when the user cancels.",
+        "save_file": "Opens a save dialog. Takes the `pick_files` options plus `file_name:` and `src_bytes:` (the contents, a binary String or an Array of byte Integers). Android, iOS and the web need `src_bytes:` and save it; the web also needs `file_name:`. `on_result` receives the chosen path, or `nil` when the user cancels.",
         "get_directory_path": "Lets the user pick a folder (`dialog_title:`, `initial_directory:`). `on_result` receives its path, or `nil` when the user cancels. The web raises an error.",
         "upload": "Uploads files picked with this service's last `pick_files` call. `files` is an Array of Hashes with `name:` (or the picked `id:`), `upload_url:`, the absolute URL of an endpoint your app provides, which receives the raw file body, and `method:` such as `\"PUT\"`. `on_result` receives `nil` at once; follow progress with `on_upload`. Pick with `with_data: false` (the default): the upload reads the file's stream."
       }
