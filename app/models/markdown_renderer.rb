@@ -50,8 +50,8 @@ class MarkdownRenderer
       if line.match?(/\A[-*]\s+/)
         items = []
         while index < @lines.length && (item_match = @lines[index].match(/\A[-*]\s+(.+)\z/))
-          items << item_match[1]
-          index += 1
+          item, index = list_item(item_match[1], index + 1)
+          items << item
         end
         html << "<ul>#{items.map { |item| "<li>#{inline_markup(item)}</li>" }.join}</ul>"
         next
@@ -60,8 +60,8 @@ class MarkdownRenderer
       if line.match?(/\A\d+\.\s+/)
         items = []
         while index < @lines.length && (item_match = @lines[index].match(/\A\d+\.\s+(.+)\z/))
-          items << item_match[1]
-          index += 1
+          item, index = list_item(item_match[1], index + 1)
+          items << item
         end
         html << "<ol>#{items.map { |item| "<li>#{inline_markup(item)}</li>" }.join}</ol>"
         next
@@ -77,9 +77,22 @@ class MarkdownRenderer
         next
       end
 
+      if table_start?(index)
+        header = table_cells(line)
+        alignments = table_cells(@lines[index + 1]).map { |cell| table_alignment(cell) }
+        index += 2
+        rows = []
+        while index < @lines.length && @lines[index].include?("|") && !block_start?(@lines[index])
+          rows << table_cells(@lines[index])
+          index += 1
+        end
+        html << render_table(header, alignments, rows)
+        next
+      end
+
       paragraph = [ line.strip ]
       index += 1
-      while index < @lines.length && !@lines[index].strip.empty? && !block_start?(@lines[index])
+      while index < @lines.length && !@lines[index].strip.empty? && !block_start?(@lines[index]) && !table_start?(index)
         paragraph << @lines[index].strip
         index += 1
       end
@@ -97,6 +110,64 @@ class MarkdownRenderer
       line.match?(/\A[-*]\s+/) ||
       line.match?(/\A\d+\.\s+/) ||
       line.match?(/\A>\s?/)
+  end
+
+  # A wrapped list item continues on the indented lines that follow it.
+  # An indented line that starts its own block (a nested list marker, a
+  # fence, a heading) ends the item instead.
+  def list_item(text, index)
+    parts = [ text ]
+    while index < @lines.length && @lines[index].match?(/\A[ \t]+\S/) && !block_start?(@lines[index].strip)
+      parts << @lines[index].strip
+      index += 1
+    end
+    [ parts.join(" "), index ]
+  end
+
+  # GitHub-flavored tables: a header row, then a delimiter row such as
+  # `| --- | :---: |` with the same number of cells.
+  TABLE_DELIMITER_CELL = /\A:?-+:?\z/
+
+  def table_start?(index)
+    header = @lines[index]
+    delimiter = @lines[index + 1]
+    return false unless header&.include?("|") && delimiter&.include?("|")
+
+    delimiter_cells = table_cells(delimiter)
+    delimiter_cells.all? { |cell| cell.match?(TABLE_DELIMITER_CELL) } &&
+      delimiter_cells.length == table_cells(header).length
+  end
+
+  # Splits a row on unescaped pipes; `\|` stays a literal pipe in the cell.
+  def table_cells(line)
+    row = line.strip.delete_prefix("|")
+    row = row.delete_suffix("|") unless row.end_with?("\\|")
+    row.split(/(?<!\\)\|/, -1).map { |cell| cell.strip.gsub("\\|", "|") }
+  end
+
+  def table_alignment(cell)
+    if cell.start_with?(":") && cell.end_with?(":")
+      "center"
+    elsif cell.end_with?(":")
+      "right"
+    elsif cell.start_with?(":")
+      "left"
+    end
+  end
+
+  def render_table(header, alignments, rows)
+    cell = lambda do |tag, text, column|
+      align = alignments[column]
+      style = align ? %( style="text-align: #{align}") : ""
+      "<#{tag}#{style}>#{inline_markup(text.to_s)}</#{tag}>"
+    end
+    head = header.each_with_index.map { |text, column| cell.call("th", text, column) }.join
+    body = rows.map do |row|
+      "<tr>#{header.each_index.map { |column| cell.call("td", row[column], column) }.join}</tr>"
+    end.join
+    tbody = rows.empty? ? "" : "<tbody>#{body}</tbody>"
+
+    "<table><thead><tr>#{head}</tr></thead>#{tbody}</table>"
   end
 
   def heading_id(text)
