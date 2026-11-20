@@ -8,8 +8,10 @@ ruflet build windows
 ruflet build linux
 ```
 
-Use `--self` for a self-contained application. Server-driven builds require
-`app.backend_url` in `ruflet.yaml`.
+Use `--self` for a self-contained application. A server-driven desktop build
+you distribute needs `app.backend_url` in `ruflet.yaml`. Without it, the
+client connects to the URL its launcher passes, as `ruflet run --desktop`
+does, or to `http://localhost:8550`.
 
 ## Development client
 

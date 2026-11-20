@@ -91,8 +91,12 @@ build:
   theme_color: "#FFFFFF"
 ```
 
-`app.backend_url` is required for server-driven builds. It is not required for
-`--self` builds.
+Server-driven builds connect to `app.backend_url`. An `apk`, `android`, `aab`,
+`ios`, or `ipa` build fails when `ruflet.yaml` sets no backend URL. The
+[Configuration Reference](/docs/configuration-reference) lists the other keys
+Ruflet reads, and the [CLI Reference](/docs/cli-reference) lists the cases
+where a web or desktop build can omit it. It is not required for `--self`
+builds.
 
 ### `services.yaml`
 
