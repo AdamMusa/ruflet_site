@@ -24,6 +24,19 @@ class DocsCatalog
     "properties" => "The 0.0.23 client ignores it.",
     "events" => "The 0.0.23 client never sends it."
   }.freeze
+  # The same for lines that work with 0.0.23 on one design but not on the
+  # listed one (config/next_release.json "design_client_ignored"). Clients
+  # draw iOS and macOS with Cupertino widgets and other platforms with
+  # Material ones.
+  NEXT_RELEASE_DESIGN_PLATFORMS = {
+    "cupertino" => "On iOS and macOS",
+    "material" => "On Android, web, Windows and Linux"
+  }.freeze
+  NEXT_RELEASE_DESIGN_NOTES = {
+    "properties" => "the 0.0.23 client ignores it.",
+    "events" => "the 0.0.23 client never sends it.",
+    "methods" => "the 0.0.23 client does not run it."
+  }.freeze
 
   SERVICE_SUMMARIES = {
     "accelerometer" => "Stream accelerometer readings, gravity included, while the device moves.",
@@ -547,7 +560,8 @@ class DocsCatalog
         controls: Array(config["controls"]),
         services: Array(config["services"]),
         members: config.fetch("members", {}),
-        client_ignored: config.fetch("client_ignored", {})
+        client_ignored: config.fetch("client_ignored", {}),
+        design_client_ignored: config.fetch("design_client_ignored", {})
       }
     end
   end
@@ -559,7 +573,24 @@ class DocsCatalog
       "#{NEXT_RELEASE_MARKER}."
     elsif Array(next_release[:client_ignored].dig(slug, kind)).include?(name)
       "#{NEXT_RELEASE_CLIENT_NOTES.fetch(kind)} #{NEXT_RELEASE_MARKER}."
+    elsif (note = design_client_note(slug, kind, name))
+      "#{note} #{NEXT_RELEASE_MARKER}."
     end
+  end
+
+  # "design_client_ignored" lists names per design as an array, or as a hash
+  # of name => note when the generic note is not exact (for example a row
+  # control that works in one parent table and not in another).
+  def self.design_client_note(slug, kind, name)
+    next_release[:design_client_ignored].each do |design, controls|
+      names = controls.dig(slug, kind)
+      next unless names.is_a?(Hash) ? names.key?(name) : Array(names).include?(name)
+
+      return names[name] if names.is_a?(Hash)
+
+      return "#{NEXT_RELEASE_DESIGN_PLATFORMS.fetch(design)}, #{NEXT_RELEASE_DESIGN_NOTES.fetch(kind)}"
+    end
+    nil
   end
 
   # Puts the callout under the H1 unless the page already has one. Generated

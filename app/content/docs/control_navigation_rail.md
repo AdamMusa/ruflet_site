@@ -43,3 +43,10 @@ page.add(
 The rail needs a bounded height. Put it in a `row` with `expand: true`, as
 above, so it fills the page from top to bottom. When `extended` is true, each
 label sits beside its icon and `label_type` is ignored.
+
+On iOS and macOS the rail is a column of buttons, each showing its icon (or
+`selected_icon`) with the label beside it, with `leading` at the top and
+`trailing` at the bottom. It uses `bgcolor`, `indicator_color` and
+`selected_index`. `label_type`, `extended`, `min_extended_width`,
+`group_alignment`, `elevation` and `indicator_shape` apply on Android, web,
+Windows and Linux only.

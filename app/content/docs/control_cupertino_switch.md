@@ -33,7 +33,7 @@ page.add(
 - `active_track_color` / `inactive_track_color` / `inactive_thumb_color`
 - `thumb_color` / `thumb_icon`
 - `track_outline_color` / `track_outline_width`
-- `on_label_color` / `off_label_color` — the on and off marks inside the track
+- `on_label_color` / `off_label_color` — the on and off marks inside the track (iOS and macOS only)
 - `on_change`
 
 ## Usage

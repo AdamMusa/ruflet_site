@@ -82,7 +82,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
       assert Array(docs["example"]).any?(&:present?), "#{slug} needs an example in config/control_docs.json"
       next if DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
 
-      assert_includes DocsCatalog.find(slug).content, docs["summary"]
+      assert_includes page(slug).content, docs["summary"]
     end
   end
 
@@ -90,7 +90,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     DocsCatalog.service_catalog.fetch(:services).each do |service|
       helper = service.fetch(:helper)
       summary = DocsCatalog::SERVICE_SUMMARIES[helper].to_s
-      entry = DocsCatalog.find("service-#{helper.tr('_', '-')}")
+      entry = page("service-#{helper.tr('_', '-')}")
 
       assert DocsCatalog::SERVICE_EXAMPLES[helper].present?, "Add a #{helper} example to DocsCatalog::SERVICE_EXAMPLES"
       assert summary.present?, "Add a #{helper} summary to DocsCatalog::SERVICE_SUMMARIES"
@@ -133,7 +133,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
     pages = config.fetch("controls") + config.fetch("services").map { |helper| "service-#{helper.tr('_', '-')}" }
     pages.each do |slug|
-      content = DocsCatalog.find(slug).content
+      content = page(slug).content
       intro = content.split(/^## /).first
       html = MarkdownRenderer.render(content).html
 
@@ -158,19 +158,18 @@ class DocsCoverageTest < ActiveSupport::TestCase
     config = JSON.parse(Rails.root.join("config/next_release.json").read)
     catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
 
-    %w[members client_ignored].each do |list|
-      config.fetch(list).each do |slug, kinds|
-        control = catalog[slug]
+    assert_empty config.fetch("design_client_ignored").keys - DocsCatalog::NEXT_RELEASE_DESIGN_PLATFORMS.keys
+    listed_twice = next_release_lists(config).group_by { |_list, slug, kind, name| [ slug, kind, name ] }.select { |_key, entries| entries.size > 1 }
+    assert_empty listed_twice.keys, "Each line may appear in one next-release list only: #{listed_twice.keys.inspect}"
 
-        assert control, "config/next_release.json #{list} lists #{slug}, which the catalog does not have"
-        refute_includes config.fetch("controls"), slug, "#{slug} is a next-release page; its callout already covers every line"
-        kinds.each do |kind, names|
-          known = Array(control[kind.to_sym]).map { |entry| entry.is_a?(Hash) ? entry[:name].to_s : entry.to_s }
+    next_release_lists(config).each do |list, slug, kind, name|
+      control = catalog[slug]
 
-          assert_includes %w[properties events methods], kind
-          assert_empty names - known, "#{list} #{slug} #{kind} names entries the catalog does not list"
-        end
-      end
+      assert control, "config/next_release.json #{list} lists #{slug}, which the catalog does not have"
+      refute_includes config.fetch("controls"), slug, "#{slug} is a next-release page; its callout already covers every line"
+      assert_includes %w[properties events methods], kind
+      known = Array(control[kind.to_sym]).map { |entry| entry.is_a?(Hash) ? entry[:name].to_s : entry.to_s }
+      assert_includes known, name, "#{list} #{slug} #{kind} names #{name}, which the catalog does not list"
     end
   end
 
@@ -179,14 +178,16 @@ class DocsCoverageTest < ActiveSupport::TestCase
     marker = DocsCatalog::NEXT_RELEASE_MARKER
     wrong = []
 
+    lists = next_release_lists(config)
+
     DocsCatalog.control_catalog.reject { |control| config.fetch("controls").include?(control[:slug]) }.each do |control|
       slug = control[:slug]
-      listed = %w[members client_ignored].each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |list, names|
-        config.fetch(list).fetch(slug, {}).each { |kind, entries| names[kind].concat(entries) }
+      listed = lists.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |(_list, entry_slug, kind, name), names|
+        names[kind] << name if entry_slug == slug
       end
       seen = Hash.new { |hash, key| hash[key] = [] }
 
-      generated_api_lines(DocsCatalog.find(slug).content).each do |kind, name, line|
+      generated_api_lines(page(slug).content).each do |kind, name, line|
         seen[kind] << name
         expected = listed[kind].include?(name)
         wrong << "#{slug} #{kind} #{name}: #{expected ? 'missing' : 'unexpected'} marker" if line.include?(marker) != expected
@@ -200,6 +201,19 @@ class DocsCoverageTest < ActiveSupport::TestCase
   end
 
   private
+
+  # [list, slug, kind, name] for every line config/next_release.json marks:
+  # "members", "client_ignored" and each design of "design_client_ignored",
+  # whose names are an array or a hash of name => note.
+  def next_release_lists(config)
+    lists = %w[members client_ignored].map { |list| [ list, config.fetch(list) ] }
+    config.fetch("design_client_ignored").each { |design, controls| lists << [ "design_client_ignored #{design}", controls ] }
+    lists.flat_map do |list, controls|
+      controls.flat_map do |slug, kinds|
+        kinds.flat_map { |kind, names| (names.is_a?(Hash) ? names.keys : names).map { |name| [ list, slug, kind, name ] } }
+      end
+    end
+  end
 
   # [kind, name, line] for each generated "- `name` — ..." or "- `name(...)`"
   # line: the Properties, Events and Methods lists of a generated page, and the
@@ -235,6 +249,12 @@ class DocsCoverageTest < ActiveSupport::TestCase
   def catalog_pages
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
-    slugs.map { |slug| DocsCatalog.find(slug) }
+    slugs.map { |slug| page(slug) }
+  end
+
+  # DocsCatalog.find falls back to the first page for an unknown slug, so a
+  # missing page would otherwise pass as the Introduction.
+  def page(slug)
+    DocsCatalog.find(slug).tap { |entry| assert_equal slug, entry.slug, "DocsCatalog has no #{slug} page" }
   end
 end

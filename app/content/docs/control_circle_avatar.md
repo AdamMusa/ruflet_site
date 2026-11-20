@@ -30,7 +30,7 @@ page.add(
 - `content` — usually `text` initials or an `icon`; the first positional argument sets it
 - `foreground_image_src` — the photo, drawn over `content`
 - `background_image_src` — an image drawn behind `content`
-- `bgcolor` / `color` — background and content colors
+- `bgcolor` / `color` — background and content colors; on iOS and macOS `color` applies to text content only, not to an `icon`
 - `radius`, or `min_radius` / `max_radius`
 - `on_image_error` — an image failed to load
 

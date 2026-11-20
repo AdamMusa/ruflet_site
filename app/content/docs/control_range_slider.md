@@ -39,3 +39,11 @@ page.add(price)
 The client updates `start_value` and `end_value` before it sends the event, so
 read both from `event.control.props`. `on_change` fires continuously while a
 thumb moves; handle `on_change_end` to react once, when the user lets go.
+
+On iOS and macOS the client draws two stacked sliders instead of one slider
+with two thumbs: the first runs from `min` to `end_value` and sets
+`start_value`, the second runs from `start_value` to `max` and sets
+`end_value`, and each splits its own span into `divisions` steps. They use
+`active_color`; `label`, `round`, `inactive_color` and `overlay_color` apply on
+Android, web, Windows and Linux only. The events and the values written back
+are the same on every platform.

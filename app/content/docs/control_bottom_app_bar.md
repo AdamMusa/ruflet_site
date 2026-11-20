@@ -34,3 +34,7 @@ page.add(status)
 For switching between top-level destinations, use a
 [`navigation_bar`](/docs/control-navigation-bar) instead; a bottom app bar is
 for actions on the current screen.
+
+On iOS and macOS the bar uses `content`, `bgcolor`, `height`, `padding` and
+`border_radius`. `elevation`, `shadow_color`, `shape`, `notch_margin` and
+`clip_behavior` apply on Android, web, Windows and Linux only.

@@ -28,7 +28,7 @@ page.add(
 ## Common properties
 
 - `suggestions` — `auto_complete_suggestion(key:, value:)` entries; the first positional argument sets them
-- `value` — the text in the field
+- `value` — the text in the field; on iOS and macOS only the starting text, so a later `page.update` of `value` does not change the field there
 - `suggestions_max_height` — height of the suggestion list (default 200)
 - `on_change` — the text changed; `event.data` is the text
 - `on_select` — a suggestion was picked; `event.value` is its value and `event.selection` holds its `key` and `value`

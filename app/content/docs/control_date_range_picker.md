@@ -51,3 +51,10 @@ arrives as `"2026-07-02T22:00:00.000+00:00"` and
 day before for users east of UTC. The client does not send its UTC offset, so
 keep the full timestamps, or ask the user for their time zone before you turn
 them into calendar dates.
+
+On iOS and macOS the picker opens as a sheet from the bottom of the screen
+with a start-date wheel, an end-date wheel and Cancel and Done buttons. It uses
+`start_value`, `end_value`, `first_date`, `last_date`, `help_text`,
+`cancel_text`, `confirm_text` and `modal`. `current_date`, `entry_mode`,
+`save_text` and the input-mode field labels apply on Android, web, Windows and
+Linux only.

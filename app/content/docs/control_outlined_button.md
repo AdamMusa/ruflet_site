@@ -35,7 +35,9 @@ page.add(status)
 
 Set colors through `style:`. The top-level `bgcolor:` and `color:` keywords are
 accepted, but the Material button only uses them as defaults for `style`, so
-they have no effect without it.
+they have no effect without it. On iOS and macOS the client draws an outlined
+Cupertino button instead, which uses the top-level `bgcolor:` and `color:`
+directly; a color in `style:` wins over them.
 
 ```ruby
 outlined_button("Delete account", icon: "delete_forever", style: { color: "#b91c1c" })

@@ -397,6 +397,10 @@
     "checkbox": {
       "error": "Shows the checkbox in its error color."
     },
+    "cupertinobottomsheet": {
+      "dismissible": "When false, tapping outside the sheet does not close it (default true).",
+      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control."
+    },
     "datacolumn": {
       "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and `asc`, the new direction on Android, web, Windows and Linux. On iOS and macOS `asc` is the table's current `sort_ascending`, so keep the direction in Ruby."
     },

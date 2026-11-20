@@ -50,9 +50,9 @@ hold the state in Ruby, as the "Pinned" item does.
 On iOS and macOS the menu opens as a Cupertino sheet that shows only each
 item's `content` (its text): no `icon` and no check mark. An item without
 `content`, such as a `popup_menu_item()` divider, draws an error box there, so
-give every item text when the app runs on Apple platforms. `menu_position`,
-`menu_padding`, `bgcolor`, `elevation` and `shape` style the menu on Android,
-web, Windows and Linux only.
+give every item text when the app runs on Apple platforms. `icon_size`,
+`icon_color`, `menu_position`, `menu_padding`, `bgcolor`, `elevation` and
+`shape` apply on Android, web, Windows and Linux only.
 
 On iOS and macOS, the button fires `on_select` when an item is chosen and
 `on_cancel` when the sheet closes without a choice. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

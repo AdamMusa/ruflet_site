@@ -36,6 +36,10 @@ page.add(
 ## Usage
 
 `cupertino_segmented_button` raises `ArgumentError` unless it has at least two
-visible segments, and `IndexError` when `selected_index` is out of range. For
+visible segments, and `IndexError` when `selected_index` is out of range.
+
+The color properties style the iOS control only. On Android, web, Windows and
+Linux the Material button ignores them, and `padding` makes it fill the
+available width, inset by that padding. For
 the sliding iOS style, use
 [`cupertino_sliding_segmented_button`](/docs/control-cupertino-sliding-segmented-button).

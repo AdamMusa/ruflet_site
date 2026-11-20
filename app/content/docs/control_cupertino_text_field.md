@@ -29,8 +29,8 @@ page.add(
 - `value` — the text; the first positional argument sets it
 - `hint_text` — shown while the field is empty, on every platform
 - `placeholder_text` / `placeholder_style` — the iOS placeholder; only the Cupertino look reads them, and `hint_text` wins when both are set
-- `clear_button_visibility_mode` — `"never"`, `"editing"`, `"notEditing"` or `"always"`
-- `prefix` / `suffix` with `prefix_visibility_mode` / `suffix_visibility_mode`
+- `clear_button_visibility_mode` — `"never"`, `"editing"`, `"notEditing"` or `"always"`; iOS and macOS only, the Material field has no clear button
+- `prefix` / `suffix` with `prefix_visibility_mode` / `suffix_visibility_mode`; the visibility modes apply on iOS and macOS only
 - `password` / `multiline` / `max_lines` / `max_length`
 - `keyboard_type` / `capitalization` / `autocorrect`
 - `on_change` / `on_submit` — `event.data` is the text

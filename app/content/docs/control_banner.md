@@ -32,10 +32,16 @@ page.add(column(children: [status, button("Go offline", on_click: ->(_event) { p
 - `content_text_style` / `content_padding`
 - `force_actions_below` — put the actions under the message
 - `on_visible` — the banner was shown
-- `on_dismiss` — the banner was closed
+- `on_dismiss` — the banner was closed. On iOS and macOS, the 0.0.23 client never sends it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 
 `page.show_banner(banner)` mounts and opens the banner, and `page.close_banner`
 closes it. See [Navigation and Feedback](/docs/navigation-feedback) for
 snackbars and dialogs, which suit short-lived messages better.
+
+On iOS and macOS the banner is drawn over the top of the screen with its
+actions as Cupertino buttons. It uses `content`, `actions`, `leading`,
+`bgcolor` and `content_padding`; `elevation`, `divider_color`,
+`content_text_style` and `force_actions_below` apply on Android, web, Windows
+and Linux only.

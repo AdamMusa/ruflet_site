@@ -42,3 +42,9 @@ page.add(
 Several tiles in a [`column`](/docs/control-column) or
 [`list_view`](/docs/control-list-view) form an accordion. Each tile opens and
 closes on its own.
+
+On iOS and macOS the tile uses `title`, `subtitle`, `leading`, `trailing`,
+`expanded`, `bgcolor` / `collapsed_bgcolor`, `tile_padding` and
+`controls_padding`, and removes the hidden controls while it is collapsed.
+`maintain_state`, the text colors and the icon colors apply on Android, web,
+Windows and Linux only.

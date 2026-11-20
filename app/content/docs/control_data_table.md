@@ -39,7 +39,7 @@ page.add(table)
 - `columns` — the `data_column(label, numeric:, on_sort:)` headers; the first positional argument sets them
 - `rows` — `data_row(cells, selected:, on_select_change:)` rows of `data_cell(content)`
 - `sort_column_index` / `sort_ascending` — which column shows the sort arrow, and its direction
-- `show_checkbox_column` / `on_select_all` — row selection with a header checkbox
+- `show_checkbox_column` / `on_select_all` — row selection with a header checkbox. On iOS and macOS, the 0.0.23 client draws no checkbox column and sends neither `on_select_all` nor the rows' `on_select_change`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `column_spacing` / `horizontal_margin` / `data_row_min_height` / `data_row_max_height` / `heading_row_height`
 - `border` / `border_radius` / `vertical_lines` / `divider_thickness`
 - `horizontal_lines` — lines between rows; the 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
@@ -57,6 +57,15 @@ right-aligns a column.
 On iOS and macOS it is the table's current `sort_ascending` (`false` until you
 set it), so passing `asc` back as `sort_ascending` never changes the direction
 there.
+
+On iOS and macOS the client draws a plainer table. It uses
+`heading_row_color`, each row's `color` and its `selected` highlight,
+`show_bottom_border` and the cells' tap events. The sort arrow, `numeric`
+alignment, `column_spacing`, `horizontal_margin`, the row and heading heights,
+`border`, `border_radius`, `divider_thickness`, `data_row_color` and the two
+text styles apply on Android, web, Windows and Linux only.
+
+On iOS and macOS, the 0.0.23 client also ignores `vertical_lines`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 For fixed header rows or columns on large tables, use the `datatable2`
 [DataTable2 extension](/docs/extension-datatable2).

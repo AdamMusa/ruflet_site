@@ -34,6 +34,11 @@ page.add(view_label)
 
 ## Usage
 
+On iOS and macOS each segment is a Cupertino button, filled when selected and
+tinted otherwise. There is no check mark: `selected_icon` replaces a selected
+segment's icon only when you set it. `style` and the segments' `tooltip` apply
+on Android, web, Windows and Linux only.
+
 By default exactly one segment must be selected, so start with one value in
 `selected`. For a multi-select filter, allow both multiple and empty
 selections:

@@ -25,16 +25,16 @@ page.add(
 - `content` — the label, a string or a control; the first positional argument sets it
 - `icon` / `icon_color`
 - `bgcolor` / `color` — the Cupertino look uses them directly
-- `size` — `"small"`, `"medium"` or `"large"`
-- `border_radius` / `padding` / `min_size`
-- `opacity_on_click` — how much the button fades while pressed
+- `size` — `"small"`, `"medium"` or `"large"` (iOS and macOS only)
+- `border_radius` / `padding` / `min_size` (iOS and macOS only; Material buttons take padding, shape and minimum size from `style:`)
+- `opacity_on_click` — how much the button fades while pressed (iOS and macOS only)
 - `on_click` / `on_long_press`
 - `url` — open a link on click
 - `action` / `on_action_result` — a client action the button runs inside the tap. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 
-On Android, the web and desktop the button renders as a Material button, which
+On Android, web, Windows and Linux the button renders as a Material button, which
 takes its colors from `style:` (see
 [OutlinedButton](/docs/control-outlined-button)). Set both `style` and the
 top-level colors when one button must look right everywhere.

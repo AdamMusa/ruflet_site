@@ -1,5 +1,5 @@
 {
-  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them) and \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them). Empty every list when the next release ships.",
+  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them), \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them) and \"design_client_ignored\" (the 0.0.23 client acts on them with one design only: \"cupertino\" lists lines that need main on iOS and macOS, \"material\" lines that need main on Android, web, Windows and Linux; a name may map to its own note). Empty every list when the next release ships.",
   "released": "0.0.23",
   "controls": [
     "control-about-dialog",
@@ -529,6 +529,110 @@
         "prefix_icon_size_constraints",
         "suffix_icon_size_constraints"
       ]
+    }
+  },
+  "design_client_ignored": {
+    "cupertino": {
+      "control-banner": {
+        "events": [
+          "on_dismiss"
+        ]
+      },
+      "control-cupertino-text-field": {
+        "properties": [
+          "error",
+          "error_max_lines",
+          "error_style",
+          "fill_color",
+          "filled",
+          "focused_bgcolor",
+          "focused_border_color",
+          "focused_border_width"
+        ]
+      },
+      "control-data-row": {
+        "events": {
+          "on_select_change": "In a `data_table` on iOS and macOS, the 0.0.23 client never sends it."
+        }
+      },
+      "control-data-table": {
+        "properties": [
+          "show_checkbox_column",
+          "vertical_lines"
+        ],
+        "events": [
+          "on_select_all"
+        ]
+      },
+      "control-popup-menu-button": {
+        "events": [
+          "on_cancel",
+          "on_select"
+        ]
+      },
+      "control-radio": {
+        "properties": [
+          "label_style"
+        ]
+      },
+      "control-reorderable-list-view": {
+        "properties": [
+          "auto_scroll",
+          "first_item_prototype",
+          "scroll",
+          "scroll_interval"
+        ],
+        "events": [
+          "on_scroll"
+        ]
+      },
+      "control-search-bar": {
+        "events": [
+          "on_tap_outside_bar"
+        ],
+        "methods": [
+          "close_view",
+          "open_view"
+        ]
+      },
+      "control-switch": {
+        "properties": [
+          "label_text_style",
+          "mouse_cursor"
+        ]
+      },
+      "control-text-field": {
+        "properties": [
+          "error",
+          "error_max_lines",
+          "error_style",
+          "fill_color",
+          "filled",
+          "focused_bgcolor",
+          "focused_border_color",
+          "focused_border_width"
+        ]
+      }
+    },
+    "material": {
+      "control-cupertino-switch": {
+        "properties": [
+          "active_thumb_image_src",
+          "inactive_thumb_image_src"
+        ],
+        "events": [
+          "on_image_error"
+        ]
+      },
+      "control-switch": {
+        "properties": [
+          "active_thumb_image_src",
+          "inactive_thumb_image_src"
+        ],
+        "events": [
+          "on_image_error"
+        ]
+      }
     }
   }
 }

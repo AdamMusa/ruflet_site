@@ -38,3 +38,9 @@ page.add(plan)
 
 `event.data` in the group's `on_change` is the chosen radio's `value`. Lay the
 radios out with any control, for example a `row` for a compact choice.
+
+On iOS and macOS the client draws Cupertino radios, which have no ink:
+`overlay_color`, `visual_density` and `splash_radius` apply on Android, web,
+Windows and Linux only.
+
+On iOS and macOS, the 0.0.23 client ignores `label_style`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

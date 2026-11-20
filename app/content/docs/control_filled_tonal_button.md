@@ -35,3 +35,7 @@ page.add(cart)
 
 As with the other Material buttons, put colors in `style:`; the top-level
 `bgcolor:` and `color:` keywords only take effect together with `style`.
+
+On iOS and macOS the client draws a tinted Cupertino button instead, which
+uses the top-level `bgcolor:` and `color:` directly; a color in `style:` wins
+over them.

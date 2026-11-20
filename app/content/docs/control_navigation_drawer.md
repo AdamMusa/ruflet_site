@@ -48,3 +48,11 @@ page.add(
 `page.show_end_drawer` and `page.close_end_drawer` do the same for
 `page.end_drawer`. Close the drawer in `on_change` once the user has picked a
 destination, as above.
+
+On iOS and macOS the drawer uses `controls`, `selected_index`, `bgcolor`,
+`indicator_color` and `tile_padding`. `elevation`, `shadow_color` and
+`indicator_shape` apply on Android, web, Windows and Linux only. On iOS and
+macOS, `selected_index` and `event.data` count every entry of `controls`,
+headings and dividers included, while the other platforms count destinations
+only. The two agree when no heading or divider comes before a destination, as
+in the example.

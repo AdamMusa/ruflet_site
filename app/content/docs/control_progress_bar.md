@@ -36,4 +36,5 @@ page.add(
 
 Keep the bar in a variable and change only `value` with `page.update` as the
 work progresses, as the example does. Show an indeterminate bar while the
-total amount of work is still unknown.
+total amount of work is still unknown. On iOS and macOS an indeterminate bar
+shows a spinning activity indicator instead of a moving bar.
