@@ -286,7 +286,7 @@
     "track_gap": "Gap between the active and inactive parts of the track, in logical pixels.",
     "affinity": "Where the expand icon sits: `\"leading\"`, `\"trailing\"` or `\"platform\"`.",
     "collapsed_shape": "Shape of the tile while collapsed.",
-    "unit_id": "Your AdMob ad unit ID; without it the client loads Google's test ad unit.",
+    "unit_id": "Your AdMob ad unit id. Set it on every ad: without it the client uses a Google test unit, and a banner gets the interstitial test ids.",
     "request": "Targeting options for the ad request, such as keywords.",
     "active_thumb_image_src": "Image drawn on the thumb while the switch is on.",
     "inactive_thumb_image_src": "Image drawn on the thumb while the switch is off.",
