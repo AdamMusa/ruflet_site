@@ -15,7 +15,7 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
 
   # Everything else on the page is the published 0.0.23 gem.
   MAIN_ONLY_PARAGRAPHS = [
-    "A model's subclasses use its connection",
+    "A subclass defined before its parent's `establish_connection` uses",
     "A `Time` is stored as its UTC time",
     "A `y` after a vowel stays in the plural",
     "`Post.new(user: user)`, `create` and `update` take a `belongs_to` name",
@@ -41,12 +41,12 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
   end
 
   # Runs the page's Ruby examples in order, as one program, against the
-  # ruflet_record in RUFLET_SOURCE_ROOT, on an SQLite file in a temporary
-  # directory. The Gemfile line and the Ruflet app (which needs a client) are
-  # left out.
+  # ruflet_record of Ruflet main (see main_record_lib), on an SQLite file in a
+  # temporary directory. The Gemfile line and the Ruflet app (which needs a
+  # client) are left out.
   test "the RufletRecord examples run in page order" do
-    lib = record_lib("RUFLET_SOURCE_ROOT")
-    skip "Set RUFLET_SOURCE_ROOT to a Ruflet checkout with packages/ruflet_record" unless lib
+    lib = main_record_lib
+    skip "Set RUFLET_RECORD_MAIN_ROOT or RUFLET_SOURCE_ROOT to a Ruflet checkout with packages/ruflet_record" unless lib
 
     blocks = example_blocks.map(&:first)
     assert_operator blocks.size, :>=, 10
@@ -69,11 +69,11 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
   # Ruflet checkout at b34072be, the commit that set ruflet_record's VERSION
   # to 0.0.23. Every statement's value is compared, and every relation is
   # loaded again once the examples have created rows (see the tracer), except
-  # in the blocks that follow a next-release marker in their section.
+  # in a block whose introducing paragraph carries the next-release marker.
   test "the unmarked RufletRecord examples behave the same with 0.0.23" do
-    main_lib = record_lib("RUFLET_SOURCE_ROOT")
+    main_lib = main_record_lib
     release_lib = record_lib("RUFLET_RECORD_RELEASE_ROOT")
-    skip "Set RUFLET_SOURCE_ROOT and RUFLET_RECORD_RELEASE_ROOT to Ruflet checkouts with packages/ruflet_record" unless main_lib && release_lib
+    skip "Set RUFLET_RECORD_RELEASE_ROOT, and RUFLET_RECORD_MAIN_ROOT or RUFLET_SOURCE_ROOT, to Ruflet checkouts with packages/ruflet_record" unless main_lib && release_lib
 
     blocks = example_blocks
     main = trace_examples(main_lib, blocks.map(&:first))
@@ -123,20 +123,26 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
       lib if ENV[variable].present? && File.file?(File.join(lib, "ruflet_record.rb"))
     end
 
+    # The ruflet_record of Ruflet main. CI pins RUFLET_SOURCE_ROOT to the
+    # commit the API catalogs come from, which can predate ruflet_record
+    # changes, so RUFLET_RECORD_MAIN_ROOT, when set, takes precedence.
+    def main_record_lib
+      record_lib(ENV["RUFLET_RECORD_MAIN_ROOT"].present? ? "RUFLET_RECORD_MAIN_ROOT" : "RUFLET_SOURCE_ROOT")
+    end
+
     # The page's Ruby blocks except the Gemfile line and the Ruflet app, each
-    # with whether a next-release marker comes before it in its section.
+    # with whether the paragraph directly before it carries the next-release
+    # marker. Only such a block is main-only; a marker earlier in the section
+    # does not make the blocks after it main-only.
     def example_blocks
       content = page.source.read
-      # The same text with the code blanked out, so a `#` comment in a block is
-      # not taken for a heading.
-      prose = content.gsub(/```.*?```/m) { |fence| fence.gsub(/[^\n]/, " ") }
       content.to_enum(:scan, /```ruby\n(.*?)```/m).filter_map do
         match = Regexp.last_match
         code = match[1]
         next if code.start_with?("gem ") || code.include?("Ruflet.run")
 
-        section_start = prose[0...match.begin(0)].rindex(/^#+ /) || 0
-        [ code, content[section_start...match.begin(0)].include?(MARKER) ]
+        introduction = content[0...match.begin(0)].rstrip.split(/\n{2,}/).last.to_s
+        [ code, introduction.include?(MARKER) ]
       end
     end
 

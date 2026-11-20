@@ -41,11 +41,25 @@ RufletRecord.establish_connection(
 `RufletRecord.connection` returns the connection and raises
 `RufletRecord::ConnectionNotEstablished` before one is open. A model class
 may open its own database with `Model.establish_connection(...)`; calling it
-on `RufletRecord::Base` sets the shared connection. With 0.0.23 that model's
-subclasses still use the shared connection.
+on `RufletRecord::Base` sets the shared connection. A subclass gets the
+connection its parent has when the subclass is defined, so a parent class
+that calls `establish_connection` in its body holds a second database for the
+models defined under it:
 
-A model's subclasses use its connection, so a parent class can hold a second
-database for the models under it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+```ruby
+class Archive < RufletRecord::Base
+  establish_connection(database: File.join(__dir__, "archive.sqlite3"))
+end
+
+class ArchivedNote < Archive
+end
+```
+
+With 0.0.23 a subclass defined before its parent's `establish_connection`
+keeps using the shared connection.
+
+A subclass defined before its parent's `establish_connection` uses the
+parent's connection too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Define the schema
 
@@ -93,10 +107,10 @@ Array is not converted: saving one fails or stores the wrong value, so store a
 JSON string.
 
 A `Time` is stored as its UTC time, so it keeps its instant, and a string's
-`Z` or `+HH:MM` offset is applied. A Hash or an Array is stored as JSON text,
-in any column, and a hash condition such as `where(prefs: { "theme" => "dark" })`
-matches that text. It reads back as the text, so call `JSON.parse` to get the
-data. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+`Z` or `+HH:MM` offset is applied. A Hash or an Array written to a `string`,
+`text` or `json` column is stored as JSON text, and a hash condition such as
+`where(prefs: { "theme" => "dark" })` matches that text. It reads back as the
+text, so call `JSON.parse` to get the data. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Each helper takes `null: false`, `default:` and `unique: true`.
 `timestamps` adds `created_at` and `updated_at`. `references :user` (alias
@@ -307,6 +321,7 @@ not.
 A range with an open end leaves that side unbounded, as in Active Record:
 `where(age: 18..)` is `age >= 18`, `..17` is `age <= 17`, `...18` is `age < 18`,
 and `nil..nil` matches every row. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 With 0.0.23 such a range matches no rows; write the bound as a string instead:
 
 ```ruby
@@ -412,9 +427,11 @@ The embedded Ruby of a `--self` build has RufletRecord built in, with its own
 SQLite, so `require "ruflet_record"` works there without the gem. The
 database path must be one the app can write to on the device. The copy in the
 embedded Ruby predates every change above that is marked for the next
-release, so follow the 0.0.23 notes there: write an open bound as a string,
-leave transaction blocks at their end, store UTC times and JSON strings, and
-set `user_id` rather than `user`.
+release, so follow the 0.0.23 notes there: open a parent class's database
+before you define its subclasses, store UTC times and JSON strings, set
+`table_name` or `class_name:` where the plural differs, set `user_id` rather
+than `user`, write an open bound as a string, and leave transaction blocks at
+their end.
 
 ## Deliberate limits
 

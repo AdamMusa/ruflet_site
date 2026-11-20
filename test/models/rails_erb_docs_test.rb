@@ -114,6 +114,28 @@ class RailsErbDocsTest < ActiveSupport::TestCase
     end
   end
 
+  # erb_to_native turns `max-w-*` on text into a Text `max_width`, which
+  # neither the Material nor the Cupertino Text renderer reads, so the class
+  # has no effect.
+  test "the styling page lists max-w-* with the classes that have no effect" do
+    content = DocsCatalog.find("rails-native-styling").source.read
+    size = content[/^### Size and flex\n.*?(?=^### )/m]
+    no_effect = content[/^### Classes that have no effect\n.*?(?=^See )/m]
+
+    assert size, "Missing the Size and flex table"
+    refute_includes size, "max-w", "max-w-* sets nothing a renderer reads"
+    assert no_effect, "Missing the classes that have no effect"
+    assert_includes no_effect, "`max-w-*`"
+
+    engine = ENV["RUFLET_ENGINE_ROOT"].to_s
+    next if engine.empty?
+
+    renderers = %w[text material_text cupertino_text].map { |name| File.join(engine, "packages/ruflet/lib/src/controls/#{name}.dart") }
+    renderers.select { |path| File.file?(path) }.each do |path|
+      refute_includes File.read(path), "max_width", "#{File.basename(path)} reads max_width now; move max-w-* back to the Size table"
+    end
+  end
+
   test "Rails integration documents hybrid self-contained apps" do
     integration = DocsCatalog.find("rails-integration").source.read
 
