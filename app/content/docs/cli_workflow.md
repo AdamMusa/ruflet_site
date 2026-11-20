@@ -54,8 +54,10 @@ ruflet build web
 ruflet build macos
 ```
 
-Builds are server-driven by default and require `app.backend_url` in
-`ruflet.yaml`. Add `--self` to package the Ruby project with the client:
+Builds are server-driven by default and connect to `app.backend_url` in
+`ruflet.yaml`. An `apk`, `android`, `aab`, `ios`, or `ipa` build fails without
+it. See the [CLI Reference](/docs/cli-reference) for when a web or desktop
+build can omit it. Add `--self` to package the Ruby project with the client:
 
 ```bash
 ruflet build android --self

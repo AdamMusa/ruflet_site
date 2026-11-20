@@ -49,9 +49,18 @@ app:
 
 Do not use `localhost` in a build intended for another device.
 
-`backend_url` may be omitted for web and desktop clients, which learn their
-server at launch: a web client from the origin it is served from, a desktop
-client from the URL its launcher passes.
+A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails without
+`backend_url`. A web or desktop build can omit it, and the client then finds
+its server at launch:
+
+- A web client connects to the origin it was loaded from. That works only
+  when the Ruby backend, or a proxy that forwards the WebSocket to it, serves
+  the client from that same origin.
+- A desktop client connects to the URL its launcher passes, as
+  `ruflet run --desktop` does, or to `http://localhost:8550`.
+
+Set `backend_url` for a web build hosted apart from its Ruby backend and for a
+desktop build you distribute.
 
 ## Self-contained builds
 

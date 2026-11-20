@@ -91,8 +91,10 @@ build:
   theme_color: "#FFFFFF"
 ```
 
-`app.backend_url` is required for server-driven builds. It is not required for
-`--self` builds.
+Server-driven builds connect to `app.backend_url`. An `apk`, `android`, `aab`,
+`ios`, or `ipa` build fails without it. A web or desktop build can omit it
+only in the cases the [CLI Reference](/docs/cli-reference) lists. It is not
+required for `--self` builds.
 
 ### `services.yaml`
 
