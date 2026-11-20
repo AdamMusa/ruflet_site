@@ -78,3 +78,54 @@ page.on(:platform_brightness_change) { |_event| refresh_theme(page) }
 Use callbacks such as `on_result:` for client method and device-service
 results. These callbacks normally receive `|result, error|`; handle both paths
 because platform capabilities vary.
+
+### Popping several views
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 `page.pop_views_until` builds an unknown control and the views stay.
+
+`page.pop_views_until(route, result: nil)` pops every view above the first
+view whose route is `route` and makes that route current. It then calls
+`page.on_views_pop_until`, fires `route_change` when the route changed, and
+sends one update to the client. It raises ArgumentError, and leaves the stack
+alone, when no view has that route.
+
+```ruby
+page.on_views_pop_until = ->(event) {
+  puts "Back on #{event.route} with #{event.result.inspect}"
+}
+
+page.views = [
+  view(route: "/", controls: [text("Cart")]),
+  view(route: "/checkout", controls: [text("Address")]),
+  view(
+    route: "/checkout/pay",
+    controls: [
+      filled_button(
+        content: text("Pay"),
+        on_click: ->(_event) { page.pop_views_until("/", result: "paid") }
+      )
+    ]
+  )
+]
+page.update
+```
+
+The event has `route`, `result` and `view`, the view that is now on top.
+
+### Handler writers
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 a writer such as `page.on_resize =` sends the handler itself to the client, and it never runs.
+
+Any `page.on_<event> =` writer registers a page handler, like `page.on`, and
+sends only the event flag to the client. This covers page events such as
+`on_resize` and `on_keyboard_event`, and the events of the default page view
+such as `on_scroll`. Assign `nil` to remove a handler.
+
+```ruby
+size = text(value: "")
+page.add(size)
+
+page.on_resize = ->(event) { page.update(size, value: "Resized: #{event.data.inspect}") }
+page.on_keyboard_event = ->(event) { page.update(size, value: "Key: #{event.data.inspect}") }
+page.on_scroll = ->(event) { puts "Scrolled: #{event.data.inspect}" }
+```
