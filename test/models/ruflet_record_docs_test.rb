@@ -13,19 +13,31 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
     assert_includes integrations.entries.map(&:slug), "ruflet-record"
   end
 
-  test "only the main-only parts of the page carry the next-release marker" do
-    content = page.source.read
-    range = content[/^A range with an open end.*?(?=\n\n)/m]
+  # Everything else on the page is the published 0.0.23 gem.
+  MAIN_ONLY_PARAGRAPHS = [
+    "A model's subclasses use its connection",
+    "A `Time` is stored as its UTC time",
+    "A `y` after a vowel stays in the plural",
+    "`Post.new(user: user)`, `create` and `update` take a `belongs_to` name",
+    "`has_many :addresses`, `:statuses`, `:buses` and `:aliases` find",
+    "A range with an open end",
+    "A `return`, `break` or `throw` out of the block commits",
+    "A `Time` bind is converted to UTC",
+    "> #{MARKER}"
+  ].freeze
 
-    assert range, "Missing the open-ended range paragraph"
-    assert_includes range, MARKER
-    assert_includes content[/^### Self-contained builds\n\n.*?\n/m].to_s, "> #{MARKER}"
-    # The rest of the page is the published 0.0.23 gem.
-    transactions = content[/^## Transactions\n.*?(?=^## )/m].to_s
-    assert_includes transactions[/^A `return`, `break` or `throw` out of the block commits.*?(?=\n\n|\z)/m].to_s, MARKER
-    refute_includes transactions[/^With 0.0.23, leave a transaction block.*?(?=\n\n)/m].to_s, MARKER
-    assert_equal 3, content.scan(MARKER).size
-    refute_includes content[/\A.*?(?=^## Queries)/m], MARKER
+  test "only the main-only parts of the page carry the next-release marker" do
+    prose = page.source.read.gsub(/```.*?```/m, "")
+    marked = prose.split(/\n{2,}/).select { |paragraph| paragraph.include?(MARKER) }
+
+    assert_equal MAIN_ONLY_PARAGRAPHS.size, marked.size, "Marked paragraphs:\n#{marked.join("\n\n")}"
+    MAIN_ONLY_PARAGRAPHS.zip(marked).each do |opening, paragraph|
+      assert paragraph.start_with?(opening), "Expected a marked paragraph starting #{opening.inspect}, got:\n#{paragraph}"
+    end
+    assert_includes prose[/^### Self-contained builds\n\n.*?\n/m].to_s, "> #{MARKER}"
+    # The 0.0.23 behavior next to each change stays unmarked.
+    assert_includes prose, "With 0.0.23, leave a transaction block"
+    assert_includes prose, "With 0.0.23 such a range matches no rows"
   end
 
   # Runs the page's Ruby examples in order, as one program, against the
@@ -77,10 +89,10 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
     assert_operator compared, :>=, 10
   end
 
-  # ruflet_record changed after 0.0.23 only in the open-ended range fix (#107)
-  # and the transaction-exit fix (#99). Comparing results misses them when no
-  # row tells the two versions apart (`age: 18..` finds nothing on either when
-  # every age is 0), so the unmarked examples must not use them at all.
+  # Two changes after 0.0.23, the open-ended range fix (#107) and the
+  # transaction-exit fix (#99), give 0.0.23's results unless a row tells them
+  # apart (`age: 18..` finds nothing on either when every age is 0), so the
+  # comparison above can miss them. The unmarked examples must not use them.
   test "the unmarked RufletRecord examples avoid what changed after 0.0.23" do
     example_blocks.each_with_index do |(code, marked), index|
       next if marked

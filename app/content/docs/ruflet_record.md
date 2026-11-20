@@ -41,7 +41,11 @@ RufletRecord.establish_connection(
 `RufletRecord.connection` returns the connection and raises
 `RufletRecord::ConnectionNotEstablished` before one is open. A model class
 may open its own database with `Model.establish_connection(...)`; calling it
-on `RufletRecord::Base` sets the shared connection.
+on `RufletRecord::Base` sets the shared connection. With 0.0.23 that model's
+subclasses still use the shared connection.
+
+A model's subclasses use its connection, so a parent class can hold a second
+database for the models under it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Define the schema
 
@@ -80,10 +84,19 @@ table and creates it again.
 | `datetime` | `DATETIME` | `Time` in UTC |
 | `date` | `DATE` | `Time` at midnight UTC |
 | `binary` | `BLOB` | String |
-| `json` | `TEXT` | String: RufletRecord does not encode or decode it, so store a JSON string |
+| `json` | `TEXT` | String: RufletRecord does not decode it |
 
-A `Time` is stored as `YYYY-MM-DD HH:MM:SS` without its offset and read back
-as UTC, so write UTC times; the timestamps already are.
+Times read back as UTC. With 0.0.23 a `Time` is stored as
+`YYYY-MM-DD HH:MM:SS` without its offset, and a string's offset is ignored,
+so write UTC times; the timestamps already are. With 0.0.23 a Hash or an
+Array is not converted: saving one fails or stores the wrong value, so store a
+JSON string.
+
+A `Time` is stored as its UTC time, so it keeps its instant, and a string's
+`Z` or `+HH:MM` offset is applied. A Hash or an Array is stored as JSON text,
+in any column, and a hash condition such as `where(prefs: { "theme" => "dark" })`
+matches that text. It reads back as the text, so call `JSON.parse` to get the
+data. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Each helper takes `null: false`, `default:` and `unique: true`.
 `timestamps` adds `created_at` and `updated_at`. `references :user` (alias
@@ -160,8 +173,12 @@ raises `RufletRecord::UnknownAttributeError`.
 
 The table name is the class name in snake case with a simple plural: `Post`
 is `posts`, `BlogPost` is `blog_posts`, `Category` is `categories` and `Box`
-is `boxes`, but `Person` is `persons` and `Day` is `daies`. Set it, and the
-primary key, where the convention does not fit:
+is `boxes`, but `Person` is `persons`, and with 0.0.23 `Day` is `daies`.
+
+A `y` after a vowel stays in the plural, so `Day` is `days` and `Key` is
+`keys`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+Set the table name, and the primary key, where the convention does not fit:
 
 ```ruby
 class LegacyEntry < RufletRecord::Base
@@ -217,12 +234,21 @@ user.destroy
 
 ## Associations
 
-- `belongs_to :user` reads `user_id` and returns the `User` with that id, or `nil`. `post.user = user` sets `user_id`.
+- `belongs_to :user` reads `user_id` and returns the `User` with that id, or `nil`. `post.user = user` sets `user_id`. With 0.0.23 `new`, `create` and `update` take only column names, so pass `user_id: user.id` there.
 - `has_many :posts` returns a relation of the posts whose `user_id` is this user's id. `user.posts.create!(...)` sets `user_id` for you.
 - `has_one :profile` returns the first `Profile` whose `user_id` matches.
 
-Each takes `class_name:` and `foreign_key:` to override the conventions. A
-`belongs_to` or `has_one` reader looks the record up when it is called and
+`Post.new(user: user)`, `create` and `update` take a `belongs_to` name too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+Each takes `class_name:` and `foreign_key:` to override the conventions. With
+0.0.23 `has_many :addresses` looks for an `Addresse` class, and `:statuses`,
+`:buses` and `:aliases` miss their class the same way, so pass `class_name:`
+there.
+
+`has_many :addresses`, `:statuses`, `:buses` and `:aliases` find `Address`,
+`Status`, `Bus` and `Alias`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+A `belongs_to` or `has_one` reader looks the record up when it is called and
 returns it, or `nil`. A `has_many` reader returns a new relation, which runs
 its query when its records are requested. Nothing is cached or eager-loaded,
 so every call looks the rows up again.
@@ -326,6 +352,8 @@ RufletRecord.connection.execute("SELECT COUNT(*) AS n FROM users WHERE active = 
 `RecordNotFound`, `RecordInvalid`, `RecordNotSaved` and
 `UnknownAttributeError`. Invalid arguments raise `ArgumentError`.
 
+A `Time` bind is converted to UTC first. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Use it in a Ruflet app
 
 Open the database and define the schema when the app starts, then query from
@@ -383,9 +411,10 @@ client sees the same rows.
 The embedded Ruby of a `--self` build has RufletRecord built in, with its own
 SQLite, so `require "ruflet_record"` works there without the gem. The
 database path must be one the app can write to on the device. The copy in the
-embedded Ruby predates the open-ended range and transaction fixes above, so
-write an open bound as a string and leave transaction blocks at their end
-there.
+embedded Ruby predates every change above that is marked for the next
+release, so follow the 0.0.23 notes there: write an open bound as a string,
+leave transaction blocks at their end, store UTC times and JSON strings, and
+set `user_id` rather than `user`.
 
 ## Deliberate limits
 

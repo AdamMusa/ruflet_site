@@ -7,7 +7,8 @@
 # top-level statements, which run in order in one shared binding. OUT_JSON gets
 # one array per block with a summary of each statement's value: records as
 # their class and attributes, relations as their records, plain data as
-# itself, times as "Time" and anything else as "object".
+# itself and anything else as "object". A time within a day of now (a
+# timestamp) is "Time"; any other time is its UTC value.
 #
 # The examples query tables that are often empty at that point, so a relation
 # a statement returns is loaded again after the last block, against the rows
@@ -22,7 +23,7 @@ def summarize(value, depth = 0)
   case value
   when nil, true, false, Integer, Float, String then value
   when Symbol then ":#{value}"
-  when Time then "Time"
+  when Time then (value - Time.now).abs < 86_400 ? "Time" : value.getutc.strftime("%Y-%m-%d %H:%M:%S UTC")
   when RufletRecord::Relation
     begin
       [ "relation", value.to_a.map { |record| summarize(record, depth + 1) } ]
