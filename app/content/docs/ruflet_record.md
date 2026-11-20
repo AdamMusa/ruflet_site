@@ -299,6 +299,15 @@ the exception is raised again. A transaction inside another one is a SQLite
 savepoint, so rescuing an error inside the outer block rolls back only the
 inner one. `RufletRecord.connection.transaction` works the same way.
 
+With 0.0.23, leave a transaction block only by reaching its end or by raising.
+A `return`, `break` or `throw` out of the block leaves the transaction open:
+every later write joins it, other connections cannot write, and all of it
+is rolled back when the connection closes. Return from the method after the
+block instead.
+
+A `return`, `break` or `throw` out of the block commits, as in Active Record,
+and a thread killed inside the block rolls back. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## SQL and errors
 
 For uncommon SQL, use the connection directly. `execute(sql, binds)` returns
@@ -372,8 +381,9 @@ client sees the same rows.
 The embedded Ruby of a `--self` build has RufletRecord built in, with its own
 SQLite, so `require "ruflet_record"` works there without the gem. The
 database path must be one the app can write to on the device. The copy in the
-embedded Ruby predates the open-ended range fix above, so write an open bound
-as a string there.
+embedded Ruby predates the open-ended range and transaction fixes above, so
+write an open bound as a string and leave transaction blocks at their end
+there.
 
 ## Deliberate limits
 

@@ -20,7 +20,10 @@ class RufletRecordDocsTest < ActiveSupport::TestCase
     assert_includes range, MARKER
     assert_includes content[/^### Self-contained builds\n\n.*?\n/m].to_s, "> #{MARKER}"
     # The rest of the page is the published 0.0.23 gem.
-    assert_equal 2, content.scan(MARKER).size
+    transactions = content[/^## Transactions\n.*?(?=^## )/m].to_s
+    assert_includes transactions[/^A `return`, `break` or `throw` out of the block commits.*?(?=\n\n|\z)/m].to_s, MARKER
+    refute_includes transactions[/^With 0.0.23, leave a transaction block.*?(?=\n\n)/m].to_s, MARKER
+    assert_equal 3, content.scan(MARKER).size
     refute_includes content[/\A.*?(?=^## Queries)/m], MARKER
   end
 

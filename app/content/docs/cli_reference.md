@@ -11,9 +11,9 @@ Use `ruflet help` or `ruflet --help` for the command summary. Use
 `ruflet --version`, `ruflet -v`, or `ruflet version` to print the installed
 version.
 
-Commands have no help of their own; `ruflet help build` prints the same
-summary. Do not pass `--help` to a command, because the command treats it as
-an argument:
+In 0.0.23 commands have no help of their own; `ruflet help build` prints the
+same summary. Do not pass `--help` to a command there, because the command
+treats it as an argument:
 
 - `ruflet new --help` and `ruflet create --help` create a project in a directory named `--help`.
 - `ruflet build --help` stops with `Unsupported build target: --help`.
@@ -22,6 +22,8 @@ an argument:
 - `ruflet run --help`, `ruflet update --help`, `ruflet debug --help` and `ruflet emulators --help` print only a bare list of options under `Usage: ruflet [options]`.
 
 This reference lists each command's options.
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). `ruflet <command> --help`, `-h` and `ruflet help <command>` print that command's usage, summary and options. A flag the command does not read stops it with `ruflet <command>: invalid option: <flag>` and the command's help on standard error, exit status 64. `build` and `devices` still pass the flags they do not read to Flutter, so `ruflet build apk --help` and `ruflet devices --help` reach Flutter.
 
 ## Create a project
 
@@ -86,6 +88,8 @@ ruflet debug [platform] [--platform NAME] [--device-id ID]
 renderer name. This command requires managed Flutter client source and is for
 client-side debugging; normal app development uses `ruflet run`.
 
+`--device ID` is another spelling of `--device-id ID`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Build
 
 ```text
@@ -122,7 +126,11 @@ Self-contained builds embed the Ruby project:
   self-contained.
 
 Ruflet forwards remaining build options to Flutter after preparing extensions,
-permissions, assets, and runtime mode.
+permissions, assets, and runtime mode. Ruflet's own flags may sit anywhere,
+but the first other argument is the target, so put Flutter's flags after it:
+`ruflet build apk --release`.
+
+The target may also come after Flutter's flags, as in `ruflet build --release apk`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Install
 
@@ -132,6 +140,8 @@ ruflet install [-d|--device DEVICE_ID] [-v|--verbose]
 
 Install the last compatible build from `build/`. Run a platform build first.
 Without a device id, Ruflet presents a numbered chooser for connected devices.
+
+`--device=DEVICE_ID` is read too, and `-d` without a device id is an error. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Devices and emulators
 
@@ -145,6 +155,8 @@ ruflet emulators --start --emulator ID [-v|--verbose]
 emulators; `--start --emulator ID` launches one. Emulator creation and deletion
 are not implemented by Ruflet, so use the Android or Apple platform tools for
 those operations.
+
+`--cold` with `--start --emulator ID` cold boots an Android emulator. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Doctor
 
@@ -171,6 +183,7 @@ describes each one.
 
 Commands return zero on success and nonzero on invalid options, unsupported
 targets, missing configuration, failed downloads, or failed platform tools.
+An invalid option exits with status 64. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 Use `--verbose` where supported before reporting a build or tooling problem.
 `RUFLET_PROTOCOL_TRACE=summary` prints the messages a running app exchanges
 with its client.

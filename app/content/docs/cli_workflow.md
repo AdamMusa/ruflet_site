@@ -20,9 +20,11 @@ ruflet doctor [--fix] [--verbose]
 ruflet help
 ```
 
-Commands take no `--help` option: `ruflet new --help` creates a project
-named `--help`. Use `ruflet help` and the
+In 0.0.23 commands take no `--help` option: `ruflet new --help` creates a
+project named `--help`. Use `ruflet help` and the
 [CLI Reference](/docs/cli-reference) instead.
+`ruflet <command> --help` and `ruflet help <command>` print that command's
+help. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Create and run
 
