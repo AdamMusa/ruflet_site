@@ -309,7 +309,7 @@
     "transition_between_routes": "Animates the bar between pages on iOS.",
     "previous_page_title": "Title of the previous page, shown next to the iOS back button.",
     "animate": "Animates the container's size, padding, colors, border and other decoration when they change: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
-    "center_title": "Centers the title in the bar; Android, web, Windows and Linux only. iOS and macOS always center it.",
+    "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS ignore it and place the title the iOS way.",
     "code_theme": "Syntax highlighting theme for code blocks: a theme name such as `\"atom-one-dark\"`, `\"github\"` or `\"monokai-sublime\"`, or a hash of token styles.",
     "error_content": "Control shown in place of the image when it fails to load.",
     "foreground_decoration": "Decoration painted over the content: `{ bgcolor:, gradient:, border:, border_radius:, shadows:, image:, shape:, blend_mode: }`.",
@@ -1044,7 +1044,7 @@
     "sliverappbar": {
       "always_show_middle": "Shows the small title in the collapsed bar even while the large title is visible (default `true`). iOS and macOS only.",
       "bottom_height": "Height of `bottom`, in logical pixels (default 48). Android, web, Windows and Linux only.",
-      "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS always center it.",
+      "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS ignore it and place the title the iOS way.",
       "collapsed_height": "Height of the bar when fully collapsed, in logical pixels. Android, web, Windows and Linux only.",
       "color": "Color of the title and icons. Android, web, Windows and Linux only.",
       "elevation": "Shadow depth of the bar. Android, web, Windows and Linux only.",
@@ -1077,7 +1077,7 @@
     "sliverlist": {
       "bgcolor": "Background color behind the list and its header.",
       "controls": "The items; the first positional argument sets them.",
-      "divider_thickness": "Draws a divider of this thickness between items, in logical pixels, inside `spacing` (default 0, none).",
+      "divider_thickness": "Draws a line of this thickness, in logical pixels, in the `spacing` between items (default 0, none); without `spacing` there is no room for it.",
       "header": "Control shown above the items.",
       "item_extent": "Height of every item, in logical pixels, which speeds up long lists.",
       "padding": "Space around the list, in logical pixels: one number or `{ left:, top:, right:, bottom: }`.",
