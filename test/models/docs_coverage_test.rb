@@ -9,13 +9,13 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # remove it here. A listed control that gains docs does not fail the test,
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
-    control-about-dialog control-absorb-pointer control-action-sheet control-action-sheet-action
+    control-about-dialog control-action-sheet control-action-sheet-action
     control-arc control-audio control-auto-complete-suggestion control-autofill-group
     control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
     control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
-    control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
+    control-candlestick-chart-spot control-canvas control-chart-axis
     control-chart-axis-label control-circle control-circle-layer control-circle-marker
-    control-clip-oval control-clip-r-superellipse control-color control-color-picker
+    control-color control-color-picker
     control-context-menu control-context-menu-action control-cupertino-action-sheet
     control-cupertino-action-sheet-action control-cupertino-activity-indicator
     control-cupertino-alert-dialog control-cupertino-app-bar control-cupertino-bottom-sheet
@@ -23,35 +23,34 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-cupertino-dialog-action control-cupertino-filled-button
     control-cupertino-list-tile control-cupertino-navigation-bar control-cupertino-picker
     control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
-    control-cupertino-tinted-button control-custom-scroll-view control-data-cell control-data-column
+    control-cupertino-tinted-button control-data-cell control-data-column
     control-data-column-2 control-data-row control-data-row-2 control-data-table-2
-    control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
-    control-expansion-panel control-expansion-panel-list control-fade-transition control-fill
-    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
-    control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
-    control-ignore-pointer control-image-source-attribution control-indexed-stack
-    control-interactive-viewer control-interstitial-ad control-intrinsic-height
-    control-intrinsic-width control-keyboard-listener control-line control-line-chart
+    control-dropdown-option
+    control-expansion-panel control-expansion-panel-list control-fill
+    control-filled-icon-button control-filled-tonal-icon-button control-form
+    control-form-row control-hue-ring-picker
+    control-image-source-attribution
+    control-interstitial-ad
+    control-line control-line-chart
     control-line-chart-data control-line-chart-data-point control-list-section control-lottie
     control-map control-marker control-marker-layer control-material-picker control-menu-bar
-    control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
+    control-menu-item-button control-multiple-choice-block-picker
     control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
-    control-navigation-rail-destination control-nested-scroll-view control-option
-    control-outlined-icon-button control-oval control-overlay control-path control-picker
-    control-pie-chart control-pie-chart-section control-placeholder control-points
+    control-navigation-rail-destination control-option
+    control-outlined-icon-button control-oval control-path control-picker
+    control-pie-chart control-pie-chart-section control-points
     control-polygon-layer control-polygon-marker control-polyline-layer control-polyline-marker
     control-radar-chart control-radar-chart-title control-radar-data-set
-    control-radar-data-set-entry control-rect control-reorderable-drag-handle
-    control-rich-attribution control-rotated-box control-rotation-transition control-ruflet-app
-    control-scale-transition control-scatter-chart control-scatter-chart-spot control-screenshot
-    control-selection-area control-semantics control-shader-mask control-shadow control-shimmer
-    control-simple-attribution control-size-transition control-slide-picker control-slide-transition
-    control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
-    control-sliver-padding control-sliver-to-box-adapter control-snack-bar-action control-step
+    control-radar-data-set-entry control-rect
+    control-rich-attribution
+    control-scatter-chart control-scatter-chart-spot
+    control-shadow
+    control-simple-attribution control-slide-picker
+    control-snack-bar-action control-step
     control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
-    control-table control-table-row control-text-source-attribution control-text-span
-    control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
-    control-video control-window-drag-area
+    control-table control-table-row control-text-source-attribution
+    control-tile-layer control-timer-picker
+    control-video
   ].freeze
 
   GENERIC_SERVICE_SUMMARY = /\AComplete `page\.\w+` service reference\.\z/
