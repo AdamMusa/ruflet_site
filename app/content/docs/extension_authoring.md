@@ -1,8 +1,8 @@
 # Extension Authoring
 
-Ruflet extensions follow Flet's user-extension architecture: a typed Ruby DSL
-control and a Flutter package share one exact wire type. The Flutter package
-exports `Extension`, subclasses `FletExtension`, and returns the widget from
+A Ruflet extension pairs a typed Ruby DSL control with a Flutter package that
+renders its wire type. The Flutter package exports `Extension`, which extends
+`RufletExtension` from `package:ruflet/ruflet.dart` and returns the widget from
 `createWidget`. Ruflet does not require a separate client adapter.
 
 ## Package shape
@@ -36,18 +36,19 @@ Ruflet::Extensions.register_control(
 )
 ```
 
-The Flutter package exposes the normal Flet extension entrypoint:
+The Flutter package exports the `Extension` entrypoint. Ruflet sends the
+control type in CamelCase, so `TYPE = "rating"` arrives as `Rating`:
 
 ```dart
 library;
 
-import "package:flet/flet.dart";
 import "package:flutter/widgets.dart";
+import "package:ruflet/ruflet.dart";
 
-class Extension extends FletExtension {
+class Extension extends RufletExtension {
   @override
   Widget? createWidget(Key? key, Control control) {
-    if (control.type != "rating") return null;
+    if (control.type != "Rating") return null;
     return LayoutControl(
       control: control,
       child: RatingWidget(key: key),
