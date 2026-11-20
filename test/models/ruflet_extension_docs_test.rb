@@ -2,9 +2,9 @@ require "test_helper"
 
 class RufletExtensionDocsTest < ActiveSupport::TestCase
   EXPECTED_KEYS = %w[
-    audio audio_recorder camera charts code_editor color_pickers datatable2
-    flashlight geolocator lottie map permission_handler qrcode_scanner rive
-    secure_storage video webview
+    ads audio audio_recorder camera charts code_editor color_pickers datatable2
+    flashlight geolocator local_auth lottie map permission_handler qrcode_scanner
+    rive secure_storage spinkit video webview
   ].freeze
 
   test "every supported build extension has a dedicated documentation page" do
