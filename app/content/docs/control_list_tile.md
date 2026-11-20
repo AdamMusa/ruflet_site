@@ -95,8 +95,12 @@ put in it, so style a `text` title directly when you need a color there.
 `on_long_press` fires on iOS and macOS only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `cupertino_list_tile` sends the same `ListTile` control, so it is drawn the
-same way on every platform; its padding keyword is `padding`. See
+same way on every platform. See
 [CupertinoListTile](/docs/control-cupertino-list-tile).
+
+With 0.0.23 pad a row with `list_tile(content_padding: 16)`:
+`cupertino_list_tile` has no `content_padding`, and its `padding` keyword
+takes effect only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 

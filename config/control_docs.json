@@ -20,7 +20,7 @@
     ]
   },
   "control-cupertino-action-sheet": {
-    "summary": "The `cupertino_action_sheet` spelling of [`action_sheet`](/docs/control-action-sheet): a title, a message, a list of choices and a separate Cancel choice. It sends the same `ActionSheet` control, so the client draws it by platform: the native iOS action sheet on iOS and macOS, and a column of list rows on Android, web, Windows and Linux. Present it in a bottom sheet with `page.show_bottom_sheet`, and build its choices with [`cupertino_action_sheet_action`](/docs/control-cupertino-action-sheet-action).",
+    "summary": "The `cupertino_action_sheet` spelling of [`action_sheet`](/docs/control-action-sheet): a title, a message, a list of choices and a separate Cancel choice. It sends the same `ActionSheet` control, so the client draws it by platform: an iOS action sheet on iOS and macOS, and a column of list rows on Android, web, Windows and Linux. Present it in a bottom sheet with `page.show_bottom_sheet`, and build its choices with [`cupertino_action_sheet_action`](/docs/control-cupertino-action-sheet-action). With 0.0.23 the iOS action sheet floats over the dimmed page; with the next release the bottom sheet draws it on its own panel with rounded top corners, in the sheet's `bgcolor`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "status = text(\"Not shared\")",
       "sheet = nil",
@@ -66,7 +66,7 @@
   "control-cupertino-activity-indicator": {
     "summary": "The iOS spinner: spokes that turn while `animating` is true (the default), sized by `radius` (default 10). `progress`, from 0.0 to 1.0, shows only part of the spokes instead. It sends the same `ProgressRing` control as [`progress_ring`](/docs/control-progress-ring), so Android, web, Windows and Linux draw a Material progress ring, which ignores `radius` and `animating`; there the 0.0.23 client also ignores `progress` and always spins. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
-      "spinner = cupertino_activity_indicator(radius: 16, color: :blue_600)",
+      "spinner = cupertino_activity_indicator(radius: 16, color: :blue600)",
       "spinning = true",
       "page.add(",
       "  row(",
@@ -137,7 +137,7 @@
     ]
   },
   "control-cupertino-list-tile": {
-    "summary": "The `cupertino_list_tile` spelling of [`list_tile`](/docs/control-list-tile). It sends the same `ListTile` control, so it is an iOS list row on iOS and macOS and a Material list row on Android, web, Windows and Linux. It accepts the properties of the iOS row: `title` (required), `subtitle`, `leading`, `trailing`, `additional_info`, `bgcolor`, `bgcolor_activated`, `notched`, `leading_size`, `leading_to_title`, `padding`, `toggle_inputs`, `url` and `on_click`; use `list_tile` for the Material-only properties. `additional_info`, `bgcolor_activated`, `notched`, `leading_size` and `leading_to_title` apply on iOS and macOS only.",
+    "summary": "The `cupertino_list_tile` spelling of [`list_tile`](/docs/control-list-tile). It sends the same `ListTile` control, so it is an iOS list row on iOS and macOS and a Material list row on Android, web, Windows and Linux. It accepts the properties of the iOS row: `title` (required), `subtitle`, `leading`, `trailing`, `additional_info`, `bgcolor`, `bgcolor_activated`, `notched`, `leading_size`, `leading_to_title`, `padding`, `toggle_inputs`, `url` and `on_click`; use `list_tile` for the Material-only properties. `additional_info`, `bgcolor_activated`, `notched`, `leading_size` and `leading_to_title` apply on iOS and macOS only. With 0.0.23 pad a row with `list_tile(content_padding: 16)`: `padding` takes effect only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "status = text(\"Pick a setting\")",
       "open_setting = ->(name) { ->(_event) { page.update(status, value: \"Opened #{name}\") } }",
@@ -352,7 +352,7 @@
       "    content: text(\"Photo deleted\"),",
       "    action: snack_bar_action(",
       "      \"Undo\",",
-      "      text_color: :amber_300,",
+      "      text_color: :amber300,",
       "      on_click: ->(_event) { page.update(status, value: \"Photo restored\") }",
       "    )",
       "  )",
@@ -365,11 +365,11 @@
       "page.add(",
       "  table(",
       "    [",
-      "      table_row([text(\"Day\"), text(\"Opens\"), text(\"Closes\")], bgcolor: :surface_container_high),",
+      "      table_row([text(\"Day\"), text(\"Opens\"), text(\"Closes\")], bgcolor: :surfacecontainerhigh),",
       "      table_row([text(\"Monday\"), text(\"9:00\"), text(\"18:00\")]),",
       "      table_row([text(\"Saturday\"), text(\"10:00\")])",
       "    ],",
-      "    border_color: :outline_variant,",
+      "    border_color: :outlinevariant,",
       "    cell_padding: 8",
       "  )",
       ")"

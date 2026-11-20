@@ -13,7 +13,7 @@ sheet = bottom_sheet(
   clip_behavior: "antiAlias",
   content: container(
     padding: 24,
-    bgcolor: :surface_container_low,
+    bgcolor: :surfacecontainerlow,
     content: column(
       tight: true,
       spacing: 12,
@@ -38,9 +38,12 @@ page.add(
 )
 ```
 
-The container's `bgcolor` is the Material sheet's own color, and it gives the
-content a background on iOS and macOS with 0.0.23 (see
-[iOS and macOS](#ios-and-macos)).
+`:surfacecontainerlow` is the color the Material sheet itself uses, so the
+container looks the same there. On iOS and macOS it is the page's background
+color, and with 0.0.23 it is the only background the content gets (see
+[iOS and macOS](#ios-and-macos)). Write theme color names without
+underscores: a name such as `:surface_container_low` matches no color, so the
+container would draw no background.
 
 `show_bottom_sheet` opens the sheet for you. You can also assign
 `page.bottom_sheet = bottom_sheet(open: true, …)` directly, but the assignment

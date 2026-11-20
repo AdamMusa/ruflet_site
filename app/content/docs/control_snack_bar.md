@@ -63,7 +63,7 @@ page.show_snack_bar(
     content: text("Message archived"),
     action: snack_bar_action(
       "Undo",
-      text_color: :amber_300,
+      text_color: :amber300,
       on_click: ->(_event) { page.update(status, value: "Message restored") }
     )
   )
@@ -87,6 +87,11 @@ action closes it. The user can also swipe it away, by default downwards; set
 On iOS and macOS every snackbar closes after `duration` unless you pass
 `persist: true`, and tapping the action does not close it. It cannot be
 swiped away.
+
+On iOS and macOS a snackbar that closed by itself, after `duration` or from
+its close button, does not open again: showing the same `snack_bar` a second
+time does nothing there. Pass a new `snack_bar` to each `show_snack_bar` call,
+as the examples above do.
 
 `on_dismiss` fires when the snackbar closes on its own: after `duration`, a
 swipe, or a tap on the action or the close button. On Android, web, Windows

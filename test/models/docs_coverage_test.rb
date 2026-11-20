@@ -267,8 +267,14 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-list-tile" => [
       "there `selected` only tells screen readers",
       "toggles a `switch` or `checkbox` in the row, but not a `radio`",
-      "`on_long_press` fires on iOS and macOS only with the next release"
+      "`on_long_press` fires on iOS and macOS only with the next release",
+      "its `padding` keyword takes effect only with the next release"
     ],
+    "control-cupertino-list-tile" => [ "`padding` takes effect only with the next release" ],
+    "control-cupertino-activity-indicator" => [ "there the 0.0.23 client also ignores `progress` and always spins" ],
+    "control-cupertino-bottom-sheet" => [ "which `bottom_sheet` accepts" ],
+    "control-action-sheet" => [ "the `bottom_sheet` draws the action sheet on its own panel" ],
+    "control-cupertino-action-sheet" => [ "the bottom sheet draws it on its own panel" ],
     "control-cupertino-sliding-segmented-button" => [
       "comes from the `sliding` flag this helper sends",
       "on iOS and macOS, size each segment to its content",
@@ -290,12 +296,14 @@ class DocsCoverageTest < ActiveSupport::TestCase
       "`hover_color` — Android, web, Windows and Linux only",
       "`shape` — Android, web, Windows and Linux only"
     ],
-    "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only", "`padding` / `height` — iOS and macOS only" ],
+    "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only", "`padding` / `height` — iOS and macOS only",
+      "`:surfacecontainerlow` is the color the Material sheet itself uses" ],
     "control-alert-dialog" => [ "`inset_animation` — how the alert moves when the keyboard opens", "Android, web, Windows and Linux ignore those two flags." ],
-    "control-action-sheet" => [ "Tapping an action does not close the sheet" ],
+    "control-action-sheet" => [ "Tapping an action does not close the sheet", "With 0.0.23 the sheet floats over the dimmed page" ],
     "control-snack-bar" => [
       "On iOS and macOS every snackbar closes after `duration` unless you pass",
-      "tapping the action does not close it"
+      "tapping the action does not close it",
+      "showing the same `snack_bar` a second time does nothing there"
     ],
     "control-expansion-tile" => [ "On iOS and macOS it is redrawn only when Ruby sets `expanded`" ],
     "control-expansion-panel-list" => [ "On iOS and macOS it is redrawn only when Ruby updates the list" ],
@@ -385,6 +393,28 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
     assert_empty offenders - STRING_KEY_PAYLOAD_PAGES, "Read hash payloads with symbol keys, for example `event.data[:ci]`: #{(offenders - STRING_KEY_PAYLOAD_PAGES).join(', ')}"
   end
+
+# Both clients match a theme or palette color name against
+# /^([a-zA-Z]+)([0-9]*)$/ (colors.dart), so `:surface_container_low` or
+# `:blue_600` draws no color at all. These pages must spell them
+# `:surfacecontainerlow` and `:blue600`.
+test "examples on fully described pages spell color names without underscores" do
+  offenders = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+    page(slug).content.scan(/\b\w*color: *(?::|")[a-z]+_[a-z0-9_]*/).map { |hit| "#{slug}: #{hit}" }
+  end
+
+  assert_empty offenders, "Write color names without underscores, for example `:surfacecontainerlow`:\n#{offenders.join("\n")}"
+end
+
+# Example fixes a review made, which compile either way.
+test "examples a review fixed keep their fix" do
+  expansion = page("control-expansion-tile").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+  sheet = page("control-bottom-sheet").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+  assert_includes expansion, "page.update(event.control, expanded: expanded)", "iOS and macOS redraw an ExpansionTile only when Ruby sets `expanded`"
+  assert_includes sheet, "page.close_bottom_sheet(sheet)"
+  refute_includes sheet, "copy_link", "The BottomSheet example must run as written"
+end
 
   test "the curated Cupertino date picker example opens the picker as a dialog" do
     example = page("control-cupertino-date-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]

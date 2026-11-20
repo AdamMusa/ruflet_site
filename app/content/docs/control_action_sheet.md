@@ -66,9 +66,14 @@ argument or as `content:`, a string or a control.
 
 ## Platform differences
 
-On iOS and macOS the sheet is the native iOS action sheet: the actions form
+On iOS and macOS the sheet is drawn as an iOS action sheet: the actions form
 one rounded group and `cancel` is a separate rounded button below it. An
-action's `mouse_cursor` applies there only.
+action's `mouse_cursor` applies there only. With 0.0.23 the sheet floats over
+the dimmed page, the way iOS shows its own action sheets.
+
+With the next release, on iOS and macOS the `bottom_sheet` draws the action
+sheet on its own panel, with rounded top corners in the sheet's `bgcolor`
+(the system background by default). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 On Android, web, Windows and Linux the sheet is a column of list rows: the
 title, the message, one row per action, then a divider and the `cancel` row.

@@ -475,7 +475,7 @@
       "elevation": "Shadow depth of the dialog. iOS and macOS ignore it.",
       "shadow_color": "Color of the dialog's shadow. iOS and macOS ignore it.",
       "shape": "Shape of the dialog, for example its corner radius. iOS and macOS ignore it.",
-      "scrollable": "Lets the title and content scroll when they do not fit on the screen (default false). iOS and macOS ignore it.; the iOS dialog scrolls its content by itself.",
+      "scrollable": "Lets the title and content scroll when they do not fit on the screen (default false). iOS and macOS ignore it; the iOS dialog scrolls its content by itself.",
       "semantics_label": "What screen readers announce when the dialog opens. iOS and macOS ignore it."
     },
     "autocomplete": {
@@ -831,7 +831,7 @@
       "bgcolor": "Color of the ring's track. iOS and macOS ignore it.",
       "stroke_width": "Thickness of the ring, in logical pixels. iOS and macOS ignore it.",
       "stroke_align": "Where the stroke sits on the ring's path: `-1.0` inside, `0.0` centered, `1.0` outside (default: centered, or inside with `year_2023: false`). iOS and macOS ignore it.",
-      "size_constraints": "Size limits of the ring, for example `{ min_width: 48, min_height: 48 }`. iOS and macOS ignore it.; size the iOS indicator with `radius`.",
+      "size_constraints": "Size limits of the ring, for example `{ min_width: 48, min_height: 48 }`. iOS and macOS ignore it; size the iOS indicator with `radius`.",
       "padding": "Space around the ring. iOS and macOS ignore it."
     },
     "reorderablelistview": {
