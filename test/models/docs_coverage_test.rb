@@ -384,11 +384,36 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_includes properties.fetch("adaptive"), "no Ruflet client reads it"
     assert_includes properties.fetch("expand"), "an integer sets the share"
     assert_includes events.fetch("on_size_change"), "`{ w: width, h: height }`"
-    assert_includes events.fetch("on_scroll"), "`:event_type`"
     assert_includes events.fetch("on_end_reached"), "the keys `:pixels`"
     %w[opacity rotation scale offset align margin position container].each do |name|
       assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
     end
+  end
+
+  # Wording true for one wire type of this group. A shared entry would also
+  # render on other controls with the same key (an audio's src_base64, a
+  # lottie's animate, a web_view's on_scroll, which sends { x:, y: }).
+  LAYOUT_ONLY_DESCRIPTIONS = {
+    "container" => %w[animate image shadow],
+    "image" => %w[src_base64 error_content],
+    "markdown" => %w[code_theme]
+  }.freeze
+  SCROLL_EVENT_WIDGETS = %w[column row listview gridview customscrollview nestedscrollview reorderablelistview responsiverow].freeze
+
+  test "wording for one layout control stays in its widget override" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    overrides = descriptions.fetch("widget_overrides")
+
+    LAYOUT_ONLY_DESCRIPTIONS.each do |widget, names|
+      names.each do |name|
+        assert overrides.dig(widget, name), "widget_overrides.#{widget} needs #{name}"
+        assert_nil descriptions.fetch("properties")[name], "A shared #{name} description also renders on other controls; keep it in widget_overrides.#{widget}"
+      end
+    end
+    SCROLL_EVENT_WIDGETS.each do |widget|
+      assert_includes overrides.dig(widget, "on_scroll").to_s, "`:event_type`", "widget_overrides.#{widget} needs the on_scroll payload"
+    end
+    refute_includes descriptions.fetch("events").fetch("on_scroll"), "event.data", "web_view also uses the shared on_scroll text, and its payload is { x:, y: }"
   end
 
   # Hand-written sentences of the layout pages that describe main-only
@@ -441,11 +466,35 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
   test "layout pages read event payloads with symbol keys and decorate text with constants" do
     slugs = FULLY_DESCRIBED_CONTROLS + %w[controls-and-layout]
-    string_keys = slugs.select { |slug| page_text(slug).match?(/\bevent\.data\[["']/) }
-    string_decorations = DocsCatalog.all_entries.select { |entry| entry_text(entry).match?(/\bdecoration: ["']/) }.map(&:slug)
+    string_keys = slugs.select { |slug| page_text(slug).match?(/\bevent\.data(?:\[:\w+\])*\[["']/) }
+    string_key_names = slugs.flat_map { |slug| string_payload_keys(page_text(slug)).map { |key| "#{slug}: #{key}" } }
+    texts = DocsCatalog.all_entries.to_h { |entry| [ entry.slug, entry_text(entry) ] }
+    string_decorations = texts.select { |_slug, text| text.match?(/\bdecoration: ["']/) }.keys
+    symbol_decorations = texts.select { |_slug, text| text.match?(/\bdecoration: :(?!:)/) }.keys
 
     assert_empty string_keys, "The server gives event.data hashes Symbol keys, so read event.data[:key]: #{string_keys.join(', ')}"
+    assert_empty string_key_names, "The server gives event.data hashes Symbol keys, so name them as `:key`:\n#{string_key_names.join("\n")}"
     assert_empty string_decorations, "Clients read decoration as a Ruflet::TextDecoration bit mask; a String draws nothing: #{string_decorations.join(', ')}"
+    assert_empty symbol_decorations, "A Symbol decoration reaches the client as a String and draws nothing; use Ruflet::TextDecoration: #{symbol_decorations.join(', ')}"
+  end
+
+  test "the payload key check finds String keys in prose" do
+    flagged = [
+      "- `on_end_reached` — `event.data` has the keys `\"pixels\"` and `:viewport_dimension`.",
+      "- `on_extent_change` — `event.data` has `\"extent\"`, `:min` and `:max`.",
+      "`event.data` has the keys `:selection`, a hash with `\"base_offset\"` and `:extent_offset`.",
+      "`event.data` is `{ \"w\" => width, \"h\" => height }`.",
+      "Read the position from `event.data`:\n\n- `\"event_type\"` — `\"start\"` or `\"end\"`\n- `:pixels` — the offset; `\"max_scroll_extent\"` bounds it"
+    ]
+    kept = [
+      "`event.data` is a hash with the keys `:event_type` (`\"start\"` or `\"end\"`), `:pixels` and `:velocity`.",
+      "Read the position from `event.data`:\n\n- `:event_type` — `\"start\"` or `\"end\"`\n- `:direction` (`\"idle\"` or `\"forward\"`) on user events",
+      "`event.data` names the animation: `\"opacity\"` or `\"scale\"`.",
+      "- `col` — a hash per breakpoint such as `{ \"xs\" => 12, \"md\" => 6 }`."
+    ]
+
+    assert_equal [ 1, 1, 1, 1, 2 ], flagged.map { |text| string_payload_keys(text).size }
+    assert_equal [ 0, 0, 0, 0 ], kept.map { |text| string_payload_keys(text).size }
   end
 
   test "layout pages keep their next-release markers and platform notes" do
@@ -546,6 +595,38 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
   def page_text(slug)
     entry_text(page(slug))
+  end
+
+  STRING_KEY_SPAN = /`(["'])\w+\1`/
+  STRING_KEY_HASH = /`\{\s*(["'])\w+\1\s*=>/
+  PAYLOAD_KEY_INTRO = /(?:\bkeys?|`event\.data` has|\bhash with)\s+/
+
+  # Code spans that name an event.data key as a String: in a key list ("has
+  # the keys ...", "`event.data` has ...", "a hash with ...", to the end of the
+  # sentence), in a hash literal of a sentence about `event.data`, or in a
+  # bullet list under a line about `event.data` that ends with a colon. Values
+  # may be Strings, so text in parentheses and a value list after a dash are
+  # skipped.
+  def string_payload_keys(markdown)
+    in_payload_list = false
+    markdown.gsub(/^```.*?^```$/m, "").split(/\n(?=- |\n)/).map(&:squish).reject(&:empty?).flat_map do |chunk|
+      found = []
+      if in_payload_list && chunk.start_with?("- ")
+        found.concat(string_key_spans(chunk.gsub(/\([^()]*\)/, "").sub(/ — `.*\z/, "")))
+      else
+        in_payload_list = chunk.include?("`event.data`") && chunk.end_with?(":")
+      end
+      chunk.split(/(?<=[.;])\s+/).each do |sentence|
+        keys = sentence.split(PAYLOAD_KEY_INTRO, 2)[1]
+        found.concat(string_key_spans(keys.gsub(/\([^()]*\)/, ""))) if keys
+        found << sentence[STRING_KEY_HASH] if sentence.include?("`event.data`") && sentence.match?(STRING_KEY_HASH)
+      end
+      found
+    end
+  end
+
+  def string_key_spans(text)
+    text.to_enum(:scan, STRING_KEY_SPAN).map { Regexp.last_match[0] }
   end
 
   # DocsCatalog.find falls back to the first page for an unknown slug, so a

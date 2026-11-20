@@ -308,14 +308,8 @@
     "automatically_imply_leading": "Adds a back or menu button automatically when the page has somewhere to go back to or a drawer.",
     "transition_between_routes": "Animates the bar between pages on iOS.",
     "previous_page_title": "Title of the previous page, shown next to the iOS back button.",
-    "animate": "Animates the container's size, padding, colors, border and other decoration when they change: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
     "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS ignore it and place the title the iOS way.",
-    "code_theme": "Syntax highlighting theme for code blocks: a theme name such as `\"atom-one-dark\"`, `\"github\"` or `\"monokai-sublime\"`, or a hash of token styles.",
-    "error_content": "Control shown in place of the image when it fails to load.",
-    "foreground_decoration": "Decoration painted over the content: `{ bgcolor:, gradient:, border:, border_radius:, shadows:, image:, shape:, blend_mode: }`.",
-    "image": "Background image painted behind the content: `{ src:, fit:, alignment:, repeat:, opacity: }`.",
-    "shadow": "Drop shadow, or a list of them: `{ color:, offset: { x:, y: }, blur_radius:, spread_radius: }`.",
-    "src_base64": "The image as a Base64 string, used when `src` is not set. `src` also accepts a Base64 string, which works with every release."
+    "foreground_decoration": "Decoration painted over the content: `{ bgcolor:, gradient:, border:, border_radius:, shadows:, image:, shape:, blend_mode: }`."
   },
   "events": {
     "on_click": "Fired when the control is clicked/tapped.",
@@ -333,7 +327,7 @@
     "on_tap_cancel": "Fired when a tap is cancelled.",
     "on_tap_outside": "Fired when a tap occurs outside the control.",
     "on_dismiss": "Fired when the control is dismissed.",
-    "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll.",
+    "on_scroll": "Fired when the scroll position changes.",
     "on_select": "Fired when a selection is made.",
     "on_selection_change": "Fired when the user changes the selected text; `event.data` describes the new selection.",
     "on_state_change": "Fired when the control's state changes.",
@@ -481,19 +475,23 @@
       "run_alignment": "With `wrap: true`, how the columns of children are spread horizontally: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
       "run_spacing": "With `wrap: true`, space between the columns of children, in logical pixels (default 10).",
       "spacing": "Space between the children, in logical pixels (default 10).",
-      "wrap": "Flows the children into a new column when they do not fit vertically, instead of overflowing."
+      "wrap": "Flows the children into a new column when they do not fit vertically, instead of overflowing.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "container": {
       "alignment": "Where the content sits inside the container, as `{ x:, y: }` from -1 to 1; `\"center\"` is also accepted.",
+      "animate": "Animates the container's size, padding, colors, border and other decoration when they change: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
       "blur": "Blurs what is behind the container (frosted glass): a sigma such as `10`, `[x, y]`, or `{ sigma_x:, sigma_y: }`.",
       "border_radius": "Corner radius, in logical pixels: one number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`. It also clips the content.",
       "color_filter": "Tints the container and its content: `{ color:, blend_mode: }`, for example `{ color: \"#80000000\", blend_mode: \"darken\" }`.",
       "dark_theme": "Theme for the controls inside the container while the app is in dark mode, in the same form as `page.dark_theme`.",
       "ignore_interactions": "Makes the container and its content ignore taps and other pointer input.",
+      "image": "Background image painted behind the content: `{ src:, fit:, alignment:, repeat:, opacity: }`.",
       "ink": "Shows touch feedback on a clickable container: an ink ripple on Android, web, Windows and Linux, and a fade to `opacity_on_click` on iOS and macOS.",
       "ink_color": "Color of the ink ripple when `ink: true`. Android, web, Windows and Linux only.",
       "opacity_on_click": "Opacity, from 0.0 to 1.0, a clickable container with `ink: true` fades to while it is pressed (default 0.4). iOS and macOS only.",
       "padding": "Space between the container's edge and its content, in logical pixels: one number, or `{ left:, top:, right:, bottom: }`.",
+      "shadow": "Drop shadow, or a list of them: `{ color:, offset: { x:, y: }, blur_radius:, spread_radius: }`.",
       "shape": "Shape of the container: `\"rectangle\"` (default) or `\"circle\"`.",
       "theme": "Theme for the controls inside the container, in the same form as `page.theme`.",
       "theme_mode": "Forces the container's content into `\"light\"` or `\"dark\"` mode, or `\"system\"`.",
@@ -520,7 +518,8 @@
     },
     "customscrollview": {
       "controls": "The slivers, when they are given in a block; prefer `slivers`.",
-      "slivers": "The slivers, in scroll order: `sliver_app_bar`, `sliver_list`, `sliver_grid`, `sliver_to_box_adapter`, `sliver_fill_remaining`, `sliver_padding`, or any other control, which scrolls as one box. The first positional argument sets them."
+      "slivers": "The slivers, in scroll order: `sliver_app_bar`, `sliver_list`, `sliver_grid`, `sliver_to_box_adapter`, `sliver_fill_remaining`, `sliver_padding`, or any other control, which scrolls as one box. The first positional argument sets them.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "datacolumn": {
       "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and `asc`, the new direction on Android, web, Windows and Linux. On iOS and macOS `asc` is the table's current `sort_ascending`, so keep the direction in Ruby."
@@ -717,7 +716,8 @@
       "refresh_trigger_distance": "How far, in logical pixels, the user must pull to start a refresh. iOS and macOS only.",
       "run_spacing": "Space between the columns of cells, in logical pixels (default 10).",
       "runs_count": "Number of columns (rows for a horizontal grid), default 1.",
-      "spacing": "Space between the rows of cells, in logical pixels (default 10)."
+      "spacing": "Space between the rows of cells, in logical pixels (default 10).",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "hero": {
       "content": "The control that flies to its new place; the first positional argument sets it.",
@@ -743,6 +743,7 @@
       "cache_width": "Decodes the image at this width, in physical pixels, to save memory for large images.",
       "color": "Color blended into the image with `color_blend_mode`, for example to tint an icon-like image.",
       "color_blend_mode": "How `color` is blended into the image, for example `\"srcIn\"` to tint it or `\"multiply\"`.",
+      "error_content": "Control shown in place of the image when it fails to load.",
       "fade_in_animation": "Fades the image in once it has loaded: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
       "filter_quality": "Quality of scaling: `\"none\"`, `\"low\"`, `\"medium\"` (default) or `\"high\"`.",
       "fit": "How the image fills its box: `\"contain\"`, `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"scaleDown\"` or `\"none\"`.",
@@ -753,6 +754,7 @@
       "placeholder_src": "Image shown while `src` loads: a URL, an asset path or Base64 data.",
       "repeat": "Tiles the image to fill its box: `\"noRepeat\"` (default), `\"repeat\"`, `\"repeatX\"` or `\"repeatY\"`.",
       "src": "The image: a URL, a path in the app's assets, Base64 data or bytes; the first positional argument sets it.",
+      "src_base64": "The image as a Base64 string, used when `src` is not set. `src` also accepts a Base64 string, which works with every release.",
       "x": "Left edge of the image, in logical pixels, when it is a shape inside a `canvas`. An image on the page ignores it.",
       "y": "Top edge of the image, in logical pixels, when it is a shape inside a `canvas`. An image on the page ignores it."
     },
@@ -806,12 +808,14 @@
       "refresh_color": "Color of the pull-to-refresh indicator.",
       "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40). Android, web, Windows and Linux only.",
       "refresh_trigger_distance": "How far, in logical pixels, the user must pull to start a refresh. iOS and macOS only.",
-      "spacing": "Space between items, in logical pixels (default 0)."
+      "spacing": "Space between items, in logical pixels (default 0).",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "markdown": {
       "auto_follow_links": "Opens tapped links in the browser (default `false`); `on_tap_link` fires either way.",
       "auto_follow_links_target": "Where `auto_follow_links` opens a link on the web, for example `\"_blank\"` for a new tab.",
       "code_style_sheet": "Text styles for code blocks, in the same form as `md_style_sheet`.",
+      "code_theme": "Syntax highlighting theme for code blocks: a theme name such as `\"atom-one-dark\"`, `\"github\"` or `\"monokai-sublime\"`, or a hash of token styles.",
       "extension_set": "Markdown syntax extensions: `\"none\"` (default), `\"commonMark\"`, `\"gitHubWeb\"` or `\"gitHubFlavored\"`, which adds tables, task lists and strikethrough.",
       "fit_content": "Makes the markdown only as wide as its longest line (default `true`).",
       "image_error_content": "Control shown in place of an image in the markdown that fails to load.",
@@ -836,7 +840,8 @@
       "body": "The scrolling content under the headers, usually a `list_view`, `grid_view`, `custom_scroll_view` or `tabs` view.",
       "controls": "The header slivers, when they are given in a block; prefer `header_slivers`.",
       "float_header_slivers": "Shows a floating header again as soon as the user scrolls back up, before the body reaches its top (default `false`).",
-      "header_slivers": "Slivers shown above the body that collapse as it scrolls, usually one `sliver_app_bar`; the first positional argument sets them."
+      "header_slivers": "Slivers shown above the body that collapse as it scrolls, usually one `sliver_app_bar`; the first positional argument sets them.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "overlay": {
       "controls": "The controls drawn above the page; the first positional argument sets them."
@@ -871,13 +876,15 @@
       "mouse_cursor": "Cursor shown over the default drag handles. Android, web, Windows and Linux only.",
       "semantic_child_count": "Accepted, but no Ruflet client reads it on a reorderable list.",
       "on_reorder_end": "Fired when the user drops the item, also when it lands where it started; `event.new_index` is the drop position.",
-      "on_reorder_start": "Fired when the user starts dragging an item; `event.old_index` is its index."
+      "on_reorder_start": "Fired when the user starts dragging an item; `event.old_index` is its index.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "responsiverow": {
       "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these.",
       "alignment": "How the children of a line are spread horizontally: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
       "breakpoints": "Breakpoint names and the page width, in logical pixels, from which each applies (default `{ \"xs\" => 0, \"sm\" => 576, \"md\" => 768, \"lg\" => 992, \"xl\" => 1200, \"xxl\" => 1400 }`). They are compared with the page width, not the row's.",
-      "vertical_alignment": "How the children of a line are aligned vertically: `\"start\"` (default), `\"center\"`, `\"end\"` or `\"stretch\"`."
+      "vertical_alignment": "How the children of a line are aligned vertically: `\"start\"` (default), `\"center\"`, `\"end\"` or `\"stretch\"`.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "rotatedbox": {
       "content": "The control to rotate; the first positional argument sets it.",
@@ -903,7 +910,8 @@
       "run_spacing": "With `wrap: true`, space between the lines of children, in logical pixels (default 10).",
       "spacing": "Space between the children, in logical pixels (default 10).",
       "vertical_alignment": "How the children are aligned vertically: `\"start\"`, `\"center\"` (default), `\"end\"`, `\"stretch\"` or `\"baseline\"`.",
-      "wrap": "Flows the children onto a new line when they do not fit horizontally, instead of overflowing."
+      "wrap": "Flows the children onto a new line when they do not fit horizontally, instead of overflowing.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "ruflet_app": {
       "app_error_message": "Message shown when the embedded app fails.",
