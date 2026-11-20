@@ -16,9 +16,14 @@ extensions:
 
 ## Use an extension Ruflet does not bundle
 
-Ruflet can build a third-party or private extension even when it is not in the
-built-in catalog. Use the Dart package name as the extension key and tell
-Ruflet where the package lives:
+A client that uses an extension Ruflet does not bundle currently fails to
+compile, whether the extension comes from `git:` or `path:`. The build writes
+the extension's `Extension(),` line outside the client's `RufletExtension`
+list.
+
+To declare a third-party or private extension that is not in the built-in
+catalog, use the Dart package name as the extension key and tell Ruflet where
+the package lives:
 
 ```yaml
 extensions:
@@ -34,9 +39,6 @@ During the build Ruflet:
 1. adds `acme_widgets` to the generated Flutter client's dependencies;
 2. imports `package:acme_widgets/acme_widgets.dart`; and
 3. writes `acme_widgets.Extension(),` into the client's Dart entrypoints.
-
-The current build writes that line outside the client's `RufletExtension`
-list, so a client that uses a private extension does not compile.
 
 The package name must be a valid Dart identifier and match all three places:
 the extension key, `name:` in the package's `pubspec.yaml`, and its public

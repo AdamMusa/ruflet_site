@@ -49,9 +49,14 @@ app:
 
 Do not use `localhost` in a build intended for another device.
 
-`backend_url` may be omitted for web and desktop clients, which learn their
-server at launch: a web client from the origin it is served from, a desktop
-client from the URL its launcher passes.
+A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build stops without
+`backend_url`. A web, macOS, Windows, or Linux build can omit it:
+
+- A web client then connects to the origin it was loaded from. That works only when the Ruby backend, or a proxy that forwards the WebSocket to it, serves the client from that same origin, as `ruflet run --web` does.
+- A desktop client connects to the URL its launcher passes, as `ruflet run --desktop` does, or to `http://localhost:8550` when it is started without one.
+
+Set `backend_url` for a web build hosted apart from its Ruby backend and for a
+desktop build you distribute.
 
 ## Self-contained builds
 
@@ -75,7 +80,7 @@ ruflet build ipa --full
 ```
 
 - `--lite` selects the default runtime explicitly. `--lite` and `--full` each imply `--self` and cannot be combined.
-- `--full` needs a CRuby runtime distribution for the target platform: a `ruby_runtime` package whose `ruflet-full-runtime.json` sets `engine` to `cruby` and lists the platform under `platforms` (`ipa` counts as `ios`, `apk` and `aab` as `android`). Set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to it. Ruflet also checks the package named by `RUFLET_RUBY_RUNTIME_PATH` and, when run from a Ruflet source checkout, its `ruby_runtime`. Without a match the build stops with `--full needs a CRuby runtime distribution for <platform>`.
+- `--full` needs a CRuby runtime distribution for the target platform: a `ruby_runtime` package whose `ruflet-full-runtime.json` sets `engine` to `cruby` and lists the platform under `platforms` (`ipa` counts as `ios`, `apk` and `aab` as `android`). Set `RUFLET_FULL_RUNTIME_PATH`, or `build.full_runtime_path` in `ruflet.yaml`, to it. Ruflet also checks the package named by `RUFLET_RUBY_RUNTIME_PATH` or, when that is unset or has no `pubspec.yaml`, the `ruby_runtime` of the Ruflet source checkout it runs from. Without a match the build stops with `--full needs a CRuby runtime distribution for <platform>`.
 - Web builds cannot be self-contained. A web client runs no embedded Ruby, so `ruflet build web --self` stops with `--self is not supported for web`.
 
 See the [CLI Reference](/docs/cli-reference) for the other commands.

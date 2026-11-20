@@ -143,7 +143,8 @@ services:
 ```
 
 The supported declarations are `camera`, `microphone`, `location`, `motion`,
-and `photo_library`. A declaration can be a string or a mapping with a
+and `photo_library`. A `biometrics` declaration is supported too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+A declaration can be a string or a mapping with a
 user-facing `description`. Ruflet uses these entries to add client extensions, Android
 permissions, iOS usage-description keys, and related platform configuration.
 Each declaration selects the extensions it needs:

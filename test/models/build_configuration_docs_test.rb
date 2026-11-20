@@ -47,6 +47,16 @@ class BuildConfigurationDocsTest < ActiveSupport::TestCase
     end
   end
 
+  test "configuration reference names every released services.yaml declaration" do
+    paragraph = source("configuration-reference")[/^The supported declarations are .*?(?=\n\n)/m]
+
+    assert paragraph, "Missing the supported-declarations paragraph"
+    refute_includes paragraph[/\A[^.]*\./], MARKER, "The released declarations must not be marked"
+    (BUILD::PROTECTED_SERVICE_EXTENSIONS.keys | BUILD::IOS_SERVICE_USAGE_KEYS.keys).each do |service|
+      assert_includes paragraph, "`#{service}`", "Missing declaration #{service} (ruflet #{Ruflet::VERSION})"
+    end
+  end
+
   test "publishing pages list the platform keys Ruflet writes for declarations" do
     ios = source("publishing-ios")
     android = source("publishing-android")
