@@ -118,6 +118,7 @@
     "blend_mode": "How the control's color or shader is combined with what is behind it, for example `\"multiply\"` or `\"srcIn\"`.",
     "border_side": "Border line, for example `{ color: \"#d1d5db\", width: 1 }`.",
     "fit": "How the content is sized into the available space: a box fit such as `\"contain\"` or `\"cover\"` for images and animations, a stack fit such as `\"expand\"` for stacks.",
+    "filter_quality": "Scaling quality when the content is resized: `\"none\"`, `\"low\"`, `\"medium\"` or `\"high\"`.",
     "repeat": "Repeats the content: loops an animation, or tiles an image (`\"repeat\"`, `\"repeatX\"`, `\"repeatY\"`).",
     "x": "Horizontal position: in logical pixels on a canvas, or the data value on the x axis in a chart.",
     "y": "Vertical position: in logical pixels on a canvas, or the data value on the y axis in a chart.",
@@ -293,8 +294,8 @@
     "wave_type": "Where the wave starts for wave variants: `\"start\"`, `\"center\"` or `\"end\"`.",
     "horizontal_grid_lines": "Horizontal grid lines across the chart, for example `{ interval: 10, color: \"#e5e7eb\", width: 1 }`.",
     "vertical_grid_lines": "Vertical grid lines across the chart, for example `{ interval: 1, color: \"#e5e7eb\", width: 1 }`.",
-    "baseline_x": "x value the chart draws from.",
-    "baseline_y": "y value the chart draws from, such as the bottom of the bars.",
+    "baseline_x": "x value the top and bottom axis labels of a chart are counted from (default 0).",
+    "baseline_y": "y value the left and right axis labels of a chart are counted from (default 0).",
     "coordinates": "Position on the map as `[latitude, longitude]` or `{ latitude:, longitude: }`; a list of positions for lines and shapes.",
     "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40).",
     "refresh_trigger_distance": "How far, in logical pixels, the user must pull on iOS to start a refresh.",
@@ -347,7 +348,7 @@
     "on_tap_outside_view": "Fired when the user taps outside the open search view.",
     "on_tap_outside_bar": "Fired when the user taps outside the search bar.",
     "on_reading": "Fired with each new sensor reading in `event.data`.",
-    "on_event": "Fired on chart or map touch and pointer events; `event.data` describes the event.",
+    "on_event": "Fired on chart touches or map camera events; `event.data` describes the event (see each control's page).",
     "on_load": "Fired when the content has loaded.",
     "on_close": "Fired when the control closes.",
     "on_cancel": "Fired when the menu closes without a choice.",
@@ -384,11 +385,119 @@
     "on_complete": "Fired when playback finishes."
   },
   "widget_overrides": {
+    "WebView": {
+      "bgcolor": "Color shown behind the page before it paints. iOS, Android and macOS only.",
+      "method": "HTTP method of the request for `url`: `\"get\"` (the default) or `\"post\"`.",
+      "on_console_message": "Fired when the page writes to the JavaScript console; `event.data` has `message` and `severity_level` (`\"debug\"`, `\"error\"`, `\"info\"`, `\"log\"` or `\"warning\"`). iOS, Android and macOS only.",
+      "on_javascript_alert_dialog": "Fired when the page calls `alert()`, instead of showing it; `event.data` has `message` and `url`. iOS, Android and macOS only.",
+      "on_page_ended": "Fired when a page has finished loading; `event.data` is its URL. iOS, Android and macOS only.",
+      "on_page_started": "Fired when a page starts loading; `event.data` (also `event.value`) is its URL. iOS, Android and macOS only.",
+      "on_progress": "Fired while a page loads; `event.data` is the progress from 0 to 100. iOS, Android and macOS only.",
+      "on_scroll": "Fired when the page scrolls; `event.data` is `{ \"x\" =>, \"y\" => }` in pixels. iOS and Android only: macOS does not report scrolling.",
+      "on_url_change": "Fired when the address of the view changes, including navigation inside a single-page app; `event.data` is the new URL. iOS, Android and macOS only.",
+      "on_web_resource_error": "Fired when the page or one of its resources fails to load; `event.data` is the error description. iOS, Android and macOS only.",
+      "prevent_links": "List of URL prefixes the view must not open: a link or redirect whose address starts with one of them is blocked. iOS, Android and macOS only.",
+      "url": "Page to load when the view appears (default `https://flet.dev`). To open another page later, call `load_request`."
+    },
+    "arc": {
+      "height": "Height of that box, in logical pixels (default 0).",
+      "paint": "How the shape is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`.",
+      "start_angle": "Where the arc starts, in radians clockwise from 3 o'clock (default 0); `-Math::PI / 2` starts at 12 o'clock.",
+      "sweep_angle": "How far the arc goes, in radians (default 0); `2 * Math::PI` is a full turn and negative values go counterclockwise.",
+      "use_center": "Closes the arc through the center, drawing a pie slice instead of a curve (default false).",
+      "width": "Width of that box, in logical pixels (default 0).",
+      "x": "Left edge of the box that holds the full ellipse. Required.",
+      "y": "Top edge of the box that holds the full ellipse. Required."
+    },
+    "audio": {
+      "autoplay": "Starts playing as soon as `src` has loaded (default false).",
+      "balance": "Stereo balance from -1.0 (left) to 1.0 (right) (default 0.0). Ignored on the web.",
+      "on_duration_change": "Fired when the length of the media is known or changes. `event.data[\"duration\"]` is a String of microseconds (for example `\"184000000\"` for 3 min 4 s), or `nil` before the media is loaded; `event.data[\"duration\"].to_i / 1_000_000` is whole seconds.",
+      "on_error": "Fired when `src` is missing or cannot be loaded or played; `event.data` is the error message.",
+      "on_loaded": "Fired when `src` has loaded and the player is ready. No data.",
+      "on_position_change": "Fired about once a second while playing. `event.data[\"position\"]` is the position in milliseconds, rounded to whole seconds.",
+      "on_seek_complete": "Fired when a `seek` has finished. No data.",
+      "on_state_change": "Fired when playback starts, pauses, stops or finishes. `event.data[\"state\"]` (also `event.state`) is `\"playing\"`, `\"paused\"`, `\"stopped\"`, `\"completed\"` or `\"disposed\"`.",
+      "opacity": "Accepted, but an audio player draws nothing, so it has no effect.",
+      "playback_rate": "Playback speed, where 1.0 is normal and 2.0 twice as fast (default 1.0).",
+      "release_mode": "What happens when playback ends: `\"release\"` (the default) frees the player, so the next `play` loads the media again; `\"loop\"` starts over; `\"stop\"` stops and keeps the media loaded.",
+      "rtl": "Accepted, but an audio player draws nothing, so it has no effect.",
+      "src": "What to play: a URL, a path in your app's assets, a file path on the device, or the audio itself as base64 text. Required: the player loads it as soon as it is registered and again whenever `src` changes.",
+      "src_base64": "The audio as base64 text, used when `src` is not set; `src` takes base64 text too.",
+      "tooltip": "Accepted, but an audio player draws nothing, so it has no effect.",
+      "visible": "Accepted, but an audio player draws nothing, so it has no effect.",
+      "volume": "Volume from 0.0 to 1.0 (default 1.0); values outside that range are ignored."
+    },
     "autocomplete": {
       "on_select": "Fired when a suggestion is picked; `event.value` is its value and `event.selection` holds its key and value."
     },
+    "bannerad": {
+      "height": "Height of the space the banner takes; banners are 320 by 50 logical pixels.",
+      "on_click": "Fired when the user taps the ad. No data.",
+      "on_close": "Fired when that screen closes. No data.",
+      "on_error": "Fired when no ad could be loaded; `event.data` is the error from Google Mobile Ads as text. The space stays empty.",
+      "on_impression": "Fired when the ad counts as seen. No data.",
+      "on_load": "Fired when an ad has loaded and is shown. No data.",
+      "on_open": "Fired when the ad opens a screen over the app. No data.",
+      "on_paid": "Fired when the ad earns revenue; `event.data` has `value` (in micros of the currency), `precision` and `currency_code`.",
+      "on_will_dismiss": "Fired on iOS just before a screen the ad opened closes. No data.",
+      "request": "Targeting of the ad request: `{ keywords:, content_url:, non_personalized_ads:, neighboring_content_urls:, http_timeout:, extras: }`.",
+      "unit_id": "Your AdMob banner ad unit id. Unset, the client loads Google's test banner unit.",
+      "width": "Width of the space the banner takes; banners are 320 by 50 logical pixels."
+    },
     "barchart": {
-      "group_alignment": "How the bar groups are spread along the x axis, for example `\"spaceEvenly\"` or `\"center\"`."
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "baseline_y": "y value the left and right axis labels are counted from (default 0).",
+      "bgcolor": "Color behind the plot area.",
+      "border": "Border drawn around the plot area, for example `{ color: \"#d1d5db\", width: 1 }`. No border is drawn when unset.",
+      "bottom_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "group_alignment": "How the bar groups are spread along the x axis, for example `\"spaceEvenly\"` or `\"center\"`.",
+      "groups": "The bars, one [`bar_chart_group(...)`](/docs/control-bar-chart-group) per x position.",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "horizontal_grid_lines": "Horizontal grid lines as a hash: `interval` (in y units), `color`, `width` (default 2), `dash_pattern` (for example `[4, 4]`) and `gradient`. Pass `{}` for the default lines. No grid is drawn when both grid properties are unset.",
+      "interactive": "When true (the default), touching the chart highlights the nearest point and shows its bubble. With `false` the chart ignores touches and draws the bubbles of the parts you mark `selected: true` instead.",
+      "left_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "max_y": "Largest value on the y axis. Unset, the chart fits the bars.",
+      "min_y": "Smallest value on the y axis. Unset, the chart fits the bars.",
+      "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type`, `group_index`, `rod_index` and `stack_item_index`; the indexes are `nil` when no bar is touched. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "spacing": "Space between two groups, in logical pixels, when `group_alignment` leaves room for it.",
+      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows empty bubbles; leave it unset to get the default bubble with the touched value.",
+      "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
+    },
+    "barchartgroup": {
+      "group_vertically": "Draws the rods on top of each other at the same x instead of side by side (default false).",
+      "rods": "The bars of this group, built with [`bar_chart_rod(...)`](/docs/control-bar-chart-rod), drawn side by side.",
+      "spacing": "Space between the rods of this group, in logical pixels.",
+      "x": "Position of the group on the x axis, a whole number. Labels of the bottom axis are matched against it."
+    },
+    "barchartrod": {
+      "background_gradient": "Gradient for the track behind the bar instead of `bgcolor`.",
+      "bg_from_y": "Start of a track drawn behind the bar, for example `0` with `bg_to_y: 100` for a progress bar.",
+      "bg_to_y": "End of the track drawn behind the bar.",
+      "bgcolor": "Color of the track behind the bar. Setting any of `bg_from_y`, `bg_to_y`, `bgcolor` or `background_gradient` draws the track.",
+      "border_radius": "Rounds the bar's corners: a number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`.",
+      "border_side": "Outline of the bar, for example `{ color: \"#1e3a8a\", width: 1 }`. No outline by default.",
+      "color": "Fill color of the bar. With neither `color` nor `gradient`, the bar uses the chart's default color.",
+      "from_y": "Value the bar starts at (default 0).",
+      "gradient": "Gradient that fills the bar instead of `color`, for example `{ _type: \"linear\", begin: { x: 0, y: 1 }, end: { x: 0, y: -1 }, colors: [\"#93c5fd\", \"#1d4ed8\"] }`.",
+      "selected": "With `interactive: false` on the chart, shows this bar's bubble permanently (default false).",
+      "show_tooltip": "Set false to show no bubble for this bar (default true).",
+      "stack_items": "Segments drawn inside the bar, built with [`bar_chart_rod_stack_item(...)`](/docs/control-bar-chart-rod-stack-item), for stacked bars.",
+      "to_y": "Value the bar ends at (default 0). Set this: it is the bar's value.",
+      "width": "Thickness of the bar, in logical pixels."
+    },
+    "barchartrodstackitem": {
+      "border_side": "Outline of the segment, for example `{ color: \"#7f1d1d\", width: 1 }`.",
+      "color": "Fill color of the segment. Required, like `from_y`.",
+      "from_y": "Value the segment starts at. Required: a segment without it stops the chart from drawing.",
+      "to_y": "Value the segment ends at (default 0)."
+    },
+    "blockpicker": {
+      "available_colors": "The swatches to choose from, as a list of colors. Unset, the picker shows its default palette of Material colors.",
+      "color": "The selected color (default black).",
+      "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts."
     },
     "bottomsheet": {
       "dismissible": "When false, tapping outside the sheet does not close it (default true).",
@@ -401,8 +510,120 @@
       "opacity_on_click": "Opacity, from 0.0 to 1.0, the button fades to while it is pressed on iOS and macOS. Android, web, Windows and Linux ignore it.",
       "size": "Size of the button on iOS and macOS: `\"small\"`, `\"medium\"` or `\"large\"` (the default). Android, web, Windows and Linux ignore it."
     },
+    "candlestickchart": {
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "baseline_x": "x value the top and bottom axis labels are counted from (default 0).",
+      "baseline_y": "y value the left and right axis labels are counted from (default 0).",
+      "bgcolor": "Color behind the plot area.",
+      "border": "Border drawn around the plot area, for example `{ color: \"#d1d5db\", width: 1 }`. No border is drawn when unset.",
+      "bottom_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "horizontal_grid_lines": "Horizontal grid lines as a hash: `interval` (in y units), `color`, `width` (default 2), `dash_pattern` (for example `[4, 4]`) and `gradient`. Pass `{}` for the default lines. No grid is drawn when both grid properties are unset.",
+      "interactive": "When false, or when the chart is `disabled`, touches are ignored and `on_event` is not sent (default true).",
+      "left_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "long_press_duration": "How long a press must last, in milliseconds, before it counts as a long press for `on_event`.",
+      "max_x": "Largest value on the x axis.",
+      "max_y": "Largest price shown.",
+      "min_x": "Smallest value on the x axis; use half a step below the first candle, for example `-0.5`, so it is not cut.",
+      "min_y": "Smallest price shown.",
+      "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type` and `spot_index`, the index of the touched candle or `nil`. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "rotation_quarter_turns": "Rotates the whole chart by quarter turns clockwise: `1` draws it sideways (default `0`).",
+      "show_tooltips_for_selected_spots_only": "When true, the chart stops showing bubbles under the finger and shows them only for spots marked `selected: true` (default false).",
+      "spots": "The candles, built with [`candlestick_chart_spot(...)`](/docs/control-candlestick-chart-spot).",
+      "tooltip": "Style of the touch bubble, as on the other charts. Candlestick charts show no text in their bubbles yet, so use `on_event` to show the touched candle.",
+      "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "touch_spot_threshold": "How close a touch must be to a candle, in logical pixels, to count as touching it (default 4).",
+      "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
+    },
+    "candlestickchartspot": {
+      "close": "Closing price (default 0). A candle that closes above its open is drawn green, one that closes below red.",
+      "high": "Highest price, the top of the wick (default 0).",
+      "low": "Lowest price, the bottom of the wick (default 0).",
+      "open": "Opening price (default 0).",
+      "selected": "Shows this candle's touch indicator permanently (default false).",
+      "show_tooltip": "Set false to show no bubble for this candle (default true).",
+      "x": "Position of the candle on the x axis (default 0)."
+    },
+    "canvas": {
+      "content": "A control laid over the drawing, for example a `gesture_detector` that turns drags into new shapes.",
+      "height": "Height of the drawing area, in logical pixels.",
+      "on_resize": "Fired when the canvas is first painted and when its size changes, at most once every `resize_interval`. `event.data` is `{ \"w\" => width, \"h\" => height }` in logical pixels.",
+      "resize_interval": "Smallest time between two `on_resize` events, in milliseconds (default 10).",
+      "shapes": "The shapes to paint, in order: [`line`](/docs/control-line), [`circle`](/docs/control-circle), [`arc`](/docs/control-arc), [`oval`](/docs/control-oval), [`rect`](/docs/control-rect), [`path`](/docs/control-path), [`points`](/docs/control-points), [`shadow`](/docs/control-shadow), [`fill`](/docs/control-fill) and [`canvas_color`](/docs/control-color). `text(...)` and `image(...)` with `x:` and `y:` are painted too. Also the first positional argument: `canvas([...])`.",
+      "width": "Width of the drawing area, in logical pixels. Shapes outside the canvas are clipped."
+    },
+    "chartaxis": {
+      "label_size": "Space reserved for the value labels, in logical pixels (default 22). Raise it when labels are cut off.",
+      "label_spacing": "Distance between two labels, in axis units; for example `1` labels every whole number. Unset, the chart picks a spacing that fits.",
+      "labels": "Custom labels, built with [`chart_axis_label(...)`](/docs/control-chart-axis-label). When given, the axis shows only the labels whose `value` falls on a tick (`label_spacing` decides the ticks) and leaves the other ticks blank.",
+      "show_labels": "Draws the value labels along the axis (default true). Set false to keep the side empty.",
+      "show_max": "Draws the label at the largest value of the axis (default true).",
+      "show_min": "Draws the label at the smallest value of the axis (default true).",
+      "title": "Control drawn as the axis title, for example `text(value: \"Sales\")`. A plain string is not drawn.",
+      "title_size": "Space reserved for the title, in logical pixels (default 16)."
+    },
+    "chartaxislabel": {
+      "label": "What to draw at that value: a string, or any control such as `text(...)` or `icon(...)`.",
+      "value": "Axis value the label belongs to. It must equal a tick value exactly, for example `0`, `1`, `2` with `label_spacing: 1`."
+    },
     "checkbox": {
       "error": "Shows the checkbox in its error color. iOS and macOS ignore it."
+    },
+    "circle": {
+      "paint": "How the shape is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`.",
+      "radius": "Radius, in logical pixels (default 0).",
+      "x": "Horizontal position of the center. Required.",
+      "y": "Vertical position of the center. Required."
+    },
+    "circlelayer": {
+      "circles": "The [`circle_marker`](/docs/control-circle-marker) controls to draw. Also the first positional argument: `circle_layer([...])`."
+    },
+    "circlemarker": {
+      "border_color": "Outline color (default `\"#ffff00\"`); the outline is drawn only with `border_stroke_width` above 0.",
+      "border_stroke_width": "Outline thickness, in logical pixels (default 0, no outline).",
+      "color": "Fill color (default `\"#00ff00\"`); use `\"#2563eb,0.2\"` for a see-through area.",
+      "coordinates": "Center of the circle, as `[latitude, longitude]` or `{ latitude:, longitude: }`. Required.",
+      "radius": "Radius, in logical pixels, or in meters with `use_radius_in_meter` (default 10).",
+      "use_radius_in_meter": "Measures `radius` in meters on the ground, so the circle grows and shrinks with the zoom (default false, pixels)."
+    },
+    "codeeditor": {
+      "autocomplete": "Shows suggestions while the user types (default false).",
+      "autocomplete_words": "Extra words offered by `autocomplete`, besides those of the language.",
+      "autofocus": "Focuses the editor when it first appears (default false).",
+      "code_theme": "Colors of the highlighted code: a highlight.js theme name such as `\"atom-one-dark\"`, `\"github\"` or `\"monokai-sublime\"`, or a hash of token names to text styles, for example `{ \"keyword\" => { color: \"#c678dd\" } }`.",
+      "gutter_style": "Line-number column: `{ text_style:, background_color:, width: 80, margin: 10, show_line_numbers: true, show_folding_handles: true, show_errors: true }`.",
+      "language": "highlight.js language id used to color the code, such as `\"ruby\"`, `\"python\"`, `\"javascript\"`, `\"json\"` or `\"yaml\"`. Unset or unknown, the code is not colored.",
+      "on_blur": "Fired when the editor loses focus. No data.",
+      "on_change": "Fired as the user edits; `event.data` is the full text.",
+      "on_focus": "Fired when the editor gains focus. No data.",
+      "on_selection_change": "Fired when the user moves the cursor or selection; `event.data` has `selected_text` and `selection` (`base_offset`, `extent_offset`, `affinity`, `directional`).",
+      "padding": "Space around the code, in logical pixels (default 0).",
+      "read_only": "Shows the code without letting the user change it (default false).",
+      "selection": "The selection or cursor: `{ base_offset:, extent_offset: }` in characters. Set it to move the cursor; the client writes it back as the user moves it.",
+      "text_style": "Style of the code, for example `{ font_family: \"monospace\", size: 14 }`.",
+      "value": "The full text of the editor, folded sections included. The client writes it back as the user types, so `event.control.props[\"value\"]` stays current."
+    },
+    "color": {
+      "blend_mode": "How the color is combined with what is already painted (default `\"srcOver\"`, painting over it).",
+      "color": "Color that fills the whole canvas (default black). Put it first in `shapes` to paint a background."
+    },
+    "colorpicker": {
+      "color": "The selected color (default black). Read the user's pick from `event.data` in `on_color_change`.",
+      "color_history": "Recent colors shown as swatches under the picker, as a list of colors. The user can tap one to pick it again.",
+      "color_picker_width": "Width of the picker, in logical pixels (default 300).",
+      "display_thumb_color": "Fills the slider thumbs with the selected color (default true).",
+      "enable_alpha": "Adds a transparency slider (default true).",
+      "hex_input_bar": "Shows a field where the user can type a hex color (default true).",
+      "hsv_color": "The selected color as `{ alpha:, hue:, saturation:, value: }` (hue 0 to 360, the others 0 to 1). When both are set, the one you changed last wins.",
+      "label_text_style": "Style of those value fields.",
+      "label_types": "Value fields shown under the picker: any of `\"hex\"`, `\"rgb\"`, `\"hsv\"` and `\"hsl\"` (default rgb, hsv and hsl); `[]` shows none.",
+      "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts.",
+      "on_history_change": "Fired when the picker changes `color_history`; `event.data` is the new list of `\"#aarrggbb\"` colors.",
+      "on_hsv_color_change": "Fired as the user picks a color; `event.data` has `alpha`, `hue`, `saturation` and `value`.",
+      "palette_type": "Shape of the color area: `\"hsvWithHue\"` (the default), `\"hsv\"`, `\"hsvWithValue\"`, `\"hsvWithSaturation\"`, `\"hsl\"`, `\"hslWithHue\"`, `\"hslWithLightness\"`, `\"hslWithSaturation\"`, `\"rgbWithBlue\"`, `\"rgbWithGreen\"`, `\"rgbWithRed\"` or `\"hueWheel\"`.",
+      "picker_area_border_radius": "Corner radius of the color area (default 0).",
+      "picker_area_height_percent": "Height of the color area as a fraction of its width (default 1.0, square)."
     },
     "cupertinoactivityindicator": {
       "animating": "On iOS and macOS, spins the indeterminate indicator while true; set `false` to pause it. Android, web, Windows and Linux ignore it.",
@@ -470,10 +691,99 @@
       "select_icon": "The `dropdown_m2` spelling of `trailing_icon`.",
       "on_change": "The `dropdown_m2` spelling of `on_select`; the handler runs when an option is picked."
     },
+    "fill": {
+      "paint": "Paint that fills the whole canvas, built with `paint(...)`; use its `gradient` for a gradient background."
+    },
     "formrow": {
       "prefix": "Label or control shown at the start of the row.",
       "helper": "Text or control shown below the row.",
       "error": "Error text or control shown below the row."
+    },
+    "hueringpicker": {
+      "color": "The selected color (default black).",
+      "color_picker_height": "Size of the ring, in logical pixels.",
+      "enable_alpha": "Adds a transparency slider (default false).",
+      "hue_ring_stroke_width": "Thickness of the hue ring, in logical pixels.",
+      "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts.",
+      "picker_area_border_radius": "Corner radius of the square inside the ring.",
+      "portrait_only": "Always uses the portrait layout, with the sliders under the ring, even when the screen is wide (default false)."
+    },
+    "imagesourceattribution": {
+      "height": "Height of the logo, in logical pixels (default 24).",
+      "image": "Logo to show, usually an `image(...)`. Required: without it the attribution is skipped. Also the first positional argument.",
+      "on_click": "Fired when the logo is tapped. No data.",
+      "tooltip": "Name of the source: shown on hover on Android, web, Windows and Linux, and read by screen readers on iOS and macOS."
+    },
+    "interstitialad": {
+      "on_click": "Fired when the user taps the ad. No data.",
+      "on_close": "Fired when the user closes the ad. No data.",
+      "on_error": "Fired when the ad fails to load or to show; `event.data` is the error from Google Mobile Ads as text.",
+      "on_impression": "Fired when the ad counts as seen. No data.",
+      "on_load": "Fired when the ad has loaded and `show` can display it. No data.",
+      "on_open": "Fired when the ad covers the screen. No data.",
+      "request": "Targeting of the ad request: `{ keywords:, content_url:, non_personalized_ads:, neighboring_content_urls:, http_timeout:, extras: }`.",
+      "unit_id": "Your AdMob interstitial ad unit id. Unset, the client loads Google's test interstitial unit."
+    },
+    "line": {
+      "paint": "How the line is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`. A line is always stroked, whatever `style` says.",
+      "x1": "Horizontal position of the start point. Required.",
+      "x2": "Horizontal position of the end point. Required.",
+      "y1": "Vertical position of the start point. Required.",
+      "y2": "Vertical position of the end point. Required."
+    },
+    "linechart": {
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "baseline_x": "x value the top and bottom axis labels are counted from (default 0).",
+      "baseline_y": "y value the left and right axis labels are counted from (default 0).",
+      "bgcolor": "Color behind the plot area.",
+      "border": "Border drawn around the plot area, for example `{ color: \"#d1d5db\", width: 1 }`. No border is drawn when unset.",
+      "bottom_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "data_series": "The lines, one [`line_chart_data(...)`](/docs/control-line-chart-data) each.",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "horizontal_grid_lines": "Horizontal grid lines as a hash: `interval` (in y units), `color`, `width` (default 2), `dash_pattern` (for example `[4, 4]`) and `gradient`. Pass `{}` for the default lines. No grid is drawn when both grid properties are unset.",
+      "interactive": "When true (the default), touching the chart highlights the nearest point and shows its bubble. With `false` the chart ignores touches and draws the bubbles of the parts you mark `selected: true` instead.",
+      "left_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "max_x": "Largest value on the x axis. Unset, the chart fits the points.",
+      "max_y": "Largest value on the y axis. Unset, the chart fits the points.",
+      "min_x": "Smallest value on the x axis. Unset, the chart fits the points.",
+      "min_y": "Smallest value on the y axis. Unset, the chart fits the points.",
+      "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type` and `spots`, a list of `{ \"bar_index\" => line, \"spot_index\" => point }` hashes for the touched points (empty when none). `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "point_line_end": "y value where the vertical indicator line under a touched point ends. Unset, it ends at the point.",
+      "point_line_start": "y value where the vertical indicator line under a touched point starts. Unset, it starts at the bottom of the chart.",
+      "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows empty bubbles; leave it unset to get the default bubble with the touched value. Line charts also take `show_on_top_of_chart_box_area`.",
+      "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
+    },
+    "linechartdata": {
+      "above_line": "Vertical lines from each point to the top of the chart, as `{ color:, width:, dash_pattern: }`; needs an above-line fill too.",
+      "above_line_bgcolor": "Fills the area between the line and the top of the chart with this color.",
+      "above_line_cutoff_y": "Stops the area above the line at this y value.",
+      "above_line_gradient": "Fills the area above the line with a gradient instead.",
+      "below_line": "Vertical lines from each point down to the bottom of the chart, as `{ color:, width:, dash_pattern: }`.",
+      "below_line_bgcolor": "Fills the area between the line and the bottom of the chart with this color, for an area chart. Use `\"#2563eb,0.2\"` for a see-through fill.",
+      "below_line_cutoff_y": "Stops the area below the line at this y value.",
+      "below_line_gradient": "Fills the area below the line with a gradient instead, for example from the line color to transparent.",
+      "color": "Color of the line (default `\"#00bcd4\"`).",
+      "curve_smoothness": "How round a `curved` line is, from 0 (straight) to 1 (default 0.35).",
+      "curved": "Draws a smooth curve through the points instead of straight segments (default false).",
+      "dash_pattern": "Draws the line dashed: lengths of dashes and gaps in logical pixels, for example `[6, 4]`.",
+      "gradient": "Gradient along the line instead of `color`.",
+      "point": "Dot drawn at every point: `true` for the default dot, `false` or unset for none, or a hash with `_type` `\"ChartCirclePoint\"` (`radius`, `color`, `stroke_color`, `stroke_width`), `\"ChartSquarePoint\"` (`size`, `color`, `stroke_color`, `stroke_width`) or `\"ChartCrossPoint\"` (`size`, `width`, `color`).",
+      "points": "The points of the line, built with [`line_chart_data_point(...)`](/docs/control-line-chart-data-point), in x order.",
+      "prevent_curve_over_shooting": "Keeps a `curved` line from bulging above or below its points (default false).",
+      "prevent_curve_over_shooting_threshold": "Smallest gap between two points, in y units, at which `prevent_curve_over_shooting` applies (default 10).",
+      "rounded_stroke_cap": "Rounds the two ends of the line (default false).",
+      "rounded_stroke_join": "Rounds the corners where segments meet (default false).",
+      "shadow": "Shadow drawn under the line, for example `{ color: \"#000000,0.2\", blur_radius: 4, offset: { x: 0, y: 2 } }`.",
+      "step_direction": "Draws a step line instead: `0` steps at the start of each segment, `1` at the end and `0.5` in the middle.",
+      "stroke_width": "Thickness of the line, in logical pixels (default 2)."
+    },
+    "linechartdatapoint": {
+      "selected": "With `interactive: false` on the chart, highlights the point and shows its bubble permanently (default false).",
+      "show_tooltip": "Set false to show no bubble for this point (default true).",
+      "x": "Position of the point on the x axis.",
+      "y": "Value of the point on the y axis."
     },
     "listtile": {
       "dense": "Uses a more compact layout with less vertical space. iOS and macOS ignore it.",
@@ -481,8 +791,164 @@
       "is_three_line": "Gives the subtitle room for two lines, so the tile is three lines tall. iOS and macOS ignore it.",
       "shape": "Shape of the tile's background and tap highlight. iOS and macOS ignore it."
     },
+    "lottie": {
+      "alignment": "Where the animation sits in its box (default centered).",
+      "animate": "Plays the animation (default true); set false to stop it on the frame it shows.",
+      "background_loading": "Parses the animation off the main thread, for large files.",
+      "enable_layers_opacity": "Applies layer opacity to whole layers, which some animations need (default false).",
+      "enable_merge_paths": "Turns on Lottie's merge-path support, which some animations need (default false).",
+      "error_content": "Control shown instead of the animation when it cannot be loaded; unset, an error box is shown.",
+      "filter_quality": "Scaling quality when the content is resized: `\"none\"`, `\"low\"`, `\"medium\"` or `\"high\"`.",
+      "fit": "How the content is sized into its box: `\"contain\"` (the default), `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"none\"` or `\"scaleDown\"`. Write enum values in Flutter's spelling, such as `\"fitWidth\"`: 0.0.23 does not read `\"fit_width\"`.",
+      "headers": "HTTP headers sent when `src` is a URL, for example `{ \"Authorization\" => \"Bearer ...\" }`.",
+      "on_error": "Fired when the animation cannot be loaded, and for warnings while parsing it; `event.data` is the message.",
+      "on_load": "Fired when the animation has loaded. No data.",
+      "repeat": "Plays the animation in a loop (default true).",
+      "reverse": "When repeating, plays the animation forward and then backward (default false).",
+      "src": "The animation: a URL, a path in your app's assets, a file path on the device, or the JSON as base64 text. Required: without it the control draws an error box."
+    },
+    "map": {
+      "animation_curve": "Default easing of the move and zoom methods (default `\"fastOutSlowIn\"`).",
+      "animation_duration": "Default length of the move and zoom methods, in milliseconds (default 500).",
+      "bgcolor": "Color shown where no tile has loaded yet (default light grey, `\"#e0e0e0\"`).",
+      "initial_camera_fit": "Opens the map so that an area fits: `{ bounds: { corner_1:, corner_2: } }` or `{ coordinates: [...] }`, with `{ latitude:, longitude: }` hashes (arrays are not converted here), plus optional `padding`, `max_zoom`, `min_zoom` and `force_integer_zoom_level`. It wins over `initial_center` and `initial_zoom`.",
+      "initial_center": "Where the map opens, as `[latitude, longitude]` or `{ latitude:, longitude: }` (default latitude 50.5, longitude 30.51). Moving the map later does not change it: use the methods below.",
+      "initial_rotation": "Rotation the map opens with, in degrees clockwise (default 0).",
+      "initial_zoom": "Zoom level the map opens at (default 13); each level doubles the scale, and 0 shows the whole world.",
+      "interaction_configuration": "Which gestures move the map, as a hash. `flags` is a sum of gesture bits: 1 drag, 2 fling, 4 pinch-move, 8 pinch-zoom, 16 double-tap zoom, 32 double-tap-drag zoom, 64 scroll-wheel zoom, 128 rotate (default 255, all; `0` makes the map static). Always include `pinch_move_threshold` (flutter_map uses 40): without it the map fails to draw. Also takes `scroll_wheel_velocity`, `pinch_zoom_threshold`, `rotation_threshold` and `enable_multi_finger_gesture_race`.",
+      "keep_alive": "Keeps the map and its loaded tiles alive when it scrolls out of a list (default false).",
+      "layers": "What the map draws, bottom to top: a [`tile_layer`](/docs/control-tile-layer) first, then marker, circle, polyline and polygon layers, and an attribution last. Also the first positional argument: `map([...])`.",
+      "max_zoom": "Largest zoom level the user can reach.",
+      "min_zoom": "Smallest zoom level the user can reach.",
+      "on_event": "Fired for every camera event of the map. `event.data` has `source`, what caused it (such as `\"dragStart\"`, `\"onDrag\"`, `\"scrollWheel\"` or `\"mapController\"` for your method calls), and `camera`, as in `on_position_change`.",
+      "on_hover": "Fired as a mouse moves over the map, on desktop and web. `event.data[\"coordinates\"]` is the map position; the rest is the pointer: `k` (kind, such as `\"touch\"` or `\"mouse\"`), `l` and `g` (local and global `{ \"x\", \"y\" }`), `ts`, `dev` and the pressure and size readings.",
+      "on_init": "Fired once, when the map is ready to receive the move and zoom methods. No data.",
+      "on_long_press": "Fired when the user presses the map for a while. `event.data[\"coordinates\"]` is the map position as `{ \"latitude\" =>, \"longitude\" => }`; `gx` / `gy` and `lx` / `ly` are the global and map-relative positions in logical pixels.",
+      "on_pointer_cancel": "Fired when the system cancels a pointer, for example when a gesture is taken over. `event.data[\"coordinates\"]` is the map position; the rest is the pointer: `k` (kind, such as `\"touch\"` or `\"mouse\"`), `l` and `g` (local and global `{ \"x\", \"y\" }`), `ts`, `dev` and the pressure and size readings.",
+      "on_pointer_down": "Fired when a finger or button goes down on the map. `event.data[\"coordinates\"]` is the map position; the rest is the pointer: `k` (kind, such as `\"touch\"` or `\"mouse\"`), `l` and `g` (local and global `{ \"x\", \"y\" }`), `ts`, `dev` and the pressure and size readings.",
+      "on_pointer_up": "Fired when a finger or button is released. `event.data[\"coordinates\"]` is the map position; the rest is the pointer: `k` (kind, such as `\"touch\"` or `\"mouse\"`), `l` and `g` (local and global `{ \"x\", \"y\" }`), `ts`, `dev` and the pressure and size readings.",
+      "on_position_change": "Fired as the camera moves, often many times a second. `event.data` has `coordinates` (the new center), `has_gesture` (true when the user moved it) and `camera`: `center`, `zoom`, `min_zoom`, `max_zoom` and `rotation`.",
+      "on_secondary_tap": "Fired on a right click or secondary tap. `event.data[\"coordinates\"]` is the map position as `{ \"latitude\" =>, \"longitude\" => }`; `gx` / `gy` and `lx` / `ly` are the global and map-relative positions in logical pixels.",
+      "on_tap": "Fired when the user taps the map. `event.data[\"coordinates\"]` is the map position as `{ \"latitude\" =>, \"longitude\" => }`; `gx` / `gy` and `lx` / `ly` are the global and map-relative positions in logical pixels."
+    },
+    "marker": {
+      "alignment": "Where the box sits relative to the point, as `{ x:, y: }` from -1 to 1: `{ x: 0, y: -1 }` puts it above the point, like a pin (default centered).",
+      "content": "Control drawn at the point, such as an `icon(...)`. Required; also the first positional argument: `marker(icon(\"place\"), coordinates: ...)`.",
+      "coordinates": "The point the marker is pinned to, as `[latitude, longitude]` or `{ latitude:, longitude: }`. Required.",
+      "height": "Height of the marker's box, in logical pixels (default 30).",
+      "rotate": "Keeps this marker upright when the map rotates; unset, the layer's `rotate` applies.",
+      "width": "Width of the marker's box, in logical pixels (default 30). The content is laid out in it."
+    },
+    "markerlayer": {
+      "alignment": "Where each marker sits relative to its point, unless the marker sets its own (default centered on the point).",
+      "markers": "The [`marker`](/docs/control-marker) controls to draw. Also the first positional argument: `marker_layer([...])`.",
+      "rotate": "Keeps the markers upright when the map rotates (default false). A marker's own `rotate` wins."
+    },
+    "materialpicker": {
+      "color": "The selected color (default black).",
+      "enable_label": "Shows the name and hex code of the selected shade (default false).",
+      "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts.",
+      "on_primary_change": "Fired when the user picks a palette, before choosing a shade; `event.data` is that palette's main color as `\"#aarrggbb\"`.",
+      "portrait_only": "Always uses the portrait layout, with the shades under the palette, even when the screen is wide (default false)."
+    },
+    "multiplechoiceblockpicker": {
+      "available_colors": "The swatches to choose from, as a list of colors. Unset, the picker shows its default palette of Material colors.",
+      "colors": "The selected colors, as a list.",
+      "on_colors_change": "Fired when the user selects or deselects a swatch; `event.data` is the list of selected colors as `\"#aarrggbb\"` strings."
+    },
+    "nativead": {
+      "factory_id": "Id of a native ad factory registered in the Flutter client. You need `factory_id` or `template_style`.",
+      "on_click": "Not sent yet: the client does not draw native ads.",
+      "on_close": "Not sent yet: the client does not draw native ads.",
+      "on_error": "Not sent yet: the client does not draw native ads.",
+      "on_impression": "Not sent yet: the client does not draw native ads.",
+      "on_load": "Not sent yet: the client does not draw native ads.",
+      "on_open": "Not sent yet: the client does not draw native ads.",
+      "on_paid": "Not sent yet: the client does not draw native ads.",
+      "on_will_dismiss": "Not sent yet: the client does not draw native ads.",
+      "request": "Targeting of the ad request, as on `banner_ad`.",
+      "template_style": "Google's ready-made layout: `{ template_type: \"small\" or \"medium\", main_bgcolor:, corner_radius:, primary_text_style:, secondary_text_style:, tertiary_text_style:, call_to_action_text_style: }`.",
+      "unit_id": "Your AdMob native ad unit id. Unset, Google's test native unit is used."
+    },
     "navigationrail": {
       "group_alignment": "Vertical position of the destinations, from -1.0 (top) to 1.0 (bottom)."
+    },
+    "oval": {
+      "height": "Height of the ellipse, in logical pixels (default 0).",
+      "paint": "How the shape is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`.",
+      "width": "Width of the ellipse, in logical pixels (default 0).",
+      "x": "Left edge of the box that holds the ellipse. Required.",
+      "y": "Top edge of the box that holds the ellipse. Required."
+    },
+    "path": {
+      "elements": "The drawing steps, in order: `path_move_to(x, y)`, `path_line_to(x, y)`, `path_quadratic_to(cp1x:, cp1y:, x:, y:, w: 1)` (it draws a straight line unless you pass `w: 1`), `path_cubic_to(cp1x:, cp1y:, cp2x:, cp2y:, x:, y:)`, `path_arc(x:, y:, width:, height:, start_angle:, sweep_angle:)`, `path_arc_to(x:, y:, radius:, rotation:, large_arc:, clockwise:)`, `path_oval(x:, y:, width:, height:)`, `path_rect(x:, y:, width:, height:, border_radius:)`, `path_sub_path(elements:, x:, y:)` and `path_close`.",
+      "paint": "How the shape is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`."
+    },
+    "piechart": {
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "center_space_color": "Color of the hole in the middle.",
+      "center_space_radius": "Radius of the hole in the middle, in logical pixels. Unset, the hole takes all the room the slices leave; `0` draws a full pie.",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "on_event": "Fired as the user touches or hovers the pie, always: this chart has no `interactive` switch. `event.data` has `type`, `section_index` (`nil` outside the slices) and `local_x` / `local_y`, the touch position in the chart. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "sections": "The slices, built with [`pie_chart_section(...)`](/docs/control-pie-chart-section), drawn clockwise.",
+      "sections_space": "Gap between two slices, in logical pixels (default 2).",
+      "start_degree_offset": "Angle, in degrees, where the first slice starts; 0 (the default) is the 3 o'clock position."
+    },
+    "piechartsection": {
+      "badge": "Control drawn on the slice, such as an `icon(...)`. Unlike other controls, `badge` is not a corner badge here.",
+      "badge_position": "Where the badge sits along the slice, from 0 (inner edge) to 1 (outer edge) (default 0.5).",
+      "border_side": "Outline of the slice, for example `{ color: \"#ffffff\", width: 2 }`.",
+      "color": "Fill color of the slice (default cyan).",
+      "gradient": "Gradient that fills the slice instead of `color`.",
+      "radius": "Length of the slice from the hole to the outer edge, in logical pixels (default 40).",
+      "title": "Text drawn on the slice. No text is drawn when unset.",
+      "title_position": "Where the title sits along the slice, from 0 (inner edge) to 1 (outer edge) (default 0.5).",
+      "title_style": "Style of the title, for example `{ size: 12, color: \"#ffffff\", weight: \"bold\" }`.",
+      "value": "Size of the slice; slices share the circle in proportion to their values (default 10)."
+    },
+    "points": {
+      "paint": "How the points are drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`. `stroke_width` is the dot size, and `stroke_cap: \"round\"` makes round dots.",
+      "point_mode": "`\"points\"` (the default) draws a dot per point, `\"lines\"` joins them in pairs, and `\"polygon\"` joins them all in order.",
+      "points": "The points, each `[x, y]` or `{ x:, y: }`."
+    },
+    "polygonlayer": {
+      "draw_labels_last": "Draws all labels after all polygons, so no polygon covers a label (default false).",
+      "polygon_culling": "Skips polygons outside the screen (default true).",
+      "polygon_labels": "Draws each polygon's `label` (default true).",
+      "polygons": "The [`polygon_marker`](/docs/control-polygon-marker) controls to draw. Also the first positional argument: `polygon_layer([...])`.",
+      "simplification_tolerance": "How much outlines are simplified at lower zoom levels to draw faster; `0` keeps every point (default 0.3).",
+      "use_alternative_rendering": "Uses a different drawing method that can be faster for many simple polygons (default false). Measure before enabling it."
+    },
+    "polygonmarker": {
+      "border_color": "Outline color (default `\"#4caf50\"`).",
+      "border_stroke_width": "Outline thickness, in logical pixels (default 0, no outline).",
+      "color": "Fill color (default `\"#4caf50\"`); use `\"#7c3aed,0.25\"` to keep the map visible under it.",
+      "coordinates": "The corners of the area, in order, each as `[latitude, longitude]` or `{ latitude:, longitude: }`.",
+      "disable_holes_border": "Draws no outline around holes in the area (default false).",
+      "label": "Text drawn in the middle of the area.",
+      "label_text_style": "Style of the label, for example `{ size: 12, weight: \"bold\" }`.",
+      "rotate_label": "Turns the label with the map instead of keeping it level (default false).",
+      "stroke_cap": "Shape of the outline ends: `\"round\"` (the default), `\"butt\"` or `\"square\"`.",
+      "stroke_join": "Shape of the outline corners: `\"round\"` (the default), `\"miter\"` or `\"bevel\"`."
+    },
+    "polylinelayer": {
+      "culling_margin": "How far beyond the screen, in logical pixels, line segments are still drawn (default 10).",
+      "min_hittable_radius": "Smallest touch area around each line, in logical pixels (default 10).",
+      "polylines": "The [`polyline_marker`](/docs/control-polyline-marker) controls to draw. Also the first positional argument: `polyline_layer([...])`.",
+      "simplification_tolerance": "How much lines are simplified at lower zoom levels to draw faster; `0` keeps every point (default 0.3)."
+    },
+    "polylinemarker": {
+      "border_color": "Color of the outline drawn on both sides of the line (default `\"#ffeb3b\"`).",
+      "border_stroke_width": "Thickness of that outline, in logical pixels (default 0, no outline).",
+      "color": "Line color (default `\"#ffeb3b\"`).",
+      "colors_stop": "Where each of `gradient_colors` sits along the line, from 0 to 1.",
+      "coordinates": "The points of the line, in order, each as `[latitude, longitude]` or `{ latitude:, longitude: }`.",
+      "gradient_colors": "Colors blended along the line instead of `color`, for example from green to red.",
+      "stroke_cap": "Shape of the line ends: `\"round\"` (the default), `\"butt\"` or `\"square\"`.",
+      "stroke_join": "Shape of the corners: `\"round\"` (the default), `\"miter\"` or `\"bevel\"`.",
+      "stroke_pattern": "`{ _type: \"solid\" }` (the default), `{ _type: \"dotted\", spacing_factor: 1.5 }` or `{ _type: \"dashed\", segments: [10, 5] }`; dotted and dashed also take `pattern_fit` (default `\"scaleUp\"`).",
+      "stroke_width": "Line thickness, in logical pixels, or in meters with `use_stroke_width_in_meter` (default 1).",
+      "use_stroke_width_in_meter": "Measures `stroke_width` in meters on the ground (default false)."
     },
     "popupmenubutton": {
       "on_select": "Fired when an item is chosen; the data is the item's internal id, so handle each item's `on_click` instead."
@@ -494,11 +960,119 @@
       "track_gap": "Gap between the active and inactive parts of the ring's track, in logical pixels. iOS and macOS ignore it.",
       "year_2023": "On Android, web, Windows and Linux, uses the 2023 Material 3 design; set `false` for the newer look."
     },
+    "radarchart": {
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "border": "Border drawn around the plot area, for example `{ color: \"#d1d5db\", width: 1 }`. No border is drawn when unset.",
+      "center_min_value": "Puts the smallest value at the center instead of the first ring (default false).",
+      "data_sets": "The shapes drawn on the radar, built with [`radar_data_set(...)`](/docs/control-radar-data-set). Every data set needs the same number of entries.",
+      "grid_border_side": "Lines of the spokes (default 2 pixels wide).",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "interactive": "When false, or when the chart is `disabled`, touches are ignored (default true).",
+      "long_press_duration": "How long a press must last, in milliseconds, before it counts as a long press for `on_event`.",
+      "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type`, `data_set_index`, `entry_index` and `entry_value`; they are `nil` when no entry is touched. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "radar_bgcolor": "Color inside the radar (default transparent).",
+      "radar_border_side": "Outline of the radar, for example `{ color: \"#9ca3af\", width: 1 }` (default 2 pixels wide).",
+      "radar_shape": "Shape of the grid: `\"polygon\"` (the default) or `\"circle\"`.",
+      "tick_border_side": "Lines of the rings (default 2 pixels wide).",
+      "tick_count": "Number of rings between the center and the edge (default 1).",
+      "ticks_text_style": "Style of the value labels on the rings.",
+      "title_position_percentage_offset": "How far the titles sit from the edge, as a fraction of the radius (default 0.2).",
+      "title_text_style": "Style of the spoke titles.",
+      "titles": "Labels of the spokes, built with [`radar_chart_title(...)`](/docs/control-radar-chart-title), one per entry and in the same order.",
+      "touch_spot_threshold": "How close a touch must be to an entry, in logical pixels, to count as touching it."
+    },
+    "radarcharttitle": {
+      "angle": "Rotation of the label, in degrees. Unset, the label turns with its spoke.",
+      "position_percentage_offset": "How far this label sits from the edge, as a fraction of the radius; overrides the chart's `title_position_percentage_offset`.",
+      "text": "Label of the spoke (default empty).",
+      "text_spans": "Extra styled text after `text`, built with `text_span(...)`."
+    },
+    "radardataset": {
+      "border_color": "Color of the outline (default `\"#00bcd4\"`).",
+      "border_width": "Thickness of the outline, in logical pixels (default 2).",
+      "entries": "Values of the shape, built with [`radar_data_set_entry(...)`](/docs/control-radar-data-set-entry), one per spoke in spoke order.",
+      "entry_radius": "Radius of the dot drawn at each entry, in logical pixels (default 5).",
+      "fill_color": "Color inside the shape (default `\"#00bcd4\"`); use `\"#2563eb,0.25\"` to see the other data sets through it.",
+      "fill_gradient": "Gradient inside the shape instead of `fill_color`."
+    },
+    "radardatasetentry": {
+      "value": "Value along this entry's spoke (default 0)."
+    },
+    "rect": {
+      "border_radius": "Rounds the corners: a number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`.",
+      "height": "Height, in logical pixels (default 0).",
+      "paint": "How the shape is drawn, built with `paint(...)`: `color` (default black), `style` (`\"fill\"`, the default, or `\"stroke\"`), `stroke_width`, `stroke_cap` (`\"butt\"`, `\"round\"`, `\"square\"`), `stroke_join` (`\"miter\"`, `\"round\"`, `\"bevel\"`), `stroke_dash_pattern` (dash and gap lengths, for example `[8, 4]`), `blend_mode`, `anti_alias` (default true), `blur_image` and `gradient`.",
+      "width": "Width, in logical pixels (default 0).",
+      "x": "Left edge of the rectangle. Required.",
+      "y": "Top edge of the rectangle. Required."
+    },
     "reorderablelistview": {
       "spacing": "Space between items, in logical pixels."
     },
     "responsiverow": {
       "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these."
+    },
+    "richattribution": {
+      "alignment": "Corner the button and popup sit in: `\"bottomRight\"` (the default) or `\"bottomLeft\"`.",
+      "attributions": "What the attribution lists: [`text_source_attribution`](/docs/control-text-source-attribution) and [`image_source_attribution`](/docs/control-image-source-attribution) controls. Also the first positional argument.",
+      "permanent_height": "Height of the logos that always stay visible, in logical pixels (default 24).",
+      "popup_bgcolor": "Background of the popup that lists the text attributions.",
+      "popup_border_radius": "Corner radius of that popup.",
+      "popup_initial_display_duration": "How long, in milliseconds, the popup stays open after the map opens (default 0, closed).",
+      "show_flutter_map_attribution": "Adds the flutter_map logo and a \"Made with flutter_map\" line (default true)."
+    },
+    "rive": {
+      "alignment": "Where the artboard sits in its box (default centered).",
+      "animations": "Names of the animations to play, for example `[\"idle\"]`.",
+      "art_board": "Name of the artboard to show (default the file's default artboard).",
+      "clip_rect": "Shows only this part of the artboard: `{ left:, top:, right:, bottom: }` in artboard pixels.",
+      "fit": "How the content is sized into its box: `\"contain\"` (the default), `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"none\"` or `\"scaleDown\"`. Write enum values in Flutter's spelling, such as `\"fitWidth\"`: 0.0.23 does not read `\"fit_width\"`.",
+      "headers": "HTTP headers sent when `src` is a URL.",
+      "placeholder": "Control shown while the file loads, such as `progress_ring()`.",
+      "speed_multiplier": "Playback speed, where 1.0 is normal (default 1.0).",
+      "src": "The `.riv` file: a URL, a path in your app's assets or a file path on the device. Required: without it the control draws an error box.",
+      "state_machines": "Names of the state machines to run; they receive the user's touches. With neither `animations` nor `state_machines`, the artboard's default state machine runs, or else its first animation.",
+      "use_art_board_size": "Sizes the control to the artboard instead of the space it gets (default false)."
+    },
+    "scatterchart": {
+      "animation": "How the chart animates when its data changes: a duration in milliseconds, or `{ duration:, curve: }` (default 150 ms, `\"linear\"`).",
+      "baseline_x": "x value the top and bottom axis labels are counted from (default 0).",
+      "baseline_y": "y value the left and right axis labels are counted from (default 0).",
+      "bgcolor": "Color behind the plot area.",
+      "border": "Border drawn around the plot area, for example `{ color: \"#d1d5db\", width: 1 }`. No border is drawn when unset.",
+      "bottom_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "error_indicator_data": "Accepted but not drawn by the client: error bars are not supported yet.",
+      "height": "Height in logical pixels. In a parent with unbounded height, such as a `column` in a scrolling page, the chart is at most 300 pixels tall; set `height` to change it.",
+      "horizontal_grid_lines": "Horizontal grid lines as a hash: `interval` (in y units), `color`, `width` (default 2), `dash_pattern` (for example `[4, 4]`) and `gradient`. Pass `{}` for the default lines. No grid is drawn when both grid properties are unset.",
+      "interactive": "When false, or when the chart is `disabled`, touches are ignored and `on_event` is not sent (default true).",
+      "left_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "long_press_duration": "How long a press must last, in milliseconds, before it counts as a long press for `on_event`.",
+      "max_x": "Largest value on the x axis. Unset, the chart fits the spots.",
+      "max_y": "Largest value on the y axis. Unset, the chart fits the spots.",
+      "min_x": "Smallest value on the x axis. Unset, the chart fits the spots.",
+      "min_y": "Smallest value on the y axis. Unset, the chart fits the spots.",
+      "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type` and `spot_index`, the index of the touched spot or `nil`. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
+      "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "rotation_quarter_turns": "Rotates the whole chart by quarter turns clockwise: `1` draws it sideways (default `0`).",
+      "show_tooltips_for_selected_spots_only": "When true, the chart stops showing bubbles under the finger and shows them only for spots marked `selected: true` (default false).",
+      "spots": "The points, built with [`scatter_chart_spot(...)`](/docs/control-scatter-chart-spot).",
+      "tooltip": "Style of the touch bubble, as on the other charts. Scatter charts show no text in their bubbles yet, so use `on_event` to show the touched spot.",
+      "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
+      "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
+    },
+    "scatterchartspot": {
+      "color": "Color of the dot. Unset, the chart picks one of 18 series colors from the spot's position.",
+      "label_text": "Text drawn next to the dot.",
+      "label_text_style": "Style of `label_text`; unset, the text takes the dot's color.",
+      "point": "Custom dot instead of `radius` and `color`: a hash with `_type` `\"ChartCirclePoint\"`, `\"ChartSquarePoint\"` or `\"ChartCrossPoint\"`, as on [`line_chart_data`](/docs/control-line-chart-data).",
+      "radius": "Radius of the dot, in logical pixels.",
+      "render_priority": "Drawing order: spots with a higher number are drawn on top (default 0).",
+      "selected": "Shows this spot's bubble permanently (default false).",
+      "show_tooltip": "Set false to show no bubble for this spot (default true).",
+      "x": "Position on the x axis (default 0).",
+      "x_error": "Not supported yet: leave it unset, as a value stops the chart from drawing.",
+      "y": "Position on the y axis (default 0).",
+      "y_error": "Not supported yet: leave it unset, as a value stops the chart from drawing."
     },
     "searchbar": {
       "shrink_wrap": "Sizes the search view to its suggestions."
@@ -513,8 +1087,39 @@
       "textfield": "Tells screen readers that the content is a text field.",
       "identifier": "An identifier for UI tests and platform accessibility tools; screen readers do not announce it."
     },
+    "shadow": {
+      "color": "Color of the shadow (default black).",
+      "elevation": "How high the outline floats above the canvas; higher values give a larger, softer shadow (default 0).",
+      "path": "Outline that casts the shadow, as a list of path elements like those of [`path`](/docs/control-path), for example `[path_rect(x: 20, y: 20, width: 120, height: 70)]`.",
+      "transparent_occluder": "Set true when the shape over the shadow is see-through, so the shadow is also drawn under it (default false)."
+    },
     "shimmer": {
       "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`."
+    },
+    "simpleattribution": {
+      "alignment": "Corner of the map the badge sits in, as `{ x:, y: }` from -1 to 1 (default bottom right).",
+      "bgcolor": "Background of the badge (default the theme's surface color).",
+      "on_click": "Fired when the badge is tapped, for example to open the provider's copyright page. No data.",
+      "text": "Attribution text, as a string. On iOS and macOS it follows \"flutter_map |\" and a copyright sign."
+    },
+    "slidepicker": {
+      "color": "The selected color (default black).",
+      "color_model": "Which sliders to show: `\"rgb\"` (the default), `\"hsv\"` or `\"hsl\"`.",
+      "display_thumb_color": "Fills the slider thumbs with the selected color (default true).",
+      "enable_alpha": "Adds a transparency slider (default true).",
+      "indicator_alignment_begin": "Start of the bar's checkerboard and color gradient, as `{ x:, y: }` (default `{ x: -1, y: -3 }`).",
+      "indicator_alignment_end": "End of that gradient, as `{ x:, y: }` (default `{ x: 1, y: 3 }`).",
+      "indicator_border_radius": "Corner radius of that bar.",
+      "indicator_size": "Size of that bar, as `{ width:, height: }` (default 280 by 50).",
+      "label_text_style": "Style of those value fields.",
+      "label_types": "Value fields shown under the sliders: any of `\"hex\"`, `\"rgb\"`, `\"hsv\"` and `\"hsl\"` (default none).",
+      "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts.",
+      "show_indicator": "Shows a bar filled with the selected color (default true).",
+      "show_label": "Shows the value fields listed in `label_types` (default true).",
+      "show_params": "Shows each slider's name and value (default true).",
+      "show_slider_text": "Shows the value as text next to each slider (default true).",
+      "slider_size": "Size of each slider, as `{ width:, height: }` (default 260 by 40).",
+      "slider_text_style": "Style of that text."
     },
     "snackbar": {
       "action": "Label of the action button shown in the snack bar.",
@@ -524,11 +1129,132 @@
       "variant": "The indicator style; set it with the variant keyword you pass to `spinkit`, such as `three_bounce:`.",
       "size": "Size of the indicator, in logical pixels (default 50).",
       "duration": "Length of one animation cycle, in milliseconds."
+    },
+    "textsourceattribution": {
+      "on_click": "Fired when the text is tapped. No data.",
+      "prepend_copyright": "Puts a copyright sign before the text (default true).",
+      "text": "Name of the data source, as a string. Also the first positional argument.",
+      "text_style": "Style of the text, for example `{ size: 12 }`."
+    },
+    "tilelayer": {
+      "additional_options": "Values for your own placeholders in `url_template`, for example `{ \"access_token\" => \"...\" }` for `{access_token}`.",
+      "display_mode": "How new tiles appear: `{ _type: \"fadein\", duration: 100, start_opacity:, reload_start_opacity: }` (the default fades in over 100 ms) or `{ _type: \"instantaneous\", opacity: 1.0 }`.",
+      "enable_retina_mode": "Draws sharper tiles on high-density screens: with a `{r}` placeholder in `url_template` the server's retina tiles, otherwise four tiles per tile (default false).",
+      "enable_tms": "Numbers tile rows from the bottom, for TMS servers (default false).",
+      "error_image_src": "Image shown in place of a tile that failed to load: a URL or asset path.",
+      "evict_error_tile_strategy": "What happens to tiles that failed to load: `\"none\"` (the default), `\"dispose\"`, `\"notVisible\"` or `\"notVisibleRespectMargin\"`.",
+      "fallback_url": "Second address template, tried when a tile fails to load from `url_template`.",
+      "keep_buffer": "How many rows and columns of tiles to keep beyond the screen after moving (default 2).",
+      "max_native_zoom": "Largest zoom the server has tiles for; above it the layer scales up those tiles (default 19).",
+      "max_zoom": "Largest map zoom at which this layer shows tiles (no limit by default).",
+      "min_native_zoom": "Smallest zoom the server has tiles for; below it the layer scales up those tiles (default 0).",
+      "min_zoom": "Smallest map zoom at which this layer shows tiles (default 0).",
+      "on_image_error": "Fired when a tile fails to load; `event.data` is the error message.",
+      "pan_buffer": "How many rows and columns of tiles to load beyond the screen ahead of time (default 1).",
+      "subdomains": "Values that replace `{s}` in turn (default `[\"a\", \"b\", \"c\"]`).",
+      "tile_bounds": "Loads tiles only inside this area: `{ corner_1:, corner_2: }` with `{ latitude:, longitude: }` hashes (arrays are not converted here).",
+      "tile_size": "Size of one tile, in logical pixels (default 256).",
+      "url_template": "Address of the tiles, with `{z}`, `{x}` and `{y}` placeholders, `{s}` for a subdomain and your own `{name}` placeholders from `additional_options`. Check the provider's usage policy.",
+      "user_agent_package_name": "Your app identifier, sent in the `User-Agent` of tile requests on native platforms (default `\"unknown\"`). OpenStreetMap asks apps to set it.",
+      "zoom_offset": "Number added to the zoom level of every tile request (default 0).",
+      "zoom_reverse": "Counts zoom levels down instead of up in tile requests, for servers that number them that way (default false)."
+    },
+    "video": {
+      "alignment": "Where the video sits in its box when it does not fill it (default centered).",
+      "autoplay": "Starts playing as soon as the player is created (default false).",
+      "configuration": "Player settings, read when the player is created: `output_driver`, `hardware_decoding_api`, `enable_hardware_acceleration` (default true), `width`, `height`, `scale` and, on desktop and mobile, `mpv_properties` passed to the mpv player.",
+      "fill_color": "Color of the bars around a video that does not fill its box (default black).",
+      "filter_quality": "Scaling quality when the content is resized: `\"none\"`, `\"low\"`, `\"medium\"` or `\"high\"` (default `\"low\"`).",
+      "fit": "How the content is sized into its box: `\"contain\"` (the default), `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"none\"` or `\"scaleDown\"`. Write enum values in Flutter's spelling, such as `\"fitWidth\"`: 0.0.23 does not read `\"fit_width\"`.",
+      "fullscreen": "Set true to show the video fullscreen and false to leave; the client also sets it when the user uses the fullscreen button.",
+      "muted": "Starts the player muted (default false). It is read when the player is created.",
+      "on_complete": "Fired when a clip finishes or starts again; `event.data` is `true` when it has completed.",
+      "on_enter_fullscreen": "Fired when the video goes fullscreen. No data.",
+      "on_error": "Fired when a clip cannot be played; `event.data` is the error message.",
+      "on_exit_fullscreen": "Fired when the video leaves fullscreen. No data.",
+      "on_loaded": "Fired when the player is ready. No data.",
+      "on_track_change": "Fired when the playlist moves to another clip; `event.data` is its index, starting at 0.",
+      "pause_upon_entering_background_mode": "Pauses when the app goes to the background (default true).",
+      "pitch": "Pitch of the sound, where 1.0 is normal; set it when the player is created to allow changing it later.",
+      "playback_rate": "Playback speed, where 1.0 is normal.",
+      "playlist": "What to play: a list of hashes, or one hash, with `resource` (a URL or a file path on the device, passed to the player as is) and optional `http_headers` and `extras`. It is read when the player is created; change it later with `playlist_add`, `playlist_remove` and `jump_to`.",
+      "playlist_mode": "What happens at the end of a clip: `\"none\"` stops at the end of the playlist, `\"single\"` repeats the current clip and `\"loop\"` repeats the whole playlist.",
+      "resume_upon_entering_foreground_mode": "Resumes when the app comes back to the foreground (default false).",
+      "show_controls": "Draws the play, seek and fullscreen controls over the video (default true): Cupertino-style on iOS and macOS, Material elsewhere.",
+      "shuffle_playlist": "Plays the playlist in random order.",
+      "subtitle_configuration": "How subtitles look: `{ text_style:, visible:, text_scale_factor:, text_align:, padding: }` (default white 32-pixel text on a dark band).",
+      "subtitle_track": "Subtitles to show: `{ src: \"auto\" }`, `{ src: \"none\" }`, or `{ src:, title:, language: }` where `src` is a URL, a file path or the subtitle text itself.",
+      "title": "Name of the player shown by the operating system, for example in desktop media controls (default `\"ruflet-video\"`).",
+      "volume": "Volume from 0 to 100.",
+      "wakelock": "Keeps the screen on while the video plays (default true)."
     }
   },
   "method_notes": {
+    "WebView": {
+      "can_go_back": "The block receives `(true or false, error)`: whether there is a page to go back to.",
+      "can_go_forward": "The block receives `(true or false, error)`: whether there is a page to go forward to.",
+      "clear_cache": "Clears the view's cache.",
+      "clear_local_storage": "Clears the page's local storage.",
+      "disable_zoom": "Stops pinch-to-zoom.",
+      "enable_zoom": "Lets the user pinch to zoom.",
+      "get_current_url": "The block receives `(url, error)`.",
+      "get_title": "The block receives `(title, error)`.",
+      "get_user_agent": "The block receives `(user_agent, error)`.",
+      "go_back": "Goes back one page, when there is one.",
+      "go_forward": "Goes forward one page, when there is one.",
+      "load_file": "Loads an HTML file from an absolute path on the device.",
+      "load_html": "Shows an HTML string; `base_url:` sets the address that relative links resolve against.",
+      "load_request": "Loads a URL with `method:` `\"get\"` (the default) or `\"post\"`.",
+      "reload": "Reloads the current page.",
+      "run_javascript": "Runs JavaScript in the page, for example to hide a node. It returns no result.",
+      "scroll_by": "Scrolls the page by `x`, `y` pixels.",
+      "scroll_to": "Scrolls the page to the `x`, `y` position, in pixels.",
+      "set_javascript_mode": "`\"unrestricted\"` turns JavaScript on and `\"disabled\"` turns it off. Until you call it, the platform decides: off on Android, on in iOS and macOS."
+    },
+    "audio": {
+      "get_current_position": "`on_result` receives the position as a String of microseconds (for example `\"184000000\"` for 3 min 4 s), or `nil` before the media is loaded.",
+      "get_duration": "`on_result` receives the length as a String of microseconds (for example `\"184000000\"` for 3 min 4 s), or `nil` before the media is loaded.",
+      "pause": "Pauses playback.",
+      "play": "Plays from `position:` in milliseconds, which defaults to 0: `play` always starts at the beginning. Use `resume` to continue after `pause`.",
+      "release": "Frees the player's resources; the next `play` or `resume` loads `src` again.",
+      "resume": "Continues from where playback paused.",
+      "seek": "Jumps to a position in milliseconds; `on_seek_complete` follows."
+    },
+    "canvas": {
+      "capture": "Paints the current shapes into a picture that the canvas keeps and draws under its shapes from then on, so you can empty `shapes` without losing the drawing. `pixel_ratio:` sets its resolution (default the screen's). It does nothing before the canvas is painted or when it has no shapes.",
+      "clear_capture": "Drops the captured picture, so only the current shapes are drawn.",
+      "get_capture": "`on_result` receives the last capture as PNG bytes (a binary String), or `nil` before the first `capture`."
+    },
     "contextmenu": {
       "open": "On iOS and macOS the menu cannot be opened from code; it opens only from the user's long press."
+    },
+    "interstitialad": {
+      "show": "Shows the loaded ad over the whole screen. Call it after `on_load`: before that, it does nothing."
+    },
+    "map": {
+      "center_on": "Animates the camera so the point (`[latitude, longitude]` or `{ latitude:, longitude: }`) is in the middle, at `zoom:` when given. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "move_to": "Animates the camera to `destination:` (a point as `[latitude, longitude]` or `{ latitude:, longitude: }`), and to `zoom:` and `rotation:` (degrees) when given; `offset:` shifts the result by `{ x:, y: }` pixels. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "reset_rotation": "Turns the map back so north is up. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "rotate_from": "Turns the map by the given number of degrees from its current rotation. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "zoom_in": "Zooms in by one level. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "zoom_out": "Zooms out by one level. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`.",
+      "zoom_to": "Zooms to the given level. Options: `animation_curve:` and `animation_duration:` (milliseconds), which default to the map's own, `cancel_ongoing_animations:`, `timeout:` and `on_result:`."
+    },
+    "video": {
+      "get_current_position": "`on_result` receives the position as a String of microseconds (for example `\"184000000\"` for 3 min 4 s), or `nil` before the media is loaded.",
+      "get_duration": "`on_result` receives the length of the current clip as a String of microseconds (for example `\"184000000\"` for 3 min 4 s), or `nil` before the media is loaded.",
+      "is_completed": "`on_result` receives `true` when the current clip has finished.",
+      "is_playing": "`on_result` receives `true` while the video plays.",
+      "jump_to": "Moves to the clip at this index, starting at 0.",
+      "next": "Moves to the next clip of the playlist.",
+      "pause": "Pauses playback.",
+      "play": "Starts or continues playback.",
+      "play_or_pause": "Pauses when playing and plays when paused.",
+      "playlist_add": "Adds a clip at the end of the playlist: a hash like those of `playlist`, or keywords, for example `playlist_add(resource: \"https://...\")`.",
+      "playlist_remove": "Removes the clip at this index.",
+      "previous": "Moves to the previous clip.",
+      "seek": "Jumps to a position in milliseconds in the current clip.",
+      "stop": "Stops playback and reloads the playlist without playing it."
     }
   }
 }
