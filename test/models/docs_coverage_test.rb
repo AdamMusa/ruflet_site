@@ -200,7 +200,86 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_empty wrong, wrong.join("\n")
   end
 
+  # Lines a review found wrong, pinned so a config edit cannot silently undo
+  # the fix: [slug, kind, name, the note the line must carry before the marker].
+  PINNED_NEXT_RELEASE_LINES = [
+    [ "control-data-table", "properties", "show_checkbox_column", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-data-table", "properties", "vertical_lines", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-data-table", "properties", "horizontal_lines", "The 0.0.23 client ignores it." ],
+    [ "control-data-table", "events", "on_select_all", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-data-row", "events", "on_select_change", "In a `data_table` on iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-banner", "events", "on_dismiss", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-bottom-sheet", "properties", "show_drag_handle", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-bottom-sheet", "properties", "fullscreen", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-progress-ring", "properties", "year_2023", "The 0.0.23 client ignores it." ],
+    [ "control-progress-ring", "properties", "semantics_label", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-checkbox", "properties", "spacing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-context-menu", "events", "on_select", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ]
+  ].freeze
+
+  # Lines that work with 0.0.23 and must stay unmarked.
+  PINNED_RELEASED_LINES = [
+    [ "control-reorderable-list-view", "events", "on_scroll" ],
+    [ "control-reorderable-list-view", "properties", "scroll_interval" ],
+    [ "control-context-menu", "methods", "open" ],
+    [ "control-popup-menu-button", "events", "on_select" ]
+  ].freeze
+
+  # Hand-written sentences that describe main-only behavior and must say so.
+  PINNED_PROSE_MARKERS = {
+    "control-data-table" => [ "the 0.0.23 client draws no checkbox column", "the 0.0.23 client also ignores `vertical_lines`" ],
+    "control-banner" => [ "On iOS and macOS, the 0.0.23 client never sends it." ],
+    "control-bottom-sheet" => [ "`fullscreen` — on iOS and macOS these need the" ],
+    "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ]
+  }.freeze
+
+  test "lines a review fixed keep their next-release state" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    PINNED_NEXT_RELEASE_LINES.each do |slug, kind, name, note|
+      line = generated_line(slug, kind, name)
+
+      assert_includes line, "#{note} #{marker}.", "#{slug} #{kind} #{name} lost its next-release note"
+    end
+    PINNED_RELEASED_LINES.each do |slug, kind, name|
+      refute_includes generated_line(slug, kind, name), marker, "#{slug} #{kind} #{name} works on 0.0.23"
+    end
+    assert_includes generated_line("control-context-menu", "methods", "open"), "On iOS and macOS the menu cannot be opened from code"
+  end
+
+  test "hand-written sentences about main-only behavior carry the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    PINNED_PROSE_MARKERS.each do |slug, phrases|
+      prose = page(slug).content.split("\n## Complete API\n", 2).first
+
+      phrases.each do |phrase|
+        paragraph = prose.split(/\n(?=- |\n)/).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+  end
+
+  test "generated examples leave out lines 0.0.23 rejects or ignores everywhere" do
+    example = page("control-menu-item-button").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+    assert example, "control-menu-item-button has no generated example"
+    refute_includes example, "trailing:", "MenuItemButton `trailing` is ignored by the 0.0.23 client"
+    assert_includes page("control-cupertino-app-bar").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1], "trailing:"
+  end
+
   private
+
+  # The one generated "- `name` ..." line of a kind on a control page.
+  def generated_line(slug, kind, name)
+    lines = generated_api_lines(page(slug).content).select { |line_kind, line_name, _line| line_kind == kind && line_name == name }
+
+    assert_equal 1, lines.size, "#{slug} should render one #{kind} line for #{name}"
+    lines.first.last
+  end
 
   # [list, slug, kind, name] for every line config/next_release.json marks:
   # "members", "client_ignored" and each design of "design_client_ignored",

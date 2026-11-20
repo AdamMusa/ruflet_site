@@ -24,7 +24,8 @@ list_tile(
 - `is_three_line`
 - `content_padding`
 - `bgcolor` / `hover_color`
-- `selected` / `selected_color` / `selected_tile_color`
+- `selected` / `selected_color` / `selected_tile_color` — iOS and macOS draw no selected colors; there
+  `selected` only tells screen readers, and needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `shape`
 - `url` — open a URL on tap
 

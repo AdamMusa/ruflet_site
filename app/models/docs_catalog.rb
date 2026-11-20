@@ -578,6 +578,13 @@ class DocsCatalog
     end
   end
 
+  # True when 0.0.23 rejects the line or ignores it on every platform
+  # ("members" and "client_ignored"); a "design_client_ignored" line still
+  # works on the other design.
+  def self.next_release_everywhere?(slug, kind, name)
+    %i[members client_ignored].any? { |list| Array(next_release[list].dig(slug, kind)).include?(name) }
+  end
+
   # "design_client_ignored" lists names per design as an array, or as a hash
   # of name => note when the generic note is not exact (for example a row
   # control that works in one parent table and not in another).
@@ -990,8 +997,14 @@ class DocsCatalog
     lines << heading
     lines << ""
     methods.each do |method|
-      note = next_release_note(control[:slug], "methods", (method[:name] || method["name"]).to_s)
-      lines << [ "- `#{format_api_method(method)}`", note ].compact.join(" ")
+      name = (method[:name] || method["name"]).to_s
+      # `method_notes` qualifies a method on one wire type, for example one
+      # that a design cannot run.
+      description = attribute_descriptions.dig("method_notes", control[:widget_type].to_s, name)
+      note = next_release_note(control[:slug], "methods", name)
+      signature = "- `#{format_api_method(method)}`"
+      signature = "#{signature} — #{description}" if description
+      lines << [ signature, note ].compact.join(" ")
     end
     lines << ""
   end
@@ -1189,10 +1202,15 @@ class DocsCatalog
   def self.example_property_lines(control)
     props = Array(control[:properties]).map(&:to_s)
     events = Array(control[:events]).map(&:to_s)
+
+    # The example must show what it sets with 0.0.23: leave out what 0.0.23
+    # rejects or ignores on every platform (config/next_release.json).
+    events.reject! { |name| next_release_everywhere?(control[:slug], "events", name) }
     event = %w[on_click on_change on_tap on_submit].find { |e| events.include?(e) } || events.first
 
     candidates = EXAMPLE_PROPERTY_PRIORITY.select { |p| props.include?(p) }
     candidates -= [ "url" ] if event == "on_click"
+    candidates.reject! { |property| next_release_everywhere?(control[:slug], "properties", property) }
     chosen = candidates.first(4)
     lines = chosen.filter_map { |property| sample_value_for(property, control[:title]) }
 
@@ -1242,5 +1260,6 @@ class DocsCatalog
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description,
                        :generated_control_api_appendix, :append_control_methods, :format_api_method,
-                       :with_next_release_callout, :next_release_note, :plain_inline_text, :page_heading
+                       :with_next_release_callout, :next_release_note, :next_release_everywhere?, :plain_inline_text,
+                       :page_heading
 end

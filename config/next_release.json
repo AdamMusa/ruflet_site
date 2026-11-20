@@ -388,12 +388,21 @@
   "client_ignored": {
     "control-app-bar": {
       "properties": [
+        "badge",
         "enable_background_filter_blur"
       ]
     },
     "control-audio": {
       "properties": [
         "src_base64"
+      ],
+      "events": [
+        "on_error"
+      ]
+    },
+    "control-autofill-group": {
+      "properties": [
+        "badge"
       ]
     },
     "control-banner": {
@@ -408,7 +417,13 @@
     },
     "control-cupertino-app-bar": {
       "properties": [
+        "badge",
         "enable_background_filter_blur"
+      ]
+    },
+    "control-cupertino-list-tile": {
+      "properties": [
+        "padding"
       ]
     },
     "control-cupertino-sliding-segmented-button": {
@@ -439,6 +454,16 @@
         "resize_duration"
       ]
     },
+    "control-drag-target": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-draggable": {
+      "properties": [
+        "badge"
+      ]
+    },
     "control-dropdown": {
       "properties": [
         "expanded_insets",
@@ -462,9 +487,34 @@
         "on_scroll"
       ]
     },
+    "control-filled-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-filled-tonal-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
     "control-image": {
       "properties": [
         "src_base64"
+      ]
+    },
+    "control-keyboard-listener": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-list-tile": {
+      "properties": [
+        "padding"
       ]
     },
     "control-menu-item-button": {
@@ -481,6 +531,56 @@
     "control-navigation-drawer": {
       "properties": [
         "surface_tint_color"
+      ]
+    },
+    "control-outlined-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-progress-ring": {
+      "properties": [
+        "year_2023"
+      ]
+    },
+    "control-radio-group": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-reorderable-drag-handle": {
+      "properties": [
+        "align",
+        "animate_align",
+        "animate_margin",
+        "animate_offset",
+        "animate_opacity",
+        "animate_position",
+        "animate_rotation",
+        "animate_scale",
+        "animate_size",
+        "aspect_ratio",
+        "badge",
+        "bottom",
+        "expand",
+        "expand_loose",
+        "height",
+        "left",
+        "margin",
+        "offset",
+        "opacity",
+        "right",
+        "rotate",
+        "rtl",
+        "scale",
+        "size_change_interval",
+        "tooltip",
+        "top",
+        "width"
+      ],
+      "events": [
+        "on_animation_end",
+        "on_size_change"
       ]
     },
     "control-reorderable-list-view": {
@@ -500,8 +600,19 @@
         "on_scroll"
       ]
     },
+    "control-screenshot": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-selection-area": {
+      "properties": [
+        "badge"
+      ]
+    },
     "control-semantics": {
       "properties": [
+        "content",
         "focus",
         "hint_text",
         "on_long_press_hint_text",
@@ -539,10 +650,40 @@
           "on_dismiss"
         ]
       },
+      "control-bottom-sheet": {
+        "properties": [
+          "draggable",
+          "fullscreen",
+          "maintain_bottom_view_insets_padding",
+          "scrollable",
+          "show_drag_handle",
+          "size_constraints",
+          "use_safe_area"
+        ]
+      },
       "control-chip": {
         "properties": [
           "autofocus"
         ],
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
+      "control-context-menu": {
+        "properties": [
+          "primary_items",
+          "primary_trigger",
+          "secondary_items",
+          "secondary_trigger",
+          "tertiary_items"
+        ],
+        "events": [
+          "on_dismiss",
+          "on_select"
+        ]
+      },
+      "control-cupertino-slider": {
         "events": [
           "on_blur",
           "on_focus"
@@ -574,6 +715,38 @@
           "on_select_all"
         ]
       },
+      "control-filled-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-filled-tonal-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-list-tile": {
+        "properties": [
+          "selected"
+        ],
+        "events": [
+          "on_long_press"
+        ]
+      },
       "control-menu-item-button": {
         "properties": [
           "autofocus"
@@ -584,10 +757,23 @@
           "on_hover"
         ]
       },
+      "control-outlined-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
       "control-popup-menu-button": {
         "events": [
-          "on_cancel",
-          "on_select"
+          "on_cancel"
+        ]
+      },
+      "control-progress-ring": {
+        "properties": [
+          "semantics_label",
+          "semantics_value"
         ]
       },
       "control-radio": {
@@ -599,11 +785,7 @@
         "properties": [
           "auto_scroll",
           "first_item_prototype",
-          "scroll",
-          "scroll_interval"
-        ],
-        "events": [
-          "on_scroll"
+          "scroll"
         ]
       },
       "control-search-bar": {
@@ -613,6 +795,15 @@
         "methods": [
           "close_view",
           "open_view"
+        ]
+      },
+      "control-slider": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus"
         ]
       },
       "control-submenu-button": {
@@ -646,6 +837,33 @@
       }
     },
     "material": {
+      "control-app-bar": {
+        "properties": [
+          "large",
+          "trailing"
+        ]
+      },
+      "control-checkbox": {
+        "properties": [
+          "spacing"
+        ]
+      },
+      "control-cupertino-activity-indicator": {
+        "properties": [
+          "progress"
+        ]
+      },
+      "control-cupertino-app-bar": {
+        "properties": [
+          "large",
+          "trailing"
+        ]
+      },
+      "control-cupertino-checkbox": {
+        "properties": [
+          "spacing"
+        ]
+      },
       "control-cupertino-switch": {
         "properties": [
           "active_thumb_image_src",
@@ -653,6 +871,31 @@
         ],
         "events": [
           "on_image_error"
+        ]
+      },
+      "control-filled-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-filled-tonal-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-outlined-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-progress-ring": {
+        "properties": [
+          "progress"
         ]
       },
       "control-switch": {
