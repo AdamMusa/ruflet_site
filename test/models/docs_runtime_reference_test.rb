@@ -167,7 +167,7 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     ]
     right = [
       "event.data[:connectivity]", "event.data.values_at(:x, :y, :z).map { |axis| axis.to_f }", "event.data.fetch(:state)[:x]",
-      'data = event.data; show.call(Array(data[:connectivity]))', 'result["latitude"]', 'page.client_details["route"]',
+      "data = event.data; show.call(Array(data[:connectivity]))", 'result["latitude"]', 'page.client_details["route"]',
       "->(data, error) { data[\"latitude\"] }", 'connections.include?("none")'
     ]
 
