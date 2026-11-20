@@ -45,7 +45,7 @@ in the example. `on_dismiss` fires whenever the drawer closes.
 
 ### Open and close the drawer from code
 
-> **Requires the next Ruflet release** (on `main`, not in 0.0.23). With 0.0.23 these page methods reach a client that does not answer them, so nothing opens.
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). With 0.0.23 the client answers these calls with an "Unknown Page method" error, and nothing opens.
 
 `page.show_drawer` and `page.close_drawer` open and close the start drawer;
 `page.show_end_drawer` and `page.close_end_drawer` do the same for
@@ -68,4 +68,5 @@ page.add(column(children: [folder, button("Open folders", on_click: ->(_event) {
 ```
 
 On iOS and macOS the app bar has no menu button and there is no edge swipe,
-so the drawer opens only from `page.show_drawer`.
+so the drawer opens only from `page.show_drawer`. With 0.0.23 that call fails,
+so there the drawer cannot be opened at all.

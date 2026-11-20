@@ -32,7 +32,7 @@ page.add(
 
 ## Common properties
 
-- `icon` — an icon name, a `Ruflet::MaterialIcons` constant or an `icon(...)` control; the first positional argument sets it
+- `icon` — an icon name such as `"search"` or a symbol such as `:add`, a `Ruflet::MaterialIcons` constant or an `icon(...)` control; the first positional argument sets it
 - `icon_color` / `icon_size`
 - `tooltip`
 - `selected` — show `selected_icon` and `selected_icon_color`; the client does not toggle it, so update it in `on_click`
@@ -59,5 +59,7 @@ The filled, filled tonal and outlined variants are
 [`filled_icon_button`](/docs/control-filled-icon-button),
 [`filled_tonal_icon_button`](/docs/control-filled-tonal-icon-button) and
 [`outlined_icon_button`](/docs/control-outlined-icon-button). Unlike
-`icon_button`, they need an explicit `alignment` and `padding` until
-[ruflet#94](https://github.com/AdamMusa/ruflet/issues/94) ships.
+`icon_button`, they need an explicit `alignment` and `padding` with the 0.0.23
+client ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)); the client
+fix is merged in ruflet-engine and reaches apps with the next update of the
+client template.

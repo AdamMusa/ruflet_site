@@ -113,7 +113,7 @@
     ]
   },
   "control-cupertino-filled-button": {
-    "summary": "An iOS-style filled button: on iOS and macOS a `CupertinoButton.filled` in the theme's primary color (or `bgcolor`). It builds the same `FilledButton` control as [`filled_button`](/docs/control-filled-button), so on Android, web, Windows and Linux it is a Material filled button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends an `alignment` the client cannot read, so the client draws an error box instead of the button (on iOS and macOS with 0.0.23, everywhere with `main`) and `{ \"all\" => 8.0 }` corners come out square. Pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
+    "summary": "An iOS-style filled button: on iOS and macOS a `CupertinoButton.filled` in the theme's primary color (or `bgcolor`). It builds the same `FilledButton` control as [`filled_button`](/docs/control-filled-button), so on Android, web, Windows and Linux it is a Material filled button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends an `alignment` the 0.0.23 client cannot read, so on iOS and macOS it draws an error box instead of the button, and `{ \"all\" => 8.0 }` corners come out square. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
     "example": [
       "status = text(value: \"Not subscribed\")",
       "page.add(",
@@ -149,7 +149,7 @@
     ]
   },
   "control-cupertino-tinted-button": {
-    "summary": "An iOS-style tinted button: on iOS and macOS a `CupertinoButton.tinted`, a light tint of the primary color (or of `bgcolor`) behind a colored label. It builds the same `FilledTonalButton` control as [`filled_tonal_button`](/docs/control-filled-tonal-button), so on Android, web, Windows and Linux it is a Material filled tonal button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the client draws an error box instead of the button (on iOS and macOS with 0.0.23, everywhere with `main`) and the corners come out square. Pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
+    "summary": "An iOS-style tinted button: on iOS and macOS a `CupertinoButton.tinted`, a light tint of the primary color (or of `bgcolor`) behind a colored label. It builds the same `FilledTonalButton` control as [`filled_tonal_button`](/docs/control-filled-tonal-button), so on Android, web, Windows and Linux it is a Material filled tonal button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on iOS and macOS, and the corners come out square. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
     "example": [
       "count = 0",
       "label = text(value: \"0 in cart\")",
@@ -173,7 +173,7 @@
     ]
   },
   "control-filled-icon-button": {
-    "summary": "An icon button with a solid fill, for the most important icon action on a screen. On Android, web, Windows and Linux it is a Material filled icon button; on iOS and macOS a plain iOS button with `bgcolor` behind the icon. Set `selected` for a toggle: it shows `selected_icon` and changes the fill, and you update it in `on_click`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends `alignment: \"center\"`, which the client cannot read, so it draws an error box instead of the button, and `{ \"all\" => 8 }` padding comes out as none. Pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "summary": "An icon button with a solid fill, for the most important icon action on a screen. On Android, web, Windows and Linux it is a Material filled icon button; on iOS and macOS a plain iOS button with `bgcolor` behind the icon. Set `selected` for a toggle: it shows `selected_icon` and changes the fill, and you update it in `on_click`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends `alignment: \"center\"`, which the 0.0.23 client cannot read, so it draws an error box instead of the button on every platform, and `{ \"all\" => 8 }` padding comes out as none. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
     "example": [
       "liked = false",
       "page.add(",
@@ -193,7 +193,7 @@
     ]
   },
   "control-filled-tonal-icon-button": {
-    "summary": "An icon button with a soft, secondary-color fill: less emphasis than a [`filled_icon_button`](/docs/control-filled-icon-button), more than an [`icon_button`](/docs/control-icon-button). On iOS and macOS it is a plain iOS button with `bgcolor` behind the icon. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the client draws an error box instead of the button; pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "summary": "An icon button with a soft, secondary-color fill: less emphasis than a [`filled_icon_button`](/docs/control-filled-icon-button), more than an [`icon_button`](/docs/control-icon-button). On iOS and macOS it is a plain iOS button with `bgcolor` behind the icon. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on every platform. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
     "example": [
       "muted = false",
       "page.add(",
@@ -284,7 +284,7 @@
     ]
   },
   "control-outlined-icon-button": {
-    "summary": "An icon button with an outline and no fill, for secondary icon actions next to a filled one. On iOS and macOS it is a plain iOS button. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the client draws an error box instead of the button; pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "summary": "An icon button with an outline and no fill, for secondary icon actions next to a filled one. On iOS and macOS it is a plain iOS button. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on every platform. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
     "example": [
       "status = text(value: \"Search the catalog\")",
       "page.add(",

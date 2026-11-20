@@ -394,7 +394,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     marker = DocsCatalog::NEXT_RELEASE_MARKER
     {
       "control-context-menu" => [ "a click skips `items` and shows `actions`", "and fires both events" ],
-      "control-navigation-drawer" => [ "With 0.0.23 these page methods reach a client that does not answer them" ],
+      "control-navigation-drawer" => [ "With 0.0.23 the client answers these calls with an \"Unknown Page method\" error" ],
       "control-icon-button" => [ "the 0.0.23 client\nignores it", "With 0.0.23 the Material icon button ignores `style:`" ]
     }.each do |slug, phrases|
       phrases.each do |phrase|
@@ -410,6 +410,26 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
       assert_includes example, "alignment: { x: 0, y: 0 }", "#{slug}: with default arguments the client cannot read the alignment Ruby sends (ruflet#94)"
     end
+    assert prose_chunks("control-navigation-drawer").any? { |chunk| chunk.include?("With 0.0.23 that call fails, so there the drawer cannot be opened at all.") },
+      "control-navigation-drawer: on iOS and macOS a 0.0.23 app has no way to open the drawer"
+  end
+
+  # Every name a "Common properties" item starts with (the part before " — ")
+  # must be a keyword, event or method of the control. `cupertino_button` has
+  # no `style:`, for example, so listing it would document an ArgumentError.
+  test "button, menu and navigation pages list only real keywords under Common properties" do
+    wrong = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      next [] unless DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
+
+      control = DocsCatalog.control_catalog.find { |entry| entry[:slug] == slug }
+      known = %i[properties events methods].flat_map { |kind| Array(control[kind]).map { |entry| entry.is_a?(Hash) ? entry[:name].to_s : entry.to_s } }
+      section = page(slug).content[/^## Common properties\n\n(.*?)(?=^## |\z)/m, 1].to_s
+      section.scan(/^- (.+)$/).flatten.flat_map do |item|
+        item.split(" — ", 2).first.scan(/`([a-z_0-9?]+)`/).flatten.reject { |name| known.include?(name) }.map { |name| "#{slug}: #{name}" }
+      end
+    end
+
+    assert_empty wrong, "These Common properties names are not keywords of their control:\n#{wrong.join("\n")}"
   end
 
   private

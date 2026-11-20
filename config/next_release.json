@@ -895,6 +895,11 @@
           "style"
         ]
       },
+      "control-outlined-button": {
+        "events": {
+          "on_hover": "On Android, web, Windows and Linux, the 0.0.23 client never sends it for a button with an `icon`."
+        }
+      },
       "control-outlined-icon-button": {
         "properties": [
           "style"

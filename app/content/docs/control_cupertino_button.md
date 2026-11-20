@@ -32,11 +32,15 @@ page.add(
 ## Known issue: pass `alignment` and `border_radius`
 
 With the default arguments, Ruby sends `alignment: "center"` and
-`border_radius: { "all" => 8.0 }`, and the client cannot read them
-([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)). The `alignment`
-makes the client draw an error box instead of the button: on iOS and macOS with
-0.0.23, and on every platform with the engine on `main`. The radius comes out
-as square corners. Until the fix ships, pass `alignment: { x: 0, y: 0 }` and
+`border_radius: { "all" => 8.0 }`, and the 0.0.23 client cannot read them
+([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)). On iOS and macOS,
+and in a web app opened on an Apple device, the `alignment` makes it draw an
+error box instead of the button, and the radius comes out as square corners.
+The Material button on the other platforms reads neither key. The client fix
+is merged in ruflet-engine and reaches apps with the next update of the client
+template; the Ruby-side fix,
+[ruflet#100](https://github.com/AdamMusa/ruflet/pull/100), is still open. Until
+one of them reaches your app, pass `alignment: { x: 0, y: 0 }` and
 `border_radius: 8`, as in the example; the same applies to
 `cupertino_filled_button` and `cupertino_tinted_button`.
 
