@@ -49,7 +49,7 @@ app:
 
 Do not use `localhost` in a build intended for another device.
 
-A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build stops without
+A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails without
 `backend_url`. A web, macOS, Windows, or Linux build can omit it:
 
 - A web client then connects to the origin it was loaded from. That works only when the Ruby backend, or a proxy that forwards the WebSocket to it, serves the client from that same origin, as `ruflet run --web` does.
