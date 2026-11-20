@@ -34,5 +34,8 @@
 /config/*.key
 
 
-/app/assets/builds/*
-!/app/assets/builds/.keep
+# /app/assets/builds/*
+# !/app/assets/builds/.keep
+
+# Ruflet and ruflet-engine sources checked out by CI for script/sync_ruflet_api.
+/.ruflet-sources

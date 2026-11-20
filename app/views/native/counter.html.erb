@@ -1,0 +1,16 @@
+<%# Counter — the count lives in Rails; each tap posts and re-renders. %>
+<%= appbar "Counter" %>
+
+<%= column class: "p-6 gap-8 items-center justify-center flex-1" do %>
+  <%= text @count, class: "text-[96] font-bold text-slate-900" %>
+
+  <%= row class: "gap-4" do %>
+    <%= button "Down", variant: "outlined", icon: "remove",
+               on_click: :counter_decrement %>
+    <%= button "Up", variant: "filled", icon: "add",
+                on_click: :counter_increment %>
+  <% end %>
+
+  <%= text "The count lives in Rails — every tap runs a controller method over the WebSocket.",
+           class: "text-sm text-slate-400" %>
+<% end %>
