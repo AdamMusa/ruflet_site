@@ -482,6 +482,8 @@ class DocsCatalog
           entry("reference", "API Reference", "Overview of Ruflet controls, services, CLI workflow, and app structure.", SOURCE_ROOT.join("reference.md"), "Reference"),
           entry("cli-reference", "CLI Reference", "Complete Ruflet CLI commands, options, defaults, hot reload controls, and diagnostics.", SOURCE_ROOT.join("cli_reference.md"), "Reference"),
           entry("events-and-state", "Events and State", "Handle control and Page events, read payloads, keep Ruby state, and patch mounted controls.", SOURCE_ROOT.join("events_and_state.md"), "Reference"),
+          entry("page-reference", page_heading(SOURCE_ROOT.join("page_reference.md")), "Every Page property, event and method, the View keywords, and the desktop window.", SOURCE_ROOT.join("page_reference.md"), "Reference"),
+          entry("theming", "Theming", "Set light and dark themes, theme keys, fonts, and per-container themes for Material and Cupertino.", SOURCE_ROOT.join("theming.md"), "Reference"),
           entry("configuration-reference", "Configuration", "Every supported `ruflet.yaml` and `services.yaml` key, extension, service, and environment override.", SOURCE_ROOT.join("configuration_reference.md"), "Reference")
         ]
       ),
