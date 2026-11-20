@@ -305,7 +305,7 @@
     "stroke_cap": "Shape of line ends: `\"butt\"`, `\"round\"` or `\"square\"`.",
     "show_drag_handle": "Shows a drag handle at the top of the sheet.",
     "fullscreen": "Fills the whole screen.",
-    "automatically_imply_leading": "Adds a back or menu button automatically when the page has somewhere to go back to or a drawer.",
+    "automatically_imply_leading": "Adds a back button when the page can go back. On Android, web, Windows and Linux it adds a menu button instead when the page has a drawer.",
     "transition_between_routes": "Animates the bar between pages on iOS.",
     "previous_page_title": "Title of the previous page, shown next to the iOS back button.",
     "decoration": "A box decoration drawn behind the control's content: `{ bgcolor:, gradient:, image:, border:, border_radius:, shadows:, shape: }`.",
@@ -900,8 +900,8 @@
     },
     "appbar": {
       "title": "The title: a string or a control, usually `text(...)`. On iOS and macOS it is always centered; with `large` it is the large title below the bar.",
-      "leading": "A control at the start of the bar, usually an `icon_button`. Without it the bar shows a back button or a drawer button when `automatically_imply_leading` allows it.",
-      "automatically_imply_leading": "Shows a back button when the page can go back, or a menu button when the page has a `drawer`, if `leading` is not set (default `true`).",
+      "leading": "A control at the start of the bar, usually an `icon_button`. Without it, when `automatically_imply_leading` allows it, the bar shows a back button, or a menu button for the `drawer` on Android, web, Windows and Linux.",
+      "automatically_imply_leading": "Shows a back button when the page can go back, if `leading` is not set (default `true`). On Android, web, Windows and Linux it shows a menu button instead when the page has a `drawer`; iOS and macOS have no menu button.",
       "bgcolor": "Background color of the bar.",
       "large": "Draws a large title below the toolbar: the iOS large title on iOS and macOS, a Material 3 large top app bar (152 logical pixels tall) on Android, web, Windows and Linux.",
       "trailing": "One control at the end of the bar. It replaces `actions` when both are set.",
@@ -934,8 +934,8 @@
     },
     "cupertinoappbar": {
       "title": "The title: a string or a control, usually `text(...)`. On iOS and macOS it is centered; with `large` it is the large title below the bar.",
-      "leading": "A control at the start of the bar, usually an `icon_button`. Without it the bar shows a back button or a drawer button when `automatically_imply_leading` allows it.",
-      "automatically_imply_leading": "Shows a back button when the page can go back, or a menu button when the page has a `drawer`, if `leading` is not set (default `true`).",
+      "leading": "A control at the start of the bar, usually an `icon_button`. Without it, when `automatically_imply_leading` allows it, the bar shows a back button, or a menu button for the `drawer` on Android, web, Windows and Linux.",
+      "automatically_imply_leading": "Shows a back button when the page can go back, if `leading` is not set (default `true`). On Android, web, Windows and Linux it shows a menu button instead when the page has a `drawer`; iOS and macOS have no menu button.",
       "bgcolor": "Background color of the bar.",
       "large": "Draws a large title below the toolbar: the iOS large title on iOS and macOS, a Material 3 large top app bar (152 logical pixels tall) on Android, web, Windows and Linux.",
       "trailing": "A control at the end of the bar, such as an `icon_button`. With 0.0.23 the Material bar on Android, web, Windows and Linux leaves it out.",
@@ -1087,7 +1087,7 @@
       "shadow_color": "Color of the drawer's shadow. Android, web, Windows and Linux only.",
       "surface_tint_color": "Color mixed into the background to show elevation. Android, web, Windows and Linux only.",
       "on_change": "Fired when the user picks a destination. `event.data` is the index the drawer uses for `selected_index`; the client has already set `selected_index` to it.",
-      "on_dismiss": "Fired when the drawer closes, whether the user picked a destination, tapped outside it or swiped it away, or `page.close_drawer` ran."
+      "on_dismiss": "Fired whenever the drawer closes, by the user or from code. Picking a destination does not close it."
     },
     "navigationdrawerdestination": {
       "icon": "The destination's icon: an icon name or an `icon(...)` control.",
@@ -1153,8 +1153,8 @@
       "navigation_bar": "A `navigation_bar(...)` along the bottom of the view.",
       "floating_action_button": "A floating action button, usually `fab(...)`, over the view's content.",
       "floating_action_button_location": "Where the floating action button sits: `\"endFloat\"` (default), `\"centerFloat\"`, `\"startFloat\"`, `\"endDocked\"`, `\"centerDocked\"`, `\"endTop\"` and the other Flutter names, or an offset `{ x:, y: }`. On iOS and macOS a docked location floats above the navigation bar.",
-      "drawer": "A `navigation_drawer(...)` that slides in from the start edge. Open it with `page.show_drawer`.",
-      "end_drawer": "A `navigation_drawer(...)` that slides in from the end edge. Open it with `page.show_end_drawer`.",
+      "drawer": "A `navigation_drawer(...)` that slides in from the start edge. To open it from code, call `page.invoke` with this view and `\"show_drawer\"`; `\"close_drawer\"` closes it.",
+      "end_drawer": "A `navigation_drawer(...)` that slides in from the end edge. To open it from code, call `page.invoke` with this view and `\"show_end_drawer\"`; `\"close_end_drawer\"` closes it.",
       "bottom_sheet": "A control pinned to the bottom of the view, above the navigation bar, such as a `container` with a player or a summary. It stays visible; for a sheet the user dismisses, use `page.show_bottom_sheet`.",
       "bgcolor": "Background color of the view.",
       "padding": "Space around the view's content (default 10).",

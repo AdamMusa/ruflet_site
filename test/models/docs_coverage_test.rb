@@ -379,7 +379,14 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-navigation-bar", "properties", "active_color", "Android, web, Windows and Linux ignore it" ],
     [ "control-navigation-rail", "properties", "extended", "Android, web, Windows and Linux only" ],
     [ "control-tab-bar", "properties", "indicator_size", "Android, web, Windows and Linux only" ],
-    [ "control-view", "events", "on_scroll", "symbol keys" ]
+    [ "control-view", "events", "on_scroll", "symbol keys" ],
+    [ "control-app-bar", "properties", "automatically_imply_leading", "On Android, web, Windows and Linux it shows a menu button instead" ],
+    [ "control-cupertino-app-bar", "properties", "automatically_imply_leading", "iOS and macOS have no menu button" ],
+    [ "control-app-bar", "properties", "leading", "a menu button for the `drawer` on Android, web, Windows and Linux" ],
+    [ "control-cupertino-app-bar", "properties", "leading", "a menu button for the `drawer` on Android, web, Windows and Linux" ],
+    [ "control-navigation-drawer", "events", "on_dismiss", "Picking a destination does not close it." ],
+    [ "control-view", "properties", "drawer", "call `page.invoke` with this view and `\"show_drawer\"`" ],
+    [ "control-view", "properties", "end_drawer", "call `page.invoke` with this view and `\"show_end_drawer\"`" ]
   ].freeze
 
   test "button, menu and navigation lines keep their platform limits" do
@@ -388,6 +395,45 @@ class DocsCoverageTest < ActiveSupport::TestCase
     end
     assert_includes generated_line("control-context-menu", "properties", "items"),
       "On Android, web, Windows and Linux, the 0.0.23 client shows them only from `open`; a click shows the trigger's own list or `actions`. #{DocsCatalog::NEXT_RELEASE_MARKER}."
+    assert_includes generated_line("control-outlined-button", "events", "on_hover"),
+      "On Android, web, Windows and Linux, the 0.0.23 client never sends it for a button with an `icon`. #{DocsCatalog::NEXT_RELEASE_MARKER}.",
+      "With 0.0.23 the Material OutlinedButton.icon has no onHover"
+  end
+
+  # `page.show_drawer` and the other drawer shortcuts send a page method the
+  # 0.0.23 client does not know, so a generated line may name them only with
+  # the marker. `page.invoke(view, "show_drawer")` works on 0.0.23 and main.
+  test "button, menu and navigation lines name the drawer shortcuts only with the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    wrong = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      generated_api_lines(page(slug).content).filter_map do |kind, name, line|
+        "#{slug} #{kind} #{name}" if line.match?(/page\.(show|close)_(end_)?drawer/) && !line.include?(marker)
+      end
+    end
+
+    assert_empty wrong, "These lines tell 0.0.23 apps to call a drawer method its client rejects:\n#{wrong.join("\n")}"
+  end
+
+  # Ways of writing that work on 0.0.23 and that a review found missing.
+  test "button, menu and navigation pages keep the forms that work on 0.0.23" do
+    %w[control-icon-button control-filled-icon-button control-filled-tonal-icon-button control-outlined-icon-button].each do |slug|
+      assert_includes generated_line(slug, "properties", "icon"), "or the symbol `:add`", "#{slug}: symbol icon names work on 0.0.23"
+    end
+    assert prose_chunks("control-icon-button").any? { |chunk| chunk.include?("or a symbol such as `:add`") },
+      "control-icon-button: symbol icon names work on 0.0.23"
+
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    drawer = page("control-navigation-drawer").content
+    invoke_section = drawer[/^### Open and close the drawer from code\n(.*?)(?=^### |\z)/m, 1]
+
+    assert invoke_section, "control-navigation-drawer lost the section that opens a view's drawer"
+    refute_includes invoke_section, marker, "page.invoke(view, \"show_drawer\") works on 0.0.23"
+    assert_includes invoke_section, "page.invoke(home, \"show_drawer\")"
+    assert_includes invoke_section, "page.invoke(home, \"close_drawer\")"
+    assert_includes invoke_section, "page.views = [home]"
+    assert prose_chunks("control-navigation-drawer").any? { |chunk| chunk.include?("With 0.0.23 that means a view's drawer opened with `page.invoke`") },
+      "control-navigation-drawer: on iOS and macOS a 0.0.23 app opens the drawer with page.invoke on a view"
+    refute_includes drawer, "cannot be opened at all", "a 0.0.23 app can open a view's drawer with page.invoke"
   end
 
   test "button, menu and navigation pages keep their next-release and known-issue notes" do
@@ -410,8 +456,6 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
       assert_includes example, "alignment: { x: 0, y: 0 }", "#{slug}: with default arguments the client cannot read the alignment Ruby sends (ruflet#94)"
     end
-    assert prose_chunks("control-navigation-drawer").any? { |chunk| chunk.include?("With 0.0.23 that call fails, so there the drawer cannot be opened at all.") },
-      "control-navigation-drawer: on iOS and macOS a 0.0.23 app has no way to open the drawer"
   end
 
   # Every name a "Common properties" item starts with (the part before " — ")

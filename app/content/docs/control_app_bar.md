@@ -23,7 +23,7 @@ page.add(status)
 ## Common properties
 
 - `title` — a string or a control, usually `text(...)`
-- `leading` — a control at the start, usually an `icon_button`; without it the bar adds a back or menu button when `automatically_imply_leading` (default `true`) allows
+- `leading` — a control at the start, usually an `icon_button`; without it the bar adds a back button when `automatically_imply_leading` (default `true`) allows, or, on Android, web, Windows and Linux, a menu button when the page has a `drawer`
 - `actions` — controls at the end, usually `icon_button`s
 - `bgcolor`
 - `color` — the title and icon color (Android, web, Windows and Linux only)
