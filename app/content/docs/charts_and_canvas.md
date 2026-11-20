@@ -44,8 +44,8 @@ canvas look the same on every platform.
   `selected: true` instead.
 - **Tooltips.** Leave the chart's `tooltip` unset to get the default bubble with
   the touched value. Ruflet cannot set a bubble's text yet, so a chart with
-  `tooltip` set (and every scatter or candlestick chart) shows empty bubbles:
-  show the touched value from `on_event` instead.
+  `tooltip` set (and every scatter or candlestick chart) shows no bubble at
+  all: show the touched value from `on_event` instead.
 - **Colors.** Colors are names, `"#rrggbb"`, `"#aarrggbb"` (alpha first) or a
   color with an opacity after a comma, such as `"#2563eb,0.25"`. Gradients are
   hashes with `_type`, for example

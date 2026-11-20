@@ -462,7 +462,7 @@
       "on_event": "Fired as the user touches or hovers the chart. `event.data` has `type`, `group_index`, `rod_index` and `stack_item_index`; the indexes are `nil` when no bar is touched. `event.data[\"type\"]` is the touch phase: `\"tapDown\"`, `\"tapUp\"`, `\"tapCancel\"`, `\"panStart\"`, `\"panUpdate\"`, `\"panEnd\"`, `\"longPressStart\"`, `\"longPressMoveUpdate\"`, `\"longPressEnd\"`, or on desktop and web `\"pointerEnter\"`, `\"pointerHover\"` and `\"pointerExit\"`. The chart sends an event only when this data changes.",
       "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
       "spacing": "Space between two groups, in logical pixels, when `group_alignment` leaves room for it.",
-      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows empty bubbles; leave it unset to get the default bubble with the touched value.",
+      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows no bubble at all; leave it unset to get the default bubble with the touched value.",
       "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
       "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
     },
@@ -531,7 +531,7 @@
       "rotation_quarter_turns": "Rotates the whole chart by quarter turns clockwise: `1` draws it sideways (default `0`).",
       "show_tooltips_for_selected_spots_only": "When true, the chart stops showing bubbles under the finger and shows them only for spots marked `selected: true` (default false).",
       "spots": "The candles, built with [`candlestick_chart_spot(...)`](/docs/control-candlestick-chart-spot).",
-      "tooltip": "Style of the touch bubble, as on the other charts. Candlestick charts show no text in their bubbles yet, so use `on_event` to show the touched candle.",
+      "tooltip": "Style of the touch bubble, as on the other charts. Candlestick charts show no bubble yet, because Ruflet cannot set its text, so use `on_event` to show the touched candle.",
       "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
       "touch_spot_threshold": "How close a touch must be to a candle, in logical pixels, to count as touching it (default 4).",
       "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
@@ -751,7 +751,7 @@
       "point_line_end": "y value where the vertical indicator line under a touched point ends. Unset, it ends at the point.",
       "point_line_start": "y value where the vertical indicator line under a touched point starts. Unset, it starts at the bottom of the chart.",
       "right_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
-      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows empty bubbles; leave it unset to get the default bubble with the touched value. Line charts also take `show_on_top_of_chart_box_area`.",
+      "tooltip": "Style of the bubble shown when a point is touched, as a hash: `bgcolor`, `border_radius`, `margin`, `padding`, `max_width`, `rotation`, `horizontal_offset`, `horizontal_alignment` (`\"left\"`, `\"center\"` or `\"right\"`), `border_side`, `fit_inside_horizontally` and `fit_inside_vertically`. Ruflet cannot set the text of a bubble yet, so a chart with `tooltip` set shows no bubble at all; leave it unset to get the default bubble with the touched value. Line charts also take `show_on_top_of_chart_box_area`.",
       "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
       "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
     },
@@ -1056,7 +1056,7 @@
       "rotation_quarter_turns": "Rotates the whole chart by quarter turns clockwise: `1` draws it sideways (default `0`).",
       "show_tooltips_for_selected_spots_only": "When true, the chart stops showing bubbles under the finger and shows them only for spots marked `selected: true` (default false).",
       "spots": "The points, built with [`scatter_chart_spot(...)`](/docs/control-scatter-chart-spot).",
-      "tooltip": "Style of the touch bubble, as on the other charts. Scatter charts show no text in their bubbles yet, so use `on_event` to show the touched spot.",
+      "tooltip": "Style of the touch bubble, as on the other charts. Scatter charts show no bubble yet, because Ruflet cannot set its text, so use `on_event` to show the touched spot.",
       "top_axis": "Axis on this side, built with [`chart_axis(...)`](/docs/control-chart-axis). Without one the side shows no labels.",
       "vertical_grid_lines": "Vertical grid lines as a hash: `interval` (in x units), `color`, `width` (default 2), `dash_pattern` and `gradient`. Pass `{}` for the default lines."
     },
@@ -1067,7 +1067,7 @@
       "point": "Custom dot instead of `radius` and `color`: a hash with `_type` `\"ChartCirclePoint\"`, `\"ChartSquarePoint\"` or `\"ChartCrossPoint\"`, as on [`line_chart_data`](/docs/control-line-chart-data).",
       "radius": "Radius of the dot, in logical pixels.",
       "render_priority": "Drawing order: spots with a higher number are drawn on top (default 0).",
-      "selected": "Shows this spot's bubble permanently (default false).",
+      "selected": "Marks the spot for a permanent bubble (default false); scatter charts show no bubble yet, so it has no visible effect.",
       "show_tooltip": "Set false to show no bubble for this spot (default true).",
       "x": "Position on the x axis (default 0).",
       "x_error": "Not supported yet: leave it unset, as a value stops the chart from drawing.",

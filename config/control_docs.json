@@ -172,7 +172,7 @@
     ]
   },
   "control-candlestick-chart": {
-    "summary": "A candlestick (OHLC) chart for prices drawn with fl_chart: one candle per [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot). Its touch bubbles show no text yet, so use `on_event` to show the touched candle. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A candlestick (OHLC) chart for prices drawn with fl_chart: one candle per [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot). It shows no touch bubble yet, so use `on_event` to show the touched candle. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
     "example": [
       "prices = [",
       "  [0, 24.8, 28.6, 23.9, 27.2],",
@@ -1014,7 +1014,7 @@
     ]
   },
   "control-scatter-chart": {
-    "summary": "A scatter chart drawn with fl_chart: one dot per [`scatter_chart_spot`](/docs/control-scatter-chart-spot), with optional labels. Its touch bubbles show no text yet, so use `on_event` to show the touched spot. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A scatter chart drawn with fl_chart: one dot per [`scatter_chart_spot`](/docs/control-scatter-chart-spot), with optional labels. It shows no touch bubble yet, so use `on_event` to show the touched spot. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
     "example": [
       "cities = [[\"Oslo\", 10, 4], [\"Rome\", 25, 16], [\"Cairo\", 35, 22], [\"Lima\", 20, 19]]",
       "status = text(value: \"Tap a point\")",
