@@ -48,6 +48,36 @@ While the `local_auth` extension is selected, directly or through a
 prompt needs, and switches it back once `local_auth` is removed.
 **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
+## Launcher icon and splash
+
+Android builds get an adaptive launcher icon and an Android 12 splash on every
+build. Without any Android keys, Ruflet uses the shared launcher icon as the
+adaptive icon foreground and the shared `icon_background` as its background,
+and mirrors the shared splash image into the Android 12 splash. An `android:`
+section controls both:
+
+```yaml
+assets:
+  splash_screen: assets/splash.png
+  icon_launcher: assets/icon.png
+
+android:
+  adaptive_icon_foreground: assets/icon-foreground.png
+  adaptive_icon_background: "#0F172A"
+  adaptive_icon_monochrome: assets/icon-monochrome.png
+  splash_android_12: assets/splash-android-12.png
+  splash_android_12_color: "#0F172A"
+  splash_fullscreen: false
+```
+
+- The `adaptive_icon_*` keys set the foreground, the background color or image, and the monochrome icon Android uses for themed icons.
+- The `splash_android_12*` keys set the image, the circle behind it, the background color and the branding image of the system splash that Android 12 and later show.
+- `splash_fullscreen: false` keeps the status bar visible on the splash; the template hides it. `splash_gravity` places the splash image.
+- `min_sdk` is the API level the icon generator assumes, 21 by default. It does not change the app's `minSdkVersion`.
+
+See [`android`](/docs/configuration-reference#android) for every key and its
+alias.
+
 ## Release signing
 
 A release build is signed with the debug key unless you provide an upload key,

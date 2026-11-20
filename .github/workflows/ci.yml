@@ -86,6 +86,8 @@ jobs:
       # The API catalogs in config/ are generated from these exact Ruflet and
       # ruflet-engine commits. When you regenerate them with
       # script/sync_ruflet_api, update both refs to the commits you synced from.
+      # The docs tests also read Ruflet's config schema and run the
+      # RufletRecord examples against packages/ruflet_record.
       - name: Check out Ruflet source
         uses: actions/checkout@v6
         with:
@@ -95,6 +97,8 @@ jobs:
           sparse-checkout: |
             packages/ruflet_core
             packages/ruflet_server
+            packages/ruflet_record
+            packages/ruflet/lib/ruflet/cli/build/config_schema
 
       - name: Check out ruflet-engine source
         uses: actions/checkout@v6

@@ -53,6 +53,25 @@ rounded, and `col-span-N` on a child multiplies its share, up to the full row:
 
 Here the first card takes 4 of 12 columns and the second takes 8.
 
+## Utility classes
+
+The `class` attribute takes Tailwind-style utility classes, which Ruflet turns
+into properties of the native widget: `p-6` is `padding: 24`, `gap-4` is
+`spacing: 16`, `bg-slate-50` is a background color, `text-sm font-bold` sets
+the text's size and weight, and `flex-1` on a box, row or column makes it take
+the free space. Box classes on a text, column or row wrap it in a container;
+most other widgets take the classes whose property they have.
+
+```erb
+<%= row class: "gap-3 items-center p-4 bg-white rounded-lg shadow" do %>
+  <%= icon "inbox", color: "#475569" %>
+  <%= text "Inbox", class: "text-lg font-semibold text-slate-900" %>
+<% end %>
+```
+
+[Styling Rails Pages](/docs/rails-native-styling#utility-classes-in-erb-to-native-screens)
+lists every class, the property it sets, and the classes that have no effect.
+
 ## Content
 
 | Helper | Signature and behavior |

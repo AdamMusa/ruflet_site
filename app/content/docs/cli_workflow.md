@@ -20,6 +20,10 @@ ruflet doctor [--fix] [--verbose]
 ruflet help
 ```
 
+Commands take no `--help` option: `ruflet new --help` creates a project
+named `--help`. Use `ruflet help` and the
+[CLI Reference](/docs/cli-reference) instead.
+
 ## Create and run
 
 ```bash
@@ -84,6 +88,12 @@ ruflet update web --check
 ruflet update desktop --platform macos
 ruflet update all --force
 ```
+
+`ruflet run --web` and `ruflet run --desktop` also check for a newer client,
+at most every six hours. Set `RUFLET_CLIENT_AUTO_UPDATE=0` to stop the
+checks, `RUFLET_CLIENT_UPDATE_INTERVAL` to change the interval in seconds,
+or `RUFLET_CLIENT_CHANNEL` to pick the release the clients come from; see
+[Environment variables](/docs/configuration-reference#development-clients).
 
 ## Tooling commands
 

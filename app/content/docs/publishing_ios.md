@@ -61,8 +61,48 @@ automatic: Xcode issues and renews the distribution certificate, so sign in to
 that team under Xcode → Settings → Accounts once and no certificate has to be
 created by hand.
 
-Without `team_id` the field is left empty and Xcode chooses, which is usually
-what you want while developing.
+Without `ios.team_id`, Ruflet uses `app.ios_team_id`, then `app.team_id`
+(either may also sit in the `app` section of `services.yaml`), then the
+`RUFLET_IOS_TEAM_ID` environment variable, which suits CI. The `ios` section
+may also be written as `build.ios` or `assets.ios`. With none of them the field
+is left empty and Xcode chooses, which is usually what you want while
+developing.
+
+`ruflet build macos` writes the same team into the iOS project and leaves the
+macOS project's signing to Xcode.
+
+## Local network access
+
+A server-driven build already declares local-network access, so a development
+client can reach a Ruflet server on your computer: the client template carries
+an `NSLocalNetworkUsageDescription` and `NSAllowsLocalNetworking`. A
+self-contained build removes both, because its Ruby runs inside the app.
+
+If the app itself talks to printers, cameras or other services on the local
+network, declare it so every build keeps the keys with your own text:
+
+```yaml
+ios:
+  local_network: true
+  local_network_usage_description: Finds the printers on your network.
+```
+
+iOS shows the description when the app first reaches the local network. The
+same keys under `macos:` apply to macOS builds. See
+[Local network access](/docs/configuration-reference#local-network-access).
+
+## Icon and launch screen
+
+The launcher icon and splash come from `assets` in `ruflet.yaml`. An `ios:`
+section overrides them for iOS: `icon_launcher`, `splash_screen`, `splash_dark`,
+`splash_color` and the background and branding images. `content_mode` sets how
+the splash image fills the launch screen, for example `scaleAspectFit`.
+
+The template strips the alpha channel from the generated icon, as App Store
+Connect requires. `ios.remove_alpha: false` does not change that.
+
+See [Platform sections](/docs/configuration-reference#platform-sections) for
+every key.
 
 ## Store listing
 

@@ -11,6 +11,18 @@ Use `ruflet help` or `ruflet --help` for the command summary. Use
 `ruflet --version`, `ruflet -v`, or `ruflet version` to print the installed
 version.
 
+Commands have no help of their own; `ruflet help build` prints the same
+summary. Do not pass `--help` to a command, because the command treats it as
+an argument:
+
+- `ruflet new --help` and `ruflet create --help` create a project in a directory named `--help`.
+- `ruflet build --help` stops with `Unsupported build target: --help`.
+- `ruflet install --help` looks for a build to install.
+- `ruflet doctor --help` and `ruflet devices --help` run the command.
+- `ruflet run --help`, `ruflet update --help`, `ruflet debug --help` and `ruflet emulators --help` print only a bare list of options under `Usage: ruflet [options]`.
+
+This reference lists each command's options.
+
 ## Create a project
 
 ```text
@@ -144,11 +156,24 @@ Doctor reports Ruby, the managed template, Flutter, and platform-tool status.
 `--fix` downloads supported missing Ruflet and Flutter assets. Platform SDKs,
 signing identities, and system packages can still require manual setup.
 
+## Environment variables
+
+Commands also read these environment variables. The
+[Configuration Reference](/docs/configuration-reference#environment-variables)
+describes each one.
+
+- `new`, `build` and `doctor`: `RUFLET_TEMPLATE_ROOT`, `RUFLET_TEMPLATE_REPO_URL`, `RUFLET_TEMPLATE_REPO_REF` and `RUFLET_CACHE_DIR` choose the client template and where its download is kept.
+- `run`: `RUFLET_PORT` sets the default port. `RUFLET_CLIENT_AUTO_UPDATE`, `RUFLET_CLIENT_UPDATE_INTERVAL` and `RUFLET_CLIENT_CHANNEL` control the prebuilt web and desktop clients, which `update` also reads.
+- `build`: `RUFLET_CONFIG`, `RUFLET_CLIENT_DIR`, `RUFLET_FLUTTER_VERSION`, `RUFLET_FULL_RUNTIME_PATH`, `RUFLET_RUBY_RUNTIME_PATH`, `RUFLET_MRBC`, `RUFLET_IOS_TEAM_ID` and the `RUFLET_ANDROID_*` signing variables.
+- The running app: `RUFLET_HOST`, `RUFLET_STRICT_PORT`, `RUFLET_PROTOCOL_TRACE` and `RUFLET_DEBUG`, and in Rails `RUFLET_RAILS_DEBUG_EVENTS`.
+
 ## Exit status and diagnostics
 
 Commands return zero on success and nonzero on invalid options, unsupported
 targets, missing configuration, failed downloads, or failed platform tools.
 Use `--verbose` where supported before reporting a build or tooling problem.
+`RUFLET_PROTOCOL_TRACE=summary` prints the messages a running app exchanges
+with its client.
 
 See [Configuration Reference](/docs/configuration-reference) for build keys and
 [Build and Release](/docs/build-and-release) for delivery modes.
