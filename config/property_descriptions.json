@@ -682,7 +682,7 @@
       "alignment": "Position of the wheels in the space the picker has (default `\"center\"`). Android, Windows and Linux ignore it, in a browser too.",
       "bgcolor": "Background color of the wheels. Android, Windows and Linux ignore it, in a browser too.",
       "item_extent": "Height of each row of the wheels, in logical pixels (default 32). Android, Windows and Linux ignore it, in a browser too.",
-      "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, also an Integer. `event.control.props[\"value\"]` holds the same number in both cases."
+      "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, and `.to_i` gives the number. `event.control.props[\"value\"]` holds the same value in both cases."
     },
     "datacolumn": {
       "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and `asc`, the new direction on Android, web, Windows and Linux. On iOS and macOS `asc` is the table's current `sort_ascending`, so keep the direction in Ruby."
@@ -1049,7 +1049,7 @@
       "alignment": "Position of the wheels in the space the picker has (default `\"center\"`). Android, Windows and Linux ignore it, in a browser too.",
       "bgcolor": "Background color of the wheels. Android, Windows and Linux ignore it, in a browser too.",
       "item_extent": "Height of each row of the wheels, in logical pixels (default 32). Android, Windows and Linux ignore it, in a browser too.",
-      "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, also an Integer. `event.control.props[\"value\"]` holds the same number in both cases."
+      "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, and `.to_i` gives the number. `event.control.props[\"value\"]` holds the same value in both cases."
     }
   },
   "method_notes": {

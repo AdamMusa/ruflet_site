@@ -52,10 +52,13 @@ bar; always pass the text you want to keep. `focus` moves keyboard focus to the
 bar.
 
 The client writes the query to `value` as the user types, so read it later
-with `search.props["value"]`. Ruflet parses `on_change` data as JSON when it
-can, so a query of `42` arrives as the Integer 42 in `event.data` and in
-`props["value"]`; call `.to_s` when you need the text. `event.control.value` and `search.value` return
-the same query; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+with `search.props["value"]`. With 0.0.23, Ruflet parses `on_change` and
+`on_submit` data as JSON when it can, so a query of `42` arrives as the Integer
+42 in `event.data` and in `props["value"]`; call `.to_s` when you need the
+text. In the next release the query stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`event.control.value` and `search.value` return the same query; with 0.0.23
+they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 On iOS and macOS there is no separate search view: the bar lists its
 suggestions under itself while it is focused and not empty.

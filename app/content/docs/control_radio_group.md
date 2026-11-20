@@ -38,9 +38,7 @@ page.add(
 
 The client writes the picked radio's `value` to the group before it sends
 `on_change`, so `event.data` and `event.control.props["value"]` hold the same
-value. Ruflet parses it as JSON when it can, so a radio `value` such as `"2"`
-arrives as the Integer 2 in both; give radios values that are not numbers, or
-compare with `.to_s`. To read the choice later, keep it in Ruby state or read
+value. To read the choice later, keep it in Ruby state or read
 `choice.props["value"]`:
 
 ```ruby
@@ -57,6 +55,11 @@ choice = radio_group(
 )
 page.add(choice)
 ```
+
+With 0.0.23, Ruflet parses the value as JSON when it can, so a radio `value`
+such as `"2"` arrives as the Integer 2 in both; give radios values that are not
+numbers, or compare with `.to_s`. In the next release a String `value` stays a
+String, and an Integer `value` such as `2` still arrives as the Integer 2. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `event.control.value` and `choice.value` return the same value as
 `props["value"]`; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

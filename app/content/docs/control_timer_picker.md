@@ -42,8 +42,9 @@ Set `value` as an Integer number of seconds, as above. The client writes the
 new duration to `value` before it sends `on_change`, and keeps the type: for an
 Integer `value` both `event.data` and `event.control.props["value"]` are
 seconds. Without an Integer `value` (also when you leave it out) the client
-sends the duration in microseconds: for 1 min 30 s, `event.data` and
-`event.control.props["value"]` are both the Integer 90000000.
+sends the duration in microseconds, and `.to_i` gives the number: for 1 min
+30 s, `event.data` and `event.control.props["value"]` are both the Integer
+90000000 with 0.0.23. In the next release both are the String `"90000000"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `event.control.value` returns the same value as `event.control.props["value"]`;
 with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

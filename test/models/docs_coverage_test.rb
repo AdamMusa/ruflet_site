@@ -444,6 +444,56 @@ class DocsCoverageTest < ActiveSupport::TestCase
     end
   end
 
+  # 0.0.23 parses String event data as JSON, so typed "42", a String key "1"
+  # and a radio value "2" arrive as Integers, and so do a timer picker's
+  # microseconds. Ruflet main (ruflet #103) keeps them Strings. Each page
+  # scopes the parsing to 0.0.23 and says, with the marker, what main does.
+  INPUT_PAYLOAD_NEXT_RELEASE = {
+    "control-auto-complete" => "In the next release the typed text stays a String in both.",
+    "control-cupertino-date-picker" => "In the next release the client reads `\"date_and_time\"` too",
+    "control-cupertino-timer-picker" => "In the next release both are the String `\"90000000\"`.",
+    "control-dropdown" => "In the next release a String key stays a String, and an Integer key such as `1` still arrives as the Integer 1.",
+    "control-radio-group" => "In the next release a String `value` stays a String, and an Integer `value` such as `2` still arrives as the Integer 2.",
+    "control-search-bar" => "In the next release the query stays a String in both.",
+    "control-text-field" => "In the next release the typed text stays a String in both.",
+    "control-timer-picker" => "In the next release both are the String `\"90000000\"`."
+  }.freeze
+
+  test "input pages scope parsed event data to 0.0.23 and mark what main does" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    INPUT_PAGES.each do |slug|
+      prose_chunks(slug).grep(/as JSON|arrives as the Integer|both the Integer|the Integer 90000000/).each do |chunk|
+        assert_match(/with 0\.0\.23/i, chunk, "#{slug}: say that 0.0.23 parses this event data, not main: #{chunk}")
+        assert_includes chunk, marker, "#{slug}: say what the next release sends instead: #{chunk}"
+      end
+    end
+    INPUT_PAYLOAD_NEXT_RELEASE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+      assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+    end
+    %w[control-timer-picker control-cupertino-timer-picker].each do |slug|
+      line = generated_line(slug, "events", "on_change")
+
+      refute_includes line, "also an Integer", "#{slug} on_change: main sends the microseconds as a String"
+      assert_includes line, "`.to_i` gives the number", "#{slug} on_change lost its .to_i advice"
+    end
+  end
+
+  # Earlier statements a review found wrong on both releases.
+  test "input pages keep the payload and option fixes a review made" do
+    disabled = generated_line("control-dropdown-option", "properties", "disabled")
+
+    refute_includes disabled, "still offer", "the next release dims a disabled option on iOS and macOS"
+    assert_includes disabled, "the 0.0.23 client still lets the user pick it there."
+    range = prose_chunks("control-date-range-picker").join("\n")
+
+    assert_includes range, "and not from `event.data`: on Android, Windows and Linux it is an empty String."
+    refute_match(/`event\.data` holds them/, range, "on Android, Windows and Linux the range picker's event.data is an empty String")
+  end
+
   # A Ruby example that forgets to define a name still compiles: Ruby parses
   # the name as a method call. Every receiverless call in these examples must
   # be a Ruflet helper or one of the Kernel methods below.

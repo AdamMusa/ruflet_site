@@ -38,11 +38,8 @@ page.add(
 
 ## Usage
 
-`on_change` fires on every keystroke and `event.data` is the whole text.
-Ruflet parses event data as JSON when it can, and copies it to `value`, so
-typed `42` arrives as the Integer 42 in `event.data` and in
-`props["value"]`; call `.to_s` when you need the text. The client writes the
-text to `value` first, so later, in another handler, read
+`on_change` fires on every keystroke and `event.data` is the whole text. The
+client writes the text to `value` first, so later, in another handler, read
 `field.props["value"]`:
 
 ```ruby
@@ -61,6 +58,11 @@ page.add(
   )
 )
 ```
+
+With 0.0.23, Ruflet parses event data as JSON when it can, and copies it to
+`value`, so typed `42` arrives as the Integer 42 in `event.data` and in
+`props["value"]`, in `on_change` and in `on_submit`; call `.to_s` when you need
+the text. In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `field.value` and `event.control.value` return the same text as
 `props["value"]`, and `field.selection` the same range as

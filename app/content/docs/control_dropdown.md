@@ -64,9 +64,8 @@ dropdown_option(key: "us", text: "United States", leading_icon: "flag")
 ## Usage
 
 In `on_select`, read the chosen key from `event.control.props["value"]`; the
-client writes it to the control before the event fires. `event.data` carries
-the same key, parsed as JSON when it can be, so a key such as `"1"` arrives as
-the Integer 1; `event.value` is `nil` for this event. To use the choice later,
+client writes it to the control, as a String (`"1"` for a key `1`), before the
+event fires. `event.value` is `nil` for this event. To use the choice later,
 keep it in Ruby state or read `field.props["value"]`:
 
 ```ruby
@@ -83,6 +82,11 @@ page.add(field)
 size                 # => "l" after the user picks Large
 field.props["value"] # => "l"
 ```
+
+`event.data` carries the same key. With 0.0.23, Ruflet parses it as JSON when
+it can, so a key such as `"1"` arrives as the Integer 1. In the next release a
+String key stays a String, and an Integer key such as `1` still arrives as the
+Integer 1. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `event.control.value` and `field.value` return the same key as
 `props["value"]`; with 0.0.23 they raise NoMethodError. An `on_change` handler

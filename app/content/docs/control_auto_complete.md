@@ -43,7 +43,10 @@ Android, Windows and Linux fill the field with the `value`, and iOS and macOS
 with the `key`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 The client writes the typed text to `value` as the user types, so read it
-later from the control's `props["value"]`. Ruflet parses `on_change` data
-as JSON when it can, so typed `42` arrives as the Integer 42 in `event.data`
-and in `props["value"]`; call `.to_s` when you need the text. `event.control.value` returns the
-same text; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+later from the control's `props["value"]`. With 0.0.23, Ruflet parses
+`on_change` data as JSON when it can, so typed `42` arrives as the Integer 42
+in `event.data` and in `props["value"]`; call `.to_s` when you need the text.
+In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`event.control.value` returns the same text as `props["value"]`; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
