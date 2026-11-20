@@ -1,7 +1,7 @@
 # QRCodeScanner
 
 Scan QR codes and other barcodes with the first-party
-`ruflet_qrcode_scanner` Flet extension, backed by `mobile_scanner`.
+`ruflet_qrcode_scanner` Ruflet client extension, backed by `mobile_scanner`.
 
 Enable it and rebuild the client:
 
@@ -31,6 +31,7 @@ Ruflet.run do |page|
     expand: true,
     formats: %i[qr_code data_matrix],
     detection_speed: :no_duplicates,
+    zoom_scale: 0.0,
     on_detect: ->(event) {
       page.update(result, value: event.value.to_s)
     },
@@ -57,9 +58,11 @@ end
 - `scan_window` — `{ left:, top:, right:, bottom: }` or `{ x:, y:, width:, height: }`.
 - `tap_to_focus` — enable focus by tapping the preview (default `false`).
 - `torch_enabled` — start with the torch enabled (default `false`).
-- `zoom_scale` — optional initial zoom using the normalized `0.0`–`1.0` range.
-  It is unset by default, preserving the camera's normal 1x zoom. `1.0` means
-  maximum zoom, not 1x.
+- `zoom_scale` — initial zoom on the normalized `0.0`–`1.0` range, where `1.0`
+  means maximum zoom, not 1x (on iOS that is 5x, or less when the camera cannot
+  zoom that far). When you leave it unset the client uses `1.0`, so the
+  preview starts fully zoomed in: pass `zoom_scale: 0.0` for the camera's normal zoom.
+  Android and iOS only.
 
 Supported format names are `all`, `unknown`, `aztec`, `codabar`, `code_39`,
 `code_93`, `code_128`, `data_bar`, `data_bar_expanded`, `data_bar_limited`,
