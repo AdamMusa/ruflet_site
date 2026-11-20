@@ -412,6 +412,14 @@
       "dismissible": "When false, tapping outside the sheet does not close it (default true).",
       "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control."
     },
+    "cupertinodatepicker": {
+      "inline": "Draws the picker where you add it; this helper sends `true`. With `false` it is a dialog that `page.show_dialog` opens."
+    },
+    "cupertinoslidingsegmentedbutton": {
+      "bgcolor": "Color of the track behind the segments, on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "proportional_width": "On iOS and macOS, sizes each segment to its content instead of giving all segments the same width. Android, web, Windows and Linux ignore it.",
+      "thumb_color": "Color of the thumb that slides to the selected segment, on iOS and macOS. Android, web, Windows and Linux ignore it."
+    },
     "datacolumn": {
       "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and `asc`, the new direction on Android, web, Windows and Linux. On iOS and macOS `asc` is the table's current `sort_ascending`, so keep the direction in Ruby."
     },
@@ -468,7 +476,10 @@
       "error": "Error text or control shown below the row."
     },
     "listtile": {
-      "dense": "Uses a more compact layout with less vertical space. iOS and macOS ignore it."
+      "dense": "Uses a more compact layout with less vertical space. iOS and macOS ignore it.",
+      "hover_color": "Color of the tile while the pointer is over it. iOS and macOS ignore it.",
+      "is_three_line": "Gives the subtitle room for two lines, so the tile is three lines tall. iOS and macOS ignore it.",
+      "shape": "Shape of the tile's background and tap highlight. iOS and macOS ignore it."
     },
     "navigationrail": {
       "group_alignment": "Vertical position of the destinations, from -1.0 (top) to 1.0 (bottom)."

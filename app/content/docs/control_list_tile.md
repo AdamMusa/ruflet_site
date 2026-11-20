@@ -20,12 +20,12 @@ list_tile(
 - `title`
 - `subtitle`
 - `leading` / `trailing`
-- `dense`
-- `is_three_line`
+- `dense` / `is_three_line` — Android, web, Windows and Linux only
 - `content_padding`
-- `bgcolor` / `hover_color`
+- `bgcolor`
+- `hover_color` — Android, web, Windows and Linux only
 - `selected` / `selected_color` / `selected_tile_color` — iOS and macOS draw no selected colors; there `selected` only tells screen readers, and needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
-- `shape`
+- `shape` — Android, web, Windows and Linux only
 - `url` — open a URL on tap
 
 ## Usage

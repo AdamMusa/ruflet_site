@@ -428,7 +428,9 @@
     },
     "control-cupertino-sliding-segmented-button": {
       "properties": [
-        "proportional_width"
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
       ]
     },
     "control-cupertino-switch": {

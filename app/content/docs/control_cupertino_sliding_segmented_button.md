@@ -27,7 +27,8 @@ page.add(
 
 - `controls` — one control per segment, at least two; the first positional argument sets them
 - `selected_index` — defaults to `0`
-- `proportional_width` — size each segment to its content instead of equally; the 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `proportional_width` — on iOS and macOS, size each segment to its content instead of equally; the 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `bgcolor` / `thumb_color` — on iOS and macOS, the colors of the track and of the sliding thumb; the 0.0.23 client ignores them. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `on_change` — `event.data` is the index of the chosen segment
 
 ## Usage

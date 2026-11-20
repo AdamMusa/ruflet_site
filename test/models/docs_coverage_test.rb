@@ -20,7 +20,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-cupertino-action-sheet-action control-cupertino-activity-indicator
     control-cupertino-alert-dialog control-cupertino-app-bar control-cupertino-bottom-sheet
     control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
-    control-cupertino-date-picker control-cupertino-dialog-action control-cupertino-filled-button
+    control-cupertino-dialog-action control-cupertino-filled-button
     control-cupertino-list-tile control-cupertino-navigation-bar control-cupertino-picker
     control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
     control-cupertino-tinted-button control-custom-scroll-view control-data-cell control-data-column
@@ -215,7 +215,25 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-progress-ring", "properties", "semantics_label", "On iOS and macOS, the 0.0.23 client ignores it." ],
     [ "control-checkbox", "properties", "spacing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
     [ "control-context-menu", "events", "on_select", "On iOS and macOS, the 0.0.23 client never sends it." ],
-    [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ]
+    [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-search-bar", "events", "on_tap_outside_bar", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-search-bar", "methods", "open_view", "On iOS and macOS, the 0.0.23 client does not run it." ],
+    [ "control-search-bar", "methods", "close_view", "On iOS and macOS, the 0.0.23 client does not run it." ],
+    [ "control-slider", "properties", "autofocus", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-slider", "events", "on_focus", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-slider", "events", "on_blur", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-icon-button", "properties", "selected_icon", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-icon-button", "properties", "selected_icon_color", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-icon-button", "properties", "disabled_color", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-icon-button", "properties", "enable_feedback", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-icon-button", "properties", "style", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-list-tile", "properties", "selected", "On iOS and macOS, the 0.0.23 client ignores it." ],
+    [ "control-list-tile", "events", "on_long_press", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-app-bar", "properties", "large", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-app-bar", "properties", "trailing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-cupertino-sliding-segmented-button", "properties", "bgcolor", "The 0.0.23 client ignores it." ],
+    [ "control-cupertino-sliding-segmented-button", "properties", "thumb_color", "The 0.0.23 client ignores it." ],
+    [ "control-cupertino-sliding-segmented-button", "properties", "proportional_width", "The 0.0.23 client ignores it." ]
   ].freeze
 
   # Lines that must stay unmarked: they work with 0.0.23, or (ContextMenu.open
@@ -228,11 +246,39 @@ class DocsCoverageTest < ActiveSupport::TestCase
   ].freeze
 
   # Hand-written sentences that describe main-only behavior and must say so.
+  # A phrase may span a line break in the Markdown source.
   PINNED_PROSE_MARKERS = {
     "control-data-table" => [ "the 0.0.23 client draws no checkbox column", "the 0.0.23 client also ignores `vertical_lines`" ],
     "control-banner" => [ "On iOS and macOS, the 0.0.23 client never sends it." ],
     "control-bottom-sheet" => [ "`fullscreen` — on iOS and macOS these need the" ],
-    "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ]
+    "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ],
+    "control-search-bar" => [ "On iOS and macOS, `open_view` focuses the bar", "with 0.0.23 both do nothing there" ],
+    "control-list-tile" => [ "there `selected` only tells screen readers" ],
+    "control-cupertino-sliding-segmented-button" => [
+      "comes from the `sliding` flag this helper sends",
+      "on iOS and macOS, size each segment to its content",
+      "the colors of the track and of the sliding thumb"
+    ],
+    "control-cupertino-date-picker" => [ "drawing it in place with `page.add`" ]
+  }.freeze
+
+  # Hand-written sentences that say which platforms a line applies to. They
+  # hold on 0.0.23 and on main, so they carry no marker, but a review found the
+  # page wrong without them.
+  PINNED_PROSE_QUALIFIERS = {
+    "control-data-table" => [
+      "`event.data[\"asc\"]` is the new direction on Android, web, Windows and Linux.",
+      "On iOS and macOS it is the table's current `sort_ascending`"
+    ],
+    "control-list-tile" => [
+      "`dense` / `is_three_line` — Android, web, Windows and Linux only",
+      "`hover_color` — Android, web, Windows and Linux only",
+      "`shape` — Android, web, Windows and Linux only"
+    ],
+    "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only" ],
+    "control-progress-ring" => [ "`stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator" ],
+    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, web, Windows and Linux only" ],
+    "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
   }.freeze
 
   test "lines a review fixed keep their next-release state" do
@@ -253,15 +299,27 @@ class DocsCoverageTest < ActiveSupport::TestCase
     marker = DocsCatalog::NEXT_RELEASE_MARKER
 
     PINNED_PROSE_MARKERS.each do |slug, phrases|
-      prose = page(slug).content.split("\n## Complete API\n", 2).first
-
       phrases.each do |phrase|
-        paragraph = prose.split(/\n(?=- |\n)/).find { |chunk| chunk.include?(phrase) }
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
 
         assert paragraph, "#{slug} no longer says #{phrase.inspect}"
         assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
       end
     end
+  end
+
+  test "hand-written platform qualifications a review added stay on their pages" do
+    PINNED_PROSE_QUALIFIERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        assert prose_chunks(slug).any? { |chunk| chunk.include?(phrase) }, "#{slug} no longer says #{phrase.inspect}"
+      end
+    end
+  end
+
+  test "the curated Cupertino date picker example opens the picker as a dialog" do
+    example = page("control-cupertino-date-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+    assert_includes example, "page.show_dialog(picker)", "With 0.0.23 a cupertino_date_picker added to the page shows nothing"
   end
 
   test "generated examples leave out lines 0.0.23 rejects or ignores everywhere" do
@@ -273,6 +331,12 @@ class DocsCoverageTest < ActiveSupport::TestCase
   end
 
   private
+
+  # The hand-written part of a page (everything above a prose page's Complete
+  # API appendix), split into paragraphs and list items, each on one line.
+  def prose_chunks(slug)
+    page(slug).content.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
+  end
 
   # The one generated "- `name` ..." line of a kind on a control page.
   def generated_line(slug, kind, name)

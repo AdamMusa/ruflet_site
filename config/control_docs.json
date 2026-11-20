@@ -1,4 +1,22 @@
 {
+  "control-cupertino-date-picker": {
+    "summary": "An iOS-style wheel for picking a date, a time, or both. Open it with `page.show_dialog(picker)`: on iOS and macOS the wheel slides up with Cancel and Done, and on Android, web, Windows and Linux the client shows the Material date picker dialog. When the user confirms, `on_change` gets the picked moment in `event.data`, an ISO 8601 string in UTC. With 0.0.23 a picker added to the page shows nothing; drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "chosen = text(value: \"No date yet\")",
+      "picker = cupertino_date_picker(",
+      "  value: \"2026-01-15\",",
+      "  on_change: ->(event) { page.update(chosen, value: \"Picked #{event.data}\") }",
+      ")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_button(\"Pick a date\", on_click: ->(_event) { page.show_dialog(picker) }),",
+      "      chosen",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
   "control-popup-menu-item": {
     "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark. The client does not change it, so keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`, and the 0.0.23 client on iOS and macOS sends none. Leave out both text and icon for a divider. Icons, check marks and dividers show on Android, web, Windows and Linux only: on iOS and macOS the menu shows each item's text and nothing else, and an item without text draws an error box.",
     "example": [
