@@ -85,12 +85,15 @@ ruflet build <apk|android|aab|ios|ipa|web|macos|windows|linux>
 archive. Builds are server-driven by default: the client connects to the
 `app.backend_url` set in `ruflet.yaml`.
 
-- A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails without
-  `app.backend_url`.
-- A `web`, `macos`, `windows`, or `linux` build can omit it. A web client then
-  connects to the origin it was loaded from. A desktop client connects to the
-  URL its launcher passes, as `ruflet run --desktop` does, or to
-  `http://localhost:8550` when it is started without one. Set
+- A server-driven `apk`, `android`, `aab`, `ios`, or `ipa` build fails when
+  `ruflet.yaml` sets no backend URL. Set `app.backend_url`; the
+  [Configuration Reference](/docs/configuration-reference) lists the other
+  keys Ruflet also reads. A value without an `http`, `https`, `ws`, or `wss`
+  scheme, or without a host, counts as unset.
+- A `web`, `macos`, `windows`, or `linux` build can omit the backend URL. A
+  web client then connects to the origin it was loaded from. A desktop client
+  connects to the URL its launcher passes, as `ruflet run --desktop` does, or
+  to `http://localhost:8550` when it is started without one. Set
   `app.backend_url` for a web build hosted apart from its Ruby backend and for
   a desktop build you distribute.
 
