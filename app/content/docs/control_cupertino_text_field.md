@@ -44,12 +44,12 @@ helper sends an empty `placeholder_text`.
 
 `on_change` and `on_submit` work as on [`text_field`](/docs/control-text-field),
 and so does `on_selection_change`: `event.data["selected_text"]` is the
-selected text and `event.data["selection"]` its range. Read the text later with
-`field.props["value"]`.
+selected text and `event.data["selection"]` its range. Read the text later from
+the field's `props["value"]`.
 
-`field.value` and `event.control.value` return the same text as
-`props["value"]`, and `field.selection` the same range as
-`props["selection"]`; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+`event.control.value` returns the same text as `props["value"]`, and
+`event.control.selection` the same range as `props["selection"]`; with 0.0.23
+they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Platform differences
 

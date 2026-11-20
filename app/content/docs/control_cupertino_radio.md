@@ -17,7 +17,7 @@ page.add(
     children: [
       radio_group(
         value: "chime",
-        on_change: ->(event) { page.update(sound, value: "Alert: #{event.data.capitalize}") },
+        on_change: ->(event) { page.update(sound, value: "Alert: #{event.data.to_s.capitalize}") },
         content: column(
           children: [
             cupertino_radio(value: "chime", label: "Chime", use_checkmark_style: true),

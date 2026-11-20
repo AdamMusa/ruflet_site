@@ -43,5 +43,5 @@ Material clients fill the field with the `value` and iOS and macOS with the
 `key`.
 
 The client writes the typed text to `value` as the user types, so read it
-later with `field.props["value"]`. `event.control.value` and `field.value`
-return the same text; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+later from the control's `props["value"]`. `event.control.value` returns the
+same text; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

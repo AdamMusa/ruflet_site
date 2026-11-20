@@ -319,7 +319,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # on main only; each page that teaches `props[...]` names its reader once,
   # with the marker.
   STATE_READER_PROSE = {
-    "control-auto-complete" => "`event.control.value` and `field.value`",
+    "control-auto-complete" => "`event.control.value` returns the same text",
     "control-checkbox" => "`event.control.value` (and `terms.value`)",
     "control-chip" => "`event.control.selected`",
     "control-cupertino-checkbox" => "`event.control.value` returns",
@@ -329,7 +329,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-cupertino-slider" => "`event.control.value` returns",
     "control-cupertino-sliding-segmented-button" => "`event.control.selected_index` returns",
     "control-cupertino-switch" => "`event.control.value` returns",
-    "control-cupertino-text-field" => "`field.selection` the same range",
+    "control-cupertino-text-field" => "`event.control.selection` the same range",
     "control-cupertino-timer-picker" => "`event.control.value` returns",
     "control-date-picker" => "`event.control.entry_mode` return",
     "control-date-range-picker" => "`event.control.start_value` and `event.control.end_value`",
@@ -350,8 +350,8 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # each must keep. Clients draw iOS and macOS with Cupertino widgets and
   # other platforms with Material ones, whichever helper built the control.
   PLATFORM_NOTES = {
-    "material" => "iOS and macOS ignore it",
-    "cupertino" => "Android, web, Windows and Linux ignore it"
+    "material" => { "properties" => "iOS and macOS ignore it", "events" => "iOS and macOS never send it" },
+    "cupertino" => { "properties" => "Android, web, Windows and Linux ignore it" }
   }.freeze
   PLATFORM_ONLY_LINES = {
     "control-checkbox" => { "material" => %w[hover_color overlay_color splash_radius visual_density] },
@@ -392,11 +392,13 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
   test "input lines one design ignores say so" do
     PLATFORM_ONLY_LINES.each do |slug, designs|
-      lines = generated_api_lines(page(slug).content).to_h { |_kind, name, line| [ name, line ] }
+      lines = generated_api_lines(page(slug).content).to_h { |kind, name, line| [ name, [ kind, line ] ] }
       designs.each do |design, names|
         names.each do |name|
-          assert lines[name], "#{slug} renders no line for #{name}"
-          assert_includes lines[name], PLATFORM_NOTES.fetch(design), "#{slug} #{name} lost its platform note"
+          kind, line = lines[name]
+
+          assert line, "#{slug} renders no line for #{name}"
+          assert_includes line, PLATFORM_NOTES.dig(design, kind), "#{slug} #{name} lost its platform note"
         end
       end
     end
