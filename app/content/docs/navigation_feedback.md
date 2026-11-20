@@ -9,7 +9,8 @@ sheets, snackbars, and banners.
 page.on_route_change = ->(_event) { render_route(page) }
 page.on_view_pop = ->(_event) {
   page.views.pop
-  page.go(page.views.last&.route || "/")
+  top = page.views.last
+  page.go(top ? top.props["route"] : "/")
 }
 
 page.go("/")

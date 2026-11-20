@@ -11,7 +11,7 @@ slider(
   max: 100,
   divisions: 10,
   label: "{value}%",
-  on_change: ->(event) { page.update(preview, opacity: event.control.value / 100.0) }
+  on_change: ->(event) { page.update(preview, opacity: event.control.props["value"] / 100.0) }
 )
 ```
 
@@ -36,4 +36,6 @@ range_slider(start_value: 20, end_value: 80, min: 0, max: 100, divisions: 10)
 ## Usage
 
 `on_change` fires continuously while dragging; use `on_change_end` to react only
-when the user releases.
+when the user releases. Read the current value from
+`event.control.props["value"]`; the client writes it to the control before
+`on_change` fires.

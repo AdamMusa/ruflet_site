@@ -10,7 +10,7 @@ picker = date_picker(
   value: "2026-01-15",
   first_date: "2026-01-01",
   last_date: "2026-12-31",
-  on_change: ->(event) { page.update(label, value: event.control.value) }
+  on_change: ->(event) { page.update(label, value: event.control.props["value"]) }
 )
 
 filled_button(content: text("Pick a date"), on_click: ->(_e) { page.show_dialog(picker) })
@@ -35,5 +35,5 @@ filled_button(content: text("Pick a date"), on_click: ->(_e) { page.show_dialog(
 ## Usage
 
 The picker confirms itself on the client and reports the new value through
-`on_change`. Read it with `control.value`. Reopen it with `page.show_dialog`
-again — it reopens cleanly after a selection.
+`on_change`. Read it in the handler with `event.control.props["value"]`.
+Reopen it with `page.show_dialog` again — it reopens cleanly after a selection.
