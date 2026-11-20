@@ -28,8 +28,8 @@
       "  volume: 0.8,",
       "  release_mode: \"loop\",",
       "  on_loaded: ->(_event) { page.update(status, value: \"Ready\") },",
-      "  on_state_change: ->(event) { page.update(status, value: \"State: #{event.data[\"state\"]}\") },",
-      "  on_position_change: ->(event) { page.update(status, value: \"At #{event.data[\"position\"] / 1000} s\") }",
+      "  on_state_change: ->(event) { page.update(status, value: \"State: #{event.data[:state]}\") },",
+      "  on_position_change: ->(event) { page.update(status, value: \"At #{event.data[:position] / 1000} s\") }",
       ")",
       "page.add(",
       "  row(children: [",
@@ -80,8 +80,8 @@
       "  left_axis: chart_axis(label_size: 36, label_spacing: 20),",
       "  horizontal_grid_lines: { interval: 20, color: \"#e5e7eb\", width: 1 },",
       "  on_event: ->(event) {",
-      "    index = event.data[\"group_index\"]",
-      "    page.update(summary, value: \"#{months[index]}: #{sales[index]}\") if index && event.data[\"type\"] == \"tapUp\"",
+      "    index = event.data[:group_index]",
+      "    page.update(summary, value: \"#{months[index]}: #{sales[index]}\") if index && event.data[:type] == \"tapUp\"",
       "  }",
       ")",
       "page.add(column(children: [chart, summary]))"
@@ -118,7 +118,7 @@
     ]
   },
   "control-bar-chart-rod": {
-    "summary": "One bar of a [`bar_chart_group`](/docs/control-bar-chart-group), from `from_y` to `to_y`, with an optional track behind it and stacked segments inside it. Update it like any control, for example `page.update(rod, to_y: 80)`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "One bar of a [`bar_chart_group`](/docs/control-bar-chart-group), from `from_y` to `to_y`, with an optional track behind it and stacked segments inside it. Update it like any control, for example `page.update(rod, to_y: 80)`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) replaces the value in the bar's touch bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "progress = bar_chart_rod(",
       "  from_y: 0,",
@@ -135,7 +135,7 @@
       "    min_y: 0,",
       "    max_y: 100,",
       "    groups: [bar_chart_group(x: 0, rods: [progress])],",
-      "    on_event: ->(event) { page.update(progress, color: \"#dc2626\") if event.data[\"type\"] == \"tapUp\" }",
+      "    on_event: ->(event) { page.update(progress, color: \"#dc2626\") if event.data[:type] == \"tapUp\" }",
       "  )",
       ")"
     ]
@@ -172,7 +172,7 @@
     ]
   },
   "control-candlestick-chart": {
-    "summary": "A candlestick (OHLC) chart for prices drawn with fl_chart: one candle per [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot). It shows no touch bubble yet, so use `on_event` to show the touched candle. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A candlestick (OHLC) chart for prices drawn with fl_chart: one candle per [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot). With 0.0.23 it shows no touch bubble, so use `on_event` to show the touched candle. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release a candle with its own `tooltip:` text shows it in a bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "prices = [",
       "  [0, 24.8, 28.6, 23.9, 27.2],",
@@ -188,7 +188,7 @@
       "  left_axis: chart_axis(label_spacing: 2, label_size: 32),",
       "  bottom_axis: chart_axis(label_spacing: 1),",
       "  on_event: ->(event) {",
-      "    index = event.data[\"spot_index\"]",
+      "    index = event.data[:spot_index]",
       "    page.update(status, value: \"Day #{index}: closed at #{prices[index][4]}\") if index",
       "  }",
       ")",
@@ -196,7 +196,7 @@
     ]
   },
   "control-candlestick-chart-spot": {
-    "summary": "One candle of a [`candlestick_chart`](/docs/control-candlestick-chart): the `open`, `high`, `low` and `close` prices at `x`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "One candle of a [`candlestick_chart`](/docs/control-candlestick-chart): the `open`, `high`, `low` and `close` prices at `x`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) gives the candle a touch bubble; with 0.0.23 candlestick charts show none. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "page.add(",
       "  candlestick_chart(",
@@ -205,7 +205,7 @@
       "    min_x: -0.5, max_x: 1.5, min_y: 90, max_y: 120,",
       "    spots: [",
       "      candlestick_chart_spot(x: 0, open: 100, high: 112, low: 96, close: 108),",
-      "      candlestick_chart_spot(x: 1, open: 108, high: 115, low: 99, close: 101, selected: true)",
+      "      candlestick_chart_spot(x: 1, open: 108, high: 115, low: 99, close: 101)",
       "    ]",
       "  )",
       ")"
@@ -225,7 +225,7 @@
       "  [sky, sun, hill],",
       "  width: 320,",
       "  height: 200,",
-      "  on_resize: ->(event) { page.update(size_label, value: \"Canvas is #{event.data[\"w\"].round} x #{event.data[\"h\"].round}\") }",
+      "  on_resize: ->(event) { page.update(size_label, value: \"Canvas is #{event.data[:w].round} x #{event.data[:h].round}\") }",
       ")",
       "page.add(column(children: [scene, size_label]))",
       "page.add(button(\"Sunset\", on_click: ->(_event) { page.update(sun, y: 150, paint: paint(color: \"#f97316\")) }))"
@@ -463,7 +463,7 @@
     ]
   },
   "control-line-chart": {
-    "summary": "A line or area chart drawn with fl_chart. Each [`line_chart_data`](/docs/control-line-chart-data) in `data_series` is one line through its points. Touching shows the values under the finger, and `on_event` reports the touched points. It looks the same on every platform. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A line or area chart drawn with fl_chart. Each [`line_chart_data`](/docs/control-line-chart-data) in `data_series` is one line through its points. Touching shows the values under the finger, and `on_event` reports the touch. It looks the same on every platform. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release `event.data[:spots]` also says which points were touched; with 0.0.23 each of its entries is an empty String. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "readings = [[0, 3.1], [1, 3.4], [2, 2.9], [3, 4.2], [4, 4.8], [5, 4.4]]",
       "status = text(value: \"Touch the line\")",
@@ -483,8 +483,9 @@
       "  left_axis: chart_axis(label_spacing: 2, label_size: 32),",
       "  horizontal_grid_lines: { interval: 1, color: \"#e5e7eb\", width: 1 },",
       "  on_event: ->(event) {",
-      "    spot = Array(event.data[\"spots\"]).first",
-      "    page.update(status, value: \"Day #{spot[\"spot_index\"]}: #{readings[spot[\"spot_index\"]][1]} kWh\") if spot",
+      "    # With 0.0.23 the spots arrive as empty Strings, so only hashes are read.",
+      "    spot = Array(event.data[:spots]).find { |touched| touched.is_a?(Hash) }",
+      "    page.update(status, value: \"Day #{spot[:spot_index]}: #{readings[spot[:spot_index]][1]} kWh\") if spot",
       "  }",
       ")",
       "page.add(column(children: [chart, status]))"
@@ -516,7 +517,7 @@
     ]
   },
   "control-line-chart-data-point": {
-    "summary": "One point of a [`line_chart_data`](/docs/control-line-chart-data) line, at `x` and `y`. Mark it `selected` to highlight it on a chart with `interactive: false`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "One point of a [`line_chart_data`](/docs/control-line-chart-data) line, at `x` and `y`. Mark it `selected` to highlight it on a chart with `interactive: false`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) replaces the value in the point's touch bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "points = [[0, 4], [1, 7], [2, 5], [3, 9]].map do |x, y|",
       "  line_chart_data_point(x: x, y: y, selected: y == 9)",
@@ -532,7 +533,7 @@
     ]
   },
   "control-lottie": {
-    "summary": "Plays a Lottie animation (an After Effects export in JSON) from a URL, an asset or base64 data. It loops by default; update `animate` to stop and start it. It looks the same on every platform. Part of the [`lottie` extension](/docs/extension-lottie): add `lottie` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "Plays a Lottie animation (an After Effects export in JSON) from a URL, an asset or base64 data. It loops by default; update `animate` to stop and start it. It looks the same on every platform. Part of the [`lottie` extension](/docs/extension-lottie): add `lottie` under `extensions:` in `ruflet.yaml` and rebuild the client. With 0.0.23 a base64 `src` is decoded again on every update of the control, such as `animate: false`, so the animation restarts and `on_load` fires again; the next release only applies the change. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "status = text(value: \"Loading animation\")",
       "animation = lottie(",
@@ -567,8 +568,8 @@
       "  max_zoom: 18,",
       "  expand: true,",
       "  on_tap: ->(event) {",
-      "    point = event.data[\"coordinates\"]",
-      "    page.update(status, value: format(\"%.4f, %.4f\", point[\"latitude\"], point[\"longitude\"]))",
+      "    point = event.data[:coordinates]",
+      "    page.update(status, value: format(\"%.4f, %.4f\", point[:latitude], point[:longitude]))",
       "    page.update(pins, markers: [marker(icon(\"location_on\", color: \"#dc2626\"), coordinates: point)])",
       "  }",
       ")",
@@ -734,8 +735,8 @@
       "                      title_style: { size: 12, color: \"#ffffff\", weight: \"bold\" })",
       "  },",
       "  on_event: ->(event) {",
-      "    index = event.data[\"section_index\"]",
-      "    page.update(status, value: \"#{budget.keys[index]}: #{budget.values[index]}%\") if index && event.data[\"type\"] == \"tapUp\"",
+      "    index = event.data[:section_index]",
+      "    page.update(status, value: \"#{budget.keys[index]}: #{budget.values[index]}%\") if index && event.data[:type] == \"tapUp\"",
       "  }",
       ")",
       "page.add(column(children: [chart, status]))"
@@ -916,8 +917,8 @@
       "                   entries: [2, 4, 3, 5, 4].map { |level| radar_data_set_entry(value: level) })",
       "  ],",
       "  on_event: ->(event) {",
-      "    entry = event.data[\"entry_index\"]",
-      "    page.update(status, value: \"#{skills[entry]}: #{event.data[\"entry_value\"]}\") if entry",
+      "    entry = event.data[:entry_index]",
+      "    page.update(status, value: \"#{skills[entry]}: #{event.data[:entry_value]}\") if entry",
       "  }",
       ")",
       "page.add(column(children: [chart, status]))"
@@ -1014,7 +1015,7 @@
     ]
   },
   "control-scatter-chart": {
-    "summary": "A scatter chart drawn with fl_chart: one dot per [`scatter_chart_spot`](/docs/control-scatter-chart-spot), with optional labels. It shows no touch bubble yet, so use `on_event` to show the touched spot. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A scatter chart drawn with fl_chart: one dot per [`scatter_chart_spot`](/docs/control-scatter-chart-spot), with optional labels. With 0.0.23 it shows no touch bubble, so use `on_event` to show the touched spot. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release a spot with its own `tooltip:` text shows it in a bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "cities = [[\"Oslo\", 10, 4], [\"Rome\", 25, 16], [\"Cairo\", 35, 22], [\"Lima\", 20, 19]]",
       "status = text(value: \"Tap a point\")",
@@ -1025,7 +1026,7 @@
       "  left_axis: chart_axis(label_spacing: 5, label_size: 28),",
       "  bottom_axis: chart_axis(label_spacing: 10),",
       "  on_event: ->(event) {",
-      "    index = event.data[\"spot_index\"]",
+      "    index = event.data[:spot_index]",
       "    page.update(status, value: cities[index][0]) if index",
       "  }",
       ")",
@@ -1033,7 +1034,7 @@
     ]
   },
   "control-scatter-chart-spot": {
-    "summary": "One dot of a [`scatter_chart`](/docs/control-scatter-chart), at `x` and `y`, with its own size, color, label and drawing order. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "One dot of a [`scatter_chart`](/docs/control-scatter-chart), at `x` and `y`, with its own size, color, label and drawing order. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) gives the spot a touch bubble; with 0.0.23 scatter charts show none. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "page.add(",
       "  scatter_chart(",

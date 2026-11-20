@@ -41,7 +41,7 @@ map(
     ),
     simple_attribution(text: "© OpenStreetMap")
   ],
-  on_tap: ->(event) { puts event.data["coordinates"].inspect }
+  on_tap: ->(event) { puts event.data[:coordinates].inspect }
 )
 ```
 
@@ -99,9 +99,10 @@ The methods are `move_to(destination:, zoom:, rotation:, offset:)`,
 
 ### Map events
 
-- `on_tap` — a tap on the map. `event.data["coordinates"]` is the tapped point
-  as `{ "latitude" =>, "longitude" => }`; `gx` / `gy` and `lx` / `ly` are the
-  screen and map-relative positions in pixels.
+- `on_tap` — a tap on the map. `event.data[:coordinates]` is the tapped point
+  as `{ latitude:, longitude: }`; `gx` / `gy` and `lx` / `ly` are the screen
+  and map-relative positions in pixels. Like every map payload, `event.data`
+  has symbol keys.
 - `on_long_press` — a long press on the map, with the same data.
 - `on_secondary_tap` — a secondary (right-click) tap, with the same data.
 - `on_position_change` — the camera moved. `event.data` has `coordinates` (the

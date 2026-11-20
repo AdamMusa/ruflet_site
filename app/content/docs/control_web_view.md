@@ -14,7 +14,10 @@ What you get depends on the platform:
   follows links, reports its navigation in events and runs the methods below.
 - **The web** shows the `url` in an `<iframe>`. Pages that refuse to be
   framed (most sites that send `X-Frame-Options` or a strict CSP) stay blank,
-  no event is sent, and the methods answer with an error.
+  and no event is sent. The methods do not run there: a getter's block
+  receives an error, and with 0.0.23 only after the call's `timeout:` (10
+  seconds by default), because the client waits that long for a handler. With
+  the next release the error comes at once. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - **Windows and Linux** draw an error box: the web view is not supported there
   yet.
 
@@ -77,8 +80,9 @@ Events are sent on iOS, Android and macOS only.
 - `on_progress` — loading progress; `event.data` is a number from 0 to 100.
 - `on_web_resource_error` — the page or one of its resources failed to load;
   `event.data` is the error description.
-- `on_scroll` — the page scrolled; `event.data` is `{ "x" => x, "y" => y }` in
-  pixels. iOS and Android only: macOS does not report scrolling.
+- `on_scroll` — the page scrolled; `event.data` is `{ x:, y: }`, the new
+  scroll position in pixels, so read `event.data[:y]`. iOS and Android only:
+  macOS does not report scrolling.
 - `on_console_message` — the page wrote to the JavaScript console;
   `event.data` has `message` and `severity_level` (`"debug"`, `"error"`,
   `"info"`, `"log"` or `"warning"`).

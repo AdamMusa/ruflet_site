@@ -367,8 +367,8 @@ class DocsCatalog
   }.freeze
 
   EXTENSION_CATALOG = [
-    { key: "ads", title: "Ads", package: "ruflet_ads", kind: "Control family", summary: "Show Google Mobile Ads banner and interstitial ads in Android and iOS apps.", controls: %w[control-banner-ad control-interstitial-ad control-native-ad], platforms: "Ads load on Android and iOS only. Without `unit_id` the client loads Google's test ad units; use your own AdMob app and unit ids before you ship. Ruflet has no `ruflet.yaml` setting for the AdMob application id: the iOS client ships Google's sample application id and the Android client's manifest has none, so test an Android build before you rely on ads there. `native_ad` is not drawn yet.", example: "status = text(value: \"Loading ad…\")\nad = banner_ad(\n  on_load: ->(_event) { page.update(status, value: \"Ad loaded\") },\n  on_error: ->(event) { page.update(status, value: \"Ad failed: \#{event.data}\") }\n)\npage.add(column(children: [ad, status]))" },
-    { key: "audio", title: "Audio", package: "ruflet_audio", kind: "Media service", summary: "Play audio from a URL, an asset, or base64 data, and follow its position and state.", controls: %w[control-audio], platforms: "Audio plays on Android, iOS, macOS, Windows, Linux and the web; `balance` is ignored on the web. The player is a page service: create it with `page.audio(...)`, not `page.add`.", example: "status = text(value: \"Stopped\")\nplayer = page.audio(\n  src: \"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3\",\n  on_state_change: ->(event) { page.update(status, value: event.data[\"state\"].to_s) }\n)\npage.add(row(children: [button(\"Play\", on_click: ->(_event) { player.play }), status]))" },
+    { key: "ads", title: "Ads", package: "ruflet_ads", kind: "Control family", summary: "Show Google Mobile Ads banner and interstitial ads in Android and iOS apps.", controls: %w[control-banner-ad control-interstitial-ad control-native-ad], platforms: "Ads load on Android and iOS only. Without `unit_id` the client loads Google's test ad units; use your own AdMob app and unit ids before you ship. Google's Mobile Ads SDK also needs your AdMob application id in the app, and Ruflet has no `ruflet.yaml` setting for it: the Android manifest of the client `ruflet build` generates has none, and iOS and macOS builds remove the sample id the client template ships. Check that ads load in a build before you rely on them. `native_ad` is not drawn yet.", example: "status = text(value: \"Loading ad…\")\nad = banner_ad(\n  on_load: ->(_event) { page.update(status, value: \"Ad loaded\") },\n  on_error: ->(event) { page.update(status, value: \"Ad failed: \#{event.data}\") }\n)\npage.add(column(children: [ad, status]))" },
+    { key: "audio", title: "Audio", package: "ruflet_audio", kind: "Media service", summary: "Play audio from a URL, an asset, or base64 data, and follow its position and state.", controls: %w[control-audio], platforms: "Audio plays on Android, iOS, macOS, Windows, Linux and the web; `balance` is ignored on the web. The player is a page service: create it with `page.audio(...)`, not `page.add`.", example: "status = text(value: \"Stopped\")\nplayer = page.audio(\n  src: \"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3\",\n  on_state_change: ->(event) { page.update(status, value: event.data[:state].to_s) }\n)\npage.add(row(children: [button(\"Play\", on_click: ->(_event) { player.play }), status]))" },
     { key: "audio_recorder", title: "Audio Recorder", package: "ruflet_audio_recorder", kind: "Device service", summary: "Record microphone input, inspect recorder state, and receive streams or uploads.", services: %w[audio_recorder], required_services: %w[microphone], example: "recorder = page.audio_recorder\nrecorder.start_recording(on_result: ->(result, error) { })" },
     { key: "camera", title: "Camera", package: "ruflet_camera", kind: "Device service", summary: "Display a native camera preview and receive camera state or image events.", services: %w[camera], required_services: %w[camera], example: "page.camera(\n  preview_enabled: true,\n  on_stream_image: ->(event) { puts event.data }\n)" },
     { key: "charts", title: "Charts", package: "ruflet_charts", kind: "Control family", summary: "Build interactive bar, line, pie, scatter, candlestick, and radar charts.", controls: %w[control-bar-chart control-bar-chart-group control-bar-chart-rod control-bar-chart-rod-stack-item control-line-chart control-line-chart-data control-line-chart-data-point control-pie-chart control-pie-chart-section control-scatter-chart control-scatter-chart-spot control-candlestick-chart control-candlestick-chart-spot control-radar-chart control-radar-chart-title control-radar-data-set control-radar-data-set-entry control-chart-axis control-chart-axis-label], platforms: "Charts are drawn with fl_chart and look the same on every platform. See [Charts and Canvas](/docs/charts-and-canvas) for a guide.", example: "sales = bar_chart(\n  min_y: 0,\n  max_y: 100,\n  groups: [\n    bar_chart_group(x: 0, rods: [bar_chart_rod(from_y: 0, to_y: 72, color: \"#2563eb\")]),\n    bar_chart_group(x: 1, rods: [bar_chart_rod(from_y: 0, to_y: 91, color: \"#7c3aed\")])\n  ],\n  on_event: ->(event) { puts event.data.inspect }\n)\npage.add(sales)" },
@@ -379,7 +379,7 @@ class DocsCatalog
     { key: "geolocator", title: "Geolocator", package: "ruflet_geolocator", kind: "Device service", summary: "Request location access, read positions, and subscribe to position changes.", services: %w[geolocator], required_services: %w[location], example: "location = page.geolocator\nlocation.get_current_position(on_result: ->(position, error) { })" },
     { key: "local_auth", title: "Local Authentication", package: "ruflet_local_auth", kind: "Device service", summary: "Confirm the user's identity with biometrics or the device passcode.", services: %w[local_authentication], required_services: %w[biometrics], example: "auth = page.local_authentication\nauth.authenticate(localized_reason: \"Unlock your notes\", on_result: ->(unlocked, error) { })" },
     { key: "lottie", title: "Lottie", package: "ruflet_lottie", kind: "Animation control", summary: "Render and control Lottie animations from assets, URLs, or embedded sources.", controls: %w[control-lottie], platforms: "Lottie animations play on every platform.", example: "animation = lottie(\n  src: \"assets/success.json\",\n  repeat: false,\n  error_content: text(value: \"Animation unavailable\"),\n  on_load: ->(_event) { puts \"Animation loaded\" }\n)\npage.add(animation)" },
-    { key: "map", title: "Map", package: "ruflet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution control-rich-attribution control-text-source-attribution control-image-source-attribution], platforms: "Maps are drawn with flutter_map on every platform; the attribution controls are Cupertino-styled on iOS and macOS. Tiles come from the server in `url_template`: follow its usage policy, set `user_agent_package_name` and show its attribution. See [Maps](/docs/maps) for a guide.", example: "office = [40.7128, -74.0060]\nmap_view = map(\n  [\n    tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\", user_agent_package_name: \"com.example.app\"),\n    marker_layer([marker(icon(\"location_on\"), coordinates: office)]),\n    rich_attribution([text_source_attribution(\"OpenStreetMap contributors\")])\n  ],\n  initial_center: office,\n  initial_zoom: 13,\n  expand: true,\n  on_tap: ->(event) { puts event.data[\"coordinates\"].inspect }\n)\npage.add(map_view)" },
+    { key: "map", title: "Map", package: "ruflet_map", kind: "Control family", summary: "Build interactive maps with tile, marker, circle, polyline, polygon, and attribution layers.", controls: %w[control-map control-tile-layer control-marker-layer control-marker control-circle-layer control-circle-marker control-polyline-layer control-polyline-marker control-polygon-layer control-polygon-marker control-simple-attribution control-rich-attribution control-text-source-attribution control-image-source-attribution], platforms: "Maps are drawn with flutter_map on every platform; the attribution controls are Cupertino-styled on iOS and macOS. Tiles come from the server in `url_template`: follow its usage policy, set `user_agent_package_name` and show its attribution. See [Maps](/docs/maps) for a guide.", example: "office = [40.7128, -74.0060]\nmap_view = map(\n  [\n    tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\", user_agent_package_name: \"com.example.app\"),\n    marker_layer([marker(icon(\"location_on\"), coordinates: office)]),\n    rich_attribution([text_source_attribution(\"OpenStreetMap contributors\")])\n  ],\n  initial_center: office,\n  initial_zoom: 13,\n  expand: true,\n  on_tap: ->(event) { puts event.data[:coordinates].inspect }\n)\npage.add(map_view)" },
     { key: "permission_handler", title: "Permission Handler", package: "ruflet_permission_handler", kind: "Device service", summary: "Inspect and request operating-system permissions at the moment a user needs them.", services: %w[permission_handler], example: "permissions = page.permission_handler\npermissions.request(\"camera\", on_result: ->(status, error) { })" },
     { key: "qrcode_scanner", title: "QR Code Scanner", package: "ruflet_qrcode_scanner", kind: "Scanner control", summary: "Scan QR codes and supported barcodes with the native camera.", required_services: %w[camera], guide: "qrcode-scanner", example: "qrcode_scanner(\n  formats: [:qr_code],\n  on_detect: ->(event) { puts event.value }\n)" },
     { key: "rive", title: "Rive", package: "ruflet_rive", kind: "Animation control", summary: "Render Rive artboards, animations, and state machines.", controls: %w[control-rive], platforms: "Rive files play on every platform.", example: "mascot = rive(\n  \"https://cdn.rive.app/animations/vehicles.riv\",\n  fit: \"contain\",\n  placeholder: progress_ring(),\n  expand: true\n)\npage.add(mascot)" },
@@ -567,10 +567,16 @@ class DocsCatalog
 
   # The inline marker for one generated property, event or method line of a
   # control that exists in 0.0.23, or nil when the line works on 0.0.23.
+  # "client_ignored" lists names as an array, or as a hash of name => note
+  # for a line whose 0.0.23 client does only part of what it describes (for
+  # example an event it sends without some of its data).
   def self.next_release_note(slug, kind, name)
+    ignored = next_release[:client_ignored].dig(slug, kind)
     if Array(next_release[:members].dig(slug, kind)).include?(name)
       "#{NEXT_RELEASE_MARKER}."
-    elsif Array(next_release[:client_ignored].dig(slug, kind)).include?(name)
+    elsif ignored.is_a?(Hash) && ignored.key?(name)
+      "#{ignored[name]} #{NEXT_RELEASE_MARKER}."
+    elsif !ignored.is_a?(Hash) && Array(ignored).include?(name)
       "#{NEXT_RELEASE_CLIENT_NOTES.fetch(kind)} #{NEXT_RELEASE_MARKER}."
     elsif (note = design_client_note(slug, kind, name))
       "#{note} #{NEXT_RELEASE_MARKER}."
@@ -578,10 +584,14 @@ class DocsCatalog
   end
 
   # True when 0.0.23 rejects the line or ignores it on every platform
-  # ("members" and "client_ignored"); a "design_client_ignored" line still
-  # works on the other design.
+  # ("members" and the "client_ignored" arrays); a "design_client_ignored"
+  # line still works on the other design, and a "client_ignored" name with a
+  # note of its own still partly works on 0.0.23.
   def self.next_release_everywhere?(slug, kind, name)
-    %i[members client_ignored].any? { |list| Array(next_release[list].dig(slug, kind)).include?(name) }
+    %i[members client_ignored].any? do |list|
+      names = next_release[list].dig(slug, kind)
+      !names.is_a?(Hash) && Array(names).include?(name)
+    end
   end
 
   # "design_client_ignored" lists names per design as an array, or as a hash
@@ -1103,7 +1113,7 @@ class DocsCatalog
         "",
         "markers = marker_layer([",
         "  marker(",
-        '    icon("location_on", color: :red_600),',
+        '    icon("location_on", color: :red600),',
         "    coordinates: office,",
         "    width: 44,",
         "    height: 44",
@@ -1162,7 +1172,7 @@ class DocsCatalog
         "    [51.48, -0.09]",
         "  ],",
         '  color: "#3b82f6,0.2",',
-        "  border_color: :blue_600,",
+        "  border_color: :blue600,",
         "  border_stroke_width: 2,",
         '  label: "Service area"',
         ")",

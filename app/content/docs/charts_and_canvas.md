@@ -38,14 +38,19 @@ canvas look the same on every platform.
   `{ interval:, color:, width:, dash_pattern: }`; no grid is drawn when both
   are unset.
 - **Touch.** Charts highlight the touched point and send `on_event` with the
-  touch phase in `event.data["type"]` (`"tapDown"`, `"tapUp"`, `"panUpdate"`,
+  touch phase in `event.data[:type]` (`"tapDown"`, `"tapUp"`, `"panUpdate"`,
   `"pointerHover"`, …) and the indexes of what was touched. With
   `interactive: false` they ignore touches and highlight the parts you mark
-  `selected: true` instead.
+  `selected: true` instead. `event.data` is a hash with symbol keys, such as
+  `event.data[:group_index]`.
 - **Tooltips.** Leave the chart's `tooltip` unset to get the default bubble with
-  the touched value. Ruflet cannot set a bubble's text yet, so a chart with
-  `tooltip` set (and every scatter or candlestick chart) shows no bubble at
-  all: show the touched value from `on_event` instead.
+  the touched value. On 0.0.23 a chart with `tooltip` set shows no bubble at
+  all, and a debug client (`ruflet debug`) on Android, web, Windows or Linux
+  fails to draw it; scatter and candlestick charts never show a bubble. Show
+  the touched value from `on_event` instead. With the next release a chart
+  `tooltip` styles the bubble, a bar or line point shows its own `tooltip:`
+  text (or its value) in it, and a scatter spot or candle with its own
+  `tooltip:` text shows it in a bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - **Colors.** Colors are names, `"#rrggbb"`, `"#aarrggbb"` (alpha first) or a
   color with an opacity after a comma, such as `"#2563eb,0.25"`. Gradients are
   hashes with `_type`, for example
@@ -79,7 +84,9 @@ bar_chart(
 
 - [`bar_chart`](/docs/control-bar-chart) — `groups`, the axes, ranges, grid,
   `border`, `spacing` between groups and `group_alignment`. `on_event` data has
-  `type`, `group_index`, `rod_index` and `stack_item_index`.
+  `type`, `group_index`, `rod_index` and `stack_item_index`. With the next
+  release `group_spacing` also sets the space between groups, and wins over
+  `spacing`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - [`bar_chart_group`](/docs/control-bar-chart-group) — one x position: `x`,
   `rods`, `spacing` between its rods, and `group_vertically` to stack them.
 - [`bar_chart_rod`](/docs/control-bar-chart-rod) — one bar: `from_y` / `to_y`,
@@ -117,8 +124,9 @@ line_chart(
 ```
 
 - [`line_chart`](/docs/control-line-chart) — `data_series`, the axes, ranges and
-  grid. `on_event` data has `type` and `spots`, a list of `bar_index` /
-  `spot_index` pairs.
+  grid. `on_event` data has `type` and `spots`. With the next release `spots` is
+  a list of `{ bar_index:, spot_index: }` hashes for the touched points; on
+  0.0.23 each of its entries is an empty String. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - [`line_chart_data`](/docs/control-line-chart-data) — one line: `points`,
   `color` or `gradient`, `stroke_width`, `curved`, `dash_pattern`, dots with
   `point: true`, and an area fill with `below_line_bgcolor` or
@@ -165,7 +173,7 @@ candlestick_chart(
   height: 180,
   min_x: -0.5, max_x: 6.5, min_y: 22, max_y: 36,
   spots: [
-    candlestick_chart_spot(x: 0, open: 24.8, high: 28.6, low: 23.9, close: 27.2, selected: true),
+    candlestick_chart_spot(x: 0, open: 24.8, high: 28.6, low: 23.9, close: 27.2),
     candlestick_chart_spot(x: 1, open: 27.2, high: 30.1, low: 25.8, close: 28.4)
   ],
   on_event: ->(e) { puts "candlestick event: #{e.data}" }
@@ -177,8 +185,8 @@ candlestick_chart(
   `rotation_quarter_turns`. `on_event` data has `type` and `spot_index`.
 - [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot) — `x` and the
   `open` / `high` / `low` / `close` prices of one candle; it is green when it
-  closes above its open and red otherwise. `selected` keeps its touch indicator
-  shown.
+  closes above its open and red otherwise. With the next release `selected`
+  keeps the bubble of a candle with its own `tooltip:` text shown. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ---
 
@@ -315,7 +323,7 @@ Describes how a shape is stroked or filled. Passed to every shape via `paint:`.
   `gesture_detector` to draw interactively.
 - `width` / `height` — canvas size.
 - `resize_interval` / `on_resize` — `on_resize` reports the painted size as
-  `event.data["w"]` and `event.data["h"]`, at most once every
+  `event.data[:w]` and `event.data[:h]`, at most once every
   `resize_interval` milliseconds (default 10).
 - Standard layout props: `expand`, `padding`, `margin`, `offset`, `opacity`,
   `rotate`, `scale`, `visible`, `tooltip`.

@@ -36,7 +36,7 @@ Ruflet.run do |page|
       page.update(result, value: event.value.to_s)
     },
     on_error: ->(event) {
-      page.update(result, value: event.data["message"].to_s)
+      page.update(result, value: event.data[:message].to_s)
     }
   )
 
@@ -81,11 +81,11 @@ Supported format names are `all`, `unknown`, `aztec`, `codabar`, `code_39`,
 
 ## Events
 
-- `on_detect` — `event.value` is the first raw value. `event.data["barcodes"]`
+- `on_detect` — `event.value` is the first raw value. `event.data[:barcodes]`
   contains all results with `raw_value`, `display_value`, `format`, `type`, and
-  optional `corners`. `event.data["image"]` is present when `return_image` is
+  optional `corners`. `event.data[:image]` is present when `return_image` is
   enabled and the platform supplies a frame.
-- `on_error` — exposes `event.data["message"]`, `event.data["type"]`, and an
+- `on_error` — exposes `event.data[:message]`, `event.data[:type]`, and an
   optional `stack_trace`.
 - `on_animation_end` and `on_size_change` — inherited layout events.
 
