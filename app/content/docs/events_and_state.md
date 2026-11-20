@@ -31,7 +31,7 @@ as `on_select`, `on_text_change`, or `on_change_end`.
 Handlers receive a `Ruflet::Event` with these readers:
 
 - `name` — the event name without its `on_` prefix, such as `"change"` or `"tap_down"`
-- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings
+- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings. On `main`, a String that is the control's own new value, such as typed text or a picked option, stays that String even when it looks like JSON (`"123"` or `"null"`); only an option key or radio value the app declared as a number or boolean still arrives as that value. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `raw_data` — the payload before a JSON String is parsed. A Hash already has Symbol keys here
 - `control` — the control that fired the event (`nil` for Page events)
 - `page` — the connected `Ruflet::Page`
@@ -143,9 +143,10 @@ page.add(column(children: [target, where]))
 
 - `ActionResultEvent` (`action_result`) — the outcome of a [client action](/docs/services-and-plugins#client-actions): `action`, `index`, `service`, `method_name`, `result`, `error`, `ok?`, `error?` and, for `:pick_files`, `files`.
 - `PasteFilesEvent` (`paste_files`) — `files`, a list of `Ruflet::Events::PastedFile` with `name`, `mime_type`, `bytes` (a binary String), `size` and `to_h`.
-- `ViewsPopUntilEvent` (`views_pop_until`) — `route`, `result` and `view`; see [Popping several views](#popping-several-views).
+- `ViewsPopUntilEvent` (`views_pop_until`) — `route`, `result` and `view`; see [Popping several views](#popping-several-views). Ruby sends this event itself, so its `event.data` keeps String keys: use these readers.
 - `GenericEvent` also wraps `end_reached` and `refresh`.
 - `event.with_name(name)` returns a copy of the event under another name.
+- `event.relayed(name:, target:, control:)` returns a copy that `control` relays under `name`, with the same `data`. A `form` relays its fields' `change` and `submit` this way.
 
 ## Updating mounted controls
 

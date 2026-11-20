@@ -86,10 +86,10 @@ kept, and `page.pwa` and the others raise NoMethodError.
 
 ## Page events
 
-The client sends these to the page. `event.control` is `nil` and
-`event.target` is `1`. The server turns the keys of a Hash payload into
-Symbols, nested Hashes included, so read `event.data[:state]`. A String key
-such as `"state"` always finds `nil`.
+These events go to the page: `event.control` is `nil` and `event.target` is
+`1`. The server turns the keys of a Hash payload from the client into Symbols,
+nested Hashes included, so read `event.data[:state]`. A String key such as
+`"state"` finds `nil`.
 
 - `route_change` — the route changed, from the browser's address bar, a deep link or `page.go`. `event.value` (and `page.route`) is the new route. From the client, `event.data` is `{ route: "/settings" }`; after `page.go` it is the route String itself. Set it with `page.on_route_change = ->(event) { ... }`.
 - `view_pop` — the user went back from the top view (back button, back gesture or the app bar's back arrow). `event.data[:route]` (also `event.value`) is that view's route. Ruflet does not change `page.views`: remove the view and call `page.update`. Set it with `page.on_view_pop =`.
@@ -101,7 +101,7 @@ such as `"state"` always finds `nil`.
 - `media_change` — `page.media` changed: `event.data` is the new media Hash, with Symbol keys. `page.media` itself keeps String keys.
 - `locale_change` — the system languages changed: `event.data[:locales]` lists them, each a Hash with `:language_code`, `:country_code` and `:script_code`.
 - `error` — the client caught an error while drawing the app.
-- `views_pop_until` — sent by Ruby's `page.pop_views_until`; see [Popping several views](/docs/events-and-state#popping-several-views). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `views_pop_until` — sent by Ruby's `page.pop_views_until`, not by the client, so its `event.data` keeps String keys. Read `event.route`, `event.result` and `event.view` instead; see [Popping several views](/docs/events-and-state#popping-several-views). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `page.on(:name) { |event| ... }` receives `route_change`, `view_pop`,
 `platform_brightness_change`, `app_lifecycle_state_change`, and in a multi-view

@@ -137,22 +137,53 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     "events-and-state" => [
       "`ActionResultEvent`", "`PasteFilesEvent`", "`ViewsPopUntilEvent`", "`event.with_name(name)`",
       "`event.control.value` raises NoMethodError", "`page.pop_views_until(route, result: nil)` pops",
-      "Any `page.on_<event> =` writer registers"
+      "Any `page.on_<event> =` writer registers", "`event.relayed(name:, target:, control:)`",
+      "such as typed text or a picked option, stays that String"
     ],
-    "service-geolocator" => [ "on `main` it receives the error too" ]
+    "services-and-plugins" => [ "`local_authentication.authenticate` waits 60 seconds" ],
+    "theming" => [ "A style also takes `font_family_fallback`" ],
+    "reference" => [ "also ignores `font_family_fallback:`" ],
+    "service-geolocator" => [ "on `main` it receives the error too" ],
+    "service-audio-recorder" => [ "such a name, or none, arrives as the error", "`device` also takes the id alone" ]
   }.freeze
 
-  # The server symbolizes the keys of an event's Hash payload, so a String key
-  # (event.data["state"], values_at("x")) is always nil in a real app.
-  STRING_KEY_READ = /\.data(?:\[\s*["']|\.(?:values_at|dig|fetch)\(\s*["'])/
+  # The server symbolizes the keys of an event's Hash payload, nested Hashes
+  # included, so a String key is always nil in a real app: event.data["state"],
+  # values_at("x"), event.data[:position]["latitude"],
+  # event.data.fetch(:state)["x"], or data = event.data; data["state"].
+  # Symbol, Integer and method steps (event.data[:locales].first) may come
+  # before the String key.
+  PAYLOAD_STEPS = /(?:\[[^\]"']*\]|&?\.(?:fetch|dig)\([^)"']*\)|&?\.(?:first|last))*/
+  STRING_KEY = /(?:&?\[\s*["']|&?\.(?:values_at|dig|fetch|key\?)\(\s*["']|&?\.(?:values_at|dig)\([^)]*["'])/
+  STRING_KEY_READ = /\.data#{PAYLOAD_STEPS}#{STRING_KEY}/
+  # A local that holds the payload or part of it: data = event.data[:position]
+  PAYLOAD_ALIAS = /(?<![\w.])([a-z_]\w*)\s*=(?![=~>])\s*[a-z_]\w*\.data\b#{PAYLOAD_STEPS}\s*(?:$|[;)}|]|\|\||or\b|&&)/
+
+  test "the String-key check catches direct, chained and aliased reads" do
+    wrong = [
+      'event.data["connectivity"]', "event.data.values_at('x', 'y')", 'event.data.dig(:position, "latitude")',
+      'event.data[:position]["latitude"]', 'event.data.fetch(:state)["x"]', 'event.data[:locales].first["language_code"]',
+      'data = event.data; show.call(Array(data["connectivity"]))', "position = e.data[:position]\nposition.fetch(\"latitude\")"
+    ]
+    right = [
+      "event.data[:connectivity]", "event.data.values_at(:x, :y, :z).map { |axis| axis.to_f }", "event.data.fetch(:state)[:x]",
+      'data = event.data; show.call(Array(data[:connectivity]))', 'result["latitude"]', 'page.client_details["route"]',
+      "->(data, error) { data[\"latitude\"] }", 'connections.include?("none")'
+    ]
+
+    wrong.each { |code| assert_not_empty string_key_reads(code), "not caught: #{code}" }
+    right.each { |code| assert_empty string_key_reads(code), "caught by mistake: #{code}" }
+  end
 
   test "these pages read event payloads with Symbol keys" do
     slugs = %w[page-reference events-and-state services-and-plugins reference theming] +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     offenders = slugs.flat_map do |slug|
-      page(slug).content.lines.grep(STRING_KEY_READ).map { |line| "#{slug}: #{line.strip}" }
+      payload_chunks(page(slug).content).flat_map { |chunk| string_key_reads(chunk) }.map { |line| "#{slug}: #{line}" }
     end
-    offenders += DocsCatalog::SERVICE_EXAMPLES.select { |_helper, code| code.match?(STRING_KEY_READ) }.keys.map { |helper| "SERVICE_EXAMPLES #{helper}" }
+    DocsCatalog::SERVICE_EXAMPLES.each do |helper, code|
+      offenders += string_key_reads(code).map { |line| "SERVICE_EXAMPLES #{helper}: #{line}" }
+    end
 
     assert_empty offenders, "Read event payloads with Symbol keys, such as event.data[:state]:\n#{offenders.join("\n")}"
   end
@@ -182,6 +213,24 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   end
 
   private
+
+  # The String-key reads of an event payload in one code block or prose line.
+  def string_key_reads(chunk)
+    reads = chunk.lines.grep(STRING_KEY_READ).map(&:strip)
+    chunk.scan(PAYLOAD_ALIAS).flatten.uniq.each do |name|
+      read = /(?<![\w.])#{Regexp.escape(name)}#{PAYLOAD_STEPS}#{STRING_KEY}/
+      reads += chunk.lines.grep(read).map(&:strip)
+    end
+    reads.uniq
+  end
+
+  # Code blocks are one chunk each, so a local assigned in one line is
+  # followed through the block; prose is checked line by line.
+  def payload_chunks(content)
+    content.split(/^(```[^\n]*\n.*?^```)$/m).flat_map do |part|
+      part.start_with?("```") ? [ part ] : part.lines
+    end
+  end
 
   # The fallbacks DocsCatalog.describe writes for a member nobody described.
   def generic_description?(name, description)

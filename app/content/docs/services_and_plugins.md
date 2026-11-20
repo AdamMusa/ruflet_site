@@ -91,7 +91,8 @@ by calling `on_result` with two values: the result and `nil`, or `nil` and the
 client's error message as a String. Give `on_result` a lambda that takes both;
 a lambda with one parameter raises ArgumentError, which Ruflet only logs.
 
-- Methods on a service object wait `timeout:` seconds for the answer, 10 by default (60 for `local_authentication.authenticate`). When none arrives in time, `on_result` receives `nil` and `"execution expired"`. Pass a longer `timeout:` for calls that wait for the user, such as a file picker on the service object.
+- Methods on a service object wait `timeout:` seconds for the answer, 10 by default. When none arrives in time, `on_result` receives `nil` and `"execution expired"`. Pass a longer `timeout:` for calls that wait for the user, such as a file picker on the service object.
+- `local_authentication.authenticate` waits 60 seconds by default. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - The Page convenience methods for the clipboard, files, battery, connectivity, storage paths and sharing wait without a limit unless you pass `timeout:`. `page.launch_url`, the URL checks and the haptic calls wait 10 seconds.
 - A platform without the feature answers with an error or with `nil`, as each [service page](/docs/service-clipboard) describes for its methods.
 

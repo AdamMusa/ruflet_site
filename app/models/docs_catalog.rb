@@ -371,7 +371,7 @@ class DocsCatalog
         "https://ruflet.dev",
         mode: "externalApplication",
         on_result: ->(_result, error) {
-          page.update(status, value: error ? "Cannot open the link: #{error}" : "Opened ruflet.dev")
+          page.update(status, value: error ? "Cannot open the link: #{error}" : "Asked the browser to open ruflet.dev")
         }
       )
     RUBY

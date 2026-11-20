@@ -540,7 +540,7 @@
     },
     "audio_recorder": {
       "properties": {
-        "configuration": "Default recording settings, a Hash that `start_recording` sends when you pass no `configuration:`. Keys: `encoder` (default `\"wav\"`), `bit_rate` (128000), `sample_rate` (44100), `channels` (2), `auto_gain`, `cancel_echo` and `suppress_noise` (all false), `device` (`{ id:, label: }` from `get_input_devices`), `android_configuration` (`audio_source`, `manage_bluetooth`, `mute_audio`, `use_legacy`) and `ios_configuration` (`manage_audio_session`, `options`). Write encoder names as the client spells them, such as `\"aacLc\"`, `\"opus\"`, `\"flac\"`, `\"wav\"` or `\"pcm16bits\"`: the 0.0.23 client does not read `\"aac_lc\"` and records WAV instead."
+        "configuration": "Default recording settings, a Hash that `start_recording` sends when you pass no `configuration:`. Keys: `encoder` (default `\"wav\"`), `bit_rate` (128000), `sample_rate` (44100), `channels` (2), `auto_gain`, `cancel_echo` and `suppress_noise` (all false), `device` (`{ id:, label: }` from `get_input_devices`), `android_configuration` (`audio_source`, `manage_bluetooth`, `mute_audio`, `use_legacy`) and `ios_configuration` (`manage_audio_session`, `options`). Write encoder names as the client spells them, such as `\"aacLc\"`, `\"opus\"`, `\"flac\"`, `\"wav\"` or `\"pcm16bits\"`: the 0.0.23 client does not read `\"aac_lc\"` and records WAV instead. On `main` the client also reads `\"aac_lc\"`, and `device` also takes the id alone, a key of the `get_input_devices` Hash. **Requires the next Ruflet release** (on `main`, not in 0.0.23)."
       },
       "events": {
         "on_state_change": "Fired when recording starts, pauses or stops: `event.data` (also `event.state`) is `\"recording\"`, `\"paused\"` or `\"stopped\"`.",
@@ -556,7 +556,7 @@
         "cancel_recording": "Stops recording and deletes the file. `on_result` receives `nil`.",
         "is_recording": "`on_result` receives `true` while a recording is running, paused or not.",
         "is_paused": "`on_result` receives `true` while the recording is paused.",
-        "is_supported_encoder": "Checks one encoder name, such as `\"opus\"`. `on_result` receives `true` or `false`, or `nil` for a name the client does not know.",
+        "is_supported_encoder": "Checks one encoder name, such as `\"opus\"`. `on_result` receives `true` or `false`. With 0.0.23 it receives `nil` for a name the client does not know; on `main` such a name, or none, arrives as the error. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
         "get_input_devices": "Lists the microphones. `on_result` receives a Hash of device id => label."
       }
     },
@@ -822,7 +822,7 @@
     },
     "url_launcher": {
       "methods": {
-        "launch_url": "Opens `url`. `mode:` is `\"platformDefault\"` (the default), `\"inAppWebView\"`, `\"inAppBrowserView\"`, `\"externalApplication\"` or `\"externalNonBrowserApplication\"`; `web_view_configuration:` takes `enable_javascript`, `enable_dom_storage` and `headers`, `browser_configuration:` takes `show_title`, and `web_only_window_name:` names the browser tab, such as `\"_blank\"`. `on_result` receives `nil`; a URL that cannot be opened arrives as the error.",
+        "launch_url": "Opens `url`. `mode:` is `\"platformDefault\"` (the default), `\"inAppWebView\"`, `\"inAppBrowserView\"`, `\"externalApplication\"` or `\"externalNonBrowserApplication\"`; `web_view_configuration:` takes `enable_javascript`, `enable_dom_storage` and `headers`, `browser_configuration:` takes `show_title`, and `web_only_window_name:` names the browser tab, such as `\"_blank\"`. `on_result` receives `nil`. Some failures arrive as the error, but the client does not check whether the URL opened, so others leave both `nil`. Call `can_launch_url` first to find out whether an app can open it.",
         "can_launch_url": "`on_result` receives `true` when an app can open `url`.",
         "close_in_app_web_view": "Closes a page opened with `mode: \"inAppWebView\"`. `on_result` receives `nil`.",
         "open_window": "Opens `url` in a browser popup window, `width:` by `height:` pixels (default 1200 by 800). Only the web opens one; other clients do nothing. `on_result` receives `nil`.",

@@ -74,12 +74,16 @@ or on `main`, and the client draws the default color instead.
 
 A text style, in `text_theme` or a control's `style:`, takes `size`, `weight`
 (`"normal"`, `"bold"` or `"w100"` to `"w900"`), `italic`, `color`, `bgcolor`,
-`font_family`, `font_family_fallback`, `height` (a multiple of the font size),
-`letter_spacing`, `word_spacing`, `decoration`, `decoration_color`,
-`decoration_style`, `decoration_thickness`, `overflow`, `text_baseline`,
-`shadow` and `foreground`. Write it as a Hash or build it with
+`font_family`, `height` (a multiple of the font size), `letter_spacing`,
+`word_spacing`, `decoration`, `decoration_color`, `decoration_style`,
+`decoration_thickness`, `overflow`, `text_baseline`, `shadow` and
+`foreground`. Write it as a Hash or build it with
 `Ruflet::TextStyle.new(size: 16, weight: "bold")`; see
 [Value types](/docs/reference#value-types-and-constants).
+
+A style also takes `font_family_fallback`, a list of font families to try when
+`font_family` has no glyph for a character. Ruflet sends it with 0.0.23 too,
+but the 0.0.23 client ignores it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Theme one part of the page
 
