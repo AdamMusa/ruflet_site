@@ -80,6 +80,96 @@ Unless shown otherwise, asynchronous calls accept `timeout:` and `on_result:`.
 Availability varies by platform. Handle errors and avoid assuming that every
 web browser or device supports every operation.
 
+## Client actions
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 `Ruflet.client_action` does not exist and `action:` raises ArgumentError (unknown keyword).
+
+Browsers allow clipboard writes, new tabs, file pickers and the share sheet
+only while they handle the user's tap. A Ruby `on_click` handler answers after
+that moment, so `page.launch_url`, `page.set_clipboard`, `page.pick_files` and
+`page.share_text` called from `on_click` can be dropped on the web, above all
+in iOS Safari. Give the control an `action:` instead. The client performs the
+action inside the tap, then sends `click` as usual.
+
+```ruby
+status = text(value: "")
+
+page.add(
+  column(
+    children: [
+      button("Open docs", action: Ruflet.client_action(:launch_url, url: "https://ruflet.dev", web_window_name: "_blank")),
+      icon_button(icon: "content_copy", tooltip: "Copy invite code", action: { type: :copy_to_clipboard, text: "RUFLET-2026" }),
+      button(
+        "Upload photos",
+        action: Ruflet.client_action(:pick_files, allow_multiple: true, file_type: "image"),
+        on_action_result: ->(event) {
+          page.update(status, value: event.error? ? event.error.to_s : "Picked #{event.files.length} files")
+        }
+      ),
+      status
+    ]
+  )
+)
+```
+
+`action:` takes `Ruflet.client_action(type, **options)`, a Hash with a
+`:type`, or an Array of them, which run in order. The options must be known
+before the tap. These types are available:
+
+- `:launch_url` (alias `:open_url`) — `url:` (required), `web_window_name:` such as `"_blank"`, and `mode:`.
+- `:copy_to_clipboard` (alias `:set_clipboard`) — `text:` (required).
+- `:pick_files` — `dialog_title:`, `initial_directory:`, `file_type:` (`"any"`, `"media"`, `"image"`, `"video"`, `"audio"` or `"custom"`), `allowed_extensions:`, `allow_multiple:` and `with_data:`.
+- `:share_text` — `text:` (required), `title:` and `subject:`.
+- `:share_uri` — `uri:` (required).
+- `:share_files` — `files:` (required), `text:`, `title:` and `subject:`.
+
+Buttons, icon buttons, floating action buttons, `container`, `list_tile`,
+`cupertino_list_tile` and `text_span` accept `action:`. An unknown type or
+option raises ArgumentError when the control is built.
+
+`on_action_result` reports each action's outcome to the tapped control:
+`event.action` is the type, `event.index` its position in the list,
+`event.result` the result, and `event.error` the client's error, or `nil`
+(`event.ok?` and `event.error?` check it). For `:pick_files`, `event.files`
+lists the picked files as hashes with `"name"`, `"path"`, `"size"` and
+`"bytes"`.
+
+## Device information and orientation
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 these page methods do nothing and `on_result` never runs.
+
+```ruby
+info = text(value: "Reading device…")
+page.add(info)
+
+page.get_device_info(on_result: ->(device, error) {
+  value = if error
+    error.to_s
+  elsif device
+    "#{device.platform}: #{device["model"] || device["browser_name"]}"
+  else
+    "This platform has no device record"
+  end
+  page.update(info, value: value)
+})
+
+begin
+  page.set_allowed_device_orientations(%i[portrait_up])
+rescue Ruflet::UnsupportedPlatformError
+  # Web and desktop clients cannot lock the orientation.
+end
+```
+
+- `page.get_device_info(on_result:, timeout: 10)` — `on_result` receives a `Ruflet::DeviceInfo`, or `nil` on a platform without a device record, and the error.
+- `page.get_device_info_sync(timeout: 10)` — waits for the answer and returns the `Ruflet::DeviceInfo`. It raises the client's error as RuntimeError, and Timeout::Error after `timeout`. Do not call it inside an event handler: handlers run on the connection's reader thread, which also delivers the answer.
+- `page.set_allowed_device_orientations(orientations, on_result:, timeout: 10)` — the orientations a phone or tablet app may rotate to: `:portrait_up`, `:portrait_down`, `:landscape_left` and `:landscape_right`. `[]` restores the system default. Web and desktop clients raise Ruflet::UnsupportedPlatformError before anything is sent.
+
+`Ruflet::DeviceInfo` holds the client's device record. `info.platform` is
+`"android"`, `"android_tv"`, `"ios"`, `"macos"`, `"windows"`, `"linux"` or
+`"web"`, with `android?`, `ios?`, `web?` and similar checks. Read a field with
+`info["model"]` or `info.model`; nested records stay hashes, and `info.to_h`
+returns the whole record. The fields depend on the platform.
+
 ## Service objects
 
 Create a service object when you need events, configuration, repeated calls, or
@@ -143,6 +233,11 @@ are framework integration details.
 | `share`, `storage_paths`, `url_launcher` | `data`, `key` | — | Prefer the corresponding Page convenience methods. |
 | `shared_preferences` | `data`, `key` | — | Use the proxy methods below. |
 | `wakelock` | `data`, `key` | — | Use the proxy methods below. |
+
+These services are not in the table above:
+
+- `browser_context_menu` (web) — properties `data` and `key`, no events, and the methods `enable`, `disable` and `disabled?`. Create it with `page.service(:browser_context_menu)`; `page.browser_context_menu` only reads the page's view property. See [BrowserContextMenu](/docs/service-browser-context-menu).
+- `local_authentication` — properties `data` and `key`, no events, and the methods described in [Local authentication](#local-authentication). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Four Page helpers have two modes: call them with no arguments to get a focused
 proxy object, or pass properties to register/configure the underlying service
@@ -226,6 +321,54 @@ page.accelerometer(
 
 Sensor services include `accelerometer`, `user_accelerometer`, `gyroscope`,
 `magnetometer`, `barometer`, and `shake_detector`.
+
+### Local authentication
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 `page.local_auth` and `page.local_authentication` raise NoMethodError.
+
+Ask the user to confirm with biometrics or the device PIN, pattern or
+passcode. `page.local_auth` is an alias of `page.local_authentication`.
+
+```ruby
+status = text(value: "Notes are locked")
+page.add(status)
+
+auth = page.local_auth
+auth.authenticate(
+  localized_reason: "Unlock your notes",
+  on_result: ->(unlocked, error) {
+    message = if error
+      failure = Ruflet::LocalAuthError.from_error(error)
+      failure.code == "user_canceled" ? "Still locked" : "Cannot unlock: #{failure.description}"
+    else
+      unlocked ? "Notes unlocked" : "Not recognized, try again"
+    end
+    page.update(status, value: message)
+  }
+)
+```
+
+- `authenticate(localized_reason:, biometric_only: false, sensitive_transaction: true, persist_across_backgrounding: false, android_messages: nil, ios_messages: nil, macos_messages: nil, timeout: 60, on_result: nil)` — shows the prompt. The result is `true` on success and `false` when the user failed the challenge. Cancellation, lockout and missing hardware or credentials arrive as the error.
+- `android_messages:` takes `{ sign_in_title:, sign_in_hint:, cancel_button: }`; `ios_messages:` and `macos_messages:` take `{ cancel_button:, localized_fallback_title: }`.
+- `can_check_biometrics` — whether the device has biometric hardware.
+- `is_device_supported` (alias `device_supported?`) — whether the device can authenticate with biometrics or its credential.
+- `get_available_biometrics` — the enrolled biometrics: `"face"`, `"fingerprint"`, `"iris"`, `"strong"` or `"weak"`.
+- `stop_authentication` — cancels a prompt in progress (Android).
+
+`Ruflet::LocalAuthError.from_error(error)` turns the error String into an
+exception with `code` (for example `"user_canceled"`, `"no_biometrics_enrolled"`
+or `"temporary_lockout"`, or `nil` when the error does not come from the
+plugin), `method_name` and `description`.
+
+`authenticate` and the four query methods also have a `_sync` form, such as
+`authenticate_sync`, that waits for the answer, returns the result, and raises
+Ruflet::LocalAuthError. Do not
+call a `_sync` method inside an event handler: handlers run on the
+connection's reader thread, which also delivers the answer.
+
+The client needs the `local_auth` extension in `ruflet.yaml`, or the
+`biometrics` service in `services.yaml`, whose description becomes the iOS
+Face ID usage text.
 
 ## Native capability configuration
 
