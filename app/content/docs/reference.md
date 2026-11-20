@@ -26,10 +26,12 @@ container(
 
 filled_button(
   "Save",
-  bgcolor: :deep_orange_500,
-  color: "#ffffff"
+  style: { bgcolor: :deep_orange_500, color: "#ffffff" }
 )
 ```
+
+Set button colors in `style:`. Material buttons ignore a top-level `bgcolor:`
+or `color:` when no `style:` is given.
 
 Use named colors for Material/theme colors and hex for exact brand values.
 Use Ruby-style symbols such as `:deep_orange_500`, `:blue_grey_200`, and
@@ -47,8 +49,8 @@ Use Ruby-style symbols such as `:deep_orange_500`, `:blue_grey_200`, and
   Ruby controls or services they provide.
 - [QRCodeScanner](/docs/qrcode-scanner) documents the first-party scanner
   extension.
-- [Extension Authoring](/docs/extension-authoring) explains the standard Flet
-  package contract used by Ruflet.
+- [Extension Authoring](/docs/extension-authoring) explains how a Ruby control
+  and a Flutter package that extends `RufletExtension` fit together.
 
 ## Runtime and tooling
 

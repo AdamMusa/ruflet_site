@@ -14,7 +14,7 @@ dropdown(
     dropdown_option(key: "banana", text: "Banana"),
     dropdown_option(key: "cherry", text: "Cherry")
   ],
-  on_select: ->(event) { page.update(status, value: "Picked #{event.control.value}") }
+  on_select: ->(event) { page.update(status, value: "Picked #{event.control.props["value"]}") }
 )
 ```
 
@@ -51,13 +51,22 @@ dropdown_option(key: "us", text: "United States", leading_icon: "flag")
 
 ## Usage
 
-Read the choice from `control.value`:
+In `on_select`, read the chosen key from `event.control.props["value"]`; the
+client writes it to the control before the event fires. `event.data` carries
+the same key. To use the choice later, keep it in Ruby state or read
+`field.props["value"]`:
 
 ```ruby
+size = "s"
 field = dropdown(
   label: "Size",
-  options: [dropdown_option(key: "s", text: "Small"), dropdown_option(key: "l", text: "Large")]
+  value: size,
+  options: [dropdown_option(key: "s", text: "Small"), dropdown_option(key: "l", text: "Large")],
+  on_select: ->(event) { size = event.control.props["value"] }
 )
-# later:
-field.value # => "s"
+page.add(field)
+
+# later, for example in another handler:
+size                 # => "l" after the user picks Large
+field.props["value"] # => "l"
 ```

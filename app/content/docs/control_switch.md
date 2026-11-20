@@ -8,7 +8,7 @@ A material on/off toggle.
 switch(
   label: "Email notifications",
   value: true,
-  on_change: ->(event) { settings.notify = event.control.value }
+  on_change: ->(event) { settings.notify = event.control.props["value"] }
 )
 ```
 
@@ -24,8 +24,21 @@ switch(
 
 ## Usage
 
+In `on_change`, read the new state from `event.control.props["value"]`; the
+client writes it to the control before the event fires. Prefer it to
+`event.data`, which the iOS switch can leave empty. To use the state later,
+keep it in Ruby state or read `toggle.props["value"]`:
+
 ```ruby
-toggle = switch(label: "Dark mode", value: false)
-# later:
-toggle.value # => false
+dark_mode = false
+toggle = switch(
+  label: "Dark mode",
+  value: dark_mode,
+  on_change: ->(event) { dark_mode = event.control.props["value"] }
+)
+page.add(toggle)
+
+# later, for example in another handler:
+dark_mode             # => true after the user turns it on
+toggle.props["value"] # => true
 ```
