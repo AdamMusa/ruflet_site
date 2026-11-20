@@ -187,7 +187,8 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     assert overrides.dig("barchart", "group_spacing"), "Describe BarChart group_spacing in widget_overrides"
     assert_equal "Has no effect: an axis draws no tooltip.", overrides.dig("chartaxis", "tooltip")
     control = DocsCatalog.control_catalog.find { |entry| entry[:slug] == "control-bar-chart" }
-    return unless control[:properties].include?("group_spacing")
+    # Nothing to mark once the release ships and config/next_release.json is emptied.
+    return unless control[:properties].include?("group_spacing") && DocsCatalog.next_release[:client_ignored].any?
 
     assert_includes generated_line("control-bar-chart", "properties", "group_spacing"),
                     "The 0.0.23 client ignores it. #{DocsCatalog::NEXT_RELEASE_MARKER}.",
