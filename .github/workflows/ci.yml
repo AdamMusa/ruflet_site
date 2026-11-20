@@ -90,7 +90,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: AdamMusa/ruflet
-          ref: 51bea9b1730c0165d206afbe5f46a2973beaaf59
+          ref: 313a0b29d4e66688d64d59f9dbea7e12fe15e772
           path: .ruflet-sources/ruflet
           sparse-checkout: |
             packages/ruflet_core
@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: AdamMusa/ruflet-engine
-          ref: a4632931a307761c5b8060e529307a4f0a5cb4ba
+          ref: b35622d6269738df50cece70f3fe7f911e5d10bc
           path: .ruflet-sources/ruflet-engine
 
       - name: Run tests
