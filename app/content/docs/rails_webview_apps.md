@@ -94,7 +94,7 @@ embedding where relevant and every URL is reachable from the device.
 
 - Use `Ruflet::Rails.native` for Ruby-built Ruflet controls on native
   and desktop clients.
-- Use `Ruflet::Rails.web` for a Ruflet control app mounted on a Rails route.
+- Use `Ruflet::Rails.erb_to_native` for Rails ERB rendered as native controls.
 - Use `Ruflet::Rails.native_shell` for Rails HTML in a native WebView shell.
 
 See [Rails API Reference](/docs/rails-api-reference) for the WebView helper

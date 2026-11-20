@@ -18,9 +18,9 @@ bin/rails generate ruflet:install
 ```
 
 The generator creates `app/views/ruflet/main.rb`,
-`config/initializers/ruflet.rb`, and an explicit `/ws` route. Add `--web`,
-`--desktop`, or `--client web|desktop|all|none` to install a prebuilt client at
-the same time.
+`config/initializers/ruflet.rb`, and an explicit `/ws` route. Add `--desktop`
+(or `--client desktop`) to download the prebuilt desktop client at the same
+time; `--client none` is the default.
 
 ## Hybrid Ruflet and Rails
 
@@ -82,29 +82,12 @@ Ruflet::Rails.native { |page| Dashboard.render(page) }
 The block receives the connected Ruflet page. `Dashboard` is an example of
 your own application renderer; it is not a class supplied by `ruflet_rails`.
 
-### Mounted Ruflet web app
-
-Mount `web` when Rails should serve the Flutter web frontend and its
-WebSocket from one route:
-
-```ruby
-mount Ruflet::Rails.web(
-  app_file: Rails.root.join("app/views/ruflet/main.rb")
-), at: "/app"
-```
-
-Install the prebuilt web frontend with:
-
-```bash
-rake ruflet:web
-```
-
 ## Render Rails views
 
 Choose one renderer for the Rails-powered section:
 
-- [ERB to Native](/docs/rails-erb-to-native) turns Rails routes and templates
-  into real native Ruflet widgets. Its [Widgets](/docs/rails-native-components)
+- [ERB to Native](/docs/rails-erb-to-native) turns Rails controller actions and
+  their ERB templates into real native Ruflet widgets. Its [Widgets](/docs/rails-native-components)
   and [Services](/docs/rails-native-services) references document the complete
   ERB API.
 - [Native Shell](/docs/rails-native-shell) keeps existing Rails pages as HTML
@@ -127,15 +110,12 @@ rake ruflet:build[linux]
 rake ruflet:install[DEVICE_ID]
 ```
 
-The web client is installed with `rake ruflet:web`; it is not a target of the
-Rails build task.
-
 ## Continue
 
 - [Rails API Reference](/docs/rails-api-reference)
 - [ERB to Native](/docs/rails-erb-to-native)
 - [ERB-to-native Widgets](/docs/rails-native-components)
 - [ERB-to-native Services](/docs/rails-native-services)
-- [Mounted Rails Web Apps](/docs/rails-native-html)
+- [Choosing a Rails Mode](/docs/rails-native-html)
 - [Native Shell](/docs/rails-native-shell)
 - [Rails Assets and URLs](/docs/rails-assets)
