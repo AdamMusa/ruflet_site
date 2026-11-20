@@ -218,7 +218,8 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ]
   ].freeze
 
-  # Lines that work with 0.0.23 and must stay unmarked.
+  # Lines that must stay unmarked: they work with 0.0.23, or (ContextMenu.open
+  # on iOS and macOS) main does not run them either.
   PINNED_RELEASED_LINES = [
     [ "control-reorderable-list-view", "events", "on_scroll" ],
     [ "control-reorderable-list-view", "properties", "scroll_interval" ],
@@ -243,7 +244,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
       assert_includes line, "#{note} #{marker}.", "#{slug} #{kind} #{name} lost its next-release note"
     end
     PINNED_RELEASED_LINES.each do |slug, kind, name|
-      refute_includes generated_line(slug, kind, name), marker, "#{slug} #{kind} #{name} works on 0.0.23"
+      refute_includes generated_line(slug, kind, name), marker, "#{slug} #{kind} #{name} is not a next-release line"
     end
     assert_includes generated_line("control-context-menu", "methods", "open"), "On iOS and macOS the menu cannot be opened from code"
   end
