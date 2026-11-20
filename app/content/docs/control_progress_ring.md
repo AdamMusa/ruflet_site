@@ -18,11 +18,8 @@ progress_ring(value: 0.6, stroke_width: 4)
 
 - `value` — `nil` (spinner) or `0.0`–`1.0`
 - `color`
-- `bgcolor`
-- `stroke_width`
-- `stroke_cap`
-- `stroke_align`
-- `semantics_label`
+- `bgcolor` / `stroke_width` / `stroke_cap` / `stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator
+- `semantics_label` — on iOS and macOS it needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 
