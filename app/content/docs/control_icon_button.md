@@ -18,8 +18,7 @@ icon_button(
 - `icon_size`
 - `tooltip`
 - `selected`
-- `selected_icon`
-- `selected_icon_color`
+- `selected_icon` / `selected_icon_color` — on iOS and macOS these need the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `url`
 - `on_click`
 

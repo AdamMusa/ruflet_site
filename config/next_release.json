@@ -1,0 +1,931 @@
+{
+  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them), \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them) and \"design_client_ignored\" (the 0.0.23 client acts on them with one design only: \"cupertino\" lists lines that need main on iOS and macOS, \"material\" lines that need main on Android, web, Windows and Linux; a name may map to its own note). Empty every list when the next release ships.",
+  "released": "0.0.23",
+  "controls": [
+    "control-about-dialog",
+    "control-absorb-pointer",
+    "control-carousel-view",
+    "control-clip-oval",
+    "control-clip-r-superellipse",
+    "control-custom-scroll-view",
+    "control-draggable-scrollable-sheet",
+    "control-fade-transition",
+    "control-fitted-box",
+    "control-form",
+    "control-form-row",
+    "control-fractionally-sized-box",
+    "control-ignore-pointer",
+    "control-indexed-stack",
+    "control-intrinsic-height",
+    "control-intrinsic-width",
+    "control-list-section",
+    "control-nested-scroll-view",
+    "control-rotation-transition",
+    "control-scale-transition",
+    "control-size-transition",
+    "control-slide-transition",
+    "control-sliver-app-bar",
+    "control-sliver-fill-remaining",
+    "control-sliver-grid",
+    "control-sliver-list",
+    "control-sliver-padding",
+    "control-sliver-to-box-adapter",
+    "control-step",
+    "control-stepper",
+    "control-table",
+    "control-table-row"
+  ],
+  "services": [
+    "local_authentication"
+  ],
+  "members": {
+    "control-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-canvas": {
+      "methods": [
+        "capture",
+        "clear_capture",
+        "get_capture"
+      ]
+    },
+    "control-chip": {
+      "properties": [
+        "mouse_cursor"
+      ]
+    },
+    "control-column": {
+      "properties": [
+        "animate_changes",
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "item_animation",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-container": {
+      "properties": [
+        "action",
+        "opacity_on_click"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-bottom-sheet": {
+      "properties": [
+        "barrier_color",
+        "dismissible",
+        "draggable",
+        "fullscreen",
+        "maintain_bottom_view_insets_padding",
+        "scrollable",
+        "show_drag_handle",
+        "size_constraints",
+        "use_safe_area"
+      ]
+    },
+    "control-cupertino-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-date-picker": {
+      "properties": [
+        "inline"
+      ]
+    },
+    "control-cupertino-dialog-action": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-filled-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-list-tile": {
+      "properties": [
+        "action",
+        "chevron"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-cupertino-sliding-segmented-button": {
+      "properties": [
+        "sliding"
+      ]
+    },
+    "control-cupertino-text-field": {
+      "properties": [
+        "text_input_action"
+      ],
+      "events": [
+        "on_paste_files"
+      ]
+    },
+    "control-cupertino-tinted-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-date-picker": {
+      "properties": [
+        "inline"
+      ]
+    },
+    "control-dropdown": {
+      "properties": [
+        "menu_border_radius"
+      ]
+    },
+    "control-expansion-panel-list": {
+      "properties": [
+        "auto_scroll_animation"
+      ]
+    },
+    "control-filled-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-tonal-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-filled-tonal-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-floating-action-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-grid-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-list-tile": {
+      "properties": [
+        "action",
+        "chevron",
+        "focus_color"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-list-view": {
+      "properties": [
+        "animate_changes",
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "item_animation",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    },
+    "control-outlined-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-outlined-icon-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-page-view": {
+      "properties": [
+        "animation_curve",
+        "animation_duration"
+      ],
+      "methods": [
+        "go_to_page",
+        "jump_to",
+        "jump_to_page",
+        "next_page",
+        "previous_page"
+      ]
+    },
+    "control-reorderable-list-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "keyboard_dismiss_behavior"
+      ]
+    },
+    "control-responsive-row": {
+      "properties": [
+        "auto_scroll_animation"
+      ]
+    },
+    "control-row": {
+      "properties": [
+        "auto_scroll_animation",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior"
+      ],
+      "events": [
+        "on_end_reached"
+      ]
+    },
+    "control-search-bar": {
+      "events": [
+        "on_tap_outside_view"
+      ]
+    },
+    "control-segmented-button": {
+      "properties": [
+        "sliding"
+      ]
+    },
+    "control-semantics": {
+      "properties": [
+        "identifier"
+      ]
+    },
+    "control-spinkit": {
+      "properties": [
+        "border_width",
+        "item_count",
+        "line_width",
+        "wave_type"
+      ]
+    },
+    "control-tabs": {
+      "methods": [
+        "move_to"
+      ]
+    },
+    "control-text-button": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-text-field": {
+      "properties": [
+        "text_input_action"
+      ],
+      "events": [
+        "on_paste_files"
+      ]
+    },
+    "control-text-span": {
+      "properties": [
+        "action"
+      ],
+      "events": [
+        "on_action_result"
+      ]
+    },
+    "control-view": {
+      "properties": [
+        "auto_scroll_animation",
+        "bottom_sheet",
+        "end_reached_threshold",
+        "keyboard_dismiss_behavior",
+        "refresh_bgcolor",
+        "refresh_color",
+        "refresh_displacement",
+        "refresh_timeout",
+        "refresh_trigger_distance"
+      ],
+      "events": [
+        "on_end_reached",
+        "on_refresh"
+      ]
+    }
+  },
+  "client_ignored": {
+    "control-app-bar": {
+      "properties": [
+        "badge",
+        "enable_background_filter_blur"
+      ]
+    },
+    "control-audio": {
+      "properties": [
+        "src_base64"
+      ],
+      "events": [
+        "on_error"
+      ]
+    },
+    "control-autofill-group": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-banner": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-chip": {
+      "properties": [
+        "delete_icon_tooltip"
+      ]
+    },
+    "control-cupertino-app-bar": {
+      "properties": [
+        "badge",
+        "enable_background_filter_blur"
+      ]
+    },
+    "control-cupertino-list-tile": {
+      "properties": [
+        "padding"
+      ]
+    },
+    "control-cupertino-sliding-segmented-button": {
+      "properties": [
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
+      ]
+    },
+    "control-cupertino-switch": {
+      "properties": [
+        "active_thumb_image",
+        "inactive_thumb_image"
+      ]
+    },
+    "control-cupertino-text-field": {
+      "properties": [
+        "prefix_icon_size_constraints",
+        "suffix_icon_size_constraints"
+      ]
+    },
+    "control-data-table": {
+      "properties": [
+        "horizontal_lines"
+      ]
+    },
+    "control-dismissible": {
+      "properties": [
+        "movement_duration",
+        "resize_duration"
+      ]
+    },
+    "control-drag-target": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-draggable": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-dropdown": {
+      "properties": [
+        "expanded_insets",
+        "max_menu_height",
+        "prefix_icon",
+        "select_icon",
+        "selected_suffix"
+      ],
+      "events": [
+        "on_change"
+      ]
+    },
+    "control-expansion-panel-list": {
+      "properties": [
+        "auto_scroll",
+        "expand_icon_color",
+        "scroll",
+        "scroll_interval"
+      ],
+      "events": [
+        "on_scroll"
+      ]
+    },
+    "control-filled-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-filled-tonal-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-image": {
+      "properties": [
+        "src_base64"
+      ]
+    },
+    "control-keyboard-listener": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-list-tile": {
+      "properties": [
+        "padding"
+      ]
+    },
+    "control-menu-item-button": {
+      "properties": [
+        "semantic_label",
+        "trailing"
+      ]
+    },
+    "control-navigation-bar": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-navigation-drawer": {
+      "properties": [
+        "surface_tint_color"
+      ]
+    },
+    "control-outlined-icon-button": {
+      "properties": [
+        "visual_density"
+      ]
+    },
+    "control-progress-ring": {
+      "properties": [
+        "year_2023"
+      ]
+    },
+    "control-radio-group": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-reorderable-drag-handle": {
+      "properties": [
+        "align",
+        "animate_align",
+        "animate_margin",
+        "animate_offset",
+        "animate_opacity",
+        "animate_position",
+        "animate_rotation",
+        "animate_scale",
+        "animate_size",
+        "aspect_ratio",
+        "badge",
+        "bottom",
+        "expand",
+        "expand_loose",
+        "height",
+        "left",
+        "margin",
+        "offset",
+        "opacity",
+        "right",
+        "rotate",
+        "rtl",
+        "scale",
+        "size_change_interval",
+        "tooltip",
+        "top",
+        "width"
+      ],
+      "events": [
+        "on_animation_end",
+        "on_size_change"
+      ]
+    },
+    "control-reorderable-list-view": {
+      "properties": [
+        "divider_thickness",
+        "prototype_item",
+        "spacing"
+      ]
+    },
+    "control-responsive-row": {
+      "properties": [
+        "auto_scroll",
+        "scroll",
+        "scroll_interval"
+      ],
+      "events": [
+        "on_scroll"
+      ]
+    },
+    "control-screenshot": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-segmented-button": {
+      "properties": [
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
+      ]
+    },
+    "control-selection-area": {
+      "properties": [
+        "badge"
+      ]
+    },
+    "control-semantics": {
+      "properties": [
+        "content",
+        "focus",
+        "hint_text",
+        "on_long_press_hint_text",
+        "on_tap_hint_text",
+        "textfield"
+      ],
+      "events": [
+        "on_double_tap",
+        "on_long_press",
+        "on_tap"
+      ]
+    },
+    "control-switch": {
+      "properties": [
+        "active_thumb_image",
+        "inactive_thumb_image"
+      ]
+    },
+    "control-text": {
+      "properties": [
+        "font_family_fallback"
+      ]
+    },
+    "control-text-field": {
+      "properties": [
+        "prefix_icon_size_constraints",
+        "suffix_icon_size_constraints"
+      ]
+    }
+  },
+  "design_client_ignored": {
+    "cupertino": {
+      "control-banner": {
+        "events": [
+          "on_dismiss"
+        ]
+      },
+      "control-bottom-sheet": {
+        "properties": [
+          "draggable",
+          "fullscreen",
+          "maintain_bottom_view_insets_padding",
+          "scrollable",
+          "show_drag_handle",
+          "size_constraints",
+          "use_safe_area"
+        ]
+      },
+      "control-chip": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
+      "control-context-menu": {
+        "properties": [
+          "primary_items",
+          "primary_trigger",
+          "secondary_items",
+          "secondary_trigger",
+          "tertiary_items"
+        ],
+        "events": [
+          "on_dismiss",
+          "on_select"
+        ]
+      },
+      "control-cupertino-slider": {
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
+      "control-cupertino-text-field": {
+        "properties": [
+          "error",
+          "error_max_lines",
+          "error_style",
+          "fill_color",
+          "filled",
+          "focused_bgcolor",
+          "focused_border_color",
+          "focused_border_width"
+        ]
+      },
+      "control-data-row": {
+        "events": {
+          "on_select_change": "In a `data_table` on iOS and macOS, the 0.0.23 client never sends it."
+        }
+      },
+      "control-data-table": {
+        "properties": [
+          "show_checkbox_column",
+          "vertical_lines"
+        ],
+        "events": [
+          "on_select_all"
+        ]
+      },
+      "control-dropdown-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+        }
+      },
+      "control-filled-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-filled-tonal-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-list-tile": {
+        "properties": [
+          "selected"
+        ],
+        "events": [
+          "on_long_press"
+        ]
+      },
+      "control-menu-item-button": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus",
+          "on_hover"
+        ]
+      },
+      "control-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+        }
+      },
+      "control-outlined-icon-button": {
+        "properties": [
+          "disabled_color",
+          "enable_feedback",
+          "selected_icon",
+          "selected_icon_color"
+        ]
+      },
+      "control-popup-menu-button": {
+        "events": [
+          "on_cancel"
+        ]
+      },
+      "control-progress-ring": {
+        "properties": [
+          "semantics_label",
+          "semantics_value"
+        ]
+      },
+      "control-radio": {
+        "properties": [
+          "label_style"
+        ]
+      },
+      "control-reorderable-list-view": {
+        "properties": [
+          "auto_scroll",
+          "first_item_prototype",
+          "scroll"
+        ]
+      },
+      "control-search-bar": {
+        "events": [
+          "on_tap_outside_bar"
+        ],
+        "methods": [
+          "close_view",
+          "open_view"
+        ]
+      },
+      "control-slider": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
+      "control-submenu-button": {
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
+      "control-switch": {
+        "properties": [
+          "label_text_style",
+          "mouse_cursor"
+        ]
+      },
+      "control-tab-bar": {
+        "events": [
+          "on_hover"
+        ]
+      },
+      "control-text-field": {
+        "properties": [
+          "error",
+          "error_max_lines",
+          "error_style",
+          "fill_color",
+          "filled",
+          "focused_bgcolor",
+          "focused_border_color",
+          "focused_border_width"
+        ]
+      }
+    },
+    "material": {
+      "control-app-bar": {
+        "properties": [
+          "large",
+          "trailing"
+        ]
+      },
+      "control-checkbox": {
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
+      },
+      "control-cupertino-activity-indicator": {
+        "properties": [
+          "progress"
+        ]
+      },
+      "control-cupertino-app-bar": {
+        "properties": [
+          "large",
+          "trailing"
+        ]
+      },
+      "control-cupertino-checkbox": {
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
+      },
+      "control-cupertino-switch": {
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
+      },
+      "control-filled-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-filled-tonal-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-outlined-icon-button": {
+        "properties": [
+          "style"
+        ]
+      },
+      "control-progress-ring": {
+        "properties": [
+          "progress"
+        ]
+      },
+      "control-switch": {
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
+      }
+    }
+  }
+}

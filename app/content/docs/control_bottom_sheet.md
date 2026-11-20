@@ -40,13 +40,9 @@ you want to close a specific instance: `page.close_bottom_sheet(sheet)`.
 - `content` — the sheet's child control
 - `open` — show / hide
 - `dismissible` — tap outside to close
-- `draggable`
-- `show_drag_handle`
 - `bgcolor`
-- `shape`
-- `elevation`
-- `use_safe_area`
-- `fullscreen`
+- `shape` / `elevation` — Android, web, Windows and Linux only
+- `draggable` / `show_drag_handle` / `use_safe_area` / `fullscreen` — on iOS and macOS these need the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 
