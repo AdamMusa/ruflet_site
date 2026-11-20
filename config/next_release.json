@@ -469,7 +469,8 @@
     },
     "control-menu-item-button": {
       "properties": [
-        "semantic_label"
+        "semantic_label",
+        "trailing"
       ]
     },
     "control-navigation-bar": {
@@ -538,6 +539,15 @@
           "on_dismiss"
         ]
       },
+      "control-chip": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
       "control-cupertino-text-field": {
         "properties": [
           "error",
@@ -562,6 +572,16 @@
         ],
         "events": [
           "on_select_all"
+        ]
+      },
+      "control-menu-item-button": {
+        "properties": [
+          "autofocus"
+        ],
+        "events": [
+          "on_blur",
+          "on_focus",
+          "on_hover"
         ]
       },
       "control-popup-menu-button": {
@@ -595,10 +615,21 @@
           "open_view"
         ]
       },
+      "control-submenu-button": {
+        "events": [
+          "on_blur",
+          "on_focus"
+        ]
+      },
       "control-switch": {
         "properties": [
           "label_text_style",
           "mouse_cursor"
+        ]
+      },
+      "control-tab-bar": {
+        "events": [
+          "on_hover"
         ]
       },
       "control-text-field": {
