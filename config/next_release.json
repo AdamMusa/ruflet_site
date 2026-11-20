@@ -850,6 +850,11 @@
           "spacing"
         ]
       },
+      "control-context-menu": {
+        "properties": {
+          "items": "On Android, web, Windows and Linux, the 0.0.23 client shows them only from `open`; a click shows the trigger's own list or `actions`."
+        }
+      },
       "control-cupertino-activity-indicator": {
         "properties": [
           "progress"

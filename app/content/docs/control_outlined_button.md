@@ -42,3 +42,9 @@ directly; a color in `style:` wins over them.
 ```ruby
 outlined_button("Delete account", icon: "delete_forever", style: { color: "#b91c1c" })
 ```
+
+`size`, `border_radius`, `padding`, `alignment`, `min_size`,
+`opacity_on_click`, `disabled_bgcolor`, `focus_color` and `mouse_cursor` shape
+the iOS button only; on Android, web, Windows and Linux use the matching
+`style:` keys (`padding`, `shape`, `alignment`, `minimum_size`,
+`mouse_cursor`).
