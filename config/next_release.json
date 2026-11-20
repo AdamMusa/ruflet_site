@@ -863,9 +863,9 @@
         ]
       },
       "control-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-activity-indicator": {
         "properties": [
@@ -879,18 +879,18 @@
         ]
       },
       "control-cupertino-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       },
       "control-filled-icon-button": {
         "properties": [
@@ -918,13 +918,13 @@
         ]
       },
       "control-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       }
     }
   }

@@ -212,7 +212,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-bottom-sheet", "properties", "fullscreen", "On iOS and macOS, the 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "year_2023", "The 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "semantics_label", "On iOS and macOS, the 0.0.23 client ignores it." ],
-    [ "control-checkbox", "properties", "spacing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-checkbox", "properties", "spacing", "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it." ],
     [ "control-context-menu", "events", "on_select", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-search-bar", "events", "on_tap_outside_bar", "On iOS and macOS, the 0.0.23 client never sends it." ],
