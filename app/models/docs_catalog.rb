@@ -91,10 +91,10 @@ class DocsCatalog
       page.accelerometer(
         interval: 200,
         on_reading: ->(event) {
-          x, y, z = event.data.values_at("x", "y", "z").map { |axis| axis.to_f.round(2) }
+          x, y, z = event.data.values_at(:x, :y, :z).map { |axis| axis.to_f.round(2) }
           page.update(reading, value: "x #{x}  y #{y}  z #{z} m/s²")
         },
-        on_error: ->(event) { page.update(reading, value: "Motion error: #{event.data["message"]}") }
+        on_error: ->(event) { page.update(reading, value: "Motion error: #{event.data[:message]}") }
       )
     RUBY
     "audio_recorder" => <<~'RUBY',
@@ -121,8 +121,8 @@ class DocsCatalog
       page.add(pressure)
       page.barometer(
         interval: 500,
-        on_reading: ->(event) { page.update(pressure, value: "Pressure: #{event.data["pressure"].to_f.round(1)} hPa") },
-        on_error: ->(event) { page.update(pressure, value: event.data["message"].to_s) }
+        on_reading: ->(event) { page.update(pressure, value: "Pressure: #{event.data[:pressure].to_f.round(1)} hPa") },
+        on_error: ->(event) { page.update(pressure, value: event.data[:message].to_s) }
       )
     RUBY
     "battery" => <<~'RUBY',
@@ -150,7 +150,7 @@ class DocsCatalog
       preview = page.camera(
         expand: true,
         on_state_change: ->(event) {
-          page.update(status, value: event.data["is_initialized"] ? "Camera ready" : "Camera off")
+          page.update(status, value: event.data[:is_initialized] ? "Camera ready" : "Camera off")
         }
       )
       shutter = filled_button(
@@ -188,7 +188,7 @@ class DocsCatalog
       show = ->(connections) {
         page.update(network, value: connections.include?("none") ? "Offline" : "Online: #{connections.join(', ')}")
       }
-      page.connectivity(on_change: ->(event) { show.call(Array(event.data["connectivity"])) })
+      page.connectivity(on_change: ->(event) { show.call(Array(event.data[:connectivity])) })
       page.get_connectivity(on_result: ->(connections, error) {
         error ? page.update(network, value: error.to_s) : show.call(Array(connections))
       })
@@ -240,8 +240,8 @@ class DocsCatalog
       page.add(rotation)
       page.gyroscope(
         interval: 200,
-        on_reading: ->(event) { page.update(rotation, value: "z rotation: #{event.data["z"].to_f.round(2)} rad/s") },
-        on_error: ->(event) { page.update(rotation, value: event.data["message"].to_s) }
+        on_reading: ->(event) { page.update(rotation, value: "z rotation: #{event.data[:z].to_f.round(2)} rad/s") },
+        on_error: ->(event) { page.update(rotation, value: event.data[:message].to_s) }
       )
     RUBY
     "haptic_feedback" => <<~'RUBY',
@@ -277,10 +277,10 @@ class DocsCatalog
       page.magnetometer(
         interval: 250,
         on_reading: ->(event) {
-          x, y, z = event.data.values_at("x", "y", "z").map { |axis| axis.to_f.round(1) }
+          x, y, z = event.data.values_at(:x, :y, :z).map { |axis| axis.to_f.round(1) }
           page.update(magnetic_field, value: "x #{x}  y #{y}  z #{z} µT")
         },
-        on_error: ->(event) { page.update(magnetic_field, value: event.data["message"].to_s) }
+        on_error: ->(event) { page.update(magnetic_field, value: event.data[:message].to_s) }
       )
     RUBY
     "permission_handler" => <<~'RUBY',
@@ -381,10 +381,10 @@ class DocsCatalog
       page.user_accelerometer(
         interval: 200,
         on_reading: ->(event) {
-          strength = Math.sqrt(event.data.values_at("x", "y", "z").sum { |axis| axis.to_f**2 })
+          strength = Math.sqrt(event.data.values_at(:x, :y, :z).sum { |axis| axis.to_f**2 })
           page.update(movement, value: "Movement: #{strength.round(2)} m/s²")
         },
-        on_error: ->(event) { page.update(movement, value: event.data["message"].to_s) }
+        on_error: ->(event) { page.update(movement, value: event.data[:message].to_s) }
       )
     RUBY
     "wakelock" => <<~'RUBY'

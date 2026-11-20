@@ -31,17 +31,33 @@ as `on_select`, `on_text_change`, or `on_change_end`.
 Handlers receive a `Ruflet::Event` with these readers:
 
 - `name` — the event name without its `on_` prefix, such as `"change"` or `"tap_down"`
-- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. A String that holds JSON is parsed
-- `raw_data` — the payload exactly as it arrived
+- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings
+- `raw_data` — the payload before a JSON String is parsed. A Hash already has Symbol keys here
 - `control` — the control that fired the event (`nil` for Page events)
 - `page` — the connected `Ruflet::Page`
 - `target` — the wire id the client sent the event to (`1` for the Page)
 - `typed_data` — the payload wrapped in a `Ruflet::Events` class picked by the event name, or `nil` when the name has none (see [Payload classes](#payload-classes))
-- `value` — `typed_data.value` when the class has one; otherwise the payload's `"value"`, `"v"`, `"data"`, `"state"` or `"route"` entry, or the payload itself when it is not a Hash
+- `value` — `typed_data.value` when the class has one; otherwise the payload's `value`, `v`, `data`, `state` or `route` entry (a Symbol or String key), or the payload itself when it is not a Hash
 
 The event also answers every reader of its `typed_data`, so `event.local_position`
 is `event.typed_data.local_position`. Each control page lists its events, and
 the payload of each event is described there or in the service reference.
+
+Read a Hash payload with Symbol keys:
+
+```ruby
+network = text(value: "Checking connection…")
+page.add(network)
+
+page.connectivity(on_change: ->(event) {
+  connections = Array(event.data[:connectivity])
+  page.update(network, value: connections.include?("none") ? "Offline" : "Online: #{connections.join(', ')}")
+})
+```
+
+A String key, such as `"connectivity"`, finds nothing. The `on_result`
+callbacks of client calls are different: their Hashes keep String keys, as each
+[service page](/docs/service-geolocator) shows.
 
 ### Reading a control's new value
 
@@ -103,7 +119,7 @@ the class that wraps its payload in `event.typed_data`:
 - `ForcePressEvent` (`force_press*`) — `local_position`, `global_position` and `pressure`.
 - `ScaleStartEvent` and `ScaleUpdateEvent` (`scale_start`, `scale_update`) — `local_focal_point`, `global_focal_point`, `pointer_count` and `timestamp`, plus `focal_point_delta`, `scale`, `horizontal_scale`, `vertical_scale` and `rotation` (update). `ScaleEndEvent` (`scale_end`) — `pointer_count` and `velocity`.
 - `PointerEvent`, also named `HoverEvent` (`hover`, `enter`, `exit`) — `kind`, `local_position`, `global_position`, `local_delta`, `global_delta`, `timestamp`, `device`, `pressure`, `pressure_min`, `pressure_max`, `distance`, `distance_max`, `size`, `radius_major`, `radius_minor`, `radius_min`, `radius_max`, `orientation` and `tilt`.
-- `ScrollEvent` (`scroll`) — `local_position`, `global_position` and `scroll_delta`. The scrolling controls send none of these: read `event.data` instead, with `"pixels"`, `"min_scroll_extent"`, `"max_scroll_extent"`, `"viewport_dimension"`, `"event_type"` (`"start"`, `"update"`, `"end"`, `"user"` or `"overscroll"`), and `"scroll_delta"`, `"direction"`, `"overscroll"` or `"velocity"` for the matching type.
+- `ScrollEvent` (`scroll`) — `local_position`, `global_position` and `scroll_delta`. The scrolling controls send none of these: read `event.data` instead, such as `event.data[:pixels]`, with `:pixels`, `:min_scroll_extent`, `:max_scroll_extent`, `:viewport_dimension`, `:event_type` (`"start"`, `"update"`, `"end"`, `"user"` or `"overscroll"`), and `:scroll_delta`, `:direction`, `:overscroll` or `:velocity` for the matching type.
 
 Positions, deltas and velocities are `Ruflet::Offset` values with `x` and `y`,
 and are `nil` when the client left them out. The gesture classes (from
@@ -163,7 +179,8 @@ page.on(:platform_brightness_change) { |_event| refresh_theme(page) }
 ```
 
 The client always sends `route_change`, `view_pop`,
-`platform_brightness_change` and `app_lifecycle_state_change`, so `page.on`
+`platform_brightness_change` and `app_lifecycle_state_change`, and in a
+multi-view embedding `multi_view_add` and `multi_view_remove`, so `page.on`
 works for them. It sends `keyboard_event`, `resize`, `media_change`,
 `locale_change` and `error` only when the page asks for them, which takes the
 [handler writers](#handler-writers) below. The [Page reference](/docs/page-reference#page-events)

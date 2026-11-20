@@ -130,10 +130,32 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
 
   # Sentences about behavior that only Ruflet main has, pinned to the marker.
   PINNED_MARKERS = {
-    "page-reference" => [ "`pop_views_until(route, result: nil)`", "`views_pop_until`", "`get_device_info(on_result:)`", "handler writer such as" ],
-    "events-and-state" => [ "`ActionResultEvent`", "`event.control.value` raises NoMethodError" ],
+    "page-reference" => [
+      "`pop_views_until(route, result: nil)`", "`views_pop_until`", "`get_device_info(on_result:)`", "handler writer such as",
+      "are View keywords on `main` only"
+    ],
+    "events-and-state" => [
+      "`ActionResultEvent`", "`PasteFilesEvent`", "`ViewsPopUntilEvent`", "`event.with_name(name)`",
+      "`event.control.value` raises NoMethodError", "`page.pop_views_until(route, result: nil)` pops",
+      "Any `page.on_<event> =` writer registers"
+    ],
     "service-geolocator" => [ "on `main` it receives the error too" ]
   }.freeze
+
+  # The server symbolizes the keys of an event's Hash payload, so a String key
+  # (event.data["state"], values_at("x")) is always nil in a real app.
+  STRING_KEY_READ = /\.data(?:\[\s*["']|\.(?:values_at|dig|fetch)\(\s*["'])/
+
+  test "these pages read event payloads with Symbol keys" do
+    slugs = %w[page-reference events-and-state services-and-plugins reference theming] +
+      DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
+    offenders = slugs.flat_map do |slug|
+      page(slug).content.lines.grep(STRING_KEY_READ).map { |line| "#{slug}: #{line.strip}" }
+    end
+    offenders += DocsCatalog::SERVICE_EXAMPLES.select { |_helper, code| code.match?(STRING_KEY_READ) }.keys.map { |helper| "SERVICE_EXAMPLES #{helper}" }
+
+    assert_empty offenders, "Read event payloads with Symbol keys, such as event.data[:state]:\n#{offenders.join("\n")}"
+  end
 
   test "main-only Page, event and service behavior carries the next-release marker" do
     PINNED_MARKERS.each do |slug, phrases|

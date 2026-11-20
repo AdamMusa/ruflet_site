@@ -77,7 +77,7 @@ them; do not assign them.
 - `page.media` — a Hash with `"padding"`, `"view_padding"` and `"view_insets"` (each with `"top"`, `"right"`, `"bottom"` and `"left"`), `"device_pixel_ratio"`, `"orientation"` (`"portrait"` or `"landscape"`) and `"always_use_24_hour_format"`. It stays current.
 - `page.route` — the current route.
 - `page.session_id` — the session's id, a String.
-- `page.client_details` — everything the client reported at connection, as a Hash.
+- `page.client_details` — the connection details Ruflet keeps, as a Hash with String keys: `"session_id"`, `"page_name"`, `"route"`, `"width"`, `"height"`, `"platform"`, `"platform_brightness"`, `"window"` and `"media"`. Later client updates to the Page are merged into it.
 - `page.web` / `page.web?` — `true` only when the connection details include `web`. The Ruflet server does not keep that flag from the client yet, so it is `false` on every client with 0.0.23 and on `main`. Check `page.platform` and the layout instead.
 
 The other client flags on the Page control (`pwa`, `wasm`, `debug`, `test`,
@@ -87,22 +87,26 @@ kept, and `page.pwa` and the others raise NoMethodError.
 ## Page events
 
 The client sends these to the page. `event.control` is `nil` and
-`event.target` is `1`.
+`event.target` is `1`. The server turns the keys of a Hash payload into
+Symbols, nested Hashes included, so read `event.data[:state]`. A String key
+such as `"state"` always finds `nil`.
 
-- `route_change` — the route changed, from the browser's address bar, a deep link or `page.go`. `event.data["route"]` (also `event.value`) is the new route. Set it with `page.on_route_change = ->(event) { ... }`.
-- `view_pop` — the user went back from the top view (back button, back gesture or the app bar's back arrow). `event.data["route"]` is that view's route. Ruflet does not change `page.views`: remove the view and call `page.update`. Set it with `page.on_view_pop =`.
+- `route_change` — the route changed, from the browser's address bar, a deep link or `page.go`. `event.value` (and `page.route`) is the new route. From the client, `event.data` is `{ route: "/settings" }`; after `page.go` it is the route String itself. Set it with `page.on_route_change = ->(event) { ... }`.
+- `view_pop` — the user went back from the top view (back button, back gesture or the app bar's back arrow). `event.data[:route]` (also `event.value`) is that view's route. Ruflet does not change `page.views`: remove the view and call `page.update`. Set it with `page.on_view_pop =`.
 - `platform_brightness_change` — the system switched between light and dark. `event.data` is `"light"` or `"dark"`.
-- `app_lifecycle_state_change` — the app moved between foreground and background. `event.data["state"]` is `"show"`, `"resume"`, `"inactive"`, `"hide"`, `"pause"`, `"detach"` or `"restart"`.
-- `multi_view_add` / `multi_view_remove` — a Flutter view was added or removed in a multi-view embedding: `event.data` is `{ "view_id" => ..., "initial_data" => ... }`, or the removed view id.
-- `keyboard_event` — a key was pressed: `event.data` has `"key"` (the key's label, such as `"A"` or `"Enter"`) and `true`/`false` for `"shift"`, `"ctrl"`, `"alt"` and `"meta"`. Modifier keys alone send nothing.
-- `resize` — the page's size changed: `event.data` has `"width"` and `"height"`.
-- `media_change` — `page.media` changed: `event.data` is the new media Hash.
-- `locale_change` — the system languages changed: `event.data["locales"]` lists them.
+- `app_lifecycle_state_change` — the app moved between foreground and background. `event.data[:state]` (also `event.value`) is `"show"`, `"resume"`, `"inactive"`, `"hide"`, `"pause"`, `"detach"` or `"restart"`.
+- `multi_view_add` / `multi_view_remove` — a Flutter view was added or removed in a multi-view embedding: `event.data` is `{ view_id: ..., initial_data: ... }`, or the removed view id.
+- `keyboard_event` — a key was pressed: `event.data` has `:key` (the key's label, such as `"A"` or `"Enter"`) and `true`/`false` for `:shift`, `:ctrl`, `:alt` and `:meta`. Modifier keys alone send nothing.
+- `resize` — the page's size changed: `event.data` has `:width` and `:height`.
+- `media_change` — `page.media` changed: `event.data` is the new media Hash, with Symbol keys. `page.media` itself keeps String keys.
+- `locale_change` — the system languages changed: `event.data[:locales]` lists them, each a Hash with `:language_code`, `:country_code` and `:script_code`.
 - `error` — the client caught an error while drawing the app.
 - `views_pop_until` — sent by Ruby's `page.pop_views_until`; see [Popping several views](/docs/events-and-state#popping-several-views). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-`page.on(:name) { |event| ... }` receives the first four events with 0.0.23 and
-on `main`, because the client sends them without being asked. The client sends
+`page.on(:name) { |event| ... }` receives `route_change`, `view_pop`,
+`platform_brightness_change`, `app_lifecycle_state_change`, and in a multi-view
+embedding `multi_view_add` and `multi_view_remove`, with 0.0.23 and on `main`,
+because the client sends them without being asked. The client sends
 `keyboard_event`, `resize`, `media_change`, `locale_change` and `error` only
 when the page asks for them, which takes a handler writer such as
 `page.on_keyboard_event = ->(event) { ... }`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
@@ -117,7 +121,7 @@ page.on(:platform_brightness_change) do |event|
 end
 
 page.on(:app_lifecycle_state_change) do |event|
-  page.update(state_label, value: "App state: #{event.data["state"]}")
+  page.update(state_label, value: "App state: #{event.data[:state]}")
 end
 ```
 
@@ -259,12 +263,12 @@ page.update(page.window, width: 960, height: 640, min_width: 480, min_height: 36
 page.window.center
 
 page.window.on(:event) do |event|
-  case event.data["type"]
+  case event.data[:type]
   when "close"
     page.update(status, value: "Saving before closing…")
     page.window.destroy
   when "focus", "blur"
-    page.update(status, value: "Window #{event.data["type"]}")
+    page.update(status, value: "Window #{event.data[:type]}")
   end
 end
 ```
@@ -311,7 +315,7 @@ A [`window_drag_area`](/docs/control-window-drag-area) moves the window without 
 ### Window events
 
 `page.window.on(:event) { |event| ... }` receives the window's events.
-`event.data["type"]` is one of `"close"` (only with `prevent_close: true`),
+`event.data[:type]` is one of `"close"` (only with `prevent_close: true`),
 `"focus"`, `"blur"`, `"maximize"`, `"unmaximize"`, `"minimize"`, `"restore"`,
 `"resized"`, `"moved"`, `"enter-full-screen"` or `"leave-full-screen"`. After
 each one, `page.window.props` holds the new `maximized`, `minimized`,

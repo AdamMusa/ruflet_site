@@ -196,7 +196,7 @@ direct access to service-specific methods.
 ```ruby
 page.connectivity(
   on_change: ->(event) {
-    connections = Array(event.data["connectivity"])
+    connections = Array(event.data[:connectivity])
     page.update(status, value: connections.include?("none") ? "Offline" : connections.join(", "))
   }
 )
@@ -210,15 +210,15 @@ Use `page.service` when you need a service by name or want to invoke a method
 that does not have a Ruby convenience wrapper:
 
 ```ruby
-flashlight = page.service(
-  :flashlight,
-  on_error: ->(event) {
-    page.update(status, value: "Flashlight error: #{event.data}")
-  }
-)
+flashlight = page.service(:flashlight)
 
-page.invoke(flashlight, "on")
+page.invoke(flashlight, "on", on_result: ->(_result, error) {
+  page.update(status, value: error ? "Flashlight error: #{error}" : "Flashlight on")
+})
 ```
+
+The flashlight reports a failure as the call's `error`; its `on_error` event is
+accepted, but no client sends it.
 
 ### Service object reference
 
@@ -240,7 +240,7 @@ are framework integration details.
 | `clipboard` | `data`, `key` | — | `get`, `get_files`, `get_image`, `set`, `set_files`, `set_image` |
 | `connectivity` | `data`, `key` | `on_change` | Prefer `page.get_connectivity` for a snapshot. |
 | `file_picker` | `data`, `key` | `on_upload` (`on_result` is accepted but never sent) | Prefer Page picker and upload convenience methods. |
-| `flashlight` | `data`, `key` | `on_error` | `on`, `off`, `is_available` |
+| `flashlight` | `data`, `key` | — (`on_error` is accepted but never sent) | `on`, `off`, `is_available` |
 | `geolocator` | `configuration`, `data`, `key` | `on_error`, `on_position_change` | `distance_between`, `get_current_position`, `get_last_known_position`, `get_permission_status`, `is_location_service_enabled`, `open_app_settings`, `open_location_settings`, `request_permission` |
 | `haptic_feedback` | `data`, `key` | — | Prefer `heavy_impact`, `medium_impact`, `light_impact`, `selection_click`, and `vibrate` on Page. |
 | `permission_handler` | `data`, `key` | — | `get_status`, `open_app_settings`, `request` |

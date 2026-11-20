@@ -534,8 +534,8 @@
   "services": {
     "accelerometer": {
       "events": {
-        "on_reading": "Fired with each reading: `event.data` is `{\"x\" => ..., \"y\" => ..., \"z\" => ..., \"timestamp\" => ...}`, the acceleration along each axis in m/s², gravity included, and the reading time as an ISO 8601 String.",
-        "on_error": "Fired when the sensor stream fails: `event.data[\"message\"]` is the client's message."
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the acceleration along each axis in m/s², gravity included, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
       }
     },
     "audio_recorder": {
@@ -562,13 +562,13 @@
     },
     "barometer": {
       "events": {
-        "on_reading": "Fired with each reading: `event.data` is `{\"pressure\" => ..., \"timestamp\" => ...}`, the air pressure in hectopascals and the reading time as an ISO 8601 String.",
-        "on_error": "Fired when the sensor stream fails: `event.data[\"message\"]` is the client's message."
+        "on_reading": "Fired with each reading: `event.data` is `{ pressure: ..., timestamp: ... }` (Symbol keys), the air pressure in hectopascals and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
       }
     },
     "battery": {
       "events": {
-        "on_state_change": "Fired when the charging state changes: `event.data[\"state\"]` (also `event.state`) is `\"charging\"`, `\"discharging\"`, `\"full\"`, `\"connectedNotCharging\"` or `\"unknown\"`."
+        "on_state_change": "Fired when the charging state changes: `event.data[:state]` (also `event.state`) is `\"charging\"`, `\"discharging\"`, `\"full\"`, `\"connectedNotCharging\"` or `\"unknown\"`."
       },
       "methods": {
         "get_battery_level": "`on_result` receives the charge as an Integer percentage from 0 to 100, or `nil` when the device cannot report it.",
@@ -589,12 +589,12 @@
         "preview_enabled": "Shows the live preview when true (the default). Set false to hide it while the camera keeps running."
       },
       "events": {
-        "on_state_change": "Fired when the camera's state changes: `event.data` is a Hash with `is_initialized`, `is_recording_video`, `is_recording_paused`, `is_taking_picture`, `is_streaming_images`, `is_preview_paused`, `flash_mode`, `exposure_mode`, `focus_mode`, `device_orientation`, `preview_size` (`width`, `height`), `aspect_ratio`, `has_error`, `error_description`, `description` (the camera) and the orientation-lock fields.",
-        "on_stream_image": "Fired for each frame while `start_image_stream` runs: `event.data` has `width`, `height`, `format` (the camera's format group), `encoded_format` (`\"jpeg\"`), `bytes` (the frame as a JPEG binary String) and the sensor's `lens_aperture`, `sensor_exposure_time` and `sensor_sensitivity`. A frame that arrives while the previous one is still being encoded is dropped.",
+        "on_state_change": "Fired when the camera's state changes: `event.data` is a Hash with these Symbol keys, read as `event.data[:is_initialized]`: `is_initialized`, `is_recording_video`, `is_recording_paused`, `is_taking_picture`, `is_streaming_images`, `is_preview_paused`, `flash_mode`, `exposure_mode`, `focus_mode`, `device_orientation`, `preview_size` (`width`, `height`), `aspect_ratio`, `has_error`, `error_description`, `description` (the camera) and the orientation-lock fields.",
+        "on_stream_image": "Fired for each frame while `start_image_stream` runs: `event.data` has the Symbol keys `width`, `height`, `format` (the camera's format group), `encoded_format` (`\"jpeg\"`), `bytes` (the frame as a JPEG binary String) and the sensor's `lens_aperture`, `sensor_exposure_time` and `sensor_sensitivity`. A frame that arrives while the previous one is still being encoded is dropped.",
         "on_error": "Accepted, but the camera never sends it: failures arrive as the `error` of each method's `on_result`."
       },
       "methods": {
-        "get_available_cameras": "`on_result` receives an Array of camera descriptions, Hashes with `name`, `lens_direction` (`\"front\"`, `\"back\"` or `\"external\"`), `sensor_orientation` and `lens_type`. Pass one to `initialize_camera`.",
+        "get_available_cameras": "`on_result` receives an Array of camera descriptions, Hashes with the String keys `\"name\"`, `\"lens_direction\"` (`\"front\"`, `\"back\"` or `\"external\"`), `\"sensor_orientation\"` and `\"lens_type\"`. Pass one to `initialize_camera`.",
         "initialize_camera": "Opens a camera: `description` is a Hash from `get_available_cameras`, and `resolution_preset` is `\"low\"`, `\"medium\"`, `\"high\"`, `\"veryHigh\"`, `\"ultraHigh\"` or `\"max\"`. Options: `enable_audio:` (default true), `fps:`, `video_bitrate:`, `audio_bitrate:` and `image_format_group:` (`\"jpeg\"`, `\"yuv420\"`, `\"bgra8888\"` or `\"nv21\"`). Every other method needs it first. `on_result` receives `nil`; read the new state from `on_state_change`.",
         "take_picture": "`on_result` receives the picture as a binary String.",
         "prepare_for_video_recording": "Prepares the platform for recording, which shortens the delay before `start_video_recording` on iOS. `on_result` receives `nil`.",
@@ -636,7 +636,7 @@
     },
     "connectivity": {
       "events": {
-        "on_change": "Fired when the network connection changes: `event.data[\"connectivity\"]` lists the active connection types, such as `[\"wifi\"]` or `[\"none\"]`."
+        "on_change": "Fired when the network connection changes: `event.data[:connectivity]` lists the active connection types, such as `[\"wifi\"]` or `[\"none\"]`."
       },
       "methods": {
         "get_connectivity": "`on_result` receives the active connection types, an Array of `\"wifi\"`, `\"mobile\"`, `\"ethernet\"`, `\"vpn\"`, `\"bluetooth\"`, `\"satellite\"`, `\"other\"` or `\"none\"` when offline."
@@ -645,7 +645,7 @@
     "file_picker": {
       "events": {
         "on_result": "Accepted, but no client sends it: each method returns its answer to its own `on_result:` callback.",
-        "on_upload": "Fired as `upload` sends a file: `event.data` has `file_name`, `progress` (from 0.0 to 1.0, sent about every 10%) and `error` (the failure message, or `nil`)."
+        "on_upload": "Fired as `upload` sends a file: `event.data` has `:file_name`, `:progress` (from 0.0 to 1.0, sent about every 10%) and `:error` (the failure message, or `nil`)."
       },
       "methods": {
         "pick_files": "Opens the file picker. Options: `dialog_title:`, `initial_directory:`, `file_type:` (`\"any\"`, `\"media\"`, `\"image\"`, `\"video\"`, `\"audio\"` or `\"custom\"`; `allowed_extensions:` such as `[\"pdf\"]` switches to `\"custom\"`), `allow_multiple:` and `with_data:`. `on_result` receives an Array of Hashes with `\"id\"`, `\"name\"`, `\"path\"` (`nil` on the web), `\"size\"` in bytes and `\"bytes\"` (only with `with_data: true`), or `[]` when the user cancels. The service waits `timeout:` seconds for the user, 10 by default; pass a longer one, or call `page.pick_files`, which has none.",
@@ -669,14 +669,14 @@
         "configuration": "Location settings for `on_position_change` (and the default for nothing else): `accuracy` (`\"lowest\"`, `\"low\"`, `\"medium\"`, `\"high\"`, `\"best\"`, the default, or `\"bestForNavigation\"`), `distance_filter` (meters a device moves before the next update, default 0), `time_limit`, plus Android keys (`interval_duration`, `foreground_notification_*`) and Apple keys (`activity_type`, `pause_location_updates_automatically`, `show_background_location_indicator`, `allow_background_location_updates`). Changing it restarts the position stream."
       },
       "events": {
-        "on_position_change": "Fired with each new position while the handler is set: `event.data[\"position\"]` is a position Hash (see `get_current_position`).",
+        "on_position_change": "Fired with each new position while the handler is set: `event.data[:position]` is a position Hash with Symbol keys, such as `event.data[:position][:latitude]`, and the fields of `get_current_position`.",
         "on_error": "Fired when the position stream or `get_current_position` fails: `event.data` is the client's message."
       },
       "methods": {
         "request_permission": "Shows the location permission prompt when the user has not answered yet. `on_result` receives the status: `\"denied\"`, `\"deniedForever\"`, `\"whileInUse\"`, `\"always\"` or `\"unableToDetermine\"`.",
         "get_permission_status": "`on_result` receives the location permission status, as for `request_permission`, without prompting.",
         "is_location_service_enabled": "`on_result` receives `true` when the device's location services are on.",
-        "get_current_position": "Reads the position once, with `configuration:` settings (see the property). `on_result` receives a Hash with `latitude`, `longitude`, `accuracy` (meters), `altitude`, `altitude_accuracy`, `heading`, `heading_accuracy`, `speed` (m/s), `speed_accuracy`, `floor`, `mocked` and `timestamp` (an ISO 8601 String). A failure fires `on_error`. With 0.0.23, `on_result` then receives `nil` and no error; on `main` it receives the error too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+        "get_current_position": "Reads the position once, with `configuration:` settings (see the property). `on_result` receives a Hash with String keys, such as `position[\"latitude\"]`: `latitude`, `longitude`, `accuracy` (meters), `altitude`, `altitude_accuracy`, `heading`, `heading_accuracy`, `speed` (m/s), `speed_accuracy`, `floor`, `mocked` and `timestamp` (an ISO 8601 String). A failure fires `on_error`. With 0.0.23, `on_result` then receives `nil` and no error; on `main` it receives the error too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
         "get_last_known_position": "`on_result` receives the last cached position Hash, or `nil`. The web answers `nil`.",
         "distance_between": "Computes the distance between two latitude/longitude pairs on the client. `on_result` receives meters as a Float.",
         "open_app_settings": "Opens the app's settings page so the user can change the permission. `on_result` receives `true` when it opened. The web answers `nil`.",
@@ -685,8 +685,8 @@
     },
     "gyroscope": {
       "events": {
-        "on_reading": "Fired with each reading: `event.data` is `{\"x\" => ..., \"y\" => ..., \"z\" => ..., \"timestamp\" => ...}`, the rotation rate around each axis in rad/s, and the reading time as an ISO 8601 String.",
-        "on_error": "Fired when the sensor stream fails: `event.data[\"message\"]` is the client's message."
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the rotation rate around each axis in rad/s, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
       }
     },
     "haptic_feedback": {
@@ -715,8 +715,8 @@
     },
     "magnetometer": {
       "events": {
-        "on_reading": "Fired with each reading: `event.data` is `{\"x\" => ..., \"y\" => ..., \"z\" => ..., \"timestamp\" => ...}`, the magnetic field along each axis in microteslas, and the reading time as an ISO 8601 String.",
-        "on_error": "Fired when the sensor stream fails: `event.data[\"message\"]` is the client's message."
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the magnetic field along each axis in microteslas, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
       }
     },
     "permission_handler": {
@@ -728,8 +728,8 @@
     },
     "screen_brightness": {
       "events": {
-        "on_system_screen_brightness_change": "Fired when the system brightness changes: `event.data[\"brightness\"]` is the new level from 0.0 to 1.0. The web never sends it.",
-        "on_application_screen_brightness_change": "Fired when the app's brightness changes: `event.data[\"brightness\"]` is the new level from 0.0 to 1.0. The web never sends it."
+        "on_system_screen_brightness_change": "Fired when the system brightness changes: `event.data[:brightness]` is the new level from 0.0 to 1.0. The web never sends it.",
+        "on_application_screen_brightness_change": "Fired when the app's brightness changes: `event.data[:brightness]` is the new level from 0.0 to 1.0. The web never sends it."
       },
       "methods": {
         "get_system_screen_brightness": "`on_result` receives the system brightness from 0.0 to 1.0. The web answers `nil` to every method of this service.",
@@ -759,7 +759,7 @@
         "windows_options": "Windows settings: `use_backward_compatibility` (default false)."
       },
       "events": {
-        "on_change": "Fired on iOS and macOS when protected data becomes available or unavailable, for example when the device locks: `event.data[\"available\"]` is `true` or `false`."
+        "on_change": "Fired on iOS and macOS when protected data becomes available or unavailable, for example when the device locks: `event.data[:available]` is `true` or `false`."
       },
       "methods": {
         "set": "Stores `value` under `key`. Pass a String: the 0.0.23 client rejects other values. Options for one call: `android:`, `ios:`, `macos:`, `web:` and `windows:` (Hashes like the matching `*_options`), `timeout:` and `on_result:`, which receives `nil`.",
@@ -832,8 +832,8 @@
     },
     "user_accelerometer": {
       "events": {
-        "on_reading": "Fired with each reading: `event.data` is `{\"x\" => ..., \"y\" => ..., \"z\" => ..., \"timestamp\" => ...}`, the acceleration along each axis in m/s² without gravity, and the reading time in microseconds since the Unix epoch.",
-        "on_error": "Fired when the sensor stream fails: `event.data[\"message\"]` is the client's message."
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the acceleration along each axis in m/s² without gravity, and the reading time in microseconds since the Unix epoch.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
       }
     },
     "wakelock": {

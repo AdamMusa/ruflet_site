@@ -60,7 +60,7 @@ the client receives.
 - `Ruflet::StrutStyle.new(size:, height:, weight:, italic:, font_family:, leading:, force_strut_height:)` — line-height settings for the `strut_style:` of a `text_field` or `cupertino_text_field`, with `copy` and `to_h`.
 - `Ruflet::Offset.new(x:, y:)` — a point or offset; `to_h` gives `{ "x" => x, "y" => y }`. Gesture events return positions as `Ruflet::Offset`.
 - `Ruflet::Duration.new(milliseconds:)` — a length of time with `milliseconds` and `to_h`. Duration properties also take a number of milliseconds, or `duration(seconds: 1, milliseconds: 500)` from the DSL.
-- `Ruflet::IconData.new(name)` — an icon by name; `value` is the name. The `Ruflet::Icons` constants return these.
+- `Ruflet::IconData.new(name)` — an icon by name; `value` is the name. Icon properties take it or a plain String. The `Ruflet::Icons` constants are plain Strings: `Ruflet::Icons::HOME` is `"home"`.
 - `Ruflet::WidgetBuilder` — the object a DSL block runs in; you rarely create one.
 
 Constants for String-valued properties:
