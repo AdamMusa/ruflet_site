@@ -6,26 +6,41 @@ A panel that slides up from the bottom of the screen. Show it with
 ## Example
 
 ```ruby
+status = text("Link not copied")
+sheet = nil
 sheet = bottom_sheet(
   show_drag_handle: true,
+  clip_behavior: "antiAlias",
   content: container(
     padding: 24,
+    bgcolor: :surface_container_low,
     content: column(
       tight: true,
       spacing: 12,
       children: [
         text(value: "Share", style: { size: 18, weight: "w700" }),
-        filled_button(content: text("Copy link"), on_click: ->(_e) { copy_link })
+        filled_button(content: text("Copy link"), on_click: ->(_e) {
+          page.close_bottom_sheet(sheet)
+          page.update(status, value: "Link copied")
+        })
       ]
     )
   )
 )
 
-page.show_bottom_sheet(sheet)
-
-# Later, from an event handler:
-page.close_bottom_sheet
+page.add(
+  column(
+    children: [
+      status,
+      button("Share", on_click: ->(_e) { page.show_bottom_sheet(sheet) })
+    ]
+  )
+)
 ```
+
+The container's `bgcolor` is the Material sheet's own color, and it gives the
+content a background on iOS and macOS with 0.0.23 (see
+[iOS and macOS](#ios-and-macos)).
 
 `show_bottom_sheet` opens the sheet for you. You can also assign
 `page.bottom_sheet = bottom_sheet(open: true, …)` directly, but the assignment
@@ -39,10 +54,32 @@ you want to close a specific instance: `page.close_bottom_sheet(sheet)`.
 
 - `content` — the sheet's child control
 - `open` — show / hide
-- `dismissible` — tap outside to close
+- `dismissible` — tap outside to close (default `true`)
+- `barrier_color` — the dimmed backdrop behind the sheet
 - `bgcolor`
 - `shape` / `elevation` — Android, web, Windows and Linux only
+- `clip_behavior` / `animation_style` — Android, web, Windows and Linux only
+- `padding` / `height` — iOS and macOS only; see below
+- `scrollable` / `size_constraints` / `maintain_bottom_view_insets_padding` — let a tall sheet grow past 9/16 of the screen height up to the status bar, limit its size (`{ max_width: 640 }`), and lift the content above the on-screen keyboard (default `true`); on iOS and macOS these need the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `draggable` / `show_drag_handle` / `use_safe_area` / `fullscreen` — on iOS and macOS these need the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`draggable` lets the user drag the sheet down to close it (default `false`),
+`show_drag_handle` adds a grabber at the top, `use_safe_area` keeps the
+content clear of the status bar and the home indicator (default `true`), and
+`fullscreen` opens the sheet at full height.
+
+## iOS and macOS
+
+On iOS and macOS, `picker`, `timer_picker` and `date_picker` content is shown
+on a fixed panel with `bgcolor` (the system background color by default) and
+`padding`, 220 high unless you set `height`.
+
+With 0.0.23 other content is shown without a panel or background, so give it
+its own, for example a `container` with a `bgcolor`. On `main` the client
+draws every sheet as an iOS popup with rounded top corners on `bgcolor`, with
+`padding` around the content and `height` as its height, and a `fullscreen`
+sheet as a stacked page sheet that can be dragged down unless you pass
+`draggable: false`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
 

@@ -31,6 +31,8 @@ page.add(
 - `border_radius`
 - `width`
 - `semantics_label` / `semantics_value` — what screen readers announce
+- `year_2023` — `true` (default) keeps the 2023 Material 3 look; `false` gives the newer look with a gap between the bar and its track and a dot at the end
+- `track_gap` / `stop_indicator_color` / `stop_indicator_radius` — that gap and end dot; they show only with `year_2023: false`
 
 ## Usage
 
@@ -38,3 +40,11 @@ Keep the bar in a variable and change only `value` with `page.update` as the
 work progresses, as the example does. Show an indeterminate bar while the
 total amount of work is still unknown. On iOS and macOS an indeterminate bar
 shows a spinning activity indicator instead of a moving bar.
+
+## Platform differences
+
+On iOS and macOS the bar is drawn with iOS colors: the system blue for the
+filled part and a light gray track by default, 3 high unless you set
+`bar_height` (Android, web, Windows and Linux default to 4). `year_2023`,
+`track_gap`, `stop_indicator_color` and `stop_indicator_radius` apply on
+Android, web, Windows and Linux only.

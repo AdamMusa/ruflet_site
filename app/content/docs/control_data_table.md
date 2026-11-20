@@ -16,7 +16,7 @@ rows_for = ->(items) {
   items.map { |name, qty| data_row([data_cell(text(name)), data_cell(text(qty.to_s))]) }
 }
 sort_by_column = ->(event) {
-  index = event.data["ci"].to_i
+  index = event.data[:ci].to_i
   # The same column again flips the direction; another column starts ascending.
   ascending = index == sort_index ? !ascending : true
   sort_index = index
@@ -48,24 +48,72 @@ page.add(table)
 ## Usage
 
 The table does not sort itself. A column's `on_sort` receives the column
-index in `event.data["ci"]`. Keep the direction in Ruby, as above: tapping the
+index in `event.data[:ci]`. Keep the direction in Ruby, as above: tapping the
 sorted column again flips it, and another column starts ascending. Then update
 `rows` together with `sort_column_index` and `sort_ascending`. `numeric: true`
 right-aligns a column.
 
-`event.data["asc"]` is the new direction on Android, web, Windows and Linux.
+`event.data[:asc]` is the new direction on Android, web, Windows and Linux.
 On iOS and macOS it is the table's current `sort_ascending` (`false` until you
 set it), so passing `asc` back as `sort_ascending` never changes the direction
 there.
 
+## Selecting rows
+
+With `show_checkbox_column: true` and an `on_select_change` handler on the
+rows, the table shows a checkbox per row and a select-all checkbox in the
+heading row. The table never changes `selected` by itself: set it in the
+handlers. `event.data` is `true` when a row is selected and `nil` when it is
+cleared. Without `on_select_all`, the select-all checkbox calls each row's
+`on_select_change` instead.
+
+```ruby
+tasks = ["Write docs", "Review PR", "Ship release"]
+summary = text("0 selected")
+rows = []
+count = -> { page.update(summary, value: "#{rows.count { |row| row.props["selected"] }} selected") }
+rows = tasks.map do |task|
+  row = nil
+  row = data_row(
+    [data_cell(text(task))],
+    selected: false,
+    on_select_change: ->(event) {
+      page.update(row, selected: event.data == true)
+      count.call
+    }
+  )
+end
+table = data_table(
+  [data_column(text("Task"))],
+  rows: rows,
+  show_checkbox_column: true,
+  on_select_all: ->(event) {
+    rows.each { |row| page.update(row, selected: event.data == true) }
+    count.call
+  }
+)
+page.add(column(children: [table, summary]))
+```
+
+On Android, web, Windows and Linux tapping a row also selects or clears it.
+On iOS and macOS only the checkboxes do; there the 0.0.23 client shows no
+checkboxes and sends neither event. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+## Platform differences
+
 On iOS and macOS the client draws a plainer table. It uses
 `heading_row_color`, each row's `color` and its `selected` highlight,
-`show_bottom_border` and the cells' tap events. The sort arrow, `numeric`
-alignment, `column_spacing`, `horizontal_margin`, the row and heading heights,
-`border`, `border_radius`, `divider_thickness`, `data_row_color` and the two
-text styles apply on Android, web, Windows and Linux only.
+`show_bottom_border` and the cells' `on_tap`, `on_double_tap` and
+`on_long_press`. The sort arrow, `numeric` alignment, `column_spacing`,
+`horizontal_margin`, the row and heading heights, `border`, `border_radius`,
+`bgcolor`, `gradient`, `clip_behavior`, `divider_thickness`, `data_row_color`,
+`checkbox_horizontal_margin` and the two text styles apply on Android, web,
+Windows and Linux only, and so do the columns' `heading_row_alignment` and
+`tooltip`, the rows' `on_long_press`, and the cells' `placeholder`,
+`show_edit_icon`, `on_tap_down` and `on_tap_cancel`.
 
 On iOS and macOS, the 0.0.23 client also ignores `vertical_lines`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-For fixed header rows or columns on large tables, use the `datatable2`
+For fixed header rows or columns on large tables, use
+[`data_table2`](/docs/control-data-table-2) from the `datatable2`
 [DataTable2 extension](/docs/extension-datatable2).
