@@ -1,0 +1,61 @@
+<% content_for :title, "Privacy Policy | Ruflet" %>
+
+<section class="bg-slate-950 px-6 py-8 text-slate-100 lg:px-8">
+  <div class="mx-auto flex w-full max-w-5xl items-center justify-between">
+    <%= link_to root_path, class: "inline-flex items-center gap-0" do %>
+      <%= image_tag "icon.png", alt: "R", class: "h-12 w-10 object-cover object-center" %>
+      <span class="-ml-1 text-3xl font-semibold tracking-normal text-slate-200">uflet</span>
+    <% end %>
+    <nav class="flex items-center gap-6 text-sm font-medium text-slate-300">
+      <%= link_to "Docs", docs_path, class: "transition hover:text-white" %>
+      <%= link_to "Home", root_path, class: "transition hover:text-white" %>
+    </nav>
+  </div>
+</section>
+
+<article class="bg-slate-950 px-6 pb-24 text-slate-100 lg:px-8">
+  <div class="mx-auto max-w-5xl">
+    <header class="border-b border-white/10 pb-10">
+      <p class="text-sm font-semibold uppercase tracking-[0.18em] text-sky-300">Ruflet Explorer</p>
+      <h1 class="mt-4 text-4xl font-black tracking-normal text-white sm:text-5xl">Privacy Policy</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-300">This policy explains how Ruflet handles information for the Ruflet Explorer mobile app and the Ruflet website.</p>
+      <p class="mt-4 text-sm text-slate-400">Effective date: May 1, 2026</p>
+    </header>
+
+    <div class="mt-10 max-w-none space-y-5 text-base leading-8 text-slate-300 [&_a]:text-sky-300 [&_a]:no-underline hover:[&_a]:text-sky-200 [&_h2]:pt-5 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-normal [&_h2]:text-white">
+      <h2>Overview</h2>
+      <p>Ruflet Explorer is a development companion for connecting to Ruflet apps that you run or choose. Ruflet Explorer itself does not require an account, does not ask you to create a profile, and does not sell personal information.</p>
+
+      <h2>Information the App Handles</h2>
+      <p>Ruflet Explorer lets you enter or scan a server URL so the app can connect to a Ruflet runtime. The app uses the camera only when you choose to scan a Ruflet QR connection code. Camera frames are used on-device for scanning and are not sent to Ruflet by the scanner.</p>
+      <p>When you connect Ruflet Explorer to a server URL, the app communicates with that server to display and run the Ruflet experience you selected. Information exchanged with that server depends on the Ruflet app you connect to. If you connect to a server operated by someone else, that server's privacy practices are separate from Ruflet's.</p>
+
+      <h2>Optional Device Features</h2>
+      <p>Ruflet Explorer includes support for optional app capabilities such as camera, media, location-aware components, web views, secure storage, audio, video, maps, and ads because Ruflet apps may use those components. Ruflet Explorer requests access to device features only when the connected Ruflet app or a user action requires them. You can manage permissions in your device settings.</p>
+
+      <h2>Website and Newsletter</h2>
+      <p>If you subscribe to Ruflet updates on the website, we collect the email address you provide so we can send product updates, release notes, and related announcements. You can ask us to remove your email from the newsletter list at any time.</p>
+
+      <h2>Analytics, Advertising, and Tracking</h2>
+      <p>Ruflet Explorer does not require account tracking or cross-app tracking to function. Some optional components, including advertising components, may be available to Ruflet apps you connect to. If a connected Ruflet app uses those services, the developer or operator of that app is responsible for explaining its data practices.</p>
+
+      <h2>Data Sharing</h2>
+      <p>We do not sell personal information. We may share information only when needed to operate Ruflet services, comply with law, protect Ruflet and its users, or with your direction, such as when you connect the app to a server URL.</p>
+
+      <h2>Data Retention</h2>
+      <p>Newsletter email addresses are kept while you remain subscribed. App connection data is handled by the app and the servers you choose to connect to; Ruflet does not operate a central account service for Ruflet Explorer.</p>
+
+      <h2>Children's Privacy</h2>
+      <p>Ruflet Explorer and the Ruflet website are intended for developers and are not directed to children under 13. If you believe a child has provided personal information to us, contact us so we can take appropriate action.</p>
+
+      <h2>Your Choices</h2>
+      <p>You can decline or revoke device permissions, choose which server URLs to connect to, unsubscribe from website emails, and contact us to request access, correction, or deletion of information you provided to Ruflet.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>We may update this policy as Ruflet changes. When we make material updates, we will revise the effective date above.</p>
+
+      <h2>Contact</h2>
+      <p>For privacy questions or requests, contact us at <a href="mailto:hello@ruflet.dev">hello@ruflet.dev</a>.</p>
+    </div>
+  </div>
+</article>

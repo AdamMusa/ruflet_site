@@ -1,0 +1,185 @@
+<section class="min-h-screen bg-slate-950 text-slate-100" data-controller="docs-nav" data-docs-nav-search-index-value="<%= json_escape(@search_index.to_json) %>">
+  <% intro_entry = DocsCatalog.find("introduction") %>
+  <% nav_sections = @sections.map do |section|
+       filtered_entries = section.entries.reject { |entry| entry.slug == "introduction" }
+       section.entries == filtered_entries ? section : DocsCatalog::Section.new(id: section.id, title: section.title, entries: filtered_entries)
+     end.reject { |section| section.entries.empty? } %>
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-slate-950/95 backdrop-blur">
+    <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-4 lg:px-8">
+      <div class="flex items-center gap-4">
+        <%= link_to root_path, class: "inline-flex items-center gap-0" do %>
+          <%= image_tag "icon.png", alt: "R", class: "h-12 w-10 object-cover object-center" %>
+          <span class="-ml-1 text-3xl font-semibold tracking-normal text-slate-200">uflet</span>
+        <% end %>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button type="button" data-action="docs-nav#openSearch" class="docs-navbar-search" aria-haspopup="dialog" aria-controls="docs-search-dialog">
+          <span>Search docs</span>
+          <span class="docs-navbar-search-key">⌘K</span>
+        </button>
+
+        <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-200 md:hidden" aria-label="Open documentation menu">
+          <span class="text-base leading-none">≡</span>
+        </button>
+      </div>
+
+      <nav class="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
+        <%= link_to "Learn", doc_path("introduction"), class: "transition hover:text-white" %>
+        <%= link_to "Tutorials", doc_path("tutorial-calculator"), class: "transition hover:text-white" %>
+        <%= link_to "Reference", doc_path("reference"), class: "transition hover:text-white" %>
+        <a href="https://github.com/AdamMusa/Ruflet" target="_blank" rel="noreferrer" class="transition hover:text-white" aria-label="GitHub"><%= github_icon %></a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="docs-search-dialog" class="docs-search-dialog hidden" data-docs-nav-target="searchDialog" data-action="click->docs-nav#closeSearchFromBackdrop" role="dialog" aria-modal="true" aria-labelledby="docs-search-title">
+    <div class="docs-search-panel">
+      <div class="docs-search-panel-header">
+        <label id="docs-search-title" class="docs-search-label" for="docs-search-input">Search docs</label>
+        <button type="button" class="docs-search-close" data-action="docs-nav#closeSearch" aria-label="Close search">×</button>
+      </div>
+      <input id="docs-search-input" type="search" placeholder="Search widgets, guides..." autocomplete="off" class="docs-search-input" data-docs-nav-target="searchInput" data-action="input->docs-nav#search keydown->docs-nav#handleSearchKeydown">
+      <div class="docs-search-results" data-docs-nav-target="searchResults" role="listbox" aria-label="Documentation search results"></div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-[1500px] px-0 pb-12 pt-0 lg:pb-16">
+    <div class="mb-5 flex items-center justify-between border-b border-white/10 px-4 py-4 lg:hidden">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-sky-700"><%= @doc.section %></p>
+        <h1 class="mt-2 text-2xl font-black tracking-[-0.04em] text-white"><%= @doc.title %></h1>
+      </div>
+      <button type="button" data-action="docs-nav#toggleSidebar" class="inline-flex h-11 items-center justify-center border border-slate-700 bg-slate-900 px-4 text-sm font-semibold text-slate-200">
+        Browse
+      </button>
+    </div>
+
+    <div data-docs-nav-target="backdrop" data-action="click->docs-nav#closeSidebar" class="fixed inset-0 z-30 hidden bg-slate-950/70 lg:hidden"></div>
+
+    <div class="grid gap-0 lg:grid-cols-[320px_minmax(0,1fr)_250px]">
+      <aside data-docs-nav-target="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-[84vw] max-w-[300px] overflow-y-auto border-r border-white/10 bg-slate-950 px-4 py-5 lg:sticky lg:top-[4.7rem] lg:block lg:max-h-[calc(100vh-4.7rem)] lg:w-auto lg:max-w-none lg:border-r lg:border-white/10 lg:px-5 lg:py-5">
+        <div class="mb-6 flex items-center justify-between lg:hidden">
+          <span class="text-sm font-semibold text-white">Documentation</span>
+          <button type="button" data-action="docs-nav#closeSidebar" class="inline-flex h-10 w-10 items-center justify-center border border-white/10 text-slate-300" aria-label="Close documentation menu">×</button>
+        </div>
+
+        <nav class="docs-sidebar-nav">
+          <%= link_to doc_path(intro_entry.slug), class: "docs-sidebar-intro #{intro_entry.slug == @doc.slug ? 'docs-sidebar-intro-active' : ''}", data: { action: "click->docs-nav#closeSidebar" } do %>
+            <%= intro_entry.title %>
+          <% end %>
+
+          <% nav_sections.each do |section| %>
+            <% section_open = section.entries.any? { |entry| entry.slug == @doc.slug } %>
+            <% entries_by_parent = section.entries.select(&:parent_slug).group_by(&:parent_slug) %>
+            <% root_entries = section.entries.reject(&:parent_slug) %>
+            <details class="docs-sidebar-group" <%= "open" if section_open %>>
+              <summary class="docs-sidebar-group-summary">
+                <span><%= section.title %></span>
+                <span class="docs-sidebar-chevron" aria-hidden="true"></span>
+              </summary>
+
+              <ul class="docs-sidebar-group-list">
+                <% root_entries.each do |entry| %>
+                  <li>
+                    <%= link_to doc_path(entry.slug), class: "docs-sidebar-group-link #{entry.slug == @doc.slug ? 'docs-sidebar-group-link-active' : ''}", data: { action: "click->docs-nav#closeSidebar" } do %>
+                      <%= entry.title %>
+                    <% end %>
+
+                    <% if entries_by_parent[entry.slug].present? %>
+                      <ul class="docs-sidebar-subgroup-list" aria-label="<%= entry.title %>">
+                        <% entries_by_parent.fetch(entry.slug).each do |child| %>
+                          <li>
+                            <%= link_to doc_path(child.slug), class: "docs-sidebar-group-link docs-sidebar-subgroup-link #{child.slug == @doc.slug ? 'docs-sidebar-group-link-active' : ''}", data: { action: "click->docs-nav#closeSidebar" } do %>
+                              <%= child.title %>
+                            <% end %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </details>
+          <% end %>
+        </nav>
+      </aside>
+
+      <article class="min-w-0 px-4 py-6 sm:px-6 lg:border-r lg:border-white/10 lg:px-6 lg:py-6">
+        <div class="pb-2">
+          <div class="hidden flex-wrap items-center gap-3 text-[0.98rem] text-slate-500 sm:flex">
+            <span class="text-slate-300">⌂</span>
+            <span>›</span>
+            <span><%= @doc.section %></span>
+            <span>›</span>
+            <span class="border border-white/10 bg-white/5 px-3 py-1 text-sky-400"><%= @doc.title %></span>
+          </div>
+        </div>
+
+        <div class="docs-markdown mt-6 max-w-5xl">
+          <%= @rendered_doc.html %>
+        </div>
+
+        <% if %w[component-reference rails-native-components].include?(@doc.slug) && @control_catalog.any? %>
+          <div class="docs-controls-grid" aria-label="Widgets catalog">
+            <% @control_catalog.each do |control| %>
+              <%= link_to doc_path(control[:slug]), class: "docs-control-card" do %>
+                <span class="docs-control-card-title"><%= control[:title] %></span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if %w[services-and-plugins extensions].include?(@doc.slug) %>
+          <% catalog_section = DocsCatalog.sections.find { |section| section.id == (@doc.slug == "extensions" ? "extensions" : "services") } %>
+          <% catalog_entries = catalog_section.entries.reject { |entry| entry.slug == @doc.slug || entry.slug == "extension-authoring" } %>
+          <div class="docs-controls-grid" aria-label="<%= catalog_section.title %> reference pages">
+            <% catalog_entries.each do |entry| %>
+              <%= link_to doc_path(entry.slug), class: "docs-control-card" do %>
+                <span class="docs-control-card-title"><%= entry.title %></span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @previous_doc || @next_doc %>
+          <div class="mt-12 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-2">
+            <% if @previous_doc %>
+              <%= link_to doc_path(@previous_doc.slug), class: "docs-pagination-card" do %>
+                <span class="docs-pagination-label">Previous</span>
+                <span class="docs-pagination-title"><%= @previous_doc.title %></span>
+              <% end %>
+            <% else %>
+              <div></div>
+            <% end %>
+
+            <% if @next_doc %>
+              <%= link_to doc_path(@next_doc.slug), class: "docs-pagination-card md:text-right" do %>
+                <span class="docs-pagination-label">Next</span>
+                <span class="docs-pagination-title"><%= @next_doc.title %></span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </article>
+
+      <aside class="hidden xl:block">
+        <div class="sticky top-[4.7rem] max-h-[calc(100vh-4.7rem)] overflow-y-auto px-5 py-12">
+          <% if @headings.any? %>
+            <ul class="space-y-4">
+              <% @headings.each do |heading| %>
+                <li>
+                  <a href="#<%= heading.id %>" data-docs-nav-target="tocLink" data-heading-id="<%= heading.id %>" class="docs-toc-link <%= heading.level > 2 ? 'docs-toc-link-nested' : '' %>">
+                    <%= heading.text %>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm leading-6 text-slate-500">This page doesn't have additional sections yet.</p>
+          <% end %>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
