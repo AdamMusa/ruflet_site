@@ -1,10 +1,10 @@
 # Picker
 
 Picks one item from a short list. On iOS and macOS the client draws a
-scrolling wheel; on Android, web, Windows and Linux a dropdown button that
+scrolling wheel; on Android, Windows and Linux a dropdown button that
 lists the items. Each item is a control, usually a `text`.
 [`cupertino_picker`](/docs/control-cupertino-picker) builds the same control
-with the iOS wheel defaults.
+with the iOS wheel defaults. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -52,6 +52,6 @@ On iOS and macOS the wheel fills the height it is given, so give it a
 The wheel's look applies on iOS and macOS only: `item_extent`,
 `diameter_ratio`, `magnification` with `use_magnifier`, `squeeze`,
 `off_axis_fraction`, `looping`, `selection_overlay`,
-`default_selection_overlay_bgcolor` and `bgcolor`. On Android, web, Windows and
+`default_selection_overlay_bgcolor` and `bgcolor`. On Android, Windows and
 Linux a picker with no items, or with a `selected_index` outside them, draws an
 error box instead of the dropdown.

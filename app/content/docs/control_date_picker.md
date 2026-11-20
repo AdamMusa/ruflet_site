@@ -1,9 +1,9 @@
 # DatePicker
 
 A dialog for picking a date. Open it with `page.show_dialog(picker)`. On
-Android, web, Windows and Linux the client shows the Material calendar dialog;
+Android, Windows and Linux the client shows the Material calendar dialog;
 on iOS and macOS a date wheel slides up from the bottom of the screen with
-Cancel and Done.
+Cancel and Done. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -35,8 +35,8 @@ page.add(
 - `help_text` — the title; `cancel_text` / `confirm_text` — the button labels
 - `modal` — when true, tapping outside does not close the picker
 - `date_picker_mode` — the view it starts in (see below)
-- `entry_mode` — `"calendar"` or `"input"`, Android, web, Windows and Linux only
-- `field_label_text` / `field_hint_text` — the input-mode field, Android, web, Windows and Linux only
+- `entry_mode` — `"calendar"` or `"input"`, Android, Windows and Linux only
+- `field_label_text` / `field_hint_text` — the input-mode field, Android, Windows and Linux only
 
 ## Related
 
@@ -59,10 +59,9 @@ timestamp when that matters, as the
 
 `on_dismiss` fires whenever the picker closes, after `on_change` when the user
 picked a date. `event.data` is `true` when the user closed it without picking,
-and `nil` when they picked one (the client sends `false`). On Android, web,
-Windows and Linux, `on_entry_mode_change` fires when the user switches between
-the calendar and text input; `event.data["entry_mode"]` is the new mode, which
-the client also writes to `entry_mode`.
+and `nil` when they picked one (the client sends `false`). On Android, Windows and Linux, `on_entry_mode_change` fires when the user switches between
+the calendar and text input; `event.data[:entry_mode]` (a Symbol key) is the new
+mode, which the client also writes to `entry_mode`.
 
 `event.control.value` and `event.control.entry_mode` return the same values as
 `props["value"]` and `props["entry_mode"]`; with 0.0.23 they raise
@@ -70,12 +69,11 @@ NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Platform differences
 
-`date_picker_mode` means a different thing on each design. On Android, web,
-Windows and Linux it is the calendar view the dialog starts in: `"day"`
+`date_picker_mode` means a different thing on each design. On Android, Windows and Linux it is the calendar view the dialog starts in: `"day"`
 (default) or `"year"`. On iOS and macOS it picks the wheels: `"date"`
 (default), `"time"`, `"dateAndTime"` or `"monthYear"`.
 
-The Material dialog's input mode and styling apply on Android, web, Windows
+The Material dialog's input mode and styling apply on Android, Windows
 and Linux only: `entry_mode`, `field_label_text`, `field_hint_text`,
 `error_format_text`, `error_invalid_text`, `keyboard_type`,
 `switch_to_calendar_icon`, `switch_to_input_icon`, `barrier_color` and

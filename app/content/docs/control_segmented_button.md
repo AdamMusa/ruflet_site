@@ -41,12 +41,11 @@ as `props["selected"]`; with 0.0.23 it raises NoMethodError. **Requires the next
 
 On iOS and macOS each segment is a Cupertino button, filled when selected and
 tinted otherwise. On a selected segment, `selected_icon` takes the place of the
-segment's icon. When it is not set, Android, web, Windows and Linux show a
+segment's icon. When it is not set, Android, Windows and Linux show a
 check mark there and iOS and macOS show no icon. Set
-`show_selected_icon: false` to keep each segment's own icon. `style` and the segments' `tooltip` apply on Android, web,
-Windows and Linux only. `border_color`, `selected_color`, `unselected_color`,
+`show_selected_icon: false` to keep each segment's own icon. `style` and the segments' `tooltip` apply on Android, Windows and Linux only. `border_color`, `selected_color`, `unselected_color`,
 `click_color`, `disabled_color` and `disabled_text_color` apply on iOS and
-macOS only.
+macOS only. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 `sliding: true` draws the iOS sliding segmented control on iOS and macOS, as
 [`cupertino_sliding_segmented_button`](/docs/control-cupertino-sliding-segmented-button)

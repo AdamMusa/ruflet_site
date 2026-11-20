@@ -2,7 +2,7 @@
 
 A segmented control whose selection slides from segment to segment, as in iOS
 settings screens. It builds a `SegmentedButton` control; elsewhere than iOS and
-macOS the client draws a Material segmented button.
+macOS the client draws a Material segmented button. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 

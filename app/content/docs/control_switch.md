@@ -1,8 +1,8 @@
 # Switch
 
 An on/off toggle with an optional label. The client draws an iOS-style switch
-on iOS and macOS and a Material switch on Android, web, Windows and Linux;
-[`cupertino_switch`](/docs/control-cupertino-switch) builds the same control.
+on iOS and macOS and a Material switch on Android, Windows and Linux;
+[`cupertino_switch`](/docs/control-cupertino-switch) builds the same control. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -63,7 +63,7 @@ toggle.props["value"] # => true
 
 On iOS and macOS the switch has no ink and no separate thumb color for the on
 state: `active_color`, `track_color`, `hover_color`, `overlay_color`,
-`splash_radius` and `padding` apply on Android, web, Windows and Linux only.
+`splash_radius` and `padding` apply on Android, Windows and Linux only.
 There, use `thumb_color`, `active_track_color` and `inactive_track_color`.
 `on_label_color` and `off_label_color` color the on and off marks that iOS
 draws in the track when the user turns on On/Off Labels in the accessibility

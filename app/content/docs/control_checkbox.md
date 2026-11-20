@@ -1,9 +1,9 @@
 # Checkbox
 
 A box the user checks and clears, with an optional label. The client draws an
-iOS-style checkbox on iOS and macOS and a Material one on Android, web, Windows
+iOS-style checkbox on iOS and macOS and a Material one on Android, Windows
 and Linux; [`cupertino_checkbox`](/docs/control-cupertino-checkbox) builds the
-same control.
+same control. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -59,5 +59,5 @@ page.add(column(children: [all, *items]))
 ## Platform differences
 
 `hover_color`, `overlay_color`, `splash_radius`, `visual_density` and `error`
-apply on Android, web, Windows and Linux only: the iOS checkbox has no ink
+apply on Android, Windows and Linux only: the iOS checkbox has no ink
 and no error state.

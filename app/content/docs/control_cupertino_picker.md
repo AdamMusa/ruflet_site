@@ -4,8 +4,8 @@ An iOS-style scrolling wheel for picking one item. `cupertino_picker` builds the
 same `Picker` control as [`picker`](/docs/control-picker) and sends the iOS
 wheel defaults: `item_extent: 32`, `diameter_ratio: 1.07`, `squeeze: 1.45`,
 `magnification: 1.0`, `off_axis_fraction: 0.0`, `use_magnifier: false`,
-`looping: false` and `selected_index: 0`. On Android, web, Windows and Linux
-the client draws a dropdown button that lists the items instead.
+`looping: false` and `selected_index: 0`. On Android, Windows and Linux
+the client draws a dropdown button that lists the items instead. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -51,6 +51,6 @@ scrolls, after it writes the index to `selected_index`. Give the picker a
 `event.control.selected_index` returns the same index as
 `props["selected_index"]`; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-The wheel properties apply on iOS and macOS only. On Android, web, Windows and
+The wheel properties apply on iOS and macOS only. On Android, Windows and
 Linux the dropdown reads only `controls`, `selected_index`, `on_change` and the
 common layout properties.

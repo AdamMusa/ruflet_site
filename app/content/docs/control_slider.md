@@ -2,8 +2,8 @@
 
 A track with a thumb for picking a value from a continuous or discrete range.
 The client draws an iOS-style slider on iOS and macOS and a Material slider on
-Android, web, Windows and Linux;
-[`cupertino_slider`](/docs/control-cupertino-slider) builds the same control.
+Android, Windows and Linux;
+[`cupertino_slider`](/docs/control-cupertino-slider) builds the same control. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -61,5 +61,5 @@ with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `m
 The iOS slider has no value label, ink or secondary track: `label`, `round`,
 `inactive_color`, `overlay_color`, `mouse_cursor`, `interaction`,
 `secondary_track_value`, `secondary_active_color`, `padding` and `year_2023`
-apply on Android, web, Windows and Linux only. `value`, `min`, `max`,
+apply on Android, Windows and Linux only. `value`, `min`, `max`,
 `divisions`, `active_color` and `thumb_color` work everywhere.

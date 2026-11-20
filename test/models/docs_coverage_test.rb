@@ -276,7 +276,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     ],
     "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only" ],
     "control-progress-ring" => [ "`stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator" ],
-    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, web, Windows and Linux only" ],
+    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, Windows and Linux only" ],
     "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
   }.freeze
 
@@ -349,9 +349,11 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # Generated lines of input controls that one design ignores, and the note
   # each must keep. Clients draw iOS and macOS with Cupertino widgets and
   # other platforms with Material ones, whichever helper built the control.
+  # A web app follows the device the browser runs on (Flutter maps a browser
+  # on an iPhone, iPad or Mac to iOS or macOS), so each note says so.
   PLATFORM_NOTES = {
-    "material" => { "properties" => "iOS and macOS ignore it", "events" => "iOS and macOS never send it" },
-    "cupertino" => { "properties" => "Android, web, Windows and Linux ignore it" }
+    "material" => { "properties" => "iOS and macOS ignore it, in a browser too", "events" => "iOS and macOS never send it, in a browser too" },
+    "cupertino" => { "properties" => "Android, Windows and Linux ignore it, in a browser too" }
   }.freeze
   PLATFORM_ONLY_LINES = {
     "control-checkbox" => { "material" => %w[hover_color overlay_color splash_radius visual_density] },
@@ -400,6 +402,63 @@ class DocsCoverageTest < ActiveSupport::TestCase
           assert line, "#{slug} renders no line for #{name}"
           assert_includes line, PLATFORM_NOTES.dig(design, kind), "#{slug} #{name} lost its platform note"
         end
+      end
+    end
+  end
+
+  # The input and form pages. Their hand-written text must not put "web" on
+  # the Material side, and a page that splits by platform says once that a
+  # web app follows the device it runs on.
+  INPUT_PAGES = %w[
+    control-auto-complete control-auto-complete-suggestion control-autofill-group control-checkbox
+    control-chip control-cupertino-checkbox control-cupertino-date-picker control-cupertino-picker
+    control-cupertino-radio control-cupertino-segmented-button control-cupertino-slider
+    control-cupertino-sliding-segmented-button control-cupertino-switch control-cupertino-text-field
+    control-cupertino-timer-picker control-date-picker control-date-range-picker control-dropdown
+    control-dropdown-option control-form control-form-row control-option control-picker control-radio
+    control-radio-group control-range-slider control-search-bar control-segment
+    control-segmented-button control-slider control-switch control-text-field control-time-picker
+    control-timer-picker
+  ].freeze
+  BROWSER_FOLLOWS_DEVICE = "A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.".freeze
+
+  test "input pages say that a web app follows the device" do
+    INPUT_PAGES.each do |slug|
+      prose = prose_chunks(slug).join("\n")
+
+      refute_match(/Android, web,|\bweb, Windows/, prose, "#{slug}: a browser on an Apple device draws the iOS design")
+      next unless prose.match?(/iOS and macOS|Android, Windows and Linux/)
+
+      assert_includes prose, BROWSER_FOLLOWS_DEVICE, "#{slug} splits by platform without saying what a browser gets"
+    end
+  end
+
+  # Event data that is a Hash reaches Ruby with Symbol keys (the server runs
+  # it through normalize_event_data), so `event.data["key"]` is always nil.
+  test "input pages read Hash event data with Symbol keys" do
+    INPUT_PAGES.each do |slug|
+      text = page(slug).content
+
+      refute_match(/event\.data\[\s*"/, text, "#{slug} reads event.data with a String key")
+      refute_match(/`event\.data` is `\{ "/, text, "#{slug} shows event.data with String keys")
+    end
+  end
+
+  # A Ruby example that forgets to define a name still compiles: Ruby parses
+  # the name as a method call. Every receiverless call in these examples must
+  # be a Ruflet helper or one of the Kernel methods below.
+  EXAMPLE_KERNEL_CALLS = %w[page lambda proc format puts raise Integer Float String Array].freeze
+
+  test "input page examples define every name they use" do
+    require "prism"
+    helpers = DocsCatalog.control_catalog.flat_map { |control| Array(control[:helpers]) }
+    allowed = (helpers + EXAMPLE_KERNEL_CALLS).to_set
+
+    INPUT_PAGES.each do |slug|
+      page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.each_with_index do |code, index|
+        unknown = receiverless_calls(Prism.parse(code).value).reject { |name| allowed.include?(name) }
+
+        assert_empty unknown.uniq, "#{slug} Ruby block #{index + 1} uses names it never defines"
       end
     end
   end
@@ -482,6 +541,13 @@ class DocsCoverageTest < ActiveSupport::TestCase
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     slugs.map { |slug| page(slug) }
+  end
+
+  # Names called without a receiver anywhere in a Prism tree.
+  def receiverless_calls(node)
+    calls = node.is_a?(Prism::CallNode) && node.receiver.nil? ? [ node.name.to_s ] : []
+    node.compact_child_nodes.each { |child| calls.concat(receiverless_calls(child)) }
+    calls
   end
 
   # DocsCatalog.find falls back to the first page for an unknown slug, so a

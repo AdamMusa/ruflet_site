@@ -4,7 +4,7 @@
 [`checkbox`](/docs/control-checkbox), with iOS defaults: it sends
 `value: false`, `tristate: false`, `label_position: "right"` and a 10-point
 `spacing` between box and label. The client draws an iOS-style checkbox on iOS
-and macOS and a Material one on Android, web, Windows and Linux.
+and macOS and a Material one on Android, Windows and Linux. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -46,6 +46,6 @@ with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `m
 
 `cupertino_checkbox` accepts no `error`, `hover_color`, `overlay_color`,
 `splash_radius` or `visual_density`: they style the Material checkbox only.
-Build it with `checkbox` when you need them on Android, web, Windows and Linux.
+Build it with `checkbox` when you need them on Android, Windows and Linux.
 
-On Android, web, Windows and Linux, the 0.0.23 client ignores `spacing`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+On Android, Windows and Linux, the 0.0.23 client ignores `spacing`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

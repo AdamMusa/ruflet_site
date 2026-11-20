@@ -3,7 +3,7 @@
 `cupertino_slider` builds the same `Slider` control as
 [`slider`](/docs/control-slider) and sends `min: 0.0` and `max: 1.0` unless
 you set them. The client draws an iOS-style slider on iOS and macOS and a
-Material slider on Android, web, Windows and Linux.
+Material slider on Android, Windows and Linux. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 

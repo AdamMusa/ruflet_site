@@ -6,7 +6,7 @@
 `use_checkmark_style: false`. Like every radio it goes inside a
 [`radio_group`](/docs/control-radio-group), which holds the selection and
 fires `on_change`. The client draws iOS-style radios on iOS and macOS and
-Material ones on Android, web, Windows and Linux.
+Material ones on Android, Windows and Linux. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -45,5 +45,5 @@ page.add(
 
 A radio sends no `on_change` of its own: the group does, with the picked
 radio's `value` in `event.data`. `use_checkmark_style` and `inactive_color`
-apply on iOS and macOS only; on Android, web, Windows and Linux the radios are
+apply on iOS and macOS only; on Android, Windows and Linux the radios are
 Material radio buttons that read `active_color` and `fill_color`.

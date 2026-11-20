@@ -51,5 +51,5 @@ with two thumbs: the first runs from `min` to `end_value` and sets
 `start_value`, the second runs from `start_value` to `max` and sets
 `end_value`, and each splits its own span into `divisions` steps. They use
 `active_color`; `label`, `round`, `inactive_color` and `overlay_color` apply on
-Android, web, Windows and Linux only, and so does `mouse_cursor`. The events
-and the values written back are the same on every platform.
+Android, Windows and Linux only, and so does `mouse_cursor`. The events
+and the values written back are the same on every platform. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.

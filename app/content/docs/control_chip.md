@@ -2,8 +2,8 @@
 
 A compact element for an attribute, filter, or action. Chips are commonly shown
 in a `row` and can be selectable or deletable. The client draws a Material chip
-on Android, web, Windows and Linux and a rounded iOS-style button on iOS and
-macOS.
+on Android, Windows and Linux and a rounded iOS-style button on iOS and
+macOS. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -59,7 +59,7 @@ page.add(row(spacing: 8, children: tags))
 
 On iOS and macOS the chip reads `label`, `leading`, `selected`,
 `selected_color`, `bgcolor`, `padding`, `show_checkmark` and `delete_icon`.
-The Material styling applies on Android, web, Windows
+The Material styling applies on Android, Windows
 and Linux only: `border_side`, `shape`, `color`, `check_color`,
 `disabled_color`, `elevation`, `elevation_on_click`, `shadow_color`,
 `selected_shadow_color`, `label_padding`, `label_text_style`,

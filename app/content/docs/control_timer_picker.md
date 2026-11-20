@@ -1,10 +1,10 @@
 # TimerPicker
 
 Picks a duration in hours, minutes and seconds, for a countdown or a timer. On
-iOS and macOS the client draws the iOS timer wheels; on Android, web, Windows
+iOS and macOS the client draws the iOS timer wheels; on Android, Windows
 and Linux a row of dropdowns, one per unit.
 [`cupertino_timer_picker`](/docs/control-cupertino-timer-picker) builds the
-same control with the iOS defaults.
+same control with the iOS defaults. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -42,8 +42,8 @@ Set `value` as an Integer number of seconds, as above. The client writes the
 new duration to `value` before it sends `on_change`, and keeps the type: for an
 Integer `value` both `event.data` and `event.control.props["value"]` are
 seconds. Without an Integer `value` (also when you leave it out) the client
-sends the duration as a String of microseconds, for example `"90000000"` for
-1 min 30 s.
+sends the duration in microseconds: for 1 min 30 s, `event.data` and
+`event.control.props["value"]` are both the Integer 90000000.
 
 `event.control.value` returns the same value as `event.control.props["value"]`;
 with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

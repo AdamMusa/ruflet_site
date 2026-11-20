@@ -1,6 +1,6 @@
 {
   "control-auto-complete-suggestion": {
-    "summary": "One entry in the `suggestions` of an [`auto_complete`](/docs/control-auto-complete). `key` is the text the user's typing is matched against, ignoring case, and `value` is the text the list shows; when one is missing the helper copies the other, and the first positional argument sets `key`. Give only `value:`, so that the user searches the text they see. After a pick, Android, web, Windows and Linux put the `value` in the field and iOS and macOS the `key`; `on_select` reports both in `event.selection`.",
+    "summary": "One entry in the `suggestions` of an [`auto_complete`](/docs/control-auto-complete). `key` is the text the user's typing is matched against, ignoring case, and `value` is the text the list shows; when one is missing the helper copies the other, and the first positional argument sets `key`. Give only `value:`, so that the user searches the text they see. After a pick, Android, Windows and Linux put the `value` in the field and iOS and macOS the `key`; `on_select` reports both in `event.selection`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.",
     "example": [
       "city = text(value: \"No city picked\")",
       "page.add(",
@@ -37,7 +37,7 @@
     ]
   },
   "control-cupertino-date-picker": {
-    "summary": "An iOS-style wheel for picking a date, a time, or both. Open it with `page.show_dialog(picker)`: on iOS and macOS the wheel slides up with Cancel and Done, and on Android, web, Windows and Linux the client shows the Material date picker dialog. When the user confirms, `on_change` gets the picked moment in `event.data`, an ISO 8601 string in UTC. Pass `date_picker_mode: \"dateAndTime\"` for a date and a time: the 0.0.23 client does not recognize the `\"date_and_time\"` this helper sends by default and shows the date wheels only. With 0.0.23 a picker added to the page shows nothing; drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23). `event.control.value` returns the same moment as `event.control.props[\"value\"]`; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "An iOS-style wheel for picking a date, a time, or both. Open it with `page.show_dialog(picker)`: on iOS and macOS the wheel slides up with Cancel and Done, and on Android, Windows and Linux the client shows the Material date picker dialog. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design. When the user confirms, `on_change` gets the picked moment in `event.data`, an ISO 8601 string in UTC. Pass `date_picker_mode: \"dateAndTime\"` for a date and a time: the 0.0.23 client does not recognize the `\"date_and_time\"` this helper sends by default and shows the date wheels only. With 0.0.23 a picker added to the page shows nothing; drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23). `event.control.value` returns the same moment as `event.control.props[\"value\"]`; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "chosen = text(value: \"No date yet\")",
       "picker = cupertino_date_picker(",
@@ -55,7 +55,7 @@
     ]
   },
   "control-dropdown-option": {
-    "summary": "One option of a [`dropdown`](/docs/control-dropdown). `key` is what the dropdown stores in its `value` and reports in `on_select`, and `text` is what the user sees; either defaults to the other, and the first positional argument sets `key`. `content` shows a control in the menu instead of `text`. `leading_icon`, `trailing_icon`, `style` and `disabled` apply on Android, web, Windows and Linux only: on iOS and macOS the options wheel shows every option's `content` or `text`, and the user can pick a disabled one.",
+    "summary": "One option of a [`dropdown`](/docs/control-dropdown). `key` is what the dropdown stores in its `value` and reports in `on_select`, and `text` is what the user sees; either defaults to the other, and the first positional argument sets `key`. `content` shows a control in the menu instead of `text`. `leading_icon`, `trailing_icon` and `style` apply on Android, Windows and Linux only: on iOS and macOS the options wheel shows each option's `content` or `text`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design. A `disabled` option cannot be picked. On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "size = text(value: \"Size: M\")",
       "page.add(",
@@ -78,7 +78,7 @@
     ]
   },
   "control-option": {
-    "summary": "Flet's dropdown option, kept for code written for `dropdown_m2`. In a [`dropdown`](/docs/control-dropdown) it works like a [`dropdown_option`](/docs/control-dropdown-option): `key` is what the dropdown stores and reports, `text` what the user sees, and `content` replaces `text` in the menu. It has its own `on_click`, which only iOS and macOS send, after the dropdown's `on_select`, so handle `on_select` on the dropdown. `alignment` and `text_style` have no effect.",
+    "summary": "Flet's dropdown option, kept for code written for `dropdown_m2`. In a [`dropdown`](/docs/control-dropdown) it works like a [`dropdown_option`](/docs/control-dropdown-option): `key` is what the dropdown stores and reports, `text` what the user sees, and `content` replaces `text` in the menu. It has its own `on_click`, which only iOS and macOS send, after the dropdown's `on_select`, so handle `on_select` on the dropdown. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design. `alignment` and `text_style` have no effect.",
     "example": [
       "color = text(value: \"No color yet\")",
       "page.add(",

@@ -1,9 +1,9 @@
 # TextField
 
 A text input for single-line and multi-line entry. The client draws a Material
-text field on Android, web, Windows and Linux and an iOS-style one on iOS and
+text field on Android, Windows and Linux and an iOS-style one on iOS and
 macOS; [`cupertino_text_field`](/docs/control-cupertino-text-field) builds the
-same control with iOS defaults.
+same control with iOS defaults. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -30,7 +30,7 @@ page.add(
 - `label` / `hint_text`
 - `password` / `can_reveal_password`
 - `multiline` / `min_lines` / `max_lines` / `shift_enter`
-- `max_length` — a limit, with a counter on Android, web, Windows and Linux
+- `max_length` — a limit, with a counter on Android, Windows and Linux
 - `keyboard_type` / `capitalization` / `autocorrect` / `autofill_hints`
 - `prefix` / `suffix` — text or a control inside the field
 - `read_only` / `disabled` / `autofocus`
@@ -38,8 +38,11 @@ page.add(
 
 ## Usage
 
-`on_change` fires on every keystroke and `event.data` is the whole text. The
-client writes the text to `value` first, so later, in another handler, read
+`on_change` fires on every keystroke and `event.data` is the whole text.
+Ruflet parses event data as JSON when it can, and copies it to `value`, so
+typed `42` arrives as the Integer 42 in `event.data` and in
+`props["value"]`; call `.to_s` when you need the text. The client writes the
+text to `value` first, so later, in another handler, read
 `field.props["value"]`:
 
 ```ruby
@@ -70,15 +73,15 @@ starts a new line; that submit carries no data, so read
 `event.control.props["value"]`.
 
 `on_selection_change` fires when the cursor moves or the selection changes.
-`event.data["selected_text"]` is the selected text and
-`event.data["selection"]` holds `base_offset`, `extent_offset`, `affinity` and
-`directional`. While the field has this handler, the client also writes the
+`event.data` has Symbol keys: `event.data[:selected_text]` is the selected
+text and `event.data[:selection]` holds `:base_offset`, `:extent_offset`,
+`:affinity` and `:directional`. While the field has this handler, the client also writes the
 range to `selection`.
 
 ## Platform differences
 
 The iOS text field has no Material decoration. These properties apply on
-Android, web, Windows and Linux only: `helper`, `counter` and their styles and
+Android, Windows and Linux only: `helper`, `counter` and their styles and
 line limits, `icon`, `prefix_icon`, `suffix_icon`, `prefix_style`,
 `suffix_style`, `dense`, `collapsed`, `align_label_with_hint`, `hover_color`,
 `focus_color`, `hint_fade_duration`, `hint_max_lines`, `size_constraints`,

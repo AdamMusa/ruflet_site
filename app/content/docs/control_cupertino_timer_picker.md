@@ -5,8 +5,8 @@ builds the same `TimerPicker` control as
 [`timer_picker`](/docs/control-timer-picker) and sends the iOS defaults:
 `item_extent: 32`, `alignment: "center"`, `minute_interval: 1`,
 `second_interval: 1` and `mode: "hour_minute_seconds"`, which clients read as
-`"hms"`. On Android, web, Windows and Linux the client draws a row of
-dropdowns instead.
+`"hms"`. On Android, Windows and Linux the client draws a row of
+dropdowns instead. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -44,8 +44,8 @@ page.add(
 
 The wheels send `on_change` as the user turns them, after the client writes the
 new duration to `value`. With an Integer `value`, as above, `event.data` and
-`event.control.props["value"]` are seconds; without one the client sends the
-duration as a String of microseconds. Use a `minute_interval` that divides 60
+`event.control.props["value"]` are seconds. Without one they are both the
+duration in microseconds, for example the Integer 90000000 for 1 min 30 s. Use a `minute_interval` that divides 60
 and a `value` that is a whole number of those steps. Give the picker a
 `height`: the wheels fill the height they are given.
 

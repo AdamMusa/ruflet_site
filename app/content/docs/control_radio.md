@@ -41,11 +41,11 @@ radios out with any control, for example a `row` for a compact choice.
 
 On iOS and macOS the client draws Cupertino radios, which have no ink:
 `overlay_color`, `hover_color`, `visual_density` and `splash_radius` apply on
-Android, web, Windows and Linux only. The other way round, `inactive_color`
+Android, Windows and Linux only. The other way round, `inactive_color`
 (the color of an unselected radio) and `use_checkmark_style` (a check mark, as
 in iOS settings lists, instead of a filled circle) apply on iOS and macOS
 only. [`cupertino_radio`](/docs/control-cupertino-radio) builds the same
-control.
+control. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 A radio sends no `on_change` of its own; the group does. Read the choice in the
 group's handler from `event.data` or `event.control.props["value"]`.

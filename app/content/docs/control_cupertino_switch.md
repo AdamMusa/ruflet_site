@@ -2,7 +2,7 @@
 
 `cupertino_switch` builds the same `Switch` control as
 [`switch`](/docs/control-switch). The client draws an iOS-style switch on iOS
-and macOS and a Material switch elsewhere.
+and macOS and a Material switch elsewhere. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -50,7 +50,7 @@ with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `m
 
 iOS draws the on and off marks only when the user turns on On/Off Labels in
 the accessibility settings; `on_label_color` and `off_label_color` color them,
-and other platforms ignore both. On Android, web, Windows and Linux the client
+and other platforms ignore both. On Android, Windows and Linux the client
 draws a Material switch. To set its Material-only properties, such as
 `track_color`, build it with [`switch`](/docs/control-switch), which sends the
 same control.
