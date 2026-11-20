@@ -39,6 +39,53 @@ page.add(
 Most controls use `children:` for a list or `content:` for one nested control.
 Some compatibility helpers also accept `controls:`.
 
+## Platform designs
+
+The client draws every control with the design of the platform it runs on:
+
+- iOS and macOS get Cupertino (Apple) widgets. A web app opened in a browser on
+  an iPhone, iPad or Mac gets them too, because the client reports the
+  browser's operating system.
+- Android, Windows, Linux and other browsers get Material widgets.
+
+Your Ruby code stays the same: `switch`, `button`, `list_tile` or `app_bar`
+send one control, and each client draws it in its own design. The
+`cupertino_*` helpers do not force the iOS look either. `cupertino_switch`
+sends the same `Switch` control as `switch`, `cupertino_button` the same
+`Button` as `button`, and so on, so an Android client still draws a Material
+switch. Older wire names, such as `CupertinoSwitch`, are normalized to the same
+control by the client.
+
+The `adaptive:` keyword that some controls accept comes from Flet. No Ruflet
+client reads it, and the design follows the platform with or without it.
+
+Some properties exist in only one design. A property page says so in its
+description, for example "Android, web, Windows and Linux only" or "iOS and
+macOS only". In that short form, "web" means a browser on a non-Apple system.
+The other design ignores those properties.
+
+## Option values
+
+Options that name a choice are Strings. Write a multi-word value in camelCase,
+such as `alignment: "spaceBetween"`, `fit: "fitWidth"` or
+`curve: "easeInOut"`; the constants `Ruflet::MainAxisAlignment`,
+`Ruflet::CrossAxisAlignment` and `Ruflet::TextAlign` hold these spellings.
+Snake case, such as `"space_between"`, also works on Ruflet main, but a 0.0.23
+client does not recognize it and falls back to the default.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+```ruby
+row(
+  alignment: Ruflet::MainAxisAlignment::SPACE_BETWEEN,
+  vertical_alignment: "center",
+  children: [text("Total"), text("$24.00", weight: "bold")]
+)
+```
+
+Alignments of a single child, such as `align:` or a stack's `alignment:`, are
+`{ x:, y: }` hashes from -1 to 1 (`{ x: 0, y: 0 }` is the center);
+`container(alignment: "center")` is the one String shortcut.
+
 ## Text styling
 
 Pass text styles as a Ruby hash on `style:`:
@@ -52,8 +99,13 @@ plain Ruby hash.
 
 ## Sizing
 
-- `expand: true` fills available space along the parent's main axis.
+- `expand: true` fills available space along the parent's main axis, inside a
+  `row`, a `column` or the page. An integer shares the space out: in a row with
+  `expand: 2` and `expand: 1` children, the first gets two thirds.
+  `expand_loose: true` lets a child stay smaller than its share.
 - `width` and `height` request fixed dimensions.
+- `left`, `top`, `right` and `bottom` position a child of a `stack`.
+- `col` sets a child's span in a [`responsive_row`](/docs/control-responsive-row).
 - `padding` adds space inside a control.
 - `margin` adds space around a control.
 - `spacing` controls gaps between row or column children.

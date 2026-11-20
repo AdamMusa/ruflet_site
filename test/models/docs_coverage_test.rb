@@ -329,6 +329,112 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_includes page("control-cupertino-app-bar").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1], "trailing:"
   end
 
+  # Controls whose every property and event line has a written description (a
+  # widget override or a shared entry in config/property_descriptions.json) and
+  # whose every method has a method note, instead of the generated fallback.
+  # The list may only grow.
+  FULLY_DESCRIBED_CONTROLS = %w[
+    control-absorb-pointer control-animated-switcher control-badge control-card control-carousel-view
+    control-circle-avatar control-clip-oval control-clip-r-superellipse control-column control-container
+    control-custom-scroll-view control-dismissible control-divider control-drag-target control-draggable
+    control-draggable-scrollable-sheet control-fade-transition control-fitted-box
+    control-fractionally-sized-box control-gesture-detector control-grid-view control-hero control-icon
+    control-ignore-pointer control-image control-indexed-stack control-interactive-viewer
+    control-intrinsic-height control-intrinsic-width control-keyboard-listener control-list-view
+    control-markdown control-merge-semantics control-nested-scroll-view control-overlay control-page-view
+    control-placeholder control-reorderable-drag-handle control-reorderable-list-view
+    control-responsive-row control-rotated-box control-rotation-transition control-row control-ruflet-app
+    control-safe-area control-scale-transition control-screenshot control-selection-area control-semantics
+    control-shader-mask control-shimmer control-size-transition control-slide-transition
+    control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
+    control-sliver-padding control-sliver-to-box-adapter control-stack control-text control-text-span
+    control-transparent-pointer control-vertical-divider control-window-drag-area
+  ].freeze
+
+  test "fully described controls have no generic property, event or method lines" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    generic = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+      control = catalog[slug]
+      next [ "#{slug} is not in the catalog" ] unless control
+
+      widget = control[:widget_type].to_s
+      overrides = descriptions.dig("widget_overrides", widget) || {}
+      lines = %w[properties events].flat_map do |kind|
+        Array(control[kind.to_sym]).map(&:to_s)
+                                   .reject { |name| overrides.key?(name) || descriptions[kind].key?(name) }
+                                   .map { |name| "#{slug} #{kind} #{name}" }
+      end
+      lines + Array(control[:methods]).map { |method| method[:name].to_s }
+                                      .reject { |name| descriptions.dig("method_notes", widget, name) }
+                                      .map { |name| "#{slug} methods #{name}" }
+    end
+
+    assert_empty generic, "Describe these lines in config/property_descriptions.json:\n#{generic.join("\n")}"
+  end
+
+  test "shared layout descriptions say what the clients do" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    properties = descriptions.fetch("properties")
+    events = descriptions.fetch("events")
+    common = DocsCatalog.send(:common_properties)
+
+    assert_empty common - properties.keys - events.keys, "Every key in config/control_common_properties.json needs a shared description"
+    assert_includes properties.fetch("adaptive"), "no Ruflet client reads it"
+    assert_includes properties.fetch("expand"), "an integer sets the share"
+    assert_includes events.fetch("on_size_change"), '`{ "w" => width, "h" => height }`'
+    %w[opacity rotation scale offset align margin position container].each do |name|
+      assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
+    end
+  end
+
+  # Hand-written sentences of the layout pages that describe main-only
+  # behavior (each must carry the marker) or one design only (each must stay).
+  LAYOUT_PROSE_MARKERS = {
+    "controls-and-layout" => [ "Snake case, such as `\"space_between\"`, also works on Ruflet main" ],
+    "control-container" => [ "`opacity_on_click` — the opacity an `ink: true` container fades to" ],
+    "control-image" => [ "`src_base64:` is the same data under its own name" ],
+    "control-semantics" => [ "Drawing the wrapped `content` needs the next release" ],
+    "control-screenshot" => [ "An Integer `pixel_ratio:` needs the next release" ]
+  }.freeze
+
+  LAYOUT_PROSE_QUALIFIERS = {
+    "controls-and-layout" => [
+      "`cupertino_switch` sends the same `Switch` control as `switch`",
+      "No Ruflet client reads it, and the design follows the platform with or without it."
+    ],
+    "control-text" => [ "on Android, web, Windows and Linux it fires only for `selectable: true` text" ],
+    "control-badge" => [ "iOS and macOS need a label" ],
+    "control-card" => [ "draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only" ],
+    "control-reorderable-list-view" => [ "`semantic_child_count` is accepted, but no Ruflet client reads it" ]
+  }.freeze
+
+  test "layout pages keep their next-release markers and platform notes" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    # Guides such as controls-and-layout render from their source file.
+    chunks = lambda do |slug|
+      entry = page(slug)
+      next prose_chunks(slug) if entry.content
+
+      entry.source.read.split(/\n(?=- |\n)/).map(&:squish)
+    end
+
+    LAYOUT_PROSE_MARKERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        chunk = chunks.call(slug).find { |candidate| candidate.include?(phrase) }
+
+        assert chunk, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes chunk, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    LAYOUT_PROSE_QUALIFIERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        assert chunks.call(slug).any? { |chunk| chunk.include?(phrase) }, "#{slug} no longer says #{phrase.inspect}"
+      end
+    end
+  end
+
   private
 
   # The hand-written part of a page (everything above a prose page's Complete

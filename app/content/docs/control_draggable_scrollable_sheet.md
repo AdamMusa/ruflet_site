@@ -58,7 +58,7 @@ Give the sheet's rows as the first argument, as `children:`, or in a block.
 - `header` — a control pinned above the rows, below the drag handle.
 - `show_drag_handle` — draw the drag handle (default `true`).
 - `padding` and `spacing` — space around and between the rows.
-- `bgcolor`, `elevation` and `border_radius` — the sheet surface.
+- `bgcolor`, `elevation` and `border_radius` — the sheet surface. `elevation` applies on Android, web, Windows and Linux only.
 - `extent_change_interval` — the minimum milliseconds between two `on_extent_change` events (default 50).
 
 ## Events and methods

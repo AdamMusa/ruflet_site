@@ -31,6 +31,8 @@ card(
 - `clip_behavior`
 - `margin`
 - `variant` — `"elevated"`, `"filled"`, or `"outlined"`
+- `semantic_container` — screen readers treat the card as one element (default `true`)
+- `show_border_on_foreground` — draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only
 
 ## Usage
 
