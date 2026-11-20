@@ -49,11 +49,16 @@
     ]
   },
   "control-banner-ad": {
-    "summary": "A Google Mobile Ads (AdMob) banner, 320 by 50 logical pixels, on Android and iOS. Without `unit_id` the client loads Google's test banner: use your own unit id, and your own AdMob app, before you ship. On other platforms the ad does not load. Part of the [`ads` extension](/docs/extension-ads): add `ads` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "A Google Mobile Ads (AdMob) banner, 320 by 50 logical pixels, on Android and iOS. Always set `unit_id`: without it the client falls back to Google's interstitial test ids (a client bug), so no test banner shows. Google's banner test units are `ca-app-pub-3940256099942544/6300978111` on Android and `ca-app-pub-3940256099942544/2934735716` on iOS; use your own unit id, and your own AdMob app, before you ship. On other platforms the ad does not load. Part of the [`ads` extension](/docs/extension-ads): add `ads` under `extensions:` in `ruflet.yaml` and rebuild the client.",
     "example": [
+      "# Google's banner test units. Use your own unit ids before you ship.",
+      "test_units = {",
+      "  android: \"ca-app-pub-3940256099942544/6300978111\",",
+      "  ios: \"ca-app-pub-3940256099942544/2934735716\"",
+      "}",
       "status = text(value: \"Loading ad\")",
       "banner = banner_ad(",
-      "  unit_id: \"ca-app-pub-3940256099942544/6300978111\",",
+      "  unit_id: test_units[:android], # test_units[:ios] in an iOS build",
       "  request: { keywords: [\"cooking\", \"recipes\"] },",
       "  width: 320,",
       "  height: 50,",

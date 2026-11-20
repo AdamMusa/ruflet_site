@@ -437,6 +437,11 @@
         "delete_icon_tooltip"
       ]
     },
+    "control-code-editor": {
+      "events": {
+        "on_change": "With the next release `event.data` is always the text, and only the user's edits fire it."
+      }
+    },
     "control-cupertino-app-bar": {
       "properties": [
         "badge",

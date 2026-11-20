@@ -442,7 +442,7 @@
       "on_paid": "Fired when the ad earns revenue; `event.data` has `value` (in micros of the currency), `precision` and `currency_code`.",
       "on_will_dismiss": "Fired on iOS just before a screen the ad opened closes. No data.",
       "request": "Targeting of the ad request: `{ keywords:, content_url:, non_personalized_ads:, neighboring_content_urls:, http_timeout:, extras: }`.",
-      "unit_id": "Your AdMob banner ad unit id. Unset, the client loads Google's test banner unit.",
+      "unit_id": "Your AdMob banner ad unit id. Always set it: unset, the client falls back to Google's interstitial test ids (a client bug), so no test banner shows. Google's banner test units are `\"ca-app-pub-3940256099942544/6300978111\"` on Android and `\"ca-app-pub-3940256099942544/2934735716\"` on iOS.",
       "width": "Width of the space the banner takes; banners are 320 by 50 logical pixels."
     },
     "barchart": {
@@ -597,7 +597,7 @@
       "gutter_style": "Line-number column: `{ text_style:, background_color:, width: 80, margin: 10, show_line_numbers: true, show_folding_handles: true, show_errors: true }`.",
       "language": "highlight.js language id used to color the code, such as `\"ruby\"`, `\"python\"`, `\"javascript\"`, `\"json\"` or `\"yaml\"`. Unset or unknown, the code is not colored.",
       "on_blur": "Fired when the editor loses focus. No data.",
-      "on_change": "Fired as the user edits; `event.data` is the full text.",
+      "on_change": "Fired as the user edits; `event.control.props[\"value\"]` holds the full text, as a String. `event.data` is the text too, except that 0.0.23 decodes text that is valid JSON, such as `{\"a\": 1}` into a Hash, and also fires the event for a `value` set from Ruby.",
       "on_focus": "Fired when the editor gains focus. No data.",
       "on_selection_change": "Fired when the user moves the cursor or selection; `event.data` has `selected_text` and `selection` (`base_offset`, `extent_offset`, `affinity`, `directional`).",
       "padding": "Space around the code, in logical pixels (default 0).",

@@ -23,7 +23,7 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   # Each must stay and keep the next-release marker in its paragraph or item.
   PINNED_PROSE_MARKERS = {
     "control-web-view" => [ "changing `url` with `page.update` also navigates", "With the next release the error comes at once." ],
-    "control-code-editor" => [ "with the next release `:atom_one_dark` works too", "a `value` you set from Ruby also fires it" ],
+    "control-code-editor" => [ "with the next release `:atom_one_dark` works too", "a `value` you set from Ruby also fires it", "`event.data` is always the text" ],
     "control-color-picker" => [ "the client also writes the pick back to `color`" ],
     "control-block-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
     "control-material-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
@@ -138,8 +138,22 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
 
   # On 0.0.23 and on main the server symbolizes the keys of every event payload
   # hash, so a string key reads nil (an example then raises or does nothing).
+  # Any `.data` reader counts, whatever the handler calls its event (`e.data`),
+  # and so do `dig` and `fetch` and a string key after a symbol one.
+  STRING_KEY = /\.data(?:\[[^\]\n]*\])*(?:\[|\.(?:dig|fetch)\()\s*["']|\b(?:point|spot|touched|coordinates)(?:\[|\.(?:dig|fetch)\()\s*["']/
+
+  test "the payload key check catches each way of writing a string key" do
+    [ 'event.data["type"]', 'e.data["type"]', "event.data.dig('coordinates')", 'event.data.fetch("spots")',
+      'event.data[:coordinates]["latitude"]', 'touched["spot_index"]', 'point.dig("x")' ].each do |read|
+      assert_match STRING_KEY, read
+    end
+    [ "event.data[:type]", "e.data.dig(:coordinates, :latitude)", 'event.control.props["value"]' ].each do |read|
+      assert_no_match STRING_KEY, read
+    end
+  end
+
   test "pages of the group read event payloads with symbol keys" do
-    string_key = /\bevent\.data\[["']|\b(?:point|spot|touched|coordinates)\[["']/
+    string_key = STRING_KEY
     offenders = (CONTROLS + GUIDE_PAGES + EXTENSION_PAGES).filter_map do |slug|
       entry = page(slug)
       slug if (entry.content || entry.source.read).match?(string_key)
@@ -176,6 +190,41 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
 
     assert_includes platforms, "the Android manifest of the client `ruflet build` generates has none"
     assert_includes platforms, "iOS and macOS builds remove the sample id"
+    assert_includes platforms, "Without that id the SDK stops the app at launch on Android and iOS."
+  end
+
+  # banner.dart (template main and engine) falls back to the interstitial test
+  # unit ids, so a banner without `unit_id` shows no test banner.
+  BANNER_TEST_UNITS = %w[ca-app-pub-3940256099942544/6300978111 ca-app-pub-3940256099942544/2934735716].freeze
+
+  test "the ads docs say a banner needs its unit_id" do
+    extension = DocsCatalog::EXTENSION_CATALOG.find { |entry| entry[:key] == "ads" }
+    description = JSON.parse(Rails.root.join("config/property_descriptions.json").read).dig("widget_overrides", "bannerad", "unit_id")
+
+    [ extension[:platforms], DocsCatalog.control_docs.dig("control-banner-ad", "summary"), description ].each do |text|
+      assert_includes text, "falls back to"
+      assert_includes text, "interstitial test ids"
+      refute_match(/loads Google's test (?:banner|ad units)/, text)
+    end
+    BANNER_TEST_UNITS.each do |unit|
+      assert_includes example("control-banner-ad"), unit
+      assert_includes extension[:example], unit
+      assert_includes description, unit
+    end
+    assert_match(/^\s*unit_id: /, example("control-banner-ad"))
+    assert_match(/^\s*unit_id: /, extension[:example])
+  end
+
+  # Ruflet main keeps the CodeEditor change text a String (ruflet#103); the
+  # 0.0.23 server decodes text that is valid JSON.
+  test "the code editor says what 0.0.23 hands on_change" do
+    complete_api = page("control-code-editor").content.split("\n## Complete API\n", 2).last
+    line = complete_api.split(/^### Events$/, 2).last.lines.find { |entry| entry.start_with?("- `on_change` — ") }
+
+    assert line, "control-code-editor: the Complete API lists no on_change"
+    assert_includes line, "0.0.23 decodes text that is valid JSON"
+    assert_includes line, "`event.data` is always the text, and only the user's edits fire it. #{DocsCatalog::NEXT_RELEASE_MARKER}."
+    assert_includes page("control-code-editor").content, 'event.control.props["value"].to_s.length'
   end
 
   # Ruflet main's client reads BarChart `group_spacing` and 0.0.23's does not.

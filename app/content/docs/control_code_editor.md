@@ -30,7 +30,7 @@ editor = code_editor(
   code_theme: "atom-one-dark",
   read_only: false,
   expand: true,
-  on_change: ->(event) { page.update(length, value: "#{event.data.to_s.length} characters") }
+  on_change: ->(event) { page.update(length, value: "#{event.control.props["value"].to_s.length} characters") }
 )
 page.add(column(expand: true, children: [editor, length]))
 ```
@@ -71,9 +71,11 @@ The first positional argument is the editor `value` (the code), so
 
 ## Events
 
-- `on_change` — the user changed the text; `event.data` is the full text. With
-  0.0.23 a `value` you set from Ruby also fires it; with the next release only
-  the user's edits do. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `on_change` — the user changed the text. `event.control.props["value"]` holds
+  the full text, as a String. `event.data` is the text too, except that 0.0.23
+  decodes text that is valid JSON: `{"a": 1}` arrives as a Hash and `42` as an
+  Integer. With 0.0.23 a `value` you set from Ruby also fires it. With the next
+  release `event.data` is always the text, and only the user's edits fire it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `on_selection_change` — the cursor or selection moved. `event.data` has
   `selected_text` and `selection`, a hash with `base_offset`, `extent_offset`,
   `affinity` and `directional`.
