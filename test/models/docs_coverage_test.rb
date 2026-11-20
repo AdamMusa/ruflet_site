@@ -10,7 +10,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
     control-about-dialog control-absorb-pointer control-action-sheet control-action-sheet-action
-    control-arc control-audio control-auto-complete-suggestion control-autofill-group
+    control-arc control-audio
     control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
     control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
     control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
@@ -19,16 +19,15 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-context-menu control-context-menu-action control-cupertino-action-sheet
     control-cupertino-action-sheet-action control-cupertino-activity-indicator
     control-cupertino-alert-dialog control-cupertino-app-bar control-cupertino-bottom-sheet
-    control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
+    control-cupertino-context-menu control-cupertino-context-menu-action
     control-cupertino-dialog-action control-cupertino-filled-button
-    control-cupertino-list-tile control-cupertino-navigation-bar control-cupertino-picker
-    control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
+    control-cupertino-list-tile control-cupertino-navigation-bar
     control-cupertino-tinted-button control-custom-scroll-view control-data-cell control-data-column
     control-data-column-2 control-data-row control-data-row-2 control-data-table-2
-    control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
+    control-drag-target control-draggable control-draggable-scrollable-sheet
     control-expansion-panel control-expansion-panel-list control-fade-transition control-fill
-    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
-    control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
+    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box
+    control-fractionally-sized-box control-hero control-hue-ring-picker
     control-ignore-pointer control-image-source-attribution control-indexed-stack
     control-interactive-viewer control-interstitial-ad control-intrinsic-height
     control-intrinsic-width control-keyboard-listener control-line control-line-chart
@@ -36,8 +35,8 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-map control-marker control-marker-layer control-material-picker control-menu-bar
     control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
     control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
-    control-navigation-rail-destination control-nested-scroll-view control-option
-    control-outlined-icon-button control-oval control-overlay control-path control-picker
+    control-navigation-rail-destination control-nested-scroll-view
+    control-outlined-icon-button control-oval control-overlay control-path
     control-pie-chart control-pie-chart-section control-placeholder control-points
     control-polygon-layer control-polygon-marker control-polyline-layer control-polyline-marker
     control-radar-chart control-radar-chart-title control-radar-data-set
@@ -50,7 +49,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-sliver-padding control-sliver-to-box-adapter control-snack-bar-action control-step
     control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
     control-table control-table-row control-text-source-attribution control-text-span
-    control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
+    control-tile-layer control-transparent-pointer control-vertical-divider
     control-video control-window-drag-area
   ].freeze
 
@@ -312,6 +311,93 @@ class DocsCoverageTest < ActiveSupport::TestCase
     PINNED_PROSE_QUALIFIERS.each do |slug, phrases|
       phrases.each do |phrase|
         assert prose_chunks(slug).any? { |chunk| chunk.include?(phrase) }, "#{slug} no longer says #{phrase.inspect}"
+      end
+    end
+  end
+
+  # The input controls' state readers (`event.control.value` and friends) are
+  # on main only; each page that teaches `props[...]` names its reader once,
+  # with the marker.
+  STATE_READER_PROSE = {
+    "control-auto-complete" => "`event.control.value` and `field.value`",
+    "control-checkbox" => "`event.control.value` (and `terms.value`)",
+    "control-chip" => "`event.control.selected`",
+    "control-cupertino-checkbox" => "`event.control.value` returns",
+    "control-cupertino-date-picker" => "`event.control.value` returns the same moment",
+    "control-cupertino-picker" => "`event.control.selected_index` returns",
+    "control-cupertino-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-slider" => "`event.control.value` returns",
+    "control-cupertino-sliding-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-switch" => "`event.control.value` returns",
+    "control-cupertino-text-field" => "`field.selection` the same range",
+    "control-cupertino-timer-picker" => "`event.control.value` returns",
+    "control-date-picker" => "`event.control.entry_mode` return",
+    "control-date-range-picker" => "`event.control.start_value` and `event.control.end_value`",
+    "control-dropdown" => "`event.control.value` and `field.value`",
+    "control-picker" => "`event.control.selected_index` returns",
+    "control-radio-group" => "`event.control.value` and `choice.value`",
+    "control-range-slider" => "`event.control.start_value` and `event.control.end_value`",
+    "control-search-bar" => "`event.control.value` and `search.value`",
+    "control-segmented-button" => "`event.control.selected` returns",
+    "control-slider" => "`event.control.value` returns",
+    "control-switch" => "`event.control.value` and `toggle.value`",
+    "control-text-field" => "`field.selection` the same range",
+    "control-time-picker" => "`event.control.entry_mode` return",
+    "control-timer-picker" => "`event.control.value` returns"
+  }.freeze
+
+  # Generated lines of input controls that one design ignores, and the note
+  # each must keep. Clients draw iOS and macOS with Cupertino widgets and
+  # other platforms with Material ones, whichever helper built the control.
+  PLATFORM_NOTES = {
+    "material" => "iOS and macOS ignore it",
+    "cupertino" => "Android, web, Windows and Linux ignore it"
+  }.freeze
+  PLATFORM_ONLY_LINES = {
+    "control-checkbox" => { "material" => %w[hover_color overlay_color splash_radius visual_density] },
+    "control-chip" => { "material" => %w[border_side check_color clip_behavior delete_drawer_animation_style delete_icon_color delete_icon_size_constraints elevation elevation_on_click enable_animation_style label_padding label_text_style leading_drawer_animation_style leading_size_constraints mouse_cursor select_animation_style selected_shadow_color shadow_color visual_density] },
+    "control-cupertino-date-picker" => { "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-cupertino-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-cupertino-radio" => { "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-cupertino-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-cupertino-switch" => { "cupertino" => %w[off_label_color on_label_color] },
+    "control-cupertino-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-cupertino-timer-picker" => { "cupertino" => %w[item_extent] },
+    "control-date-picker" => { "material" => %w[barrier_color entry_mode error_format_text error_invalid_text field_hint_text field_label_text inset_padding keyboard_type on_entry_mode_change switch_to_calendar_icon switch_to_input_icon], "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-date-range-picker" => { "material" => %w[barrier_color current_date entry_mode error_format_text error_invalid_range_text error_invalid_text field_end_hint_text field_end_label_text field_start_hint_text field_start_label_text keyboard_type locale save_text switch_to_calendar_icon switch_to_input_icon] },
+    "control-dropdown" => { "material" => %w[border_color border_width capitalization dense elevation enable_filter enable_search error_style error_text expanded_insets fill_color filled focused_border_color focused_border_width helper_style helper_text hint_style hover_color input_filter label_style menu_height menu_style menu_width selected_trailing_icon text_align text_size] },
+    "control-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-radio" => { "material" => %w[hover_color overlay_color splash_radius visual_density], "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-range-slider" => { "material" => %w[inactive_color mouse_cursor overlay_color round] },
+    "control-search-bar" => { "material" => %w[bar_border_side bar_elevation bar_hint_text_style bar_overlay_color bar_padding bar_scroll_padding bar_shadow_color bar_shape bar_size_constraints bar_text_style capitalization divider_color full_screen keyboard_type shrink_wrap view_bar_padding view_bgcolor view_elevation view_header_height view_header_text_style view_hint_text view_hint_text_style view_leading view_padding view_shape view_side view_size_constraints view_trailing] },
+    "control-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-slider" => { "material" => %w[inactive_color interaction mouse_cursor overlay_color round secondary_active_color secondary_track_value] },
+    "control-switch" => { "material" => %w[active_color hover_color overlay_color padding splash_radius track_color], "cupertino" => %w[off_label_color on_label_color] },
+    "control-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-time-picker" => { "material" => %w[barrier_color entry_mode error_invalid_text help_text hour_label_text locale minute_label_text on_entry_mode_change orientation switch_to_input_icon switch_to_timer_icon] },
+    "control-timer-picker" => { "cupertino" => %w[item_extent] }
+  }.freeze
+
+  test "input pages name their main-only state reader with the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    STATE_READER_PROSE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer names its state reader (#{phrase.inspect})"
+      assert_includes paragraph, marker, "#{slug}: the state reader needs the next-release marker"
+      assert_includes paragraph, "with 0.0.23", "#{slug}: say what the reader does with 0.0.23"
+    end
+  end
+
+  test "input lines one design ignores say so" do
+    PLATFORM_ONLY_LINES.each do |slug, designs|
+      lines = generated_api_lines(page(slug).content).to_h { |_kind, name, line| [ name, line ] }
+      designs.each do |design, names|
+        names.each do |name|
+          assert lines[name], "#{slug} renders no line for #{name}"
+          assert_includes lines[name], PLATFORM_NOTES.fetch(design), "#{slug} #{name} lost its platform note"
+        end
       end
     end
   end

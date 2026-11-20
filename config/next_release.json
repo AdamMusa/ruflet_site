@@ -607,6 +607,13 @@
         "badge"
       ]
     },
+    "control-segmented-button": {
+      "properties": [
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
+      ]
+    },
     "control-selection-area": {
       "properties": [
         "badge"

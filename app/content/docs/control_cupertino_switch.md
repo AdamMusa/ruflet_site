@@ -42,3 +42,15 @@ Read the new state from `event.control.props["value"]`. The client updates
 `value` before it sends `on_change`, on every platform. Do not rely on
 `event.data`: the 0.0.23 iOS client sends the event without data, and other
 clients send the new value, which Ruby receives as `nil` when it is `false`.
+
+`event.control.value` returns the same value as `event.control.props["value"]`;
+with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+## Platform differences
+
+iOS draws the on and off marks only when the user turns on On/Off Labels in
+the accessibility settings; `on_label_color` and `off_label_color` color them,
+and other platforms ignore both. On Android, web, Windows and Linux the client
+draws a Material switch. To set its Material-only properties, such as
+`track_color`, build it with [`switch`](/docs/control-switch), which sends the
+same control.

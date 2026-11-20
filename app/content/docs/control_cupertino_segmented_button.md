@@ -35,6 +35,11 @@ page.add(
 
 ## Usage
 
+The client writes the chosen index to `selected_index` before it sends
+`on_change`, so `event.data` and `event.control.props["selected_index"]` hold
+the same Integer. `event.control.selected_index` returns it too; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 `cupertino_segmented_button` raises `ArgumentError` unless it has at least two
 visible segments, and `IndexError` when `selected_index` is out of range.
 

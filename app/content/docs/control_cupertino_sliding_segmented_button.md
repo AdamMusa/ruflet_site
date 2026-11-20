@@ -33,6 +33,11 @@ page.add(
 
 ## Usage
 
+The client writes the chosen index to `selected_index` before it sends
+`on_change`, so `event.data` and `event.control.props["selected_index"]` hold
+the same Integer. `event.control.selected_index` returns it too; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 Like `cupertino_segmented_button`, it needs at least two visible segments and
 an in-range `selected_index`. The sliding look on iOS and macOS comes from the
 `sliding` flag this helper sends. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

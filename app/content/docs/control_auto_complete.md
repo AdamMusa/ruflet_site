@@ -31,7 +31,7 @@ page.add(
 - `value` — the text in the field; on iOS and macOS only the starting text, so a later `page.update` of `value` does not change the field there
 - `suggestions_max_height` — height of the suggestion list (default 200)
 - `on_change` — the text changed; `event.data` is the text
-- `on_select` — a suggestion was picked; `event.value` is its value and `event.selection` holds its `key` and `value`
+- `on_select` — a suggestion was picked; `event.value` is its value, `event.selection` holds its `key` and `value`, and `event.data["index"]` is its position in `suggestions`
 
 ## Usage
 
@@ -41,3 +41,7 @@ same text they see. When you also pass a `key`, it must hold the searchable
 text: typing "Ger" does not find `key: "de", value: "Germany"`. After a pick,
 Material clients fill the field with the `value` and iOS and macOS with the
 `key`.
+
+The client writes the typed text to `value` as the user types, so read it
+later with `field.props["value"]`. `event.control.value` and `field.value`
+return the same text; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

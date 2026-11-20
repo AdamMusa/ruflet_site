@@ -51,10 +51,19 @@ Tapping the bar does not open the view by itself: call `open_view` from
 bar; always pass the text you want to keep. `focus` moves keyboard focus to the
 bar.
 
+The client writes the query to `value` as the user types, so read it later
+with `search.props["value"]`. `event.control.value` and `search.value` return
+the same query; with 0.0.23 they raise NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 On iOS and macOS there is no separate search view: the bar lists its
 suggestions under itself while it is focused and not empty.
 `full_screen`, `divider_color`, `capitalization`, `keyboard_type` and the
-`view_*` properties apply on Android, web, Windows and Linux only.
+`view_*` properties apply on Android, web, Windows and Linux only. So do
+`shrink_wrap` and the bar's styling: `bar_border_side`, `bar_elevation`,
+`bar_shape`, `bar_padding`, `bar_scroll_padding`, `bar_shadow_color`,
+`bar_overlay_color`, `bar_size_constraints`, `bar_text_style` and
+`bar_hint_text_style`. `bar_bgcolor`, `bar_hint_text`, `bar_leading` and
+`bar_trailing` work everywhere.
 
 On iOS and macOS, `open_view` focuses the bar and lists the suggestions before
 the user types, and `close_view(text)` puts `text` in the bar and hides them;

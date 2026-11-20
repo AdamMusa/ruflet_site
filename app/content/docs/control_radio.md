@@ -40,7 +40,14 @@ page.add(plan)
 radios out with any control, for example a `row` for a compact choice.
 
 On iOS and macOS the client draws Cupertino radios, which have no ink:
-`overlay_color`, `visual_density` and `splash_radius` apply on Android, web,
-Windows and Linux only.
+`overlay_color`, `hover_color`, `visual_density` and `splash_radius` apply on
+Android, web, Windows and Linux only. The other way round, `inactive_color`
+(the color of an unselected radio) and `use_checkmark_style` (a check mark, as
+in iOS settings lists, instead of a filled circle) apply on iOS and macOS
+only. [`cupertino_radio`](/docs/control-cupertino-radio) builds the same
+control.
+
+A radio sends no `on_change` of its own; the group does. Read the choice in the
+group's handler from `event.data` or `event.control.props["value"]`.
 
 On iOS and macOS, the 0.0.23 client ignores `label_style`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
