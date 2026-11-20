@@ -548,6 +548,8 @@ class DocsCatalog
 
   # Curated summaries and examples for controls that have no prose page,
   # keyed by slug: { "control-x": { "summary": "...", "example": ["line", ...] } }.
+  # An optional "example_callout" puts the next-release callout, followed by
+  # that sentence, above the example.
   def self.control_docs
     @control_docs ||= CONTROL_DOCS_PATH.exist? ? JSON.parse(CONTROL_DOCS_PATH.read) : {}
   end
@@ -919,6 +921,11 @@ class DocsCatalog
     # --- Example ----------------------------------------------------------
     lines << "## Example"
     lines << ""
+    # A curated example that needs the next release on a control 0.0.23 has.
+    if curated && curated["example_callout"].present?
+      lines << "> #{NEXT_RELEASE_MARKER}. #{curated.fetch('example_callout')}"
+      lines << ""
+    end
     lines << "```ruby"
     lines.concat(curated ? Array(curated.fetch("example")) : generated_control_example(control, helper))
     lines << "```"

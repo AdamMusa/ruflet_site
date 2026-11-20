@@ -64,7 +64,7 @@ page.add(
 
 - `on_tap_link` — `event.data` is the URL.
 - `on_tap_text` — a tap on text that is not a link.
-- `on_selection_change` — with `selectable: true`; `event.data["text"]` is the selected text.
+- `on_selection_change` — with `selectable: true`; `event.data[:text]` is the selected text.
 
 ## Notes
 

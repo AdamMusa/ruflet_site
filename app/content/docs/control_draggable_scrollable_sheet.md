@@ -22,7 +22,7 @@ sheet = draggable_scrollable_sheet(
   snap_sizes: [0.5],
   header: text("Nearby places"),
   on_extent_change: ->(event) {
-    page.update(extent, value: "Sheet at #{(event.data["extent"] * 100).round}%")
+    page.update(extent, value: "Sheet at #{(event.data[:extent] * 100).round}%")
   }
 )
 
@@ -63,6 +63,6 @@ Give the sheet's rows as the first argument, as `children:`, or in a block.
 
 ## Events and methods
 
-- `on_extent_change` — the sheet size changed. `event.data` has `"extent"`, `"min"` and `"max"`, as fractions.
+- `on_extent_change` — the sheet size changed. `event.data` has the keys `:extent`, `:min` and `:max`, as fractions.
 - `animate_to(size, duration: 300, curve: "easeOut")` — animate the mounted sheet to a fraction of its parent's height.
 - `jump_to(size)` — move the mounted sheet at once.

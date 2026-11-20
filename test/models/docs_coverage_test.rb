@@ -383,7 +383,9 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_empty common - properties.keys - events.keys, "Every key in config/control_common_properties.json needs a shared description"
     assert_includes properties.fetch("adaptive"), "no Ruflet client reads it"
     assert_includes properties.fetch("expand"), "an integer sets the share"
-    assert_includes events.fetch("on_size_change"), '`{ "w" => width, "h" => height }`'
+    assert_includes events.fetch("on_size_change"), "`{ w: width, h: height }`"
+    assert_includes events.fetch("on_scroll"), "`:event_type`"
+    assert_includes events.fetch("on_end_reached"), "the keys `:pixels`"
     %w[opacity rotation scale offset align margin position container].each do |name|
       assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
     end
@@ -392,7 +394,12 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # Hand-written sentences of the layout pages that describe main-only
   # behavior (each must carry the marker) or one design only (each must stay).
   LAYOUT_PROSE_MARKERS = {
-    "controls-and-layout" => [ "Snake case, such as `\"space_between\"`, also works on Ruflet main" ],
+    "controls-and-layout" => [
+      "Snake case, such as `\"space_between\"`, also works on Ruflet main",
+      "On Ruflet main these alignments also take a name",
+      "lays out its children like a `column`, so `expand` works inside it too"
+    ],
+    "control-row" => [ "`on_end_reached`, `end_reached_threshold` and `keyboard_dismiss_behavior` work on a scrolling row too" ],
     "control-container" => [ "`opacity_on_click` — the opacity an `ink: true` container fades to" ],
     "control-image" => [ "`src_base64:` is the same data under its own name" ],
     "control-semantics" => [ "Drawing the wrapped `content` needs the next release" ],
@@ -409,6 +416,37 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-card" => [ "draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only" ],
     "control-reorderable-list-view" => [ "`semantic_child_count` is accepted, but no Ruflet client reads it" ]
   }.freeze
+
+  # Sections of hand-written layout pages that need the next release: each
+  # heading must be followed directly by the callout.
+  LAYOUT_SECTION_CALLOUTS = {
+    "control-column" => "Refreshing and loading more",
+    "control-list-view" => "Refreshing and loading more",
+    "control-grid-view" => "Refreshing and loading more"
+  }.freeze
+
+  test "main-only sections of layout pages open with the callout" do
+    callout = "> #{DocsCatalog::NEXT_RELEASE_MARKER}."
+
+    LAYOUT_SECTION_CALLOUTS.each do |slug, heading|
+      section = page(slug).content[/^## #{Regexp.escape(heading)}\n\n(.*?)(?=^## |\z)/m, 1]
+
+      assert section, "#{slug} has no ## #{heading} section"
+      assert section.start_with?(callout), "#{slug}: ## #{heading} needs the next-release callout right under the heading"
+    end
+
+    example = page("control-semantics").content[/^## Example\n\n(.*?)^```ruby/m, 1]
+    assert_includes example.to_s, callout, "The 0.0.23 client draws nothing for semantics, so its example needs the callout"
+  end
+
+  test "layout pages read event payloads with symbol keys and decorate text with constants" do
+    slugs = FULLY_DESCRIBED_CONTROLS + %w[controls-and-layout]
+    string_keys = slugs.select { |slug| page_text(slug).match?(/\bevent\.data\[["']/) }
+    string_decorations = DocsCatalog.all_entries.select { |entry| entry_text(entry).match?(/\bdecoration: ["']/) }.map(&:slug)
+
+    assert_empty string_keys, "The server gives event.data hashes Symbol keys, so read event.data[:key]: #{string_keys.join(', ')}"
+    assert_empty string_decorations, "Clients read decoration as a Ruflet::TextDecoration bit mask; a String draws nothing: #{string_decorations.join(', ')}"
+  end
 
   test "layout pages keep their next-release markers and platform notes" do
     marker = DocsCatalog::NEXT_RELEASE_MARKER
@@ -499,6 +537,15 @@ class DocsCoverageTest < ActiveSupport::TestCase
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     slugs.map { |slug| page(slug) }
+  end
+
+  # A page's Markdown, generated or read from its source file.
+  def entry_text(entry)
+    entry.content || (entry.source&.exist? ? entry.source.read : "")
+  end
+
+  def page_text(slug)
+    entry_text(page(slug))
   end
 
   # DocsCatalog.find falls back to the first page for an unknown slug, so a

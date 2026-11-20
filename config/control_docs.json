@@ -227,7 +227,7 @@
       "  max_scale: 4,",
       "  boundary_margin: 40,",
       "  expand: true,",
-      "  on_interaction_update: ->(event) { page.update(zoom, value: \"Zoom #{event.data[\"s\"].round(2)}x\") }",
+      "  on_interaction_update: ->(event) { page.update(zoom, value: \"Zoom #{event.data[:s].round(2)}x\") }",
       ")",
       "",
       "page.add(",
@@ -285,7 +285,7 @@
     ]
   },
   "control-keyboard-listener": {
-    "summary": "Sends `on_key_down`, `on_key_up` and `on_key_repeat` for keys pressed while it has keyboard focus. Give it `autofocus: true`, or let the user focus a control inside it, or it receives no keys. `event.data[\"key\"]` is the key's label, such as `\"A\"`, `\"Enter\"` or `\"Arrow Down\"`.",
+    "summary": "Sends `on_key_down`, `on_key_up` and `on_key_repeat` for keys pressed while it has keyboard focus. Give it `autofocus: true`, or let the user focus a control inside it, or it receives no keys. `event.data[:key]` is the key's label, such as `\"A\"`, `\"Enter\"` or `\"Arrow Down\"`.",
     "example": [
       "last_key = text(value: \"Press a key\")",
       "",
@@ -293,8 +293,8 @@
       "  keyboard_listener(",
       "    container(padding: 24, bgcolor: \"#f1f5f9\", border_radius: 12, content: last_key),",
       "    autofocus: true,",
-      "    on_key_down: ->(event) { page.update(last_key, value: \"Down: #{event.data[\"key\"]}\") },",
-      "    on_key_up: ->(event) { page.update(last_key, value: \"Up: #{event.data[\"key\"]}\") }",
+      "    on_key_down: ->(event) { page.update(last_key, value: \"Down: #{event.data[:key]}\") },",
+      "    on_key_up: ->(event) { page.update(last_key, value: \"Up: #{event.data[:key]}\") }",
       "  )",
       ")"
     ]
@@ -556,6 +556,7 @@
   },
   "control-semantics": {
     "summary": "Describes its `content` to screen readers such as VoiceOver and TalkBack: a `label`, a `value`, a role such as `button` or `slider`, and the actions they can trigger, such as `on_increase`. It changes nothing on screen. Drawing the wrapped `content` needs the next release: the 0.0.23 client draws nothing for a `semantics` control, so the wrapped control disappears, and until then the controls' own `semantics_label` is the way to label them. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example_callout": "With 0.0.23 the client draws nothing for a `semantics` control, so the container in this example disappears.",
     "example": [
       "volume = 50",
       "level = text(value: \"Volume 50%\")",
@@ -779,7 +780,7 @@
   "control-text-span": {
     "summary": "A piece of inline text in a `text` control's `spans`, with its own `style`, a link (`url`) or a tap handler (`on_click`). Spans nest through their own `spans`. A span is not drawn on its own: put it in `text(..., spans: [...])`.",
     "example": [
-      "link = { color: \"#2563eb\", decoration: \"underline\" }",
+      "link = { color: \"#2563eb\", decoration: Ruflet::TextDecoration::UNDERLINE }",
       "",
       "page.add(",
       "  text(",

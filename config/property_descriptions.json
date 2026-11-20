@@ -51,7 +51,7 @@
     "opacity": "Opacity from 0.0 (transparent) to 1.0 (opaque).",
     "visual_density": "Compactness of the control's layout.",
     "size_constraints": "Min/max size constraints.",
-    "expand": "Inside a `row`, a `column` or the page, fills the free space along the parent's main axis. `true` is a share of 1; an integer sets the share, so `expand: 2` gets twice the space of `expand: 1`. Other parents ignore it.",
+    "expand": "Inside a `row`, a `column` or the page, fills the free space along the parent's main axis. `true` is a share of 1; an integer sets the share, so `expand: 2` gets twice the space of `expand: 1`. [Sizing](/docs/controls-and-layout#sizing) lists the parents that use it.",
     "expand_loose": "With `expand`, lets the control stay smaller than its share instead of filling it.",
     "width": "Fixed width, in logical pixels.",
     "height": "Fixed height, in logical pixels.",
@@ -333,7 +333,7 @@
     "on_tap_cancel": "Fired when a tap is cancelled.",
     "on_tap_outside": "Fired when a tap occurs outside the control.",
     "on_dismiss": "Fired when the control is dismissed.",
-    "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` has `\"event_type\"` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `\"pixels\"`, `\"min_scroll_extent\"`, `\"max_scroll_extent\"` and `\"viewport_dimension\"`, plus `\"scroll_delta\"` on updates, `\"direction\"` on user events, and `\"overscroll\"` and `\"velocity\"` on overscroll.",
+    "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll.",
     "on_select": "Fired when a selection is made.",
     "on_selection_change": "Fired when the user changes the selected text; `event.data` describes the new selection.",
     "on_state_change": "Fired when the control's state changes.",
@@ -347,9 +347,9 @@
     "on_resize": "Fired when the control is resized.",
     "on_drag_start": "Fired when a drag begins.",
     "on_animation_end": "Fired when an `animate_*` animation finishes. `event.data` names the animation: `\"opacity\"`, `\"rotation\"`, `\"scale\"`, `\"offset\"`, `\"align\"`, `\"margin\"` or `\"position\"`; a container's own `animate` reports `\"container\"`.",
-    "on_size_change": "Fired after the control's size changes, at most once per `size_change_interval`. `event.data` is `{ \"w\" => width, \"h\" => height }` in logical pixels.",
+    "on_size_change": "Fired after the control's size changes, at most once per `size_change_interval`. `event.data` is `{ w: width, h: height }` in logical pixels.",
     "on_action_result": "Fired when a client `action:` has finished; the event carries its result or error.",
-    "on_end_reached": "Fired when the user scrolls within `end_reached_threshold` of the end, for loading more items. It fires once per content length: add items, and it can fire again. `event.data` has `\"pixels\"`, `\"max_scroll_extent\"` and `\"viewport_dimension\"`.",
+    "on_end_reached": "Fired when the user scrolls within `end_reached_threshold` of the end, for loading more items. It fires once per content length: add items, and it can fire again. `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`.",
     "on_refresh": "Fired when the user pulls down to refresh; the indicator spins until the handler returns.",
     "on_paste_files": "Fired when the user pastes files into the field; `event.files` lists them.",
     "on_tap_outside_view": "Fired when the user taps outside the open search view.",
@@ -561,7 +561,7 @@
       "should_close_on_min_extent": "Lets dragging the sheet to its minimum size close an enclosing modal sheet (default `true`).",
       "snap_animation_duration": "How long snapping to a size takes, in milliseconds.",
       "snap_sizes": "Extra sizes, as fractions between `min_child_size` and `max_child_size`, that the sheet can snap to when `snap: true`.",
-      "on_extent_change": "Fired as the sheet size changes; `event.data` has `\"extent\"`, `\"min\"` and `\"max\"`, as fractions of the parent's height."
+      "on_extent_change": "Fired as the sheet size changes; `event.data` has the keys `:extent`, `:min` and `:max`, as fractions of the parent's height."
     },
     "dragtarget": {
       "content": "The control the user drops onto; the first positional argument sets it.",
@@ -773,9 +773,9 @@
       "pan_enabled": "Lets the user pan the content with a drag (default `true`).",
       "scale_enabled": "Lets the user zoom with a pinch or the mouse wheel (default `true`).",
       "scale_factor": "How much one mouse wheel step zooms (default 200); a smaller value zooms faster.",
-      "on_interaction_end": "Fired when the user lets go; `event.data` has `\"pc\"` (the pointer count) and `\"v\"`, the velocity as `{ \"x\", \"y\" }` in pixels per second.",
-      "on_interaction_start": "Fired when the user starts to pan or zoom; `event.data` has `\"lfp\"` and `\"gfp\"` (the local and global focal point as `{ \"x\", \"y\" }`) and `\"pc\"` (the pointer count).",
-      "on_interaction_update": "Fired as the user pans or zooms, at most once per `interaction_update_interval`; `event.data` has `\"s\"` (the scale since the start), `\"rot\"`, `\"fpd\"` (the focal point movement), `\"lfp\"`, `\"gfp\"` and `\"pc\"`."
+      "on_interaction_end": "Fired when the user lets go; `event.data` has the keys `:pc` (the pointer count) and `:v`, the velocity as `{ x:, y: }` in pixels per second.",
+      "on_interaction_start": "Fired when the user starts to pan or zoom; `event.data` has the keys `:lfp` and `:gfp` (the local and global focal point as `{ x:, y: }`) and `:pc` (the pointer count).",
+      "on_interaction_update": "Fired as the user pans or zooms, at most once per `interaction_update_interval`; `event.data` has the keys `:s` (the scale since the start), `:rot`, `:fpd` (the focal point movement), `:lfp`, `:gfp` and `:pc`."
     },
     "intrinsicheight": {
       "content": "The control to size to its own intrinsic height; the first positional argument sets it."
@@ -789,9 +789,9 @@
       "autofocus": "Takes keyboard focus when the listener first shows. Without focus it receives no keys.",
       "content": "The control inside the listener; the first positional argument sets it.",
       "include_semantics": "Tells screen readers that the listener can take focus (default `true`).",
-      "on_key_down": "Fired when a key is pressed; `event.data[\"key\"]` is its label, such as `\"A\"`, `\"Enter\"` or `\"Arrow Up\"`.",
-      "on_key_repeat": "Fired while a held key repeats; `event.data[\"key\"]` is its label.",
-      "on_key_up": "Fired when a key is released; `event.data[\"key\"]` is its label."
+      "on_key_down": "Fired when a key is pressed; `event.data[:key]` is its label, such as `\"A\"`, `\"Enter\"` or `\"Arrow Up\"`.",
+      "on_key_repeat": "Fired while a held key repeats; `event.data[:key]` is its label.",
+      "on_key_up": "Fired when a key is released; `event.data[:key]` is its label."
     },
     "listtile": {
       "dense": "Uses a more compact layout with less vertical space. iOS and macOS ignore it.",
@@ -822,7 +822,7 @@
       "shrink_wrap": "Sizes the markdown to its content instead of filling the available height (default `true`).",
       "soft_line_break": "Keeps single line breaks in the source as line breaks instead of joining the lines (default `false`).",
       "value": "The Markdown source to render; the first positional argument sets it.",
-      "on_selection_change": "Fired when the user changes the selection of a `selectable` markdown; `event.data[\"text\"]` is the selected text.",
+      "on_selection_change": "Fired when the user changes the selection of a `selectable` markdown; `event.data[:text]` is the selected text.",
       "on_tap_link": "Fired when the user taps a link; `event.data` is the link's URL.",
       "on_tap_text": "Fired when the user taps text that is not a link."
     },
@@ -1132,14 +1132,14 @@
       "weight": "Font weight: `\"normal\"`, `\"bold\"` or `\"w100\"` to `\"w900\"`.",
       "x": "Horizontal position when the text is a shape inside a `canvas`, in logical pixels. Text on the page ignores it.",
       "y": "Vertical position when the text is a shape inside a `canvas`, in logical pixels. Text on the page ignores it.",
-      "on_selection_change": "Fired when the user changes the selection of `selectable` text. `event.data` has `\"selected_text\"`, `\"cause\"` and `\"selection\"` with `\"base_offset\"` and `\"extent_offset\"`. On iOS and macOS `\"selected_text\"` is the selected part; on Android, web, Windows and Linux it is the whole text, so cut it with the offsets.",
+      "on_selection_change": "Fired when the user changes the selection of `selectable` text. `event.data` has the keys `:selected_text`, `:cause` and `:selection`, a hash with `:base_offset` and `:extent_offset`. On iOS and macOS `:selected_text` is the selected part; on Android, web, Windows and Linux it is the whole text, so cut it with the offsets.",
       "on_tap": "Fired when the user taps the text. On Android, web, Windows and Linux it fires only for `selectable: true` text; iOS and macOS send it for any text."
     },
     "textspan": {
       "semantics_label": "Text screen readers announce instead of the span's text.",
       "spans": "Nested spans, which take this span's style as their default.",
       "spell_out": "Makes screen readers read the text letter by letter, for codes and abbreviations.",
-      "style": "Text style of the span, such as `{ color: \"#2563eb\", decoration: \"underline\" }`.",
+      "style": "Text style of the span, such as `{ color: \"#2563eb\", decoration: Ruflet::TextDecoration::UNDERLINE }`. `decoration` takes the `Ruflet::TextDecoration` constants, not a String.",
       "text": "The span's text; the first positional argument sets it.",
       "url": "URL opened when the user taps the span.",
       "on_click": "Fired when the user taps the span.",

@@ -27,7 +27,7 @@ column(
 - `intrinsic_width` — make the column as wide as its widest child
 - `scroll` — scroll when the children overflow: `"auto"`, `"adaptive"`, `"always"` or `"hidden"`
 - `auto_scroll` — scroll to the end whenever the children change, as in a log
-- `on_scroll` — with `scroll` set; `event.data` has `"event_type"`, `"pixels"`, `"max_scroll_extent"` and more, as listed under Events below
+- `on_scroll` — with `scroll` set; `event.data` has the keys `:event_type`, `:pixels`, `:max_scroll_extent` and more, as listed under Events below
 
 ## Usage
 
@@ -61,13 +61,13 @@ page.add(
 
 ## Refreshing and loading more
 
-> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 these keywords raise ArgumentError (unknown keyword).
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 these keywords raise ArgumentError (unknown keyword) and `scroll_to` does nothing.
 
 Pull to refresh, `on_end_reached`, `keyboard_dismiss_behavior`,
 `animate_changes` with `item_animation`, and `scroll_to` are covered in
 [Controls and Layout](/docs/controls-and-layout#scrolling).
 
-- `on_end_reached` — `event.data` has `"pixels"`, `"max_scroll_extent"` and `"viewport_dimension"`.
+- `on_end_reached` — `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`.
 - `refresh_bgcolor` and `refresh_displacement` apply on Android, web, Windows and Linux only; `refresh_trigger_distance` on iOS and macOS only.
 
 ## Notes

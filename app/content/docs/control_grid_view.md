@@ -64,7 +64,7 @@ default). `on_scroll` reports the position in `event.data` with the same keys as
 
 ## Refreshing and loading more
 
-> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 these keywords raise ArgumentError (unknown keyword).
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 these keywords raise ArgumentError (unknown keyword) and `scroll_to` does nothing.
 
 `on_refresh`, `on_end_reached`, `keyboard_dismiss_behavior` and `scroll_to`
 work as on `list_view`; see [Controls and Layout](/docs/controls-and-layout#scrolling).

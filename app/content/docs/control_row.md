@@ -26,7 +26,7 @@ row(
 - `wrap` — flow the children onto further lines when they do not fit, with `run_spacing` and `run_alignment` between the lines
 - `intrinsic_height` — make the row as tall as its tallest child, so `vertical_alignment: "stretch"` gives every child that height
 - `scroll` — scroll horizontally when the children overflow: `"auto"`, `"adaptive"`, `"always"` or `"hidden"`
-- `on_scroll` — with `scroll` set; `event.data` has `"event_type"`, `"pixels"`, `"max_scroll_extent"` and more, as listed under Events below
+- `on_scroll` — with `scroll` set; `event.data` has the keys `:event_type`, `:pixels`, `:max_scroll_extent` and more, as listed under Events below
 
 ## Usage
 

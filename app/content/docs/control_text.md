@@ -62,7 +62,7 @@ with [`text_span`](/docs/control-text-span):
 text(
   "Read the ",
   spans: [
-    text_span("guide", url: "https://ruflet.dev/docs", style: { color: "#2563eb", decoration: "underline" }),
+    text_span("guide", url: "https://ruflet.dev/docs", style: { color: "#2563eb", decoration: Ruflet::TextDecoration::UNDERLINE }),
     text_span(" first.")
   ]
 )
@@ -71,7 +71,7 @@ text(
 ## Selection and taps
 
 - `selectable: true` lets the user select and copy the text. `selection_cursor_color` colors the cursor and handles; `show_selection_cursor`, `selection_cursor_width` and `selection_cursor_height` apply on Android, web, Windows and Linux only.
-- `on_selection_change` — `event.data` has `"selected_text"`, `"cause"` and `"selection"` with `"base_offset"` and `"extent_offset"`. On iOS and macOS `"selected_text"` is the selected part; on Android, web, Windows and Linux it is the whole text, so cut it with the offsets.
+- `on_selection_change` — `event.data` has the keys `:selected_text`, `:cause` and `:selection`, a hash with `:base_offset` and `:extent_offset`. On iOS and macOS `:selected_text` is the selected part; on Android, web, Windows and Linux it is the whole text, so cut it with the offsets.
 - `on_tap` — on Android, web, Windows and Linux it fires only for `selectable: true` text; iOS and macOS send it for any text. To make plain text tappable everywhere, wrap it in a [`gesture_detector`](/docs/control-gesture-detector) or a `container` with `on_click`.
 
 ```ruby
@@ -85,8 +85,8 @@ page.add(
         quote,
         selectable: true,
         on_selection_change: ->(event) {
-          range = event.data["selection"]
-          from, to = [range["base_offset"], range["extent_offset"]].minmax
+          range = event.data[:selection]
+          from, to = [range[:base_offset], range[:extent_offset]].minmax
           page.update(picked, value: "Selected: #{quote[from...to]}")
         }
       ),

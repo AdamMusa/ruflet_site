@@ -70,9 +70,6 @@ Options that name a choice are Strings. Write a multi-word value in camelCase,
 such as `alignment: "spaceBetween"`, `fit: "fitWidth"` or
 `curve: "easeInOut"`; the constants `Ruflet::MainAxisAlignment`,
 `Ruflet::CrossAxisAlignment` and `Ruflet::TextAlign` hold these spellings.
-Snake case, such as `"space_between"`, also works on Ruflet main, but a 0.0.23
-client does not recognize it and falls back to the default.
-**Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ```ruby
 row(
@@ -82,9 +79,16 @@ row(
 )
 ```
 
+Snake case, such as `"space_between"`, also works on Ruflet main, but a 0.0.23
+client does not recognize it and falls back to the default.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 Alignments of a single child, such as `align:` or a stack's `alignment:`, are
-`{ x:, y: }` hashes from -1 to 1 (`{ x: 0, y: 0 }` is the center);
+`{ x:, y: }` hashes from -1 to 1 (`{ x: 0, y: 0 }` is the center). On 0.0.23,
 `container(alignment: "center")` is the one String shortcut.
+
+On Ruflet main these alignments also take a name, such as `"center"`,
+`"top_left"` or `"bottomRight"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Text styling
 
@@ -97,12 +101,17 @@ text(value: "Dashboard", style: { size: 28, weight: "w700" })
 This is the normal Ruflet application API: call the DSL helper and pass a
 plain Ruby hash.
 
+`decoration:` takes the Integer constants `Ruflet::TextDecoration::UNDERLINE`,
+`OVERLINE` and `LINE_THROUGH`, which combine with `|`. A String such as
+`"underline"` draws no line.
+
 ## Sizing
 
 - `expand: true` fills available space along the parent's main axis, inside a
   `row`, a `column` or the page. An integer shares the space out: in a row with
   `expand: 2` and `expand: 1` children, the first gets two thirds.
   `expand_loose: true` lets a child stay smaller than its share.
+- A [`form`](/docs/control-form) lays out its children like a `column`, so `expand` works inside it too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `width` and `height` request fixed dimensions.
 - `left`, `top`, `right` and `bottom` position a child of a `stack`.
 - `col` sets a child's span in a [`responsive_row`](/docs/control-responsive-row).
