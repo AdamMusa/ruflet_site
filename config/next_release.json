@@ -422,7 +422,7 @@
     },
     "control-candlestick-chart": {
       "properties": {
-        "show_tooltips_for_selected_spots_only": "With the next release the bubbles are those of candles with their own `tooltip` text.",
+        "show_tooltips_for_selected_spots_only": "With the next release the selected candles that have their own `tooltip` text show their bubble.",
         "tooltip": "With the next release a candle with its own `tooltip` text shows it in this bubble."
       }
     },
@@ -639,7 +639,7 @@
     },
     "control-scatter-chart": {
       "properties": {
-        "show_tooltips_for_selected_spots_only": "With the next release it applies to the spots with their own `tooltip` text.",
+        "show_tooltips_for_selected_spots_only": "With the next release the selected spots that have their own `tooltip` text show their bubble.",
         "tooltip": "With the next release a spot with its own `tooltip` text shows it in this bubble."
       }
     },

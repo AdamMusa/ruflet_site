@@ -533,7 +533,7 @@
     ]
   },
   "control-lottie": {
-    "summary": "Plays a Lottie animation (an After Effects export in JSON) from a URL, an asset or base64 data. It loops by default; update `animate` to stop and start it. It looks the same on every platform. Part of the [`lottie` extension](/docs/extension-lottie): add `lottie` under `extensions:` in `ruflet.yaml` and rebuild the client. With 0.0.23 a base64 `src` is decoded again on every update of the control, such as `animate: false`, so the animation restarts and `on_load` fires again; the next release only applies the change. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "Plays a Lottie animation (an After Effects export in JSON) from a URL, an asset or base64 data. It loops by default; update `animate` to stop and start it. It looks the same on every platform. Part of the [`lottie` extension](/docs/extension-lottie): add `lottie` under `extensions:` in `ruflet.yaml` and rebuild the client. With 0.0.23 a base64 `src` is decoded again on every update of the control, such as `animate: false`, so the animation loads again from its first frame and `on_load` fires again; the next release only applies the change. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "status = text(value: \"Loading animation\")",
       "animation = lottie(",
