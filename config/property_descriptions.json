@@ -499,7 +499,7 @@
       "theme_mode": "Forces the container's content into `\"light\"` or `\"dark\"` mode, or `\"system\"`.",
       "url": "URL opened when the container is tapped.",
       "on_click": "Fired when the container is tapped.",
-      "on_hover": "Fired when the pointer enters or leaves the container; `event.data` is `true` on enter and `false` on leave.",
+      "on_hover": "Fired when the pointer enters or leaves the container. `event.data` is `true` on enter; on leave the client sends `false`, which arrives in Ruby as `nil`.",
       "on_long_press": "Fired on a long press."
     },
     "cupertinoactivityindicator": {

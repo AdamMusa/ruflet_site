@@ -77,7 +77,7 @@ page.add(
 
 - `on_click`, `on_long_press` and `url` make the container tappable.
 - `on_tap_down` — `event.local_position` and `event.global_position` give the point where the press started.
-- `on_hover` — `event.data` is `true` when the pointer enters and `false` when it leaves.
+- `on_hover` — `event.data` is `true` when the pointer enters. On leave the client sends `false`, which arrives in Ruby as `nil`, so test `event.data == true`.
 - `ink: true` — touch feedback on a tappable container: an ink ripple on Android, web, Windows and Linux, colored by `ink_color`; on iOS and macOS the pressed container fades to 40% opacity instead.
 - `opacity_on_click` — the opacity an `ink: true` container fades to on iOS and macOS. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `ignore_interactions: true` — the container and its content ignore taps.
