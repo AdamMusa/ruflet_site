@@ -107,11 +107,24 @@ jobs:
           ref: b35622d6269738df50cece70f3fe7f911e5d10bc
           path: .ruflet-sources/ruflet-engine
 
+      # The RufletRecord page documents the published 0.0.23 gem: its
+      # unmarked examples also run against this commit, which set
+      # ruflet_record's VERSION to 0.0.23.
+      - name: Check out RufletRecord 0.0.23 source
+        uses: actions/checkout@v6
+        with:
+          repository: AdamMusa/ruflet
+          ref: b34072be854ec713184a4b7772f5e0645d830022
+          path: .ruflet-sources/ruflet-record-0.0.23
+          sparse-checkout: |
+            packages/ruflet_record
+
       - name: Run tests
         env:
           RAILS_ENV: test
           RUFLET_SOURCE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet
           RUFLET_ENGINE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-engine
+          RUFLET_RECORD_RELEASE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-record-0.0.23
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test

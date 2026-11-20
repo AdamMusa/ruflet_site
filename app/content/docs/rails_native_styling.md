@@ -118,7 +118,6 @@ A `/NN` suffix sets the opacity in percent: `bg-blue-500/50`.
 | `w-1/3`, `basis-2/3` and other fractions | `expand: <numerator>` | A flex factor: siblings `w-1/3` and `w-2/3` share the space 1 to 2. |
 | `shrink-0`, `flex-none`, `flex-initial`, `grow-0`, `basis-auto` | `expand: false` | Keeps the natural size. |
 | `basis-N` | `width` | |
-| `max-w-N`, `max-w-md` and the other named widths | `max_width` | Text only. The names are Tailwind's (`xs` 320 up to `7xl` 1280, `prose`, `screen-sm` to `screen-2xl`). |
 | `aspect-square`, `aspect-video`, `aspect-[4/3]`, `aspect-3/2` | `aspect_ratio` | Box. |
 
 ### Layout and alignment
@@ -190,7 +189,7 @@ on the text.
 | `hidden`, `invisible`, `visible` | `visible` | Box. A hidden element takes no space. |
 | `overflow-hidden`, `overflow-clip` | `clip_behavior: "hardEdge"` | Box. |
 | `object-contain`, `-cover`, `-fill`, `-none`, `-scale-down` | `fit` | Images. |
-| `cursor-pointer` and the other cursors | `mouse_cursor` | Only widgets that have `mouse_cursor`, such as `button`. |
+| `cursor-pointer` and the other cursors | `mouse_cursor` | Widgets that have `mouse_cursor`, such as `input`, `list-tile`, `gesture-detector` and `button`. Each renderer decides whether it applies it: the iOS and macOS button does, but the Material button on Android, the web, Windows and Linux takes its cursor from `style` and ignores it. |
 
 ### Transitions
 
@@ -212,7 +211,7 @@ animation off.
 These classes are read in 0.0.23 and on `main` but do not reach a control:
 
 - `flex-row`, `flex-col` and their `-reverse` forms: a box always lays out its children as a column. Use `row` or `column`.
-- `content-*`, `w-fit`, `h-fit`, `size-fit`, and the `min-*` and `max-*` sizes except `max-w-*` on text.
+- `content-*`, `w-fit`, `h-fit`, `size-fit`, and the `min-*` and `max-*` sizes. `max-w-*` on text sends the Text a `max_width`, but no renderer reads it.
 - `leading-N` with a spacing-scale value; use `leading-tight` or `leading-[1.5]`.
 - `text-wrap` and `text-nowrap`; use `whitespace-normal` and `whitespace-nowrap`.
 - `border-none`, `border-hidden`, `ring-0`, `outline-0` and `border-opacity-N`: they do not remove or fade a border set by another class.

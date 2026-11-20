@@ -221,9 +221,11 @@ user.destroy
 - `has_many :posts` returns a relation of the posts whose `user_id` is this user's id. `user.posts.create!(...)` sets `user_id` for you.
 - `has_one :profile` returns the first `Profile` whose `user_id` matches.
 
-Each takes `class_name:` and `foreign_key:` to override the conventions. An
-association reader runs its query every time it is called; nothing is cached
-or eager-loaded.
+Each takes `class_name:` and `foreign_key:` to override the conventions. A
+`belongs_to` or `has_one` reader looks the record up when it is called and
+returns it, or `nil`. A `has_many` reader returns a new relation, which runs
+its query when its records are requested. Nothing is cached or eager-loaded,
+so every call looks the rows up again.
 
 ## Queries
 
@@ -244,7 +246,7 @@ These methods return a new relation and leave the original unchanged:
 - `limit` and `offset`
 - `joins`, which takes an explicit `JOIN` clause
 - `merge`, which combines two relations of the same model
-- association readers
+- `has_many` readers
 
 SQL runs when records or values are requested: `each`, `to_a`, `first`,
 `last`, `find`, `find_by`, `find_by!`, `pluck`, `pick`, `ids`, `count`, `sum`,

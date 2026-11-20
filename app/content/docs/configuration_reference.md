@@ -36,9 +36,9 @@ app:
 - `backend_url` is required for server-driven builds and must be reachable from the installed client.
 - `ios_team_id` and `team_id` are fallbacks for the Apple signing team; see [`ios`](#ios).
 
-An `apk`, `android`, `aab` or `ios` build stops unless `name` (or `app_name`
-or `display_name`), `package_name` and `organization` (or `org`) are set
-under `app`, in `ruflet.yaml` or in `services.yaml`.
+An `apk`, `android`, `aab`, `ios` or `ipa` build stops unless `name` (or
+`app_name` or `display_name`), `package_name` and `organization` (or `org`)
+are set under `app`, in `ruflet.yaml` or in `services.yaml`.
 
 For compatibility, Ruflet also accepts `backend_url`, `server_url`, or
 `ruflet_client_url` at the document root or under `app`. Prefer
@@ -118,7 +118,8 @@ shares. Ruflet passes them to the client's
 [flutter_native_splash](https://pub.dev/packages/flutter_native_splash) and
 [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons)
 configuration on every build, then runs both generators. Image paths are
-relative to `ruflet.yaml`; in a Rails app Ruflet also looks under `app/`.
+relative to `ruflet.yaml`. When a file is not there, Ruflet tries the same
+path under the `app/` directory next to `ruflet.yaml`, in any project.
 
 The splash generator writes Android, iOS and web splash screens. The icon
 generator writes Android, iOS, web, macOS and Windows icons. Desktop builds
@@ -394,7 +395,7 @@ A `display_name` or `app_name` in `ruflet.yaml` replaces both of
 
 ### Client template and caches
 
-- `RUFLET_TEMPLATE_ROOT` is a local client template, either the `ruflet_flutter_template` directory or a checkout that contains `templates/ruflet_flutter_template`. `ruflet new` and `ruflet build` copy the client from it instead of the downloaded template, and `ruflet doctor` reports it. `ruflet build` still refreshes the downloaded copy.
+- `RUFLET_TEMPLATE_ROOT` is a local client template, either the `ruflet_flutter_template` directory or a checkout that contains `templates/ruflet_flutter_template`. `ruflet new` and `ruflet build` copy the client from it instead of the downloaded template, and `ruflet doctor` reports it. `ruflet new`, `create`, `build`, `install`, `debug`, `update` and `doctor` still refresh the downloaded copy before they run.
 - `RUFLET_TEMPLATE_REPO_URL` and `RUFLET_TEMPLATE_REPO_REF` select the Git repository and branch the template is downloaded from, by default `https://github.com/AdamMusa/ruflet-template.git` and `main`.
 - `RUFLET_CACHE_DIR` is where the downloaded template is kept, under `templates/`. It defaults to `~/.ruflet`. The prebuilt development clients and the managed Flutter SDK stay under `~/.ruflet`.
 - `RUFLET_RUNTIME_REPO_URL` is read when the CLI loads, but no command uses it in 0.0.23 or on `main`.

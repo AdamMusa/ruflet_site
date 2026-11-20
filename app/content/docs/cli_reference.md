@@ -18,7 +18,8 @@ treats it as an argument:
 - `ruflet new --help` and `ruflet create --help` create a project in a directory named `--help`.
 - `ruflet build --help` stops with `Unsupported build target: --help`.
 - `ruflet install --help` looks for a build to install.
-- `ruflet doctor --help` and `ruflet devices --help` run the command.
+- `ruflet doctor --help` runs the doctor.
+- `ruflet devices --help` passes `--help` to Flutter, which prints the help of `flutter devices` and lists no devices.
 - `ruflet run --help`, `ruflet update --help`, `ruflet debug --help` and `ruflet emulators --help` print only a bare list of options under `Usage: ruflet [options]`.
 
 This reference lists each command's options.
@@ -48,8 +49,11 @@ ruflet run [script|path] [--web|--desktop] [--port PORT] [--no-reload]
   Ruby file are accepted.
 - Mobile development is the default target. `--web` opens the managed web
   client and `--desktop` starts the managed desktop client.
-- The server listens on port `8550` by default. `--port PORT` overrides it;
-  `RUFLET_PORT` provides the runtime default.
+- The server listens on port `8550` by default, or on the next free port when
+  that one is taken. `--port PORT` sets the port to start from. `ruflet run`
+  passes the port it picked to the app as `RUFLET_PORT`, in place of any value
+  already set, so `RUFLET_PORT` sets the port only for an app started without
+  `ruflet run`.
 - Hot reload is enabled by default and watches Ruby files. Press `r` in the
   running terminal to rerun the app against the live page. Press `R` to restart
   the Ruby backend. Use `--no-reload` to disable the watcher.
@@ -88,7 +92,7 @@ ruflet debug [platform] [--platform NAME] [--device-id ID]
 renderer name. This command requires managed Flutter client source and is for
 client-side debugging; normal app development uses `ruflet run`.
 
-`--device ID` is another spelling of `--device-id ID`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+`--device ID` and `--device=ID` are other spellings of `--device-id ID`.
 
 ## Build
 
@@ -174,8 +178,8 @@ Commands also read these environment variables. The
 [Configuration Reference](/docs/configuration-reference#environment-variables)
 describes each one.
 
-- `new`, `build` and `doctor`: `RUFLET_TEMPLATE_ROOT`, `RUFLET_TEMPLATE_REPO_URL`, `RUFLET_TEMPLATE_REPO_REF` and `RUFLET_CACHE_DIR` choose the client template and where its download is kept.
-- `run`: `RUFLET_PORT` sets the default port. `RUFLET_CLIENT_AUTO_UPDATE`, `RUFLET_CLIENT_UPDATE_INTERVAL` and `RUFLET_CLIENT_CHANNEL` control the prebuilt web and desktop clients, which `update` also reads.
+- `new`, `create`, `build`, `install`, `debug`, `update` and `doctor` refresh the downloaded client template before they run. `RUFLET_TEMPLATE_REPO_URL`, `RUFLET_TEMPLATE_REPO_REF` and `RUFLET_CACHE_DIR` choose where it comes from and where it is kept. `RUFLET_TEMPLATE_ROOT` makes `new` and `build` copy a local template instead, and `doctor` reports it.
+- `run`: `RUFLET_CLIENT_AUTO_UPDATE`, `RUFLET_CLIENT_UPDATE_INTERVAL` and `RUFLET_CLIENT_CHANNEL` control the prebuilt web and desktop clients, which `update` also reads.
 - `build`: `RUFLET_CONFIG`, `RUFLET_CLIENT_DIR`, `RUFLET_FLUTTER_VERSION`, `RUFLET_FULL_RUNTIME_PATH`, `RUFLET_RUBY_RUNTIME_PATH`, `RUFLET_MRBC`, `RUFLET_IOS_TEAM_ID` and the `RUFLET_ANDROID_*` signing variables.
 - The running app: `RUFLET_HOST`, `RUFLET_STRICT_PORT`, `RUFLET_PROTOCOL_TRACE` and `RUFLET_DEBUG`, and in Rails `RUFLET_RAILS_DEBUG_EVENTS`.
 
