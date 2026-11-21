@@ -1348,6 +1348,7 @@
     "switch": {
       "value": "`true` when the switch is on (default false). The client updates it when the user toggles the switch.",
       "label": "Text or control shown next to the switch; tapping it toggles the switch too.",
+      "label_text_style": "Style of a text `label`, for example `{ size: 14, color: \"#6b7280\" }`.",
       "active_color": "Color of the thumb while the switch is on. iOS and macOS ignore it, in a browser too: use `thumb_color`.",
       "hover_color": "Color of the ink circle while the pointer is over the switch. iOS and macOS ignore it, in a browser too.",
       "overlay_color": "Color of the ink circle when the switch is pressed, hovered or focused. iOS and macOS ignore it, in a browser too.",

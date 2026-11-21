@@ -710,6 +710,26 @@ end
     refute_includes show_icon, marker, "setting show_selected_icon when building the button works on 0.0.23"
   end
 
+  # Like FULLY_DESCRIBED_CONTROLS, for the input and form controls: every
+  # property and event line has its own description.
+  test "input controls describe every property and event" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    missing = INPUT_PAGES.flat_map do |slug|
+      control = catalog[slug]
+      next [ "#{slug}: not in the catalog" ] unless control
+
+      %w[properties events].flat_map do |kind|
+        Array(control[kind.to_sym]).map(&:to_s).reject do |name|
+          descriptions.dig("widget_overrides", control[:widget_type].to_s, name) || descriptions.dig(kind, name)
+        end.map { |name| "#{slug} #{kind} #{name}" }
+      end
+    end
+
+    assert_empty missing, "Describe these in config/property_descriptions.json:\n#{missing.join("\n")}"
+  end
+
   # A hand-written list item carries the marker only for names that
   # config/next_release.json lists for its page: the other names work on 0.0.23.
   test "input list items carry the marker only for names next_release.json lists" do
