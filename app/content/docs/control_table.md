@@ -14,11 +14,11 @@ plans = [["Starter", "1", "Free"], ["Team", "10", "49 USD"], ["Business", "50", 
 page.add(
   table(
     [
-      table_row([text("Plan"), text("Seats"), text("Price")], bgcolor: :surface_container_high),
+      table_row([text("Plan"), text("Seats"), text("Price")], bgcolor: :surfacecontainerhigh),
       *plans.map { |plan| table_row(plan.map { |cell| text(cell) }) }
     ],
     column_widths: { 0 => { type: "flex", value: 2 }, 2 => { type: "fixed", value: 96 } },
-    border_color: :outline_variant,
+    border_color: :outlinevariant,
     border_radius: 8,
     cell_padding: 8
   )

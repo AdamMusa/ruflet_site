@@ -5,23 +5,28 @@ Asset URLs used by that client must therefore be reachable from the client.
 
 ## Backend URL
 
-Configure the deployed or device-reachable Rails URL in `ruflet.yaml`:
+Configure the deployed or device-reachable Rails URL in
+`config/initializers/ruflet.rb`:
 
-```yaml
-app:
-  name: My Rails App
-  backend_url: https://app.example.com
+```ruby
+Ruflet::Rails.configure do |config|
+  config.backend_url = "https://app.example.com"
+end
 ```
 
-`Ruflet::Rails.backend_url` resolves an explicit `host:` first, then the
-configured backend URL, then the host of the active Ruflet request.
+`Ruflet::Rails.backend_url` resolves an explicit `host:` first, then
+`config.backend_url`, then the host of the active Ruflet request. A Rails app
+does not need `ruflet.yaml` for this. Two tools fall back to it: the desktop
+launcher when no `config.backend_url` is set, and `rake ruflet:build` when the
+initializer sets none of the values it passes to the build (backend URL, app
+name, services, extensions, or icon, splash, and theme settings).
 
 For development on a physical device, use the computer's LAN address instead
-of `localhost`:
+of `localhost`. The generated initializer reads `RUFLET_BACKEND_URL`, so you can
+set it per run:
 
-```yaml
-app:
-  backend_url: http://192.168.1.20:3000
+```bash
+RUFLET_BACKEND_URL=http://192.168.1.20:3000 bin/rails server -b 0.0.0.0
 ```
 
 ## Rails asset URLs
@@ -40,17 +45,3 @@ Ruflet::Rails.asset_url("logo.png", host: "https://app.example.com")
 ```
 
 An existing absolute URL or asset-host URL passes through unchanged.
-
-## Embed a mounted Ruflet web app
-
-Use `ruflet_frame` inside an ERB view to embed a mounted Ruflet web frontend:
-
-```erb
-<%= ruflet_frame "/dashboard", height: 640 %>
-<%= ruflet_frame "/showcase", height: "80vh", width: "100%" %>
-```
-
-Relative paths stay same-origin. Numeric dimensions become pixels, string
-dimensions pass through, and additional HTML attributes are escaped.
-
-The helper is included in Action View automatically.
