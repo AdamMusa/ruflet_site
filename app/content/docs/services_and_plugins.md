@@ -80,6 +80,25 @@ Unless shown otherwise, asynchronous calls accept `timeout:` and `on_result:`.
 Availability varies by platform. Handle errors and avoid assuming that every
 web browser or device supports every operation.
 
+`page.can_launch_url` takes no `on_result:`, so its answer is lost. Use
+`page.url_launcher.can_launch_url(url, on_result: ->(supported, error) { ... })`
+to read it.
+
+## Result and error handling
+
+A client call sends the request and returns at once. The client answers later
+by calling `on_result` with two values: the result and `nil`, or `nil` and the
+client's error message as a String. Give `on_result` a lambda that takes both;
+a lambda with one parameter raises ArgumentError, which Ruflet only logs.
+
+- Methods on a service object wait `timeout:` seconds for the answer, 10 by default. When none arrives in time, `on_result` receives `nil` and `"execution expired"`. Pass a longer `timeout:` for calls that wait for the user, such as a file picker on the service object.
+- `local_authentication.authenticate` waits 60 seconds by default. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- The Page convenience methods for the clipboard, files, battery, connectivity, storage paths and sharing wait without a limit unless you pass `timeout:`. `page.launch_url`, the URL checks and the haptic calls wait 10 seconds.
+- A platform without the feature answers with an error or with `nil`, as each [service page](/docs/service-clipboard) describes for its methods.
+
+Every service page lists what `on_result` receives from each method, and the
+payload of each event.
+
 ## Client actions
 
 > **Requires the next Ruflet release** (on `main`, not in 0.0.23). On 0.0.23 `Ruflet.client_action` does not exist and `action:` raises ArgumentError (unknown keyword).
@@ -178,8 +197,8 @@ direct access to service-specific methods.
 ```ruby
 page.connectivity(
   on_change: ->(event) {
-    connections = Array(event.data).join(", ")
-    page.update(status, value: connections.empty? ? "Offline" : connections)
+    connections = Array(event.data[:connectivity])
+    page.update(status, value: connections.include?("none") ? "Offline" : connections.join(", "))
   }
 )
 ```
@@ -192,15 +211,15 @@ Use `page.service` when you need a service by name or want to invoke a method
 that does not have a Ruby convenience wrapper:
 
 ```ruby
-flashlight = page.service(
-  :flashlight,
-  on_error: ->(event) {
-    page.update(status, value: "Flashlight error: #{event.data}")
-  }
-)
+flashlight = page.service(:flashlight)
 
-page.invoke(flashlight, "on")
+page.invoke(flashlight, "on", on_result: ->(_result, error) {
+  page.update(status, value: error ? "Flashlight error: #{error}" : "Flashlight on")
+})
 ```
+
+The flashlight reports a failure as the call's `error`; its `on_error` event is
+accepted, but no client sends it.
 
 ### Service object reference
 
@@ -216,13 +235,13 @@ are framework integration details.
 | Service | Properties | Events | Service-specific methods |
 |---|---|---|---|
 | `accelerometer`, `barometer`, `gyroscope`, `magnetometer`, `user_accelerometer` | `cancel_on_error`, `data`, `enabled`, `interval`, `key` | `on_error`, `on_reading` | Invoke through events and generic `page.invoke` when necessary. |
-| `audio_recorder` | `configuration`, `data`, `key` | `on_state_change`, `on_stream`, `on_upload` | `cancel_recording`, `get_input_devices`, `has_permission`, `is_paused`, `is_recording`, `is_supported_encoder`, `pause_recording`, `resume_recording`, `start_recording`, `stop_recording` |
+| `audio_recorder` | `configuration`, `data`, `key` | `on_state_change` (`on_stream` and `on_upload` are accepted but never sent) | `cancel_recording`, `get_input_devices`, `has_permission`, `is_paused`, `is_recording`, `is_supported_encoder`, `pause_recording`, `resume_recording`, `start_recording`, `stop_recording` |
 | `battery` | `data`, `key` | `on_state_change` | Prefer Page battery convenience methods. |
-| `camera` | Common visual properties, `preview_enabled` | `on_animation_end`, `on_error`, `on_size_change`, `on_state_change`, `on_stream_image` | — |
+| `camera` | Common visual properties, `preview_enabled` | `on_animation_end`, `on_size_change`, `on_state_change`, `on_stream_image` (`on_error` is accepted but never sent) | `get_available_cameras`, `initialize_camera`, `take_picture`, video recording, image streaming, preview, flash, focus, exposure and zoom methods |
 | `clipboard` | `data`, `key` | — | `get`, `get_files`, `get_image`, `set`, `set_files`, `set_image` |
 | `connectivity` | `data`, `key` | `on_change` | Prefer `page.get_connectivity` for a snapshot. |
-| `file_picker` | `data`, `key` | `on_result`, `on_upload` | Prefer Page picker and upload convenience methods. |
-| `flashlight` | `data`, `key` | `on_error` | `on`, `off`, `is_available` |
+| `file_picker` | `data`, `key` | `on_upload` (`on_result` is accepted but never sent) | Prefer Page picker and upload convenience methods. |
+| `flashlight` | `data`, `key` | — (`on_error` is accepted but never sent) | `on`, `off`, `is_available` |
 | `geolocator` | `configuration`, `data`, `key` | `on_error`, `on_position_change` | `distance_between`, `get_current_position`, `get_last_known_position`, `get_permission_status`, `is_location_service_enabled`, `open_app_settings`, `open_location_settings`, `request_permission` |
 | `haptic_feedback` | `data`, `key` | — | Prefer `heavy_impact`, `medium_impact`, `light_impact`, `selection_click`, and `vibrate` on Page. |
 | `permission_handler` | `data`, `key` | — | `get_status`, `open_app_settings`, `request` |
@@ -249,7 +268,10 @@ control. Their no-argument proxy APIs are:
 - `page.wakelock`: `enable(...)`, `disable(...)`, and `is_enabled(...)`
 - `page.flashlight`: `on(...)`, `off(...)`, and `is_available(...)`
 - `page.screen_brightness`: the screen-brightness methods listed in the table;
-  setters take the new boolean or brightness value before callback options
+  setters take the new boolean or brightness value before callback options.
+  Call the setters on this proxy: the service object returned by
+  `page.screen_brightness(**properties)` sends their value under a name the
+  client does not read, and the call fails
 
 `page.screenshot(**properties)` creates the visual Screenshot control; it does
 not register a service object.

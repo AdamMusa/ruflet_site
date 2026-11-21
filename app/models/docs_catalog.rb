@@ -90,28 +90,30 @@ class DocsCatalog
       page.add(reading)
       page.accelerometer(
         interval: 200,
-        on_reading: ->(event) { page.update(reading, value: event.data.inspect) },
-        on_error: ->(event) { page.update(reading, value: "Motion error: #{event.data}") }
+        on_reading: ->(event) {
+          x, y, z = event.data.values_at(:x, :y, :z).map { |axis| axis.to_f.round(2) }
+          page.update(reading, value: "x #{x}  y #{y}  z #{z} m/s²")
+        },
+        on_error: ->(event) { page.update(reading, value: "Motion error: #{event.data[:message]}") }
       )
     RUBY
     "audio_recorder" => <<~'RUBY',
       status = text(value: "Recorder ready")
       page.add(status)
       recorder = page.audio_recorder(
-        on_state_change: ->(event) { page.update(status, value: event.data.to_s) }
+        on_state_change: ->(event) { page.update(status, value: "Recorder #{event.data}") }
       )
-      recorder.has_permission(on_result: ->(allowed, error) {
-        if error
-          page.update(status, value: error.to_s)
-        elsif allowed
-          recorder.start_recording(
-            output_path: "voice-note.m4a",
-            configuration: { encoder: "aac_lc" },
-            on_result: ->(_result, start_error) {
-              page.update(status, value: start_error ? start_error.to_s : "Recording")
-            }
-          )
-        end
+      page.get_application_documents_directory(on_result: ->(directory, dir_error) {
+        next page.update(status, value: dir_error.to_s) if dir_error
+
+        recorder.start_recording(
+          output_path: "#{directory}/voice-note.m4a",
+          configuration: { encoder: "aacLc" },
+          on_result: ->(started, start_error) {
+            message = start_error ? start_error.to_s : (started ? "Recording" : "No microphone access")
+            page.update(status, value: message)
+          }
+        )
       })
     RUBY
     "barometer" => <<~'RUBY',
@@ -119,15 +121,19 @@ class DocsCatalog
       page.add(pressure)
       page.barometer(
         interval: 500,
-        on_reading: ->(event) { page.update(pressure, value: "Pressure: #{event.data}") },
-        on_error: ->(event) { page.update(pressure, value: event.data.to_s) }
+        on_reading: ->(event) { page.update(pressure, value: "Pressure: #{event.data[:pressure].to_f.round(1)} hPa") },
+        on_error: ->(event) { page.update(pressure, value: event.data[:message].to_s) }
       )
     RUBY
     "battery" => <<~'RUBY',
       battery = text(value: "Reading battery…")
       page.add(battery)
       page.get_battery_level(on_result: ->(level, error) {
-        value = error ? error.to_s : "Battery: #{level}%"
+        value = if error
+          error.to_s
+        else
+          level ? "Battery: #{level}%" : "This device reports no battery level"
+        end
         page.update(battery, value: value)
       })
     RUBY
@@ -140,13 +146,30 @@ class DocsCatalog
       })
     RUBY
     "camera" => <<~'RUBY',
+      status = text(value: "Starting the camera…")
       preview = page.camera(
-        preview_enabled: true,
         expand: true,
-        on_state_change: ->(event) { puts "Camera: #{event.data}" },
-        on_error: ->(event) { puts "Camera error: #{event.data}" }
+        on_state_change: ->(event) {
+          page.update(status, value: event.data[:is_initialized] ? "Camera ready" : "Camera off")
+        }
       )
-      page.add(preview)
+      shutter = filled_button(
+        "Take picture",
+        on_click: ->(_event) {
+          preview.take_picture(on_result: ->(photo, error) {
+            page.update(status, value: error ? error.to_s : "Picture: #{photo.to_s.bytesize} bytes")
+          })
+        }
+      )
+      page.add(column(expand: true, children: [preview, shutter, status]))
+      preview.get_available_cameras(on_result: ->(cameras, error) {
+        next page.update(status, value: error.to_s) if error
+        next page.update(status, value: "No camera found") if Array(cameras).empty?
+
+        preview.initialize_camera(cameras.first, "medium", enable_audio: false, on_result: ->(_result, init_error) {
+          page.update(status, value: init_error.to_s) if init_error
+        })
+      })
     RUBY
     "clipboard" => <<~'RUBY',
       result = text(value: "Nothing copied yet")
@@ -162,14 +185,12 @@ class DocsCatalog
     "connectivity" => <<~'RUBY',
       network = text(value: "Checking connection…")
       page.add(network)
-      page.connectivity(
-        on_change: ->(event) {
-          connections = Array(event.data).join(", ")
-          page.update(network, value: connections.empty? ? "Offline" : connections)
-        }
-      )
-      page.get_connectivity(on_result: ->(value, error) {
-        page.update(network, value: error ? error.to_s : Array(value).join(", "))
+      show = ->(connections) {
+        page.update(network, value: connections.include?("none") ? "Offline" : "Online: #{connections.join(', ')}")
+      }
+      page.connectivity(on_change: ->(event) { show.call(Array(event.data[:connectivity])) })
+      page.get_connectivity(on_result: ->(connections, error) {
+        error ? page.update(network, value: error.to_s) : show.call(Array(connections))
       })
     RUBY
     "file_picker" => <<~'RUBY',
@@ -202,11 +223,15 @@ class DocsCatalog
       location = text(value: "Location not requested")
       page.add(location)
       geolocator = page.geolocator
-      geolocator.request_permission(on_result: ->(_permission, permission_error) {
+      geolocator.request_permission(on_result: ->(permission, permission_error) {
         next page.update(location, value: permission_error.to_s) if permission_error
+        next page.update(location, value: "Location access: #{permission}") unless %w[whileInUse always].include?(permission)
 
         geolocator.get_current_position(on_result: ->(position, error) {
-          page.update(location, value: error ? error.to_s : position.inspect)
+          next page.update(location, value: error.to_s) if error
+          next page.update(location, value: "No position") unless position
+
+          page.update(location, value: "#{position["latitude"]}, #{position["longitude"]} (±#{position["accuracy"].to_i} m)")
         })
       })
     RUBY
@@ -215,8 +240,8 @@ class DocsCatalog
       page.add(rotation)
       page.gyroscope(
         interval: 200,
-        on_reading: ->(event) { page.update(rotation, value: event.data.inspect) },
-        on_error: ->(event) { page.update(rotation, value: event.data.to_s) }
+        on_reading: ->(event) { page.update(rotation, value: "z rotation: #{event.data[:z].to_f.round(2)} rad/s") },
+        on_error: ->(event) { page.update(rotation, value: event.data[:message].to_s) }
       )
     RUBY
     "haptic_feedback" => <<~'RUBY',
@@ -251,8 +276,11 @@ class DocsCatalog
       page.add(magnetic_field)
       page.magnetometer(
         interval: 250,
-        on_reading: ->(event) { page.update(magnetic_field, value: event.data.inspect) },
-        on_error: ->(event) { page.update(magnetic_field, value: event.data.to_s) }
+        on_reading: ->(event) {
+          x, y, z = event.data.values_at(:x, :y, :z).map { |axis| axis.to_f.round(1) }
+          page.update(magnetic_field, value: "x #{x}  y #{y}  z #{z} µT")
+        },
+        on_error: ->(event) { page.update(magnetic_field, value: event.data[:message].to_s) }
       )
     RUBY
     "permission_handler" => <<~'RUBY',
@@ -313,7 +341,7 @@ class DocsCatalog
         title: "Ruflet",
         subject: "Ruby apps for every screen",
         on_result: ->(result, error) {
-          page.update(status, value: error ? error.to_s : "Share result: #{result}")
+          page.update(status, value: error ? error.to_s : "Share sheet closed: #{result["status"]}")
         }
       )
     RUBY
@@ -342,8 +370,8 @@ class DocsCatalog
       page.launch_url(
         "https://ruflet.dev",
         mode: "externalApplication",
-        on_result: ->(opened, error) {
-          page.update(status, value: error ? error.to_s : "Opened: #{opened}")
+        on_result: ->(_result, error) {
+          page.update(status, value: error ? "Cannot open the link: #{error}" : "Asked the browser to open ruflet.dev")
         }
       )
     RUBY
@@ -352,8 +380,11 @@ class DocsCatalog
       page.add(movement)
       page.user_accelerometer(
         interval: 200,
-        on_reading: ->(event) { page.update(movement, value: event.data.inspect) },
-        on_error: ->(event) { page.update(movement, value: event.data.to_s) }
+        on_reading: ->(event) {
+          strength = Math.sqrt(event.data.values_at(:x, :y, :z).sum { |axis| axis.to_f**2 })
+          page.update(movement, value: "Movement: #{strength.round(2)} m/s²")
+        },
+        on_error: ->(event) { page.update(movement, value: event.data[:message].to_s) }
       )
     RUBY
     "wakelock" => <<~'RUBY'
@@ -452,6 +483,8 @@ class DocsCatalog
           entry("reference", "API Reference", "Overview of Ruflet controls, services, CLI workflow, and app structure.", SOURCE_ROOT.join("reference.md"), "Reference"),
           entry("cli-reference", "CLI Reference", "Complete Ruflet CLI commands, options, defaults, hot reload controls, and diagnostics.", SOURCE_ROOT.join("cli_reference.md"), "Reference"),
           entry("events-and-state", "Events and State", "Handle control and Page events, read payloads, keep Ruby state, and patch mounted controls.", SOURCE_ROOT.join("events_and_state.md"), "Reference"),
+          entry("page-reference", page_heading(SOURCE_ROOT.join("page_reference.md")), "Every Page property, event and method, the View keywords, and the desktop window.", SOURCE_ROOT.join("page_reference.md"), "Reference"),
+          entry("theming", "Theming", "Set light and dark themes, theme keys, fonts, and per-container themes for Material and Cupertino.", SOURCE_ROOT.join("theming.md"), "Reference"),
           entry("configuration-reference", "Configuration", "Every supported `ruflet.yaml` and `services.yaml` key, extension, service, and environment override.", SOURCE_ROOT.join("configuration_reference.md"), "Reference")
         ]
       ),
@@ -719,37 +752,48 @@ class DocsCatalog
       "## Page accessor", "", "- `page.#{format_api_method(service.fetch(:page_accessor))}`", "",
       "## Properties", ""
     ]
-    Array(service[:properties]).each { |property| lines << describe(property, "properties") }
+    Array(service[:properties]).each { |property| lines << describe_service_member(service, property, "properties") }
     lines << "- None." if Array(service[:properties]).empty?
     lines << ""
     if Array(service[:events]).any?
       lines.concat([ "## Events", "" ])
-      Array(service[:events]).each { |event| lines << describe(event, "events") }
+      Array(service[:events]).each { |event| lines << describe_service_member(service, event, "events") }
       lines << ""
     end
     methods = Array(service[:methods])
     if methods.any?
       lines.concat([ "## Service methods", "" ])
-      methods.each { |method| lines << "- `#{format_api_method(method)}`" }
+      methods.each { |method| lines << service_method_line(service, method) }
       lines << ""
     end
     proxies = Array(service[:proxy_methods])
     if proxies.any?
-      lines.concat([ "## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods:", "" ])
-      proxies.each { |method| lines << "- `#{format_api_method(method)}`" }
+      # A proxy method with its own "proxy_methods" description does not work
+      # like the service method (page.screen_brightness's setters).
+      differing = proxies.map { |method| (method[:name] || method["name"]).to_s }.select { |name| service_description(service, "proxy_methods", name) }
+      same = if differing.empty?
+        "They work like the service methods of the same name:"
+      else
+        names = differing.map { |name| "`#{name}`" }
+        names = [ names[0...-1].join(", "), names.last ].reject(&:empty?).join(" and ")
+        "Each works like the service method of the same name, except #{names}: compare their entries here and under Service methods."
+      end
+      lines.concat([ "## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods. #{same}", "" ])
+      proxies.each { |method| lines << service_method_line(service, method, proxy: true) }
       lines << ""
     end
     convenience_methods = SERVICE_CONVENIENCE_METHODS.fetch(helper, []).filter_map do |name|
       runtime_catalog.fetch(:page).find { |method| method[:name] == name }
     end
     if convenience_methods.any?
-      lines.concat([ "## Page convenience methods", "", "Use these one-shot Page calls when you do not need to keep the service object:", "" ])
-      convenience_methods.each { |method| lines << "- `page.#{format_api_method(method)}`" }
+      lines.concat([ "## Page convenience methods", "", "Use these one-shot Page calls when you do not need to keep the service object. Each creates the service on first use and works like the service method of the same name:", "" ])
+      convenience_methods.each { |method| lines << service_method_line(service, method, prefix: "page.") }
       lines << ""
     end
     lines.concat([
       "## Result and error handling", "",
-      "Client calls are asynchronous. When a method accepts `on_result:`, handle both callback values: `|result, error|`. Availability and returned data can vary by platform.", "",
+      "Client calls are asynchronous: a method sends the call and returns at once. The client answers later by calling `on_result` with two values, `|result, error|`: the result described above and `nil`, or `nil` and the client's error message as a String. Give `on_result` a lambda with both parameters.", "",
+      "A service method waits `timeout:` seconds for the answer (10 by default). When none arrives in time, `on_result` receives `nil` and `\"execution expired\"`. Pass a longer `timeout:` for calls that wait for the user, such as pickers and prompts. The Page convenience methods for the clipboard, files, battery, connectivity, storage paths and sharing wait without a limit unless you pass `timeout:`. Availability and returned data vary by platform, so handle the error path.", "",
       "## Common service API", "",
       "The service also supports the common Ruflet control API: #{service_catalog.fetch(:common_control_methods).map { |method| "`#{format_api_method(method)}`" }.join(', ')}.", "",
       "Use the named methods above for application code; common control methods mainly support event registration, updates, and runtime integration.", "",
@@ -780,6 +824,32 @@ class DocsCatalog
 
   def self.service_example(service)
     SERVICE_EXAMPLES.fetch(service.fetch(:helper)).lines(chomp: true)
+  end
+
+  # What one service property, event or method does, from the "services"
+  # section of config/property_descriptions.json:
+  # { helper => { "properties" | "events" | "methods" => { name => text } } }.
+  def self.service_description(service, kind, name)
+    attribute_descriptions.dig("services", service.fetch(:helper).to_s, kind, name.to_s)
+  end
+
+  # A service property or event line: the service's own description, else the
+  # shared one.
+  def self.describe_service_member(service, name, kind)
+    desc = service_description(service, kind, name)
+    desc ? "- `#{name}` — #{desc}" : describe(name, kind)
+  end
+
+  # A service, proxy or Page convenience method line. A proxy method uses its
+  # "proxy_methods" description and a convenience method (prefix "page.") its
+  # "page" one, else the service method of the same name.
+  def self.service_method_line(service, method, prefix: "", proxy: false)
+    name = (method[:name] || method["name"]).to_s
+    desc = attribute_descriptions.dig("page", name) if prefix == "page."
+    desc ||= service_description(service, "proxy_methods", name) if proxy
+    desc ||= service_description(service, "methods", name)
+    line = "- `#{prefix}#{format_api_method(method)}`"
+    desc ? "#{line} — #{desc}" : line
   end
 
   def self.generated_extension_markdown(extension)
@@ -1225,7 +1295,8 @@ class DocsCatalog
 
   private_class_method :entry, :control_entries, :source_for_slug, :generated_control_summary,
                        :service_entries, :extension_entries, :generated_service_markdown,
-                       :generated_extension_markdown, :service_example,
+                       :generated_extension_markdown, :service_example, :service_description,
+                       :describe_service_member, :service_method_line,
                        :generated_control_markdown, :preferred_helper, :generated_control_example,
                        :crafted_control_example, :example_property_lines, :sample_value_for, :common_properties,
                        :attribute_descriptions, :describe, :heuristic_description,

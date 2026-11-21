@@ -91,7 +91,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: AdamMusa/ruflet
-          ref: 27e2ffa827bed29a5ea93b988c328c22e1d910bb
+          ref: 4ca7634de549ce05270585521959aafa7783b383
           path: .ruflet-sources/ruflet
           sparse-checkout: |
             packages/ruflet_core
