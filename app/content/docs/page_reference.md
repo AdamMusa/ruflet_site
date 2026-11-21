@@ -319,7 +319,8 @@ A [`window_drag_area`](/docs/control-window-drag-area) moves the window without 
 `page.window.on(:event) { |event| ... }` receives the window's events.
 `event.data[:type]` is one of `"close"` (only with `prevent_close: true`),
 `"focus"`, `"blur"`, `"maximize"`, `"unmaximize"`, `"minimize"`, `"restore"`,
-`"resized"`, `"moved"`, `"enter-full-screen"` or `"leave-full-screen"`. After
+`"moved"`, `"enter-full-screen"` or `"leave-full-screen"`. Resizing the window
+sends no window event. After
 each one, `page.window.props` holds the new `maximized`, `minimized`,
 `full_screen`, `always_on_top`, `focused`, `visible`, `width`, `height`, `top`,
 `left` and `opacity`.
