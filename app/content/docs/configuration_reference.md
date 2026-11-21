@@ -410,6 +410,16 @@ hours.
 - `RUFLET_CLIENT_UPDATE_INTERVAL` is the time between checks in seconds, from `0` to `604800` (one week). It defaults to `21600`.
 - `RUFLET_CLIENT_CHANNEL` is the release the clients come from. The default, `prebuild-main`, is the rolling build of Ruflet's main branch, used once it is complete. Any other value names another release tag, and `stable` skips the rolling release. Ruflet then falls back to the release of the installed Ruflet version, then the latest release.
 
+When a due check cannot reach GitHub or gets an error back, `ruflet run`
+warns `Could not check for a newer client (<reason>); using the cached one`,
+starts with the cached client and checks again on the next run. With 0.0.23
+the failed check stops `ruflet run --web` with `Web client build not found and
+prebuilt download failed.`, and `ruflet run --desktop` starts the app without
+opening a client window (`Desktop client executable not found.`). **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`ruflet update` still fails when it cannot reach GitHub, and a first run with
+no cached client still has to download one.
+
 ### Diagnostics
 
 - `RUFLET_PROTOCOL_TRACE` prints every WebSocket frame between the Ruby server and the client to standard output, prefixed `[RUFLET_PROTOCOL]`. `summary` prints a compact line per frame, and `1` or `full` also prints the bytes and the decoded value. The default, `0`, prints nothing.

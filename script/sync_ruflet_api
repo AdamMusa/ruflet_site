@@ -461,11 +461,26 @@ def dart_type_branch(source, type)
   stop ? rest[0...stop] : rest
 end
 
+# `source` without the bodies of the named top-level functions. A shared file
+# can hold helpers whose `control` parameter is another control: the chart
+# helpers in utils/charts.dart take the chart, while parseAxisTitles in the
+# same file takes the axis.
+def dart_without_functions(source, names)
+  names.reduce(source) do |text, name|
+    match = text.match(/^[^\n]*(?<![\w.])#{Regexp.escape(name)}\s*\([^)]*\)\s*(?:async\s*)?\{/)
+    abort "Dart function #{name} not found; update the `skip:` list in OPEN_EXTENSION_CONTRACTS." unless match
+
+    block = dart_block(text, match.end(0) - 1)
+    text[0...match.begin(0)] + text[(match.end(0) - 1 + block.length)..]
+  end
+end
+
 # Ruflet main gives these extension controls an open Ruby property surface
 # (`KEYWORDS = []`), so their contract lives in the engine renderer. Each entry
 # lists the package, then [file, receivers] pairs naming the variable that
 # holds this control in that file. Top-level visual controls also accept the
-# common layout properties. `branch:` limits a file to one wire-type branch.
+# common layout properties. `branch:` limits a file to one wire-type branch;
+# `skip:` leaves out functions whose receiver is a different control.
 OPEN_EXTENSION_CONTRACTS = {
   "BannerAd" => { package: "ads", common: true, sources: [ [ "banner.dart", %w[widget.control] ] ] },
   "InterstitialAd" => { package: "ads", sources: [ [ "interstitial.dart", %w[control] ] ] },
@@ -477,7 +492,9 @@ OPEN_EXTENSION_CONTRACTS = {
   "BarChartRodStackItem" => { package: "charts", sources: [ [ "utils/bar_chart.dart", %w[rodStackItem] ] ] },
   "CandlestickChart" => { package: "charts", common: true, sources: [ [ "candlestick_chart.dart", %w[widget.control] ], [ "utils/candlestick_chart.dart", %w[control] ] ] },
   "CandlestickChartSpot" => { package: "charts", sources: [ [ "candlestick_chart.dart", %w[spot e.value] ], [ "utils/candlestick_chart.dart", %w[spotControl] ] ] },
-  "ChartAxis" => { package: "charts", sources: [ [ "utils/charts.dart", %w[control] ] ] },
+  # skipControlTooltipForChartConfig and chartTooltipConfig read the chart's
+  # own `tooltip`, not the axis's.
+  "ChartAxis" => { package: "charts", sources: [ [ "utils/charts.dart", %w[control], { skip: %w[skipControlTooltipForChartConfig chartTooltipConfig] } ] ] },
   "ChartAxisLabel" => { package: "charts", sources: [ [ "utils/charts.dart", %w[l label] ] ] },
   "LineChart" => { package: "charts", common: true, sources: [ [ "line_chart.dart", %w[widget.control] ], [ "utils/line_chart.dart", %w[control] ] ] },
   "LineChartData" => { package: "charts", sources: [ [ "line_chart.dart", %w[lineBar ds] ], [ "utils/line_chart.dart", %w[chartData] ] ] },
@@ -520,6 +537,7 @@ def open_extension_contracts
 
       source = path.read(encoding: "UTF-8")
       source = dart_type_branch(source, options[:branch]) if options&.key?(:branch)
+      source = dart_without_functions(source, options[:skip]) if options&.key?(:skip)
       dart_control_attributes(path, receivers: receivers, source: source) + dart_triggered_events(source, receivers)
     end
     attributes += Array(spec[:extra]) + %w[data key]

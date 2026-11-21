@@ -139,6 +139,7 @@
     "extended": "Shows each label beside its icon instead of under it.",
     "label_type": "Which destination labels are shown: `\"all\"`, `\"selected\"` or `\"none\"`.",
     "group_alignment": "How the groups of items are aligned.",
+    "group_spacing": "Space between two bar groups, in logical pixels (default 16), used when `group_alignment` is `\"start\"`, `\"end\"` or `\"center\"`. It wins over `spacing`, which sets the same space and also works with 0.0.23.",
     "use_indicator": "Draws a highlight behind the selected destination.",
     "indicator_shape": "Shape of the highlight behind the selected destination.",
     "min_width": "Minimum width of the control, in logical pixels.",

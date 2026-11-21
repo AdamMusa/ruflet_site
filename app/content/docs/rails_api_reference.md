@@ -77,6 +77,38 @@ Rails.application.routes.draw do
 end
 ```
 
+### Errors in event handlers
+
+When an event handler raises (for example an `on_click` block or
+`page.on_route_change`), the endpoint logs the error to `Rails.logger` at the
+error level as `RUFLET CRASH: <class>: <message>`, followed by the first ten
+backtrace lines.
+
+The connection and the session stay up: the client shows no error, and the
+next event reaches its handler on the page as the failed handler left it, as
+under `ruflet run`. With 0.0.23 the client briefly shows the error message and
+reconnects, and the endpoint runs the entrypoint again on a new page, so the
+page loses everything the user did on it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+An error raised by the entrypoint itself still ends the session.
+
+### Rails executor
+
+The endpoint runs each WebSocket message, and the disconnect, in its own
+`Rails.application.executor` run, the way Rails runs a request. With 0.0.23 one
+run lasts the whole connection. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+- The Active Record query cache lasts one message, so a handler reads rows that another process wrote after the previous message. With 0.0.23 a handler can get the cached result of an earlier message. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- A database connection that the entrypoint or a handler leases goes back to the pool when the message is done. `ActiveRecord::Base.connection` leases one, and so does `lease_connection` on Rails 7.2 and later. On Rails 7.0 and 7.1 every query does. With 0.0.23 a connected client keeps a leased connection until it disconnects, so the pool can run out and requests fail with `ActiveRecord::ConnectionTimeoutError`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- On Rails 7.2 and later, a model query such as `Post.count` that runs while no connection is leased holds one only while it runs, with 0.0.23 as well.
+- In development, the first request after you edit app code reloads it while clients stay connected. A handler already on a connected page then gets the reloaded classes when it looks up a constant by name, such as a model. With 0.0.23 that request waits until every connected client disconnects. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- A handler already on a connected page keeps running the code it was created with. So does a method it calls without a receiver, such as a helper defined next to the `Dashboard.render(page)` from [Rails Integration](/docs/rails-integration) that built the page. A client runs edited handlers after it reconnects, because a new connection runs the entrypoint again on a new page.
+
+What your entrypoint or a handler sets in `ActiveSupport::CurrentAttributes`
+(such as `Current.user`), with `Rails.error.set_context` or in the Rails 8.1
+event reporter context stays set for the whole connection, and is reset once,
+when the client disconnects.
+
 ## ERB to native controls
 
 ```ruby

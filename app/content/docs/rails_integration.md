@@ -82,6 +82,11 @@ Ruflet::Rails.native { |page| Dashboard.render(page) }
 The block receives the connected Ruflet page. `Dashboard` is an example of
 your own application renderer; it is not a class supplied by `ruflet_rails`.
 
+The [Rails API Reference](/docs/rails-api-reference#errors-in-event-handlers)
+describes what happens when a handler raises, and how the endpoint uses the
+[Rails executor](/docs/rails-api-reference#rails-executor) for the query cache,
+database connections and code reloading.
+
 ## Render Rails views
 
 Choose one renderer for the Rails-powered section:

@@ -11599,6 +11599,7 @@
       "expand",
       "expand_loose",
       "group_alignment",
+      "group_spacing",
       "groups",
       "height",
       "horizontal_grid_lines",

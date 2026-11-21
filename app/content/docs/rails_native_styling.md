@@ -147,6 +147,7 @@ A `/NN` suffix sets the opacity in percent: `bg-blue-500/50`.
 | `leading-none` to `leading-loose`, `leading-[1.8]` | line height | Text, in its `style`, as a multiple of the font size (1.0 to 2.0). |
 | `underline`, `overline`, `line-through`, `no-underline` | decoration | Text, in its `style`. They combine. |
 | `uppercase`, `lowercase`, `capitalize` | | Text. Ruflet changes the text itself. |
+| `normal-case` | | Text. Cancels an `uppercase`, `lowercase` or `capitalize` written before it in the class list, so the text keeps the case you wrote. |
 | `truncate` | `max_lines: 1`, `overflow: "ellipsis"` | Text. |
 | `line-clamp-N`, `line-clamp-none` | `max_lines` | Text. With `overflow: "ellipsis"`. |
 | `text-ellipsis`, `text-clip` | `overflow` | Text. |
@@ -215,6 +216,7 @@ These classes are read in 0.0.23 and on `main` but do not reach a control:
 - `leading-N` with a spacing-scale value; use `leading-tight` or `leading-[1.5]`.
 - `text-wrap` and `text-nowrap`; use `whitespace-normal` and `whitespace-nowrap`.
 - `border-none`, `border-hidden`, `ring-0`, `outline-0` and `border-opacity-N`: they do not remove or fade a border set by another class.
+- `ring-inset`, `ring-offset-N`, `ring-offset-<color>`, `outline-none` and `outline-hidden`: a box has a single border, so a ring is never inset or offset, and these classes neither move nor remove the border that a `ring-*`, `outline-*` or `border-*` class draws.
 - `border-s` and `border-e` draw all four sides, and the logical corners `rounded-s-*`, `rounded-e-*`, `rounded-ss-*`, `rounded-se-*`, `rounded-es-*` and `rounded-ee-*` set no corner.
 - `cursor-*` and `pointer-events-*` on boxes and text, `translate-*` with a spacing-scale value, and `rotate-N` or `scale-N` values outside the lists above.
 - On images, the box classes other than those listed above; on cards, every class except `p-*` and the layout classes.
