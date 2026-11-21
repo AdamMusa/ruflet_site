@@ -1,7 +1,7 @@
 {
   "properties": {
-    "key": "Stable identity used to preserve state across rebuilds.",
-    "data": "Arbitrary value you can attach to the control and read back in handlers.",
+    "key": "A stable name for the control. Lists use it to keep each item's state when items move, and it stays the same across updates.",
+    "data": "Any value you attach to the control, such as an id; read it back in handlers with `event.control.props[\"data\"]`.",
     "value": "The control's current value.",
     "label": "Text label shown for the control.",
     "text": "Text content of the control.",
@@ -23,8 +23,8 @@
     "selected": "Whether the control is selected.",
     "checked": "Whether the control is checked.",
     "open": "Whether the control (dialog/sheet/menu) is open.",
-    "disabled": "Disables interaction when true.",
-    "visible": "Hides the control when false.",
+    "disabled": "Disables the control and every control inside it: they stop reacting to input and stop sending events.",
+    "visible": "Hides the control when false; a hidden control takes no space.",
     "autofocus": "Requests focus when first shown.",
     "min": "Minimum value.",
     "max": "Maximum value.",
@@ -51,39 +51,39 @@
     "opacity": "Opacity from 0.0 (transparent) to 1.0 (opaque).",
     "visual_density": "Compactness of the control's layout.",
     "size_constraints": "Min/max size constraints.",
-    "expand": "Fills the available space along the parent's main axis when true.",
-    "expand_loose": "Like expand, but only grows up to the child's natural size.",
-    "width": "Fixed width in logical pixels.",
-    "height": "Fixed height in logical pixels.",
+    "expand": "Inside a `row`, a `column` or the page, fills the free space along the parent's main axis. `true` is a share of 1; an integer sets the share, so `expand: 2` gets twice the space of `expand: 1`. [Sizing](/docs/controls-and-layout#sizing) lists the parents that use it.",
+    "expand_loose": "With `expand`, lets the control stay smaller than its share instead of filling it.",
+    "width": "Fixed width, in logical pixels.",
+    "height": "Fixed height, in logical pixels.",
     "padding": "Inner spacing between the border and the content.",
-    "margin": "Outer spacing around the control.",
-    "align": "Alignment of the control within its parent.",
+    "margin": "Space around the control, in logical pixels: one number for every side, or `{ left:, top:, right:, bottom: }`, where a side you leave out is 0. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
+    "align": "Aligns the control in the space its parent gives it, as `{ x:, y: }` from -1 to 1 (`{ x: 0, y: 0 }` is the center). [Option values](/docs/controls-and-layout#option-values) lists the names Ruflet main adds, such as `\"top_left\"`.",
     "alignment": "Alignment of the content within the control.",
-    "aspect_ratio": "Width-to-height ratio to maintain.",
-    "col": "Responsive column span (1-12) per breakpoint.",
-    "top": "Top offset when positioned inside a stack.",
-    "bottom": "Bottom offset when positioned inside a stack.",
-    "left": "Left offset when positioned inside a stack.",
-    "right": "Right offset when positioned inside a stack.",
-    "rotate": "Rotation applied to the control.",
-    "scale": "Scale transform applied to the control.",
-    "offset": "Translation offset applied to the control.",
-    "rtl": "Renders right-to-left when true.",
-    "adaptive": "Adapts to the platform (Material/Cupertino) when true.",
-    "tooltip": "Text shown on hover/long-press.",
-    "badge": "Badge drawn on the corner of the control.",
+    "aspect_ratio": "Keeps the control at this width-to-height ratio, for example `16 / 9.0`.",
+    "col": "Columns the control spans in its parent `responsive_row`: a number, or a hash per breakpoint such as `{ \"xs\" => 12, \"md\" => 6 }` (default: all of them). Other parents ignore it.",
+    "top": "Distance from the top edge of the parent `stack`, in logical pixels. Only a child of a `stack` can be positioned; elsewhere the control shows an error.",
+    "bottom": "Distance from the bottom edge of the parent `stack`, in logical pixels. Only a child of a `stack` can be positioned; elsewhere the control shows an error.",
+    "left": "Distance from the left edge of the parent `stack`, in logical pixels. Only a child of a `stack` can be positioned; elsewhere the control shows an error.",
+    "right": "Distance from the right edge of the parent `stack`, in logical pixels. Only a child of a `stack` can be positioned; elsewhere the control shows an error.",
+    "rotate": "Rotates the control clockwise by an angle in radians, such as `Math::PI / 4`, or by `{ angle:, alignment: }` to turn it around another point. Its parent still lays it out unrotated.",
+    "scale": "Scales the control: `1` is its normal size and `0.5` half of it. `{ scale_x:, scale_y: }` scales each axis on its own.",
+    "offset": "Moves the control by a fraction of its own size, as `{ x:, y: }`: `{ x: 1, y: 0 }` shifts it one width to the right. Its parent still lays it out at the original place.",
+    "rtl": "Lays the control out right to left when true.",
+    "adaptive": "Accepted for Flet compatibility; no Ruflet client reads it. The design always follows the platform: Cupertino widgets on iOS and macOS, Material widgets everywhere else.",
+    "tooltip": "Text shown when the user hovers over the control or long-presses it.",
+    "badge": "A badge on the control's corner: a String or number shown as its label, such as `\"3\"`, or `badge(...)` for a styled one.",
     "mouse_cursor": "Cursor shown when hovering the control.",
     "style": "Style overrides for the control.",
     "enable_feedback": "Plays touch feedback (sound/haptic) on interaction.",
-    "animate_opacity": "Animates opacity changes.",
-    "animate_size": "Animates size changes.",
-    "animate_scale": "Animates scale changes.",
-    "animate_rotation": "Animates rotation changes.",
-    "animate_offset": "Animates offset changes.",
-    "animate_position": "Animates position changes.",
-    "animate_margin": "Animates margin changes.",
-    "animate_align": "Animates alignment changes.",
-    "size_change_interval": "Throttle interval for on_size_change, in ms.",
+    "animate_opacity": "Animates changes to `opacity`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_size": "Animates changes to `width` and `height`, or to the content's own size when neither is set: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_scale": "Animates changes to `scale`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_rotation": "Animates changes to `rotate`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_offset": "Animates changes to `offset`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_position": "Animates changes to `left`, `top`, `right` and `bottom` inside a `stack`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_margin": "Animates changes to `margin`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "animate_align": "Animates changes to `align`: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+    "size_change_interval": "Minimum time between two `on_size_change` events, in milliseconds (default 10).",
     "action": "A client action, built with `Ruflet.client_action`, that the client runs inside the tap before it sends `on_click`. Use it for work browsers allow only during a user gesture, such as opening a link, copying to the clipboard or picking files.",
     "spacing": "Space between the control's children, or between its parts such as a checkbox and its label, in logical pixels.",
     "run_spacing": "Space between lines of children when they wrap, in logical pixels.",
@@ -354,7 +354,9 @@
     "default_column_width": "Width of the columns missing from `column_widths`, in the same form (default: equal flex shares).",
     "inner_borders": "Also draws lines between the rows and columns when `border_color` is set (default true).",
     "cell_padding": "Padding inside every cell.",
-    "default_vertical_alignment": "Vertical position of the cells in their row: `\"top\"` (default), `\"middle\"`, `\"bottom\"`, `\"baseline\"` or `\"fill\"`."
+    "default_vertical_alignment": "Vertical position of the cells in their row: `\"top\"` (default), `\"middle\"`, `\"bottom\"`, `\"baseline\"` or `\"fill\"`.",
+    "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS ignore it and place the title the iOS way.",
+    "foreground_decoration": "Decoration painted over the content: `{ bgcolor:, gradient:, border:, border_radius:, shadows:, image:, shape:, blend_mode: }`."
   },
   "events": {
     "on_click": "Fired when the control is clicked/tapped.",
@@ -368,27 +370,27 @@
     "on_hover": "Fired when the pointer enters/leaves the control.",
     "on_long_press": "Fired on a long press.",
     "on_double_tap": "Fired on a double tap.",
-    "on_tap_down": "Fired when a pointer presses down.",
+    "on_tap_down": "Fired when a pointer presses down; `event.local_position` and `event.global_position` give the point and `event.kind` the device, such as `\"touch\"` or `\"mouse\"`.",
     "on_tap_cancel": "Fired when a tap is cancelled.",
     "on_tap_outside": "Fired when a tap occurs outside the control.",
     "on_dismiss": "Fired when the control is dismissed.",
     "on_scroll": "Fired when the scroll position changes.",
     "on_select": "Fired when a selection is made.",
-    "on_selection_change": "Fired when the selection range changes.",
+    "on_selection_change": "Fired when the user changes the selected text; `event.data` describes the new selection.",
     "on_state_change": "Fired when the control's state changes.",
     "on_open": "Fired when the control opens.",
     "on_enter": "Fired when the pointer enters the control.",
     "on_exit": "Fired when the pointer leaves the control.",
     "on_error": "Fired when an error occurs.",
-    "on_image_error": "Fired when the image fails to load.",
+    "on_image_error": "Fired when an image the control shows fails to load; `event.data` describes the failure.",
     "on_loaded": "Fired when the control has loaded.",
     "on_visible": "Fired when the control appears on screen.",
     "on_resize": "Fired when the control is resized.",
     "on_drag_start": "Fired when a drag begins.",
-    "on_animation_end": "Fired when an animation completes.",
-    "on_size_change": "Fired when the control's size changes.",
+    "on_animation_end": "Fired when an `animate_*` animation finishes. `event.data` names the animation: `\"opacity\"`, `\"rotation\"`, `\"scale\"`, `\"offset\"`, `\"align\"`, `\"margin\"` or `\"position\"`; a container's own `animate` reports `\"container\"`.",
+    "on_size_change": "Fired after the control's size changes, at most once per `size_change_interval`. `event.data` is `{ w: width, h: height }` in logical pixels.",
     "on_action_result": "Fired when a client `action:` has finished; the event carries its result or error.",
-    "on_end_reached": "Fired when the user scrolls near the end, for loading more items.",
+    "on_end_reached": "Fired when the user scrolls within `end_reached_threshold` of the end, for loading more items. It fires once, then again after the content grows (you added items) or after the user scrolls back more than twice `end_reached_threshold` from the end. `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`.",
     "on_refresh": "Fired when the user pulls down to refresh; the indicator spins until the handler returns.",
     "on_paste_files": "Fired when the user pastes files into the field; `event.files` lists them.",
     "on_tap_outside_view": "Fired when the user taps outside the open search view.",
@@ -428,7 +430,8 @@
     "on_upload": "Fired with the progress of a file upload.",
     "on_color_change": "Fired when the user picks a color; `event.data` is the color.",
     "on_action": "Fired when the user taps the button of a string `action`.",
-    "on_complete": "Fired when playback finishes."
+    "on_complete": "Fired when playback finishes.",
+    "on_secondary_tap_down": "Fired when a secondary (right) button presses down; `event.local_position` and `event.global_position` give the point."
   },
   "widget_overrides": {
     "aboutdialog": {
@@ -668,7 +671,15 @@
       "heading_text_style": "Text style of the headings."
     },
     "draggable": {
-      "affinity": "Axis a drag must start along to pick the control up: `\"horizontal\"` or `\"vertical\"`."
+      "affinity": "Axis a drag must start along to pick the control up: `\"horizontal\"` or `\"vertical\"`.",
+      "axis": "Restricts the drag to `\"horizontal\"` or `\"vertical\"` movement.",
+      "content": "The control the user picks up; the first positional argument sets it.",
+      "content_feedback": "Control shown under the pointer while dragging (default: the content at half opacity).",
+      "content_when_dragging": "Control left in place of the content while it is being dragged (default: the content itself).",
+      "group": "Name of the drag group (default `\"default\"`); only a `drag_target` with the same `group` accepts the drop.",
+      "max_simultaneous_drags": "How many drags of this control may run at once; `0` turns dragging off.",
+      "on_drag_complete": "Fired when the control was dropped on a target that accepted it; `event.data` is the group name.",
+      "on_drag_start": "Fired when the user starts dragging the control."
     },
     "dropdown": {
       "align_label_with_hint": "Accepted so `dropdown_m2` code keeps loading; no Ruflet client uses it on a dropdown.",
@@ -835,10 +846,19 @@
       "padding": "Space around the ring. iOS and macOS ignore it."
     },
     "reorderablelistview": {
-      "spacing": "Space between items, in logical pixels."
+      "spacing": "Space between items, in logical pixels.",
+      "mouse_cursor": "Cursor shown over the default drag handles. Android, web, Windows and Linux only.",
+      "semantic_child_count": "Accepted, but no Ruflet client reads it on a reorderable list.",
+      "on_reorder_end": "Fired when the user drops the item, also when it lands where it started; `event.new_index` is the drop position.",
+      "on_reorder_start": "Fired when the user starts dragging an item; `event.old_index` is its index.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "responsiverow": {
-      "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these."
+      "columns": "Number of virtual columns the row is divided into (default 12); `col` spans count in these.",
+      "alignment": "How the children of a line are spread horizontally: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
+      "breakpoints": "Breakpoint names and the page width, in logical pixels, from which each applies (default `{ \"xs\" => 0, \"sm\" => 576, \"md\" => 768, \"lg\" => 992, \"xl\" => 1200, \"xxl\" => 1400 }`). They are compared with the page width, not the row's.",
+      "vertical_alignment": "How the children of a line are aligned vertically: `\"start\"` (default), `\"center\"`, `\"end\"` or `\"stretch\"`.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "searchbar": {
       "shrink_wrap": "Sizes the search view to its suggestions."
@@ -851,10 +871,59 @@
       "hint_text": "What screen readers say acting on the control does, for example \"Opens the message\".",
       "focus": "Tells screen readers whether the control has input focus.",
       "textfield": "Tells screen readers that the content is a text field.",
-      "identifier": "An identifier for UI tests and platform accessibility tools; screen readers do not announce it."
+      "identifier": "An identifier for UI tests and platform accessibility tools; screen readers do not announce it.",
+      "button": "Tells screen readers the content is a button.",
+      "container": "Makes the content its own element for screen readers instead of merging it into the parent (default `false`).",
+      "content": "The control described to screen readers; the first positional argument sets it.",
+      "current_value_length": "Number of characters entered so far, for a text field.",
+      "decreased_value": "Value screen readers announce after `on_decrease`, such as `\"40%\"`.",
+      "exclude_semantics": "Hides the content's own semantics, so screen readers announce only what this control says (default `false`).",
+      "focusable": "Tells screen readers the content can take input focus.",
+      "heading_level": "Heading level from 1 to 6, used with `header: true`.",
+      "hidden": "Tells screen readers the content is hidden, such as an inactive page.",
+      "image": "Tells screen readers the content is an image.",
+      "increased_value": "Value screen readers announce after `on_increase`, such as `\"60%\"`.",
+      "label": "Text screen readers announce for the content.",
+      "link": "Tells screen readers the content is a link.",
+      "live_region": "Announces changes to the label as they happen, as for a status message.",
+      "max_value_length": "Largest number of characters allowed, for a text field.",
+      "mixed": "Tells screen readers a checkbox is in a mixed (partly checked) state.",
+      "multiline": "Tells screen readers a text field takes more than one line.",
+      "obscured": "Tells screen readers a text field hides its text, as for a password.",
+      "read_only": "Tells screen readers a text field cannot be edited.",
+      "selected": "Tells screen readers the content is selected.",
+      "checked": "Tells screen readers a checkbox or switch is checked.",
+      "slider": "Tells screen readers the content is a slider.",
+      "toggled": "Tells screen readers a switch is on.",
+      "tooltip": "Tooltip text screen readers announce.",
+      "value": "Current value screen readers announce, such as `\"50%\"` for a slider. It does not change what is displayed.",
+      "on_copy": "Fired when a screen reader asks to copy.",
+      "on_cut": "Fired when a screen reader asks to cut.",
+      "on_decrease": "Fired when a screen reader asks to decrease the value, for example with a swipe down on a slider.",
+      "on_did_gain_accessibility_focus": "Fired when the screen reader's focus moves onto the content.",
+      "on_did_lose_accessibility_focus": "Fired when the screen reader's focus leaves the content.",
+      "on_dismiss": "Fired when a screen reader asks to dismiss the content.",
+      "on_increase": "Fired when a screen reader asks to increase the value, for example with a swipe up on a slider.",
+      "on_move_cursor_backward_by_character": "Fired when a screen reader moves the text cursor back one character; `event.data` is true when it extends the selection.",
+      "on_move_cursor_forward_by_character": "Fired when a screen reader moves the text cursor forward one character; `event.data` is true when it extends the selection.",
+      "on_paste": "Fired when a screen reader asks to paste.",
+      "on_scroll_down": "Fired when a screen reader asks to scroll down.",
+      "on_scroll_left": "Fired when a screen reader asks to scroll left.",
+      "on_scroll_right": "Fired when a screen reader asks to scroll right.",
+      "on_scroll_up": "Fired when a screen reader asks to scroll up.",
+      "on_set_text": "Fired when a screen reader sets a text field's text; `event.data` is the new text.",
+      "on_tap": "Fired when a screen reader activates the content, for example with a double tap in VoiceOver or TalkBack.",
+      "on_double_tap": "Fired when the user double-taps the content.",
+      "on_long_press": "Fired when a screen reader performs a long press on the content."
     },
     "shimmer": {
-      "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`."
+      "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`.",
+      "base_color": "Color of the content between highlights. Give it with `highlight_color`, or use `gradient` instead.",
+      "content": "The placeholder controls the shimmer sweeps over, usually grey boxes; the first positional argument sets it.",
+      "gradient": "Gradient swept over the content instead of `base_color` and `highlight_color`: `{ _type: \"linear\", colors: [...] }`.",
+      "highlight_color": "Color of the moving highlight.",
+      "loop": "Number of sweeps before the shimmer stops; `0` (default) loops forever.",
+      "period": "Time one sweep takes, in milliseconds (default 1500)."
     },
     "snackbar": {
       "action": "The action button: a string label, whose button fires the snack bar's `on_action`, or a `snack_bar_action`, whose own `on_click` fires.",
@@ -902,11 +971,613 @@
     "tablerow": {
       "controls": "The row's cells; the first positional argument, `controls:` or a block sets them. A hidden cell keeps its column.",
       "bgcolor": "Background color of the row."
+    },
+    "absorbpointer": {
+      "absorbing": "When true (default), the content gets no taps or other pointer input, and neither does anything behind it. Set `false` to let the content react again.",
+      "content": "The control whose pointer input is blocked; the first positional argument sets it."
+    },
+    "animatedswitcher": {
+      "content": "The control shown now. Replace it with `page.update(switcher, content: ...)` to animate to the new one.",
+      "duration": "Length of the animation to new content, in milliseconds (default 1000).",
+      "reverse_duration": "Length of the animation of the outgoing content, in milliseconds (default: `duration`).",
+      "switch_in_curve": "Easing curve of the incoming content, for example `\"easeOut\"` (default linear).",
+      "switch_out_curve": "Easing curve of the outgoing content, for example `\"easeIn\"` (default linear)."
+    },
+    "badge": {
+      "alignment": "Corner the badge sits on, as `{ x:, y: }` from -1 to 1 (default the top right, `{ x: 1, y: -1 }`).",
+      "bgcolor": "Color of the badge (red by default).",
+      "label": "Text or control shown in the badge; the first positional argument sets it. Give a String: a number is not shown as a label, so write `badge(count.to_s)`. Without a label, Android, web, Windows and Linux draw a small dot; iOS and macOS need a label.",
+      "label_visible": "Shows the badge (default `true`); `false` hides it without removing it.",
+      "large_size": "Height of a badge with a label, in logical pixels (default 16 on Android, web, Windows and Linux, 18 on iOS and macOS).",
+      "offset": "Moves the badge from its corner, as `{ x:, y: }` in logical pixels.",
+      "padding": "Horizontal space between the label and the badge's edge, in logical pixels.",
+      "small_size": "Diameter of the dot drawn when the badge has no label, in logical pixels (default 6 on Android, web, Windows and Linux).",
+      "text_color": "Color of the label text (white by default).",
+      "text_style": "Text style of the label, as a hash such as `{ size: 10, weight: \"bold\" }`."
+    },
+    "card": {
+      "semantic_container": "Treats the card and its content as one element for screen readers (default `true`); `false` lets screen readers visit each child on its own.",
+      "show_border_on_foreground": "Draws the `shape` border over the content instead of behind it (default `true`). Android, web, Windows and Linux only; iOS and macOS ignore it."
+    },
+    "carouselview": {
+      "consume_max_weight": "With `flex_weights`, lets items grow to the largest weight as they scroll in (default `true`); `false` keeps the layout fixed. Android, web, Windows and Linux only.",
+      "enable_splash": "Shows the tap ripple or highlight on items (default `true`).",
+      "horizontal": "Scrolls the items horizontally (default `true`); `false` scrolls them vertically.",
+      "flex_weights": "A weighted layout such as `[1, 7, 1]`: the visible items share the width in these proportions. It wins over `item_extent`.",
+      "initial_item": "Index of the item shown first (default 0).",
+      "item_clip_behavior": "How each item is clipped to its rounded shape: `\"antiAlias\"` (default), `\"hardEdge\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
+      "item_extent": "Width of each item in logical pixels (height when `horizontal: false`). A carousel needs `item_extent` or `flex_weights`.",
+      "item_snapping": "Snaps to the nearest item when the user stops scrolling (default `false`).",
+      "overlay_color": "Color of the highlight drawn over an item while it is pressed or hovered.",
+      "shrink_extent": "Smallest size, in logical pixels, an item shrinks to as it scrolls off the edge (default 0). Android, web, Windows and Linux only.",
+      "on_item_click": "Fired when the user taps an item; `event.data` is its index."
+    },
+    "circleavatar": {
+      "max_radius": "Largest radius the avatar may grow to, in logical pixels.",
+      "min_radius": "Smallest radius the avatar may shrink to, in logical pixels.",
+      "radius": "Radius of the avatar, in logical pixels (default 20).",
+      "on_image_error": "Fired when `foreground_image_src` or `background_image_src` fails to load; `event.data` is `\"foreground\"` or `\"background\"`."
+    },
+    "clipoval": {
+      "clip_behavior": "How the edge is clipped: `\"antiAlias\"` (default), `\"hardEdge\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
+      "content": "The control to clip; the first positional argument sets it."
+    },
+    "cliprsuperellipse": {
+      "border_radius": "Corner radius: one number for every corner, or `{ top_left:, top_right:, bottom_left:, bottom_right: }` (missing corners stay square).",
+      "clip_behavior": "How the edge is clipped: `\"antiAlias\"` (default), `\"hardEdge\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
+      "content": "The control to clip; the first positional argument sets it."
+    },
+    "column": {
+      "animate_changes": "Animates children that `page.update` adds or removes, as `item_animation` says (default `false`). It has no effect with `wrap: true`.",
+      "alignment": "How the children are spread vertically: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
+      "horizontal_alignment": "How the children are aligned horizontally: `\"start\"` (default), `\"center\"`, `\"end\"` or `\"stretch\"`.",
+      "intrinsic_width": "Makes the column as wide as its widest child.",
+      "item_animation": "How `animate_changes` animates added and removed children: `{ type:, duration:, curve: }`, where `type` is `\"fade\"`, `\"size\"`, `\"fade_size\"` (default) or `\"slide\"` and `duration` defaults to 250 milliseconds.",
+      "refresh_bgcolor": "Background color of the pull-to-refresh indicator. Android, web, Windows and Linux only.",
+      "refresh_color": "Color of the pull-to-refresh indicator.",
+      "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40). Android, web, Windows and Linux only.",
+      "refresh_trigger_distance": "How far, in logical pixels, the user must pull to start a refresh. iOS and macOS only.",
+      "run_alignment": "With `wrap: true`, how the columns of children are spread horizontally: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
+      "run_spacing": "With `wrap: true`, space between the columns of children, in logical pixels (default 10).",
+      "spacing": "Space between the children, in logical pixels (default 10).",
+      "wrap": "Flows the children into a new column when they do not fit vertically, instead of overflowing.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "container": {
+      "alignment": "Where the content sits inside the container, as `{ x:, y: }` from -1 to 1; `\"center\"` is also accepted. [Option values](/docs/controls-and-layout#option-values) lists the other names Ruflet main adds, such as `\"top_left\"`.",
+      "animate": "Animates the container's size, padding, colors, border and other decoration when they change: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+      "blur": "Blurs what is behind the container (frosted glass): a sigma such as `10`, `[x, y]`, or `{ sigma_x:, sigma_y: }`.",
+      "border_radius": "Corner radius, in logical pixels: one number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`, where a corner you leave out stays square. It also clips the content. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
+      "color_filter": "Tints the container and its content: `{ color:, blend_mode: }`, for example `{ color: \"#80000000\", blend_mode: \"darken\" }`.",
+      "dark_theme": "Theme for the controls inside the container while the app is in dark mode, in the same form as `page.dark_theme`.",
+      "ignore_interactions": "Makes the container and its content ignore taps and other pointer input.",
+      "image": "Background image painted behind the content: `{ src:, fit:, alignment:, repeat:, opacity: }`.",
+      "ink": "Shows touch feedback on a clickable container: an ink ripple on Android, web, Windows and Linux, and a fade to `opacity_on_click` on iOS and macOS.",
+      "ink_color": "Color of the ink ripple when `ink: true`. Android, web, Windows and Linux only.",
+      "opacity_on_click": "Opacity, from 0.0 to 1.0, a clickable container with `ink: true` fades to while it is pressed (default 0.4). iOS and macOS only.",
+      "padding": "Space between the container's edge and its content, in logical pixels: one number, or `{ left:, top:, right:, bottom: }`, where a side you leave out is 0. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
+      "shadow": "Drop shadow, or a list of them: `{ color:, offset: { x:, y: }, blur_radius:, spread_radius: }`.",
+      "shape": "Shape of the container: `\"rectangle\"` (default) or `\"circle\"`.",
+      "theme": "Theme for the controls inside the container, in the same form as `page.theme`.",
+      "theme_mode": "Forces the container's content into `\"light\"` or `\"dark\"` mode, or `\"system\"`.",
+      "url": "URL opened when the container is tapped.",
+      "on_click": "Fired when the container is tapped.",
+      "on_hover": "Fired when the pointer enters or leaves the container. `event.data` is `true` on enter; on leave the client sends `false`, which arrives in Ruby as `nil`.",
+      "on_long_press": "Fired on a long press."
+    },
+    "customscrollview": {
+      "controls": "The slivers, when they are given in a block; prefer `slivers`.",
+      "slivers": "The slivers, in scroll order: `sliver_app_bar`, `sliver_list`, `sliver_grid`, `sliver_to_box_adapter`, `sliver_fill_remaining`, `sliver_padding`, or any other control, which scrolls as one box. The first positional argument sets them.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "dismissible": {
+      "on_dismiss": "Fired when the control has been swiped away; `event.direction` is the swipe direction, such as `\"startToEnd\"` or `\"endToStart\"`. Remove the control from its parent in this handler.",
+      "on_resize": "Fired while the space left by the dismissed control closes.",
+      "on_update": "Fired while the user drags; `event.direction` is the direction, `event.progress` how far the control has moved (0.0 to 1.0) and `event.reached` whether it is past the dismiss threshold."
+    },
+    "divider": {
+      "color": "Color of the line.",
+      "height": "Total height the divider takes, with the line in the middle (default 16 on Android, web, Windows and Linux, 1 on iOS and macOS).",
+      "leading_indent": "Empty space before the line starts, in logical pixels (default 0).",
+      "radius": "Corner radius of the line's ends, in logical pixels.",
+      "thickness": "Thickness of the line, in logical pixels (default 0.5 on iOS and macOS).",
+      "trailing_indent": "Empty space after the line ends, in logical pixels (default 0)."
+    },
+    "draggablescrollablesheet": {
+      "elevation": "Shadow depth of the sheet. Android, web, Windows and Linux only.",
+      "extent_change_interval": "Minimum time between two `on_extent_change` events, in milliseconds (default 50); a finished drag always reports where the sheet stopped.",
+      "initial_child_size": "Size of the sheet when it first shows, as a fraction of its parent's height (default 0.5).",
+      "max_child_size": "Largest size of the sheet, as a fraction of its parent's height (default 1.0).",
+      "min_child_size": "Smallest size of the sheet, as a fraction of its parent's height (default 0.25).",
+      "should_close_on_min_extent": "Lets dragging the sheet to its minimum size close an enclosing modal sheet (default `true`).",
+      "snap_animation_duration": "How long snapping to a size takes, in milliseconds.",
+      "snap_sizes": "Extra sizes, as fractions between `min_child_size` and `max_child_size`, that the sheet can snap to when `snap: true`.",
+      "on_extent_change": "Fired as the sheet size changes; `event.data` has the keys `:extent`, `:min` and `:max`, as fractions of the parent's height."
+    },
+    "dragtarget": {
+      "content": "The control the user drops onto; the first positional argument sets it.",
+      "group": "Name of the drag group this target accepts (default `\"default\"`). It accepts only a `draggable` with the same `group`.",
+      "on_accept": "Fired when a draggable of the same group is dropped on the target; `event.src_id` is the draggable's id (look it up with `page.get_control(event.src_id)`) and `event.x` / `event.y` where it was dropped.",
+      "on_leave": "Fired when a dragged control leaves the target without being dropped. The client sends the draggable's id as a two-item list, so read it from `event.data[1]`; `event.src_id` is nil here.",
+      "on_move": "Fired as a dragged control of the same group moves over the target; `event.src_id` is its id and `event.x` / `event.y` its position.",
+      "on_will_accept": "Fired when a dragged control enters the target; `event.accept` is true when its group matches, and `event.src_id` is its id."
+    },
+    "fadetransition": {
+      "animating": "Runs the animation while true (default); `false` pauses it where it is, and `true` resumes it.",
+      "curve": "Easing curve of each run, for example `\"easeInOut\"` (default linear).",
+      "delay": "Milliseconds to wait before the first run.",
+      "duration": "Length of one run, in milliseconds (default 1000).",
+      "repeat": "Loops the animation when true.",
+      "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
+      "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
+      "begin": "Opacity the animation starts from, from 0 to 1 (default 0).",
+      "end": "Opacity the animation ends at, from 0 to 1 (default 1).",
+      "content": "The control to fade; the first positional argument sets it."
+    },
+    "fittedbox": {
+      "alignment": "Where the scaled content sits in the box, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
+      "clip_behavior": "How content that does not fit is clipped: `\"none\"` (default), `\"hardEdge\"`, `\"antiAlias\"` or `\"antiAliasWithSaveLayer\"`.",
+      "content": "The control to scale; the first positional argument sets it.",
+      "fit": "How the content is scaled into the box: `\"contain\"` (default), `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"scaleDown\"` or `\"none\"`."
+    },
+    "fractionallysizedbox": {
+      "alignment": "Where the sized content sits in the available space, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
+      "content": "The control to size; the first positional argument sets it.",
+      "height_factor": "Height as a fraction of the height the parent offers, such as `0.5`; leave it out to let the content choose. The parent must bound the height.",
+      "width_factor": "Width as a fraction of the width the parent offers, such as `0.5`; leave it out to let the content choose. The parent must bound the width."
+    },
+    "gesturedetector": {
+      "on_double_tap": "Fired on a double tap.",
+      "on_double_tap_cancel": "Fired when a possible double tap turns out not to be one.",
+      "on_double_tap_down": "Fired when the second tap of a double tap presses down; `event.local_position` gives the point.",
+      "on_enter": "Fired when a mouse pointer enters the control; `event.local_position`, `event.global_position` and `event.kind` describe it.",
+      "on_exit": "Fired when a mouse pointer leaves the control; `event.local_position` and `event.global_position` give where.",
+      "on_force_press_end": "Fired when a pressure-sensitive press ends; `event.pressure` is the last pressure. Only devices with force touch send it.",
+      "on_force_press_peak": "Fired when a pressure-sensitive press reaches its peak; `event.pressure` gives the pressure.",
+      "on_force_press_start": "Fired when a pressure-sensitive press starts; `event.pressure` gives the pressure.",
+      "on_force_press_update": "Fired as the pressure of a press changes; `event.pressure` and `event.local_position` describe it.",
+      "on_horizontal_drag_cancel": "Fired when a horizontal drag is cancelled before it starts.",
+      "on_horizontal_drag_down": "Fired when a pointer that may start a horizontal drag presses down; `event.local_position` gives the point.",
+      "on_horizontal_drag_end": "Fired when a horizontal drag ends; `event.velocity` is the speed in pixels per second and `event.primary_velocity` the horizontal part.",
+      "on_horizontal_drag_start": "Fired when a horizontal drag starts; `event.local_position` gives the point.",
+      "on_horizontal_drag_update": "Fired as a horizontal drag moves, at most once per `drag_interval`; `event.local_delta` is the movement since the last update and `event.primary_delta` its horizontal part.",
+      "on_hover": "Fired as a mouse pointer moves over the control, at most once per `hover_interval`; `event.local_position` gives the point and `event.local_delta` the movement.",
+      "on_long_press": "Fired on a long press.",
+      "on_long_press_cancel": "Fired when a press that could become a long press is cancelled.",
+      "on_long_press_down": "Fired when a pointer that may become a long press presses down; `event.local_position` gives the point.",
+      "on_long_press_end": "Fired when the finger lifts after a long press; `event.local_position` and `event.velocity` describe it.",
+      "on_long_press_move_update": "Fired as the finger moves during a long press; `event.local_position` gives the point.",
+      "on_long_press_start": "Fired when a long press is recognized; `event.local_position` gives the point.",
+      "on_long_press_up": "Fired when the finger lifts after a long press.",
+      "on_multi_long_press": "Fired after `multi_tap_touches` fingers stay down for a second.",
+      "on_multi_tap": "Fired when several fingers touch at once; `event.correct_touches` is true when the count reached `multi_tap_touches`.",
+      "on_pan_cancel": "Fired when a drag is cancelled before it starts.",
+      "on_pan_down": "Fired when a pointer that may start a drag presses down; `event.local_position` gives the point.",
+      "on_pan_end": "Fired when a drag in any direction ends; `event.velocity` is the speed in pixels per second.",
+      "on_pan_start": "Fired when a drag in any direction starts; `event.local_position` gives the point.",
+      "on_pan_update": "Fired as a drag moves, at most once per `drag_interval`; `event.local_delta` is the movement since the last update and `event.local_position` the point.",
+      "on_right_pan_end": "Fired when a drag with the right mouse button ends; `event.local_position` gives the point.",
+      "on_right_pan_start": "Fired when a drag with the right mouse button starts; `event.local_position` gives the point.",
+      "on_right_pan_update": "Fired as a right-button drag moves, at most once per `drag_interval`; `event.local_delta` is the movement since the last update.",
+      "on_scale_end": "Fired when a pinch or rotation ends; `event.velocity` and `event.pointer_count` describe it.",
+      "on_scale_start": "Fired when a pinch or two-finger rotation starts; `event.local_focal_point` and `event.pointer_count` describe it.",
+      "on_scale_update": "Fired as a pinch or rotation changes; `event.scale` is the scale since the start, `event.rotation` the rotation in radians and `event.focal_point_delta` the movement.",
+      "on_scroll": "Fired when the user scrolls with a mouse wheel or trackpad over the control; `event.scroll_delta` is the scroll amount and `event.local_position` the pointer.",
+      "on_secondary_long_press": "Fired on a long press with the secondary (right) button.",
+      "on_secondary_long_press_cancel": "Fired when a secondary-button press that could become a long press is cancelled.",
+      "on_secondary_long_press_down": "Fired when the secondary button presses down for a possible long press; `event.local_position` gives the point.",
+      "on_secondary_long_press_end": "Fired when the secondary button lifts after a long press; `event.local_position` gives the point.",
+      "on_secondary_long_press_move_update": "Fired as the pointer moves during a secondary-button long press.",
+      "on_secondary_long_press_start": "Fired when a secondary-button long press is recognized; `event.local_position` gives the point.",
+      "on_secondary_long_press_up": "Fired when the secondary button lifts after a long press.",
+      "on_secondary_tap": "Fired on a secondary (right-button) click; it carries no position, so use `on_secondary_tap_down` or `on_secondary_tap_up` for the point.",
+      "on_secondary_tap_cancel": "Fired when a secondary-button tap is cancelled.",
+      "on_secondary_tap_up": "Fired when a secondary button lifts after a tap; `event.local_position` gives the point.",
+      "on_tap": "Fired on a tap; `event.local_position` and `event.global_position` give the point where it pressed down.",
+      "on_tap_cancel": "Fired when a tap is cancelled, for example because the pointer moved away.",
+      "on_tap_move": "Fired as the pointer moves while pressed down; `event.delta` is the movement.",
+      "on_tap_up": "Fired when the pointer of a tap lifts; `event.local_position` gives the point.",
+      "on_tertiary_long_press": "Fired on a long press with the middle mouse button.",
+      "on_tertiary_long_press_cancel": "Fired when a middle-button press that could become a long press is cancelled.",
+      "on_tertiary_long_press_down": "Fired when the middle button presses down for a possible long press; `event.local_position` gives the point.",
+      "on_tertiary_long_press_end": "Fired when the middle button lifts after a long press.",
+      "on_tertiary_long_press_move_update": "Fired as the pointer moves during a middle-button long press.",
+      "on_tertiary_long_press_start": "Fired when a middle-button long press is recognized.",
+      "on_tertiary_long_press_up": "Fired when the middle button lifts after a long press.",
+      "on_tertiary_tap_cancel": "Fired when a middle-button tap is cancelled.",
+      "on_tertiary_tap_down": "Fired when the middle mouse button presses down; `event.local_position` gives the point.",
+      "on_tertiary_tap_up": "Fired when the middle mouse button lifts; `event.local_position` gives the point.",
+      "on_vertical_drag_cancel": "Fired when a vertical drag is cancelled before it starts.",
+      "on_vertical_drag_down": "Fired when a pointer that may start a vertical drag presses down; `event.local_position` gives the point.",
+      "on_vertical_drag_end": "Fired when a vertical drag ends; `event.velocity` is the speed in pixels per second and `event.primary_velocity` the vertical part.",
+      "on_vertical_drag_start": "Fired when a vertical drag starts; `event.local_position` gives the point.",
+      "on_vertical_drag_update": "Fired as a vertical drag moves, at most once per `drag_interval`; `event.local_delta` is the movement since the last update and `event.primary_delta` its vertical part."
+    },
+    "gridview": {
+      "child_aspect_ratio": "Width-to-height ratio of each cell (default 1, square cells).",
+      "max_extent": "Largest width of a cell, in logical pixels (height for a horizontal grid); the grid fits as many columns as it can. It wins over `runs_count`.",
+      "refresh_bgcolor": "Background color of the pull-to-refresh indicator. Android, web, Windows and Linux only.",
+      "refresh_color": "Color of the pull-to-refresh indicator.",
+      "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40). Android, web, Windows and Linux only.",
+      "refresh_trigger_distance": "How far, in logical pixels, the user must pull to start a refresh. iOS and macOS only.",
+      "run_spacing": "Space between the columns of cells, in logical pixels (default 10).",
+      "runs_count": "Number of columns (rows for a horizontal grid), default 1.",
+      "spacing": "Space between the rows of cells, in logical pixels (default 10).",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "hero": {
+      "content": "The control that flies to its new place; the first positional argument sets it.",
+      "tag": "A value, such as a String, that pairs this hero with the hero of the same tag on the next view. Every hero on one view needs its own tag.",
+      "transition_on_user_gestures": "Also flies the hero when the user goes back with a gesture, such as the iOS back swipe (default `false`)."
+    },
+    "icon": {
+      "apply_text_scaling": "Scales the icon with the user's text size setting.",
+      "fill": "Fill of a variable icon font such as Material Symbols, from 0 (outlined) to 1 (filled). Fonts without that axis ignore it, like `grade`, `weight` and `optical_size`.",
+      "grade": "Grade (stroke thickness at the same size) of a variable icon font, for example -25 to 200.",
+      "icon": "Icon to show: a Material icon name such as `\"settings\"`, or `Ruflet::Icons` and `Ruflet::CupertinoIcons` constants; the first positional argument sets it.",
+      "optical_size": "Optical size of a variable icon font, for example 20 to 48.",
+      "size": "Size of the icon, in logical pixels (default 24).",
+      "weight": "Stroke weight of a variable icon font, for example 100 to 700."
+    },
+    "ignorepointer": {
+      "content": "The control that ignores pointer input; the first positional argument sets it.",
+      "ignoring": "When true (default), the content ignores taps and other pointer input, which reach whatever lies behind it. Set `false` to let the content react again."
+    },
+    "image": {
+      "anti_alias": "Smooths the image's edges when it is drawn scaled or rotated (default `false`).",
+      "cache_height": "Decodes the image at this height, in physical pixels, to save memory for large images.",
+      "cache_width": "Decodes the image at this width, in physical pixels, to save memory for large images.",
+      "color": "Color blended into the image with `color_blend_mode`, for example to tint an icon-like image.",
+      "color_blend_mode": "How `color` is blended into the image, for example `\"srcIn\"` to tint it or `\"multiply\"`.",
+      "error_content": "Control shown in place of the image when it fails to load.",
+      "fade_in_animation": "Fades the image in once it has loaded: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+      "filter_quality": "Quality of scaling: `\"none\"`, `\"low\"`, `\"medium\"` (default) or `\"high\"`.",
+      "fit": "How the image fills its box: `\"contain\"`, `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"scaleDown\"` or `\"none\"`.",
+      "gapless_playback": "Keeps showing the old image while a new `src` loads, instead of a blank space.",
+      "paint": "How the image is drawn when it is a shape inside a `canvas`, built with `paint(...)`. An image on the page ignores it.",
+      "placeholder_fade_out_animation": "Fades the placeholder out once the image has loaded: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
+      "placeholder_fit": "How the placeholder fills the box (default: `fit`).",
+      "placeholder_src": "Image shown while `src` loads: a URL, an asset path or Base64 data.",
+      "repeat": "Tiles the image to fill its box: `\"noRepeat\"` (default), `\"repeat\"`, `\"repeatX\"` or `\"repeatY\"`.",
+      "src": "The image: a URL, a path in the app's assets, Base64 data or bytes; the first positional argument sets it.",
+      "src_base64": "The image as a Base64 string, used when `src` is not set. `src` also accepts a Base64 string, which works with every release.",
+      "x": "Left edge of the image, in logical pixels, when it is a shape inside a `canvas`. An image on the page ignores it.",
+      "y": "Top edge of the image, in logical pixels, when it is a shape inside a `canvas`. An image on the page ignores it."
+    },
+    "indexedstack": {
+      "alignment": "Where a child smaller than the stack sits, as `{ x:, y: }` from -1 to 1 or a name such as `\"center\"` (default the top left).",
+      "fit": "How the shown child is sized: `\"loose\"` (default, its own size), `\"expand\"` (the stack's size) or `\"passThrough\"`.",
+      "index": "Index of the one child shown, starting at 0 (default 0). Every child stays built, so each keeps its state while hidden."
+    },
+    "interactiveviewer": {
+      "alignment": "Accepted, but current clients cannot apply it: a viewer with `alignment` set fails to build. Leave it out.",
+      "boundary_margin": "How far, in logical pixels, the content may be panned past the viewer's edges: one number or `{ left:, top:, right:, bottom: }` (default 0).",
+      "clip_behavior": "How the content is clipped to the viewer: `\"hardEdge\"` (default), `\"antiAlias\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
+      "constrained": "Lays the content out at the viewer's size (default `true`); `false` lets large content keep its own size, for panning around a big image or map.",
+      "interaction_end_friction_coefficient": "How quickly a fling slows down after the user lets go (default 0.0000135); a larger value stops it sooner.",
+      "interaction_update_interval": "Minimum time between two `on_interaction_update` events, in milliseconds (default 200).",
+      "max_scale": "Largest zoom factor (default 2.5).",
+      "min_scale": "Smallest zoom factor (default 0.8).",
+      "pan_enabled": "Lets the user pan the content with a drag (default `true`).",
+      "scale_enabled": "Lets the user zoom with a pinch or the mouse wheel (default `true`).",
+      "scale_factor": "How much one mouse wheel step zooms (default 200); a smaller value zooms faster.",
+      "on_interaction_end": "Fired when the user lets go; `event.data` has the keys `:pc` (the pointer count) and `:v`, the velocity as `{ x:, y: }` in pixels per second.",
+      "on_interaction_start": "Fired when the user starts to pan or zoom; `event.data` has the keys `:lfp` and `:gfp` (the local and global focal point as `{ x:, y: }`) and `:pc` (the pointer count).",
+      "on_interaction_update": "Fired as the user pans or zooms, at most once per `interaction_update_interval`; `event.data` has the keys `:s` (the scale since the start), `:rot`, `:fpd` (the focal point movement), `:lfp`, `:gfp` and `:pc`."
+    },
+    "intrinsicheight": {
+      "content": "The control to size to its own intrinsic height; the first positional argument sets it."
+    },
+    "intrinsicwidth": {
+      "content": "The control to size to its own intrinsic width; the first positional argument sets it.",
+      "step_height": "Rounds the height up to a multiple of this value, in logical pixels.",
+      "step_width": "Rounds the width up to a multiple of this value, in logical pixels."
+    },
+    "keyboardlistener": {
+      "autofocus": "Takes keyboard focus when the listener first shows. Without focus it receives no keys.",
+      "content": "The control inside the listener; the first positional argument sets it.",
+      "include_semantics": "Tells screen readers that the listener can take focus (default `true`).",
+      "on_key_down": "Fired when a key is pressed; `event.data[:key]` is its label, such as `\"A\"`, `\"Enter\"` or `\"Arrow Up\"`.",
+      "on_key_repeat": "Fired while a held key repeats; `event.data[:key]` is its label.",
+      "on_key_up": "Fired when a key is released; `event.data[:key]` is its label."
+    },
+    "listview": {
+      "animate_changes": "Animates items that `page.update` adds or removes, as `item_animation` says (default `false`).",
+      "item_animation": "How `animate_changes` animates added and removed items: `{ type:, duration:, curve: }`, where `type` is `\"fade\"`, `\"size\"`, `\"fade_size\"` (default) or `\"slide\"` and `duration` defaults to 250 milliseconds.",
+      "refresh_bgcolor": "Background color of the pull-to-refresh indicator. Android, web, Windows and Linux only.",
+      "refresh_color": "Color of the pull-to-refresh indicator.",
+      "refresh_displacement": "Distance, in logical pixels, the pull-to-refresh indicator settles at while refreshing (default 40). Android, web, Windows and Linux only.",
+      "refresh_trigger_distance": "How far, in logical pixels, the user must pull to start a refresh. iOS and macOS only.",
+      "spacing": "Space between items, in logical pixels (default 0).",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "markdown": {
+      "auto_follow_links": "Opens tapped links in the browser (default `false`); `on_tap_link` fires either way.",
+      "auto_follow_links_target": "Where `auto_follow_links` opens a link on the web, for example `\"_blank\"` for a new tab.",
+      "code_style_sheet": "Text styles for code blocks, in the same form as `md_style_sheet`.",
+      "code_theme": "Syntax highlighting theme for code blocks: a theme name such as `\"atom-one-dark\"`, `\"github\"` or `\"monokai-sublime\"`, or a hash of token styles.",
+      "extension_set": "Markdown syntax extensions: `\"none\"` (default), `\"commonMark\"`, `\"gitHubWeb\"` or `\"gitHubFlavored\"`, which adds tables, task lists and strikethrough.",
+      "fit_content": "Makes the markdown only as wide as its longest line (default `true`).",
+      "image_error_content": "Control shown in place of an image in the markdown that fails to load.",
+      "latex_scale_factor": "Scale of LaTeX formulas written as `$...$` or `$$...$$`.",
+      "latex_style": "Text style of LaTeX formulas.",
+      "md_style_sheet": "Text styles per element, as a hash such as `{ h1_text_style: { size: 28 }, p_text_style: { size: 16 }, a_text_style: { color: \"#2563eb\" } }`.",
+      "selectable": "Lets the user select the text and sends `on_selection_change` (default `false`).",
+      "shrink_wrap": "Sizes the markdown to its content instead of filling the available height (default `true`).",
+      "soft_line_break": "Keeps single line breaks in the source as line breaks instead of joining the lines (default `false`).",
+      "value": "The Markdown source to render; the first positional argument sets it.",
+      "on_selection_change": "Fired when the user changes the selection of a `selectable` markdown; `event.data[:text]` is the selected text.",
+      "on_tap_link": "Fired when the user taps a link; `event.data` is the link's URL.",
+      "on_tap_text": "Fired when the user taps text that is not a link."
+    },
+    "mergesemantics": {
+      "content": "The control whose parts screen readers announce as one element; the first positional argument sets it."
+    },
+    "nestedscrollview": {
+      "body": "The scrolling content under the headers, usually a `list_view`, `grid_view`, `custom_scroll_view` or `tabs` view.",
+      "controls": "The header slivers, when they are given in a block; prefer `header_slivers`.",
+      "float_header_slivers": "Shows a floating header again as soon as the user scrolls back up, before the body reaches its top (default `false`).",
+      "header_slivers": "Slivers shown above the body that collapse as it scrolls, usually one `sliver_app_bar`; the first positional argument sets them.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "overlay": {
+      "controls": "The controls drawn above the page; the first positional argument sets them."
+    },
+    "pageview": {
+      "selected_index": "Index of the page shown, starting at 0. Setting it with `page.update` jumps to that page.",
+      "on_change": "Fired when the user settles on another page; `event.data` is its index."
+    },
+    "placeholder": {
+      "color": "Color of the box outline and its crossing lines (default a dark blue-grey).",
+      "content": "Optional control drawn inside the placeholder box.",
+      "fallback_height": "Height of the placeholder when its parent leaves the height open, in logical pixels (default 400).",
+      "fallback_width": "Width of the placeholder when its parent leaves the width open, in logical pixels (default 400).",
+      "stroke_width": "Width of the lines, in logical pixels (default 2)."
+    },
+    "reorderabledraghandle": {
+      "content": "The control the user drags to move the list item, often an icon; the first positional argument sets it.",
+      "mouse_cursor": "Cursor shown over the handle, for example `\"grab\"`."
+    },
+    "rotatedbox": {
+      "content": "The control to rotate; the first positional argument sets it.",
+      "quarter_turns": "Number of clockwise quarter turns, such as `1` for 90 degrees (default 0). Unlike `rotate`, the layout turns with the content, so a turned box takes its rotated size."
+    },
+    "rotationtransition": {
+      "animating": "Runs the animation while true (default); `false` pauses it where it is, and `true` resumes it.",
+      "curve": "Easing curve of each run, for example `\"easeInOut\"` (default linear).",
+      "delay": "Milliseconds to wait before the first run.",
+      "duration": "Length of one run, in milliseconds (default 1000).",
+      "repeat": "Loops the animation when true.",
+      "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
+      "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
+      "alignment": "Point the content turns around, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
+      "begin": "Rotation the animation starts from, in full turns (default 0).",
+      "end": "Rotation the animation ends at, in full turns (default 1, one full turn).",
+      "content": "The control to rotate; the first positional argument sets it."
+    },
+    "row": {
+      "alignment": "How the children are spread horizontally: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
+      "intrinsic_height": "Makes the row as tall as its tallest child, so `vertical_alignment: \"stretch\"` gives every child that height.",
+      "run_alignment": "With `wrap: true`, how the lines of children are spread vertically: `\"start\"` (default), `\"center\"`, `\"end\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`.",
+      "run_spacing": "With `wrap: true`, space between the lines of children, in logical pixels (default 10).",
+      "spacing": "Space between the children, in logical pixels (default 10).",
+      "vertical_alignment": "How the children are aligned vertically: `\"start\"`, `\"center\"` (default), `\"end\"`, `\"stretch\"` or `\"baseline\"`.",
+      "wrap": "Flows the children onto a new line when they do not fit horizontally, instead of overflowing.",
+      "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
+    },
+    "ruflet_app": {
+      "app_error_message": "Message shown when the embedded app fails.",
+      "app_startup_screen_message": "Message shown on the startup screen while the embedded app connects.",
+      "args": "Arguments for the in-browser connection used with `force_pyodide`; a normal server URL ignores them.",
+      "force_pyodide": "Connects through the in-browser (Pyodide) channel instead of `url`'s WebSocket; kept for Flet compatibility, and Ruflet servers do not need it.",
+      "reconnect_interval_ms": "Time between reconnection attempts after the connection drops, in milliseconds.",
+      "reconnect_timeout_ms": "How long to keep trying to reconnect, in milliseconds.",
+      "show_app_startup_screen": "Shows a startup screen while the embedded app connects.",
+      "url": "Address of the Ruflet server to embed, such as `\"http://localhost:8550\"`.",
+      "on_error": "Fired when the embedded app reports an error; `event.data` is the message."
+    },
+    "safearea": {
+      "avoid_intrusions_bottom": "Keeps the content clear of the bottom system area, such as the home indicator (default `true`).",
+      "avoid_intrusions_left": "Keeps the content clear of system areas on the left (default `true`).",
+      "avoid_intrusions_right": "Keeps the content clear of system areas on the right (default `true`).",
+      "avoid_intrusions_top": "Keeps the content clear of the status bar and notch (default `true`).",
+      "maintain_bottom_view_padding": "Keeps the bottom padding while the on-screen keyboard is open (default `false`).",
+      "minimum_padding": "Least padding on each side even where the system needs none: one number or `{ left:, top:, right:, bottom: }`."
+    },
+    "scaletransition": {
+      "animating": "Runs the animation while true (default); `false` pauses it where it is, and `true` resumes it.",
+      "curve": "Easing curve of each run, for example `\"easeInOut\"` (default linear).",
+      "delay": "Milliseconds to wait before the first run.",
+      "duration": "Length of one run, in milliseconds (default 1000).",
+      "repeat": "Loops the animation when true.",
+      "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
+      "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
+      "alignment": "Point the content scales around, as `{ x:, y: }` from -1 to 1 or a name such as `\"bottom_center\"` (default the center).",
+      "begin": "Scale the animation starts from (default 0).",
+      "end": "Scale the animation ends at (default 1, the normal size).",
+      "content": "The control to scale; the first positional argument sets it."
+    },
+    "screenshot": {
+      "content": "The control to capture; the first positional argument sets it."
+    },
+    "selectionarea": {
+      "content": "The controls inside whose text the user can select together; the first positional argument sets it.",
+      "on_change": "Fired when the selection changes; `event.data` is the selected text, or nil when nothing is selected."
+    },
+    "shadermask": {
+      "blend_mode": "How the shader is combined with the content (default `\"modulate\"`); `\"srcIn\"` paints the gradient only where the content is.",
+      "border_radius": "Clips the masked content to rounded corners, in logical pixels.",
+      "content": "The control to mask; the first positional argument sets it.",
+      "shader": "The gradient used as the mask: `{ _type: \"linear\", colors: [...], begin: { x:, y: }, end: { x:, y: } }`, with `_type` `\"linear\"`, `\"radial\"` or `\"sweep\"`. It is required."
+    },
+    "sizetransition": {
+      "animating": "Runs the animation while true (default); `false` pauses it where it is, and `true` resumes it.",
+      "curve": "Easing curve of each run, for example `\"easeInOut\"` (default linear).",
+      "delay": "Milliseconds to wait before the first run.",
+      "duration": "Length of one run, in milliseconds (default 1000).",
+      "repeat": "Loops the animation when true.",
+      "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
+      "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
+      "axis": "Direction the content grows in: `\"vertical\"` (default) or `\"horizontal\"`.",
+      "axis_alignment": "Where the content is anchored along `axis` while it grows, from -1 (start) to 1 (end), default 0 (the middle).",
+      "begin": "Size factor the animation starts from, as a fraction of the content's size along `axis` (default 0).",
+      "end": "Size factor the animation ends at (default 1, the full size).",
+      "content": "The control to grow; the first positional argument sets it."
+    },
+    "slidetransition": {
+      "animating": "Runs the animation while true (default); `false` pauses it where it is, and `true` resumes it.",
+      "curve": "Easing curve of each run, for example `\"easeInOut\"` (default linear).",
+      "delay": "Milliseconds to wait before the first run.",
+      "duration": "Length of one run, in milliseconds (default 1000).",
+      "repeat": "Loops the animation when true.",
+      "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
+      "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
+      "begin": "Position the animation starts from, as `{ x:, y: }` in fractions of the content's own size (default `{ x: 0, y: 1 }`, one height below).",
+      "end": "Position the animation ends at (default `{ x: 0, y: 0 }`, its place in the layout).",
+      "content": "The control to slide; the first positional argument sets it."
+    },
+    "sliverappbar": {
+      "always_show_middle": "Shows the small title in the collapsed bar even while the large title is visible (default `true`). iOS and macOS only.",
+      "bottom_height": "Height of `bottom`, in logical pixels (default 48). Android, web, Windows and Linux only.",
+      "center_title": "Centers the title in the bar. Android, web, Windows and Linux only; iOS and macOS ignore it and place the title the iOS way.",
+      "collapsed_height": "Height of the bar when fully collapsed, in logical pixels. Android, web, Windows and Linux only.",
+      "color": "Color of the title and icons. Android, web, Windows and Linux only.",
+      "elevation": "Shadow depth of the bar. Android, web, Windows and Linux only.",
+      "expanded_height": "Height of the bar when fully expanded, in logical pixels. Android, web, Windows and Linux only.",
+      "flexible_space": "Control shown behind the expanded bar on Android, web, Windows and Linux, such as a cover image; iOS and macOS show it below the bar.",
+      "floating": "Shows the bar again as soon as the user scrolls up (default `false`).",
+      "pinned": "Keeps the collapsed bar at the top while the content scrolls (default `true` for `\"medium\"` and `\"large\"`, `false` for `\"small\"`).",
+      "scrolled_under_elevation": "Shadow depth once content scrolls under the bar. Android, web, Windows and Linux only.",
+      "shadow_color": "Color of the bar's shadow. Android, web, Windows and Linux only.",
+      "stretch": "Stretches the bar when the user overscrolls at the top (default `false`).",
+      "toolbar_height": "Height of the toolbar row, in logical pixels. Android, web, Windows and Linux only."
+    },
+    "sliverfillremaining": {
+      "content": "The control that fills the rest of the viewport; the first positional argument sets it.",
+      "fill_overscroll": "Stretches the content into the overscroll area instead of leaving it empty (default `false`).",
+      "has_scroll_body": "Set `true` when the content scrolls itself, such as a `list_view` (default `false`, a plain box that is at least as tall as the space left)."
+    },
+    "slivergrid": {
+      "bgcolor": "Background color behind the grid and its header.",
+      "child_aspect_ratio": "Width-to-height ratio of each cell (default 1, square cells).",
+      "controls": "The cells; the first positional argument sets them.",
+      "header": "Control shown above the cells.",
+      "max_extent": "Largest width of a cell, in logical pixels; the grid fits as many columns as it can. It wins over `runs_count`.",
+      "padding": "Space around the grid, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
+      "run_spacing": "Space between the columns of cells, in logical pixels (default 10).",
+      "runs_count": "Number of columns (default 1).",
+      "spacing": "Space between the rows of cells, in logical pixels (default 10).",
+      "sticky_header": "Keeps the `header` at the top while the cells scroll under it, until the grid scrolls away (default `false`)."
+    },
+    "sliverlist": {
+      "bgcolor": "Background color behind the list and its header.",
+      "controls": "The items; the first positional argument sets them.",
+      "divider_thickness": "Draws a line of this thickness, in logical pixels, in the `spacing` between items (default 0, none); without `spacing` there is no room for it.",
+      "header": "Control shown above the items.",
+      "item_extent": "Height of every item, in logical pixels, which speeds up long lists.",
+      "padding": "Space around the list, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
+      "spacing": "Space between items, in logical pixels (default 0).",
+      "sticky_header": "Keeps the `header` at the top while the items scroll under it, until the list scrolls away (default `false`)."
+    },
+    "sliverpadding": {
+      "controls": "The slivers, when they are given in a block; prefer `slivers`.",
+      "padding": "Space around the slivers, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
+      "slivers": "The slivers to inset, in order; a plain control among them scrolls as one box. The first positional argument sets them."
+    },
+    "slivertoboxadapter": {
+      "content": "The control that scrolls as one box among the slivers; the first positional argument sets it."
+    },
+    "stack": {
+      "alignment": "Where children without `left`, `top`, `right` or `bottom` sit, as `{ x:, y: }` from -1 to 1 (default the top left). [Option values](/docs/controls-and-layout#option-values) lists the names Ruflet main adds, such as `\"center\"`.",
+      "clip_behavior": "How children that reach outside the stack are clipped: `\"hardEdge\"` (default), `\"antiAlias\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
+      "fit": "How children without a position are sized: `\"loose\"` (default, their own size), `\"expand\"` (the stack's size) or `\"passThrough\"`."
+    },
+    "text": {
+      "alignment": "Where the text is anchored when it is a shape inside a `canvas`, as `{ x:, y: }`. Text on the page ignores it; use `text_align`.",
+      "bgcolor": "Background color behind the characters.",
+      "color": "Color of the text.",
+      "ellipsis": "Accepted, but only text drawn inside a `canvas` uses it. For text on the page, use `overflow: \"ellipsis\"` with `max_lines`.",
+      "enable_interactive_selection": "With `selectable: true`, lets the user select (default `true`).",
+      "font_family": "Font to use, such as a font you registered in `page.fonts` or a system font name.",
+      "font_family_fallback": "Fonts to try, in order, for characters `font_family` lacks, such as `[\"Noto Sans Arabic\"]`.",
+      "italic": "Draws the text in italics.",
+      "max_lines": "Most lines the text takes; the rest is cut off, or ends with `overflow`.",
+      "max_width": "Width at which the text wraps when it is a shape inside a `canvas`, in logical pixels. Text on the page ignores it.",
+      "no_wrap": "Keeps the text on one line instead of wrapping it.",
+      "overflow": "How text that does not fit ends: `\"clip\"`, `\"fade\"`, `\"ellipsis\"` (adds …) or `\"visible\"`. Combine it with `max_lines` or `no_wrap`.",
+      "selectable": "Lets the user select and copy the text (default `false`).",
+      "selection_cursor_color": "Color of the cursor and handles while the user selects.",
+      "selection_cursor_height": "Height of the cursor while the user selects, in logical pixels. Android, web, Windows and Linux only.",
+      "selection_cursor_width": "Width of the cursor while the user selects, in logical pixels (default 2). Android, web, Windows and Linux only.",
+      "show_selection_cursor": "Shows a blinking cursor in selectable text (default `false`). Android, web, Windows and Linux only.",
+      "size": "Font size, in logical pixels.",
+      "spans": "Inline pieces of text with their own style or link, built with `text_span(...)`, shown after `value`.",
+      "style": "Text style as a hash, such as `{ size: 18, weight: \"bold\", color: \"#111827\" }`.",
+      "theme_style": "One of the theme's text styles, such as `\"headline_small\"`, `\"title_medium\"` or `\"body_small\"`; `style` overrides its parts.",
+      "value": "The text to show; the first positional argument sets it.",
+      "weight": "Font weight: `\"normal\"`, `\"bold\"` or `\"w100\"` to `\"w900\"`.",
+      "x": "Horizontal position when the text is a shape inside a `canvas`, in logical pixels. Text on the page ignores it.",
+      "y": "Vertical position when the text is a shape inside a `canvas`, in logical pixels. Text on the page ignores it.",
+      "on_selection_change": "Fired when the user changes the selection of `selectable` text. `event.data` has the keys `:selected_text`, `:cause` and `:selection`, a hash with `:base_offset` and `:extent_offset`. On iOS and macOS `:selected_text` is the selected part; on Android, web, Windows and Linux it is the whole text, so cut it with the offsets.",
+      "on_tap": "Fired when the user taps the text. On Android, web, Windows and Linux it fires only for `selectable: true` text; iOS and macOS send it for any text."
+    },
+    "textspan": {
+      "semantics_label": "Text screen readers announce instead of the span's text.",
+      "spans": "Nested spans, which take this span's style as their default.",
+      "spell_out": "Makes screen readers read the text letter by letter, for codes and abbreviations.",
+      "style": "Text style of the span, such as `{ color: \"#2563eb\", decoration: Ruflet::TextDecoration::UNDERLINE }`. `decoration` takes the `Ruflet::TextDecoration` constants, not a String.",
+      "text": "The span's text; the first positional argument sets it.",
+      "url": "URL opened when the user taps the span.",
+      "on_click": "Fired when the user taps the span.",
+      "on_enter": "Fired when a mouse pointer moves onto the span.",
+      "on_exit": "Fired when a mouse pointer leaves the span."
+    },
+    "transparentpointer": {
+      "content": "The control that receives pointer input while letting it through to the controls behind it; the first positional argument sets it."
+    },
+    "verticaldivider": {
+      "color": "Color of the line.",
+      "leading_indent": "Empty space above the line, in logical pixels (default 0).",
+      "radius": "Corner radius of the line's ends, in logical pixels.",
+      "thickness": "Thickness of the line, in logical pixels (default 0.5 on iOS and macOS).",
+      "trailing_indent": "Empty space below the line, in logical pixels (default 0).",
+      "width": "Total width the divider takes, with the line in the middle (default 16 on Android, web, Windows and Linux, 1 on iOS and macOS)."
+    },
+    "windowdragarea": {
+      "content": "The control that works as the window's title bar; the first positional argument sets it.",
+      "maximizable": "Double-clicking the area maximizes or restores the window (default `true`).",
+      "on_double_tap": "Fired after a double click maximized or restored the window; `event.data` is `\"maximize\"` or `\"unmaximize\"`.",
+      "on_drag_end": "Fired when the user stops dragging the window. `event.data` is a hash: `:v` is the velocity as `{ x:, y: }` in logical pixels per second, and `:l` and `:g` are the last point in the area and in the window.",
+      "on_drag_start": "Fired when the user starts dragging the window. `event.data` is a hash: `:l` is the point in the area and `:g` the point in the window, each `{ x:, y: }` in logical pixels, and `:k` is the pointer kind, such as `\"mouse\"`."
     }
   },
   "method_notes": {
     "contextmenu": {
       "open": "On iOS and macOS the menu cannot be opened from code; it opens only from the user's long press."
+    },
+    "carouselview": {
+      "animate_to_item": "Scrolls the mounted carousel so the item at `index` leads (default 300 ms, `\"ease\"`)."
+    },
+    "draggablescrollablesheet": {
+      "animate_to": "Animates the mounted sheet to `size`, a fraction of its parent's height (default 300 ms, `\"easeOut\"`).",
+      "jump_to": "Moves the mounted sheet to `size`, a fraction of its parent's height, at once."
+    },
+    "interactiveviewer": {
+      "pan": "Moves the content by `dx` and `dy` logical pixels.",
+      "reset": "Returns to no zoom and no pan; give `animation_duration:` in milliseconds to animate there.",
+      "restore_state": "Returns to the zoom and pan kept by `save_state`.",
+      "save_state": "Keeps the current zoom and pan for `restore_state`.",
+      "zoom": "Multiplies the zoom by `factor`, within `min_scale` and `max_scale`: `zoom(1.5)` zooms in, `zoom(0.5)` out."
+    },
+    "pageview": {
+      "go_to_page": "Animates to the page at `index`.",
+      "jump_to": "Jumps to a scroll offset in logical pixels, which can stop between pages; use `jump_to_page` for a whole page.",
+      "jump_to_page": "Shows the page at `index` at once.",
+      "next_page": "Animates to the next page.",
+      "previous_page": "Animates to the previous page."
+    },
+    "screenshot": {
+      "capture": "Captures the content as a PNG and passes the bytes, as a binary String, to `on_result`. `pixel_ratio:` sets the resolution (pass a Float such as `2.0`) and `delay:` waits that many milliseconds first (default 20)."
     }
   },
   "services": {

@@ -24,7 +24,7 @@ page.add(
       ),
       sliver_list(
         contacts.map { |name| list_tile(title: text(name)) },
-        header: container(padding: 12, bgcolor: :surface_container_high, content: text("Contacts")),
+        header: container(padding: 12, bgcolor: :surfacecontainerhigh, content: text("Contacts")),
         sticky_header: true
       ),
       sliver_fill_remaining(
@@ -57,7 +57,7 @@ other keywords raise ArgumentError.
 - `horizontal` and `reverse` — scroll direction (both default `false`).
 - `anchor` — where the zero scroll offset sits in the viewport, from 0 (the start, default) to 1.
 - `cache_extent` — how far beyond the viewport, in pixels, content is built ahead of time.
-- `scroll`, `auto_scroll`, `auto_scroll_animation` and `on_scroll` — scrolling behavior and events.
+- `scroll`, `auto_scroll`, `auto_scroll_animation` and `on_scroll` — scrolling behavior and events. `on_scroll` reports the position in `event.data` with the same keys as [`list_view`](/docs/control-list-view#scroll-events).
 - `keyboard_dismiss_behavior` — `"on_drag"` hides the on-screen keyboard when the user drags the view.
 - `expand`, `width`, `height` and the common layout properties.
 

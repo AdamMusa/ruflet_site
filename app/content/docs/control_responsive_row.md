@@ -51,7 +51,8 @@ If a child has no `col`, it spans all `columns`.
 ## Breakpoints
 
 `breakpoints` maps a name to the minimum viewport width (in pixels) at which it
-applies. The defaults follow Bootstrap:
+applies. The width is the page's, not the row's own, so a narrow row in a wide
+window uses the wide breakpoint. The defaults follow Bootstrap:
 
 | Name  | Min width |
 |-------|-----------|
@@ -67,7 +68,10 @@ Override them by passing your own map:
 ```ruby
 responsive_row(
   breakpoints: { "xs" => 0, "sm" => 600, "md" => 900 },
-  children: responsive_children
+  children: [
+    container(col: { "xs" => 12, "md" => 8 }, content: text("Article")),
+    container(col: { "xs" => 12, "md" => 4 }, content: text("Related"))
+  ]
 )
 ```
 
@@ -79,7 +83,7 @@ responsive_row(
 - `spacing` — horizontal gap between children in the same run (default `10`).
 - `run_spacing` — vertical gap between wrapped runs (default `10`).
 - `alignment` — horizontal alignment of children within a run (`"start"`,
-  `"center"`, `"end"`, `"space_between"`, `"space_around"`, `"space_evenly"`).
+  `"center"`, `"end"`, `"spaceBetween"`, `"spaceAround"`, `"spaceEvenly"`).
 - `vertical_alignment` — cross-axis alignment of children (`"start"`,
   `"center"`, `"end"`, `"stretch"`).
 - `breakpoints` — the breakpoint → min-width map described above.
@@ -90,8 +94,10 @@ responsive_row(
 
 ## Events
 
-- `on_size_change` — the control's size changed.
-- `on_animation_end` — an `animate_*` transition finished.
+- `on_size_change` — the row's size changed; `event.data` is
+  `{ w: width, h: height }` in logical pixels.
+- `on_animation_end` — an `animate_*` animation finished; `event.data` names
+  it, such as `"opacity"` or `"scale"`.
 
 ## Reference
 
