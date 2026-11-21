@@ -24,10 +24,11 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   PINNED_PROSE_MARKERS = {
     "control-web-view" => [ "changing `url` with `page.update` also navigates", "With the next release the error comes at once." ],
     "control-code-editor" => [ "with the next release `:atom_one_dark` works too", "a `value` you set from Ruby also fires it", "`event.data` is always the text" ],
-    "control-color-picker" => [ "the client also writes the pick back to `color`" ],
+    "control-color-picker" => [ "the client also writes the pick back to `color`", "after the user has picked also moves the selection only with the next release" ],
     "control-block-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
     "control-material-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
     "control-multiple-choice-block-picker" => [ "Changing `colors` from Ruby after the picker is shown" ],
+    "control-slide-picker" => [ "The next release keeps the pick itself" ],
     "charts-and-canvas" => [
       "On 0.0.23 the canvas has no `capture` method.",
       "With the next release a chart `tooltip` styles the bubble",
@@ -59,6 +60,7 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     [ "control-candlestick-chart", "properties", "tooltip", "On 0.0.23 candlestick charts show no bubble", "a candle with its own `tooltip` text shows it in this bubble." ],
     [ "control-scatter-chart-spot", "properties", "selected", "On 0.0.23 scatter charts show no bubble", "a selected spot with its own `tooltip` text shows it permanently." ],
     [ "control-candlestick-chart-spot", "properties", "selected", "On 0.0.23 candlestick charts show no bubble", "a selected candle with its own `tooltip` text shows it permanently." ],
+    [ "control-color-picker", "properties", "hsv_color", "On 0.0.23 it wins over `color` whenever it is set.", "With the next release, when both are set, the one you changed last wins." ],
     [ "control-map", "properties", "interaction_configuration", "on 0.0.23 the map fails to draw without it", "a missing `pinch_move_threshold` defaults to 40, and `cursor_keyboard_rotation_configuration` takes `trigger_keys`, one key name such as `\"Shift Left\"` or `:shift_left`, or a list of them." ]
   ].freeze
 

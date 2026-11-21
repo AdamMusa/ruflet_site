@@ -442,6 +442,11 @@
         "on_change": "With the next release `event.data` is always the text, and only the user's edits fire it."
       }
     },
+    "control-color-picker": {
+      "properties": {
+        "hsv_color": "With the next release, when both are set, the one you changed last wins."
+      }
+    },
     "control-cupertino-app-bar": {
       "properties": [
         "badge",

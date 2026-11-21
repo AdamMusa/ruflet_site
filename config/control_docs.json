@@ -369,7 +369,7 @@
     ]
   },
   "control-color-picker": {
-    "summary": "A full color picker: a color area with hue and transparency sliders, value fields and an optional history of recent colors. `on_color_change` reports the pick. iOS and macOS draw it with Cupertino-styled parts. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release the client also writes the pick back to `color`, so `event.control.props[\"color\"]` stays current; with 0.0.23 read it from `event.data`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "A full color picker: a color area with hue and transparency sliders, value fields and an optional history of recent colors. `on_color_change` reports the pick. iOS and macOS draw it with Cupertino-styled parts. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release the client also writes the pick back to `color`, so `event.control.props[\"color\"]` stays current; with 0.0.23 read it from `event.data`. A `color` you change from Ruby after the user has picked also moves the selection only with the next release: on 0.0.23 the pick sets `hsv_color`, which then wins. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "swatch = container(width: 48, height: 48, bgcolor: \"#2563eb\", border_radius: 8)",
       "picked = text(value: \"#ff2563eb\")",
@@ -1387,7 +1387,7 @@
     ]
   },
   "control-slide-picker": {
-    "summary": "Picks a color with one slider per channel, in RGB, HSV or HSL, with an optional preview bar. iOS and macOS draw it with Cupertino-styled sliders. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "summary": "Picks a color with one slider per channel, in RGB, HSV or HSL, with an optional preview bar. iOS and macOS draw it with Cupertino-styled sliders. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. On 0.0.23 the sliders jump back to `color` whenever the picker is rebuilt, for example when you update one of its properties (pass the last pick from `event.data` as `color:` in that update), and a tap on the preview bar picks `color` again. The next release keeps the pick itself, but `event.control.props[\"color\"]` still does not follow it, so read the pick from `event.data`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "value = text(value: \"#ff10b981\")",
       "page.add(",

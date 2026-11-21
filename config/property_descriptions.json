@@ -744,7 +744,7 @@
       "display_thumb_color": "Fills the slider thumbs with the selected color (default true).",
       "enable_alpha": "Adds a transparency slider (default true).",
       "hex_input_bar": "Shows a field where the user can type a hex color (default true).",
-      "hsv_color": "The selected color as `{ alpha:, hue:, saturation:, value: }` (hue 0 to 360, the others 0 to 1). When both are set, the one you changed last wins.",
+      "hsv_color": "The selected color as `{ alpha:, hue:, saturation:, value: }` (hue 0 to 360, the others 0 to 1). Each pick sets it. On 0.0.23 it wins over `color` whenever it is set.",
       "label_text_style": "Style of those value fields.",
       "label_types": "Value fields shown under the picker: any of `\"hex\"`, `\"rgb\"`, `\"hsv\"` and `\"hsl\"` (default rgb, hsv and hsl); `[]` shows none.",
       "on_color_change": "Fired as the user picks a color. `event.data` is the new color as `\"#aarrggbb\"` (alpha first, for example `\"#ff2563eb\"`), which every color property accepts.",
