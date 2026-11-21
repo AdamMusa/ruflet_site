@@ -59,6 +59,24 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     MESSAGE
   end
 
+  # page.screen_brightness's proxy setters send {"value" => ...} and work; the
+  # service object's send {"brightness" => ...} and fail (page.rb and
+  # current_service_methods.rb, the same in 0.0.23).
+  test "the proxy section names the proxy methods that differ from the service methods" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read).fetch("services")
+    wrong = DocsCatalog.service_catalog.fetch(:services).filter_map do |service|
+      differing = descriptions.dig(service[:helper], "proxy_methods").to_h.keys
+      next if differing.empty?
+
+      slug = "service-#{service[:helper].tr('_', '-')}"
+      intro = page(slug).content[/^## Page proxy methods\n\n(.*?)\n\n/m, 1].to_s
+      unnamed = differing.reject { |name| intro.include?("`#{name}`") }
+      "#{slug}: #{intro}" if intro.include?("They work like the service methods") || unnamed.any?
+    end
+
+    assert_empty wrong, "Say which proxy methods do not work like the service methods:\n#{wrong.join("\n")}"
+  end
+
   test "service descriptions only name members the catalog lists" do
     catalog = DocsCatalog.service_catalog.fetch(:services).index_by { |service| service[:helper] }
     descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
@@ -197,8 +215,12 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   # engine and the template 0.0.23 builds with: the page, a phrase that finds
   # the paragraph or list item, what it must say and what it must not say.
   CORRECTED_CLAIMS = [
-    # ruflet_backend.dart updatePageSize sends {"type": "resized"} on desktop.
-    [ "page-reference", "`page.window.on(:event)", [ '`"resized"`' ], [ "no window event" ] ],
+    # ruflet_backend.dart updatePageSize sends {"type": "resized"} on desktop;
+    # services/window.dart onWindowEvent drops window_manager's "resize",
+    # "resized" and "move", and window_manager reports "close" only while
+    # prevent_close is set.
+    [ "page-reference", "`page.window.on(:event)", [ '`"resized"`', '`"close"` (only with `prevent_close: true`)' ],
+      [ "no window event", '`"resize"`', '`"move"`' ] ],
     # ruflet_backend.dart _registerClient: these flags, and no client_ip,
     # client_user_agent or sess.
     [ "page-reference", "When it connects, the client also sends", [ "`client_ip`, `client_user_agent` and `sess` are Page keywords that no Ruflet client sends" ],
@@ -206,14 +228,22 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     # 0.0.23 parses typed text; a text field keeps "null" and a JSON object in props.
     [ "events-and-state", "- `data` — the client's payload", [ 'typed `"123"` arrives as `123` in `event.data`', 'keeps `"null"` and a JSON object' ],
       [ /arrives as `"123"`/, 'in `event.data` and in `event.control.props["value"]`, `"2.50"`' ] ],
-    # ruflet_core.rb resolved_run_port: "abc".to_i is 0.
-    [ "reference", "- `Ruflet.resolved_run_port(port)`", [ "gives 0" ], [] ],
+    # ruflet_core.rb resolved_run_port: "abc".to_i is 0, and a negative or
+    # blank value falls back to 8550.
+    [ "reference", "- `Ruflet.resolved_run_port(port)`", [ "gives 0", "A negative or blank value gives 8550" ], [ /negative value gives 0/ ] ],
+    # dsl.rb default_port parses RUFLET_PORT the same way, so RUFLET_PORT=abc
+    # gives 0, not 8550.
+    [ "reference", "- `Ruflet.app(host: nil, port: nil)", [ "read as `Ruflet.resolved_run_port` reads it" ], [ /8550 when it is not a number/ ] ],
     # dsl.rb read_duration_part: numbers, Floats included, count.
     [ "reference", "- `duration(days:", [ "`duration(seconds: 1.5)` is `1500`" ], [ "A numeric String such as `\"2\"` counts" ] ],
     # The 0.0.23 client ignores font_family_fallback: not in the unmarked key list.
     [ "theming", "A text style, in `text_theme`", [ "`font_family`" ], [ "font_family_fallback" ] ],
-    # geolocator.dart restarts a failed stream on the next patch, not by itself.
-    [ "service-geolocator", "- `configuration` —", [ "at the next update of the service" ], [ "or after the stream failed" ] ]
+    # geolocator.dart restarts a failed stream on the next patch, not by
+    # itself. The template's (0.0.23) init and update both start a stream,
+    # whether or not on_position_change is set.
+    [ "service-geolocator", "- `configuration` —",
+      [ "at the next update of the service", "The 0.0.23 client streams positions from the moment the service is added, even without `on_position_change`" ],
+      [ "or after the stream failed", /0\.0\.23 client streams positions only while/ ] ]
   ].freeze
 
   test "the claims that reviews corrected stay corrected" do
@@ -253,12 +283,20 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
       "Any `page.on_<event> =` writer registers", "`event.relayed(name:, target:, control:)`",
       "On `main`, what the user typed or picked stays a String"
     ],
-    "services-and-plugins" => [ "`local_authentication.authenticate` waits 60 seconds" ],
+    # The client actions, device information and local authentication
+    # sections carry markers too.
+    "services-and-plugins" => [
+      "`local_authentication.authenticate` waits 60 seconds", "On 0.0.23 `Ruflet.client_action` does not exist",
+      "On 0.0.23 these page methods do nothing", "`local_authentication` — properties `data` and `key`",
+      "On 0.0.23 `page.local_auth` and `page.local_authentication` raise NoMethodError"
+    ],
     "theming" => [ "A style also takes `font_family_fallback`" ],
     "reference" => [ "also ignores `font_family_fallback:`", "builds the value of an `animation_style:` property" ],
     "service-audio-recorder" => [ "such a name, or none, arrives as the error", "`device` also takes the id alone" ],
     "service-secure-storage" => [ "On `main` a change takes effect at the next call" ],
-    "service-geolocator" => [ "on `main` it receives the error too", "On `main` it streams only while `on_position_change` is set" ]
+    "service-geolocator" => [ "on `main` it receives the error too", "On `main` it streams only while `on_position_change` is set" ],
+    # config/next_release.json "services" puts this callout under the H1.
+    "service-local-authentication" => [ "On 0.0.23 `page.local_authentication` raises NoMethodError" ]
   }.freeze
 
   # The server symbolizes the keys of an event's Hash payload, nested Hashes
@@ -294,9 +332,7 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   end
 
   test "these pages read event payloads with Symbol keys" do
-    slugs = %w[page-reference events-and-state services-and-plugins reference theming] +
-      DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
-    offenders = slugs.flat_map do |slug|
+    offenders = reference_slugs.flat_map do |slug|
       payload_chunks(page(slug).content).flat_map { |chunk| string_key_reads(chunk) }.map { |line| "#{slug}: #{line}" }
     end
     DocsCatalog::SERVICE_EXAMPLES.each do |helper, code|
@@ -321,17 +357,20 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     assert_includes drawers.to_s, "> #{MARKER}", "page.show_drawer and page.scroll_to need the main client"
   end
 
-  # services-and-plugins also carries the markers of other sections.
+  # On every page reference_slugs lists, the generated service pages
+  # included, a marker must cover a sentence PINNED_MARKERS lists for that
+  # page; a page with no entry may carry none.
   test "the next-release marker appears only where PINNED_MARKERS pins it" do
-    (PINNED_MARKERS.keys - %w[services-and-plugins]).each do |slug|
+    stray = reference_slugs.flat_map do |slug|
       content = page(slug).content
-      content.split(/\n(?=- |\n)/).select { |chunk| chunk.include?(MARKER) }.each do |chunk|
+      pins = PINNED_MARKERS.fetch(slug, [])
+      content.split(/\n(?=- |\n)/).select { |chunk| chunk.include?(MARKER) }.filter_map do |chunk|
         scope = chunk.lstrip.start_with?("> ") ? section_around(content, chunk) : chunk
-
-        assert PINNED_MARKERS.fetch(slug).any? { |phrase| scope.squish.include?(phrase) },
-          "#{slug}: this marker covers nothing PINNED_MARKERS lists, so it may mark what works on 0.0.23: #{chunk.squish[0, 120]}"
+        "#{slug}: #{chunk.squish[0, 120]}" unless pins.any? { |phrase| scope.squish.include?(phrase) }
       end
     end
+
+    assert_empty stray, "These markers cover nothing PINNED_MARKERS lists, so they may mark what works on 0.0.23:\n#{stray.join("\n")}"
   end
 
   # A Material color or theme role written with the underscores of its
@@ -347,9 +386,7 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     wrong = %w[page-reference theming reference].flat_map do |slug|
       page(slug).content.scan(pattern).flatten.select { |name| name.include?("_") }.map { |name| "#{slug} :#{name}" }
     end
-    slugs = %w[page-reference events-and-state services-and-plugins reference theming] +
-      DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
-    code = slugs.to_h { |slug| [ slug, page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.join("\n") ] }
+    code = reference_slugs.to_h { |slug| [ slug, page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.join("\n") ] }
     code["SERVICE_EXAMPLES"] = DocsCatalog::SERVICE_EXAMPLES.values.join("\n")
     code.each do |where, source|
       names = source.scan(/(?<![:\w]):([a-z][a-z0-9_]*)\b/).flatten + source.scan(/(?:[\w\]]:|=>)\s*"([a-z][a-z0-9_]*)"/).flatten
@@ -360,6 +397,12 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   end
 
   private
+
+  # The hand-written pages this reference covers and every generated service page.
+  def reference_slugs
+    %w[page-reference events-and-state services-and-plugins reference theming] +
+      DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
+  end
 
   # The String-key reads of an event payload in one code block or prose line.
   def string_key_reads(chunk)
@@ -396,8 +439,6 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     content.match?(/`(?:[\w:]+\.)?#{Regexp.escape(name)}[`( ]/)
   end
 
-  # True when a "> **Requires the next Ruflet release**" callout comes after
-  # the last heading before `phrase`, so the callout covers it.
   # The text from the heading before +chunk+ to the next heading.
   def section_around(content, chunk)
     at = content.index(chunk)
@@ -406,6 +447,8 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     content[start...finish]
   end
 
+  # True when a "> **Requires the next Ruflet release**" callout comes after
+  # the last heading before `phrase`, so the callout covers it.
   def under_callout?(content, phrase)
     at = content.index(phrase)
     heading = content.rindex(/^#+ /, at)

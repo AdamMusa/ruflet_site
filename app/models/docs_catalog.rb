@@ -766,7 +766,15 @@ class DocsCatalog
     end
     proxies = Array(service[:proxy_methods])
     if proxies.any?
-      lines.concat([ "## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods. They work like the service methods of the same name:", "" ])
+      # A proxy method with its own "proxy_methods" description does not work
+      # like the service method (page.screen_brightness's setters).
+      differing = proxies.map { |method| (method[:name] || method["name"]).to_s }.select { |name| service_description(service, "proxy_methods", name) }
+      same = if differing.empty?
+        "They work like the service methods of the same name:"
+      else
+        "Each works like the service method of the same name, except #{differing.map { |name| "`#{name}`" }.to_sentence(last_word_connector: ' and ')}: compare their entries here and under Service methods."
+      end
+      lines.concat([ "## Page proxy methods", "", "Calling `page.#{helper}` with no properties returns a focused proxy with these methods. #{same}", "" ])
       proxies.each { |method| lines << service_method_line(service, method, proxy: true) }
       lines << ""
     end
