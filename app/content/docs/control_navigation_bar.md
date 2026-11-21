@@ -1,51 +1,60 @@
 # NavigationBar
 
-Bottom navigation control for switching between primary destinations.
+The bar along the bottom of the screen for switching between an app's main
+destinations, such as Home, Search and Profile. On Android, web, Windows and
+Linux it is a Material navigation bar; on iOS and macOS the client draws the
+iOS tab bar.
 
 ## Example
 
 ```ruby
-navigation_bar(
+sections = %w[Home Saved Settings]
+heading = text(value: "Home", size: 24)
+page.navigation_bar = navigation_bar(
   selected_index: 0,
   destinations: [
     navigation_bar_destination(icon: "home", label: "Home"),
+    navigation_bar_destination(icon: "bookmark_border", selected_icon: "bookmark", label: "Saved"),
     navigation_bar_destination(icon: "settings", label: "Settings")
-  ]
+  ],
+  on_change: ->(event) { page.update(heading, value: sections[event.data.to_i]) }
 )
+page.add(heading)
 ```
 
 ## Common properties
 
-- `destinations`
-- `selected_index`
-- `on_change`
+- `destinations` — [`navigation_bar_destination`](/docs/control-navigation-bar-destination)`(icon:, label:, selected_icon:)` entries; two to five work best
+- `selected_index` — the highlighted destination, starting at 0
+- `on_change` — `event.data` is the index of the picked destination
 - `bgcolor`
-- `elevation`
-- `indicator_color`
-- `label_behavior`
-
-## Destination properties
-
-`navigation_bar_destination(...)` commonly uses:
-
-- `icon`
-- `selected_icon`
-- `label`
+- `indicator_color` — the pill behind the selected icon; on iOS and macOS the selected color when `active_color` is not set
+- `label_behavior` — `"alwaysShow"`, `"onlyShowSelected"` or `"alwaysHide"` (Android, web, Windows and Linux only)
+- `active_color` / `inactive_color` / `icon_size` (iOS and macOS only)
 
 ## Usage
 
-```ruby
-navigation_bar(
-  selected_index: 0,
-  on_change: ->(e) { page.update(status, value: "Tab #{e.data}") },
-  destinations: [
-    navigation_bar_destination(icon: "home", selected_icon: "home", label: "Home"),
-    navigation_bar_destination(icon: "bookmark_border", selected_icon: "bookmark", label: "Saved")
-  ]
-)
-```
+Assign the bar with `page.navigation_bar = navigation_bar(...)`, or pass it to
+a `view` as `navigation_bar:`. The client sets `selected_index` itself when the
+user taps a destination, then sends `on_change`; change what the page shows in
+the handler, as above, or call `page.go(...)` for route-based apps.
 
-## Notes
+`elevation`, `shadow_color`, `indicator_shape`, `label_behavior`,
+`label_padding`, `overlay_color` and `animation_duration` shape the Material
+bar only. `surface_tint_color` does too, and the 0.0.23 client ignores it.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
-- Ruflet supports icon name strings for both `icon` and `selected_icon`
-- use `page.go(...)` or `page.views = [...]` in response to navigation changes
+On iOS and macOS the tab bar always shows the labels and a thin separator line
+on top; `active_color`, `inactive_color` and `icon_size` style it there. The
+`border` keyword is accepted but no client draws it.
+
+Give a destination `disabled: true` to keep the user from picking it, or the
+bar `disabled: true` to turn off every destination. On Android, web, Windows
+and Linux a disabled destination is drawn dimmed and ignores taps; a disabled
+bar ignores taps on every platform.
+
+On iOS and macOS the tab bar draws a disabled destination like the others and
+ignores taps on it; with 0.0.23 a tap still selects it and sends `on_change`.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
+[`cupertino_navigation_bar`](/docs/control-cupertino-navigation-bar) builds the
+same control with the iOS keywords only.

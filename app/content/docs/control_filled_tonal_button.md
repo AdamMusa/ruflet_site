@@ -39,3 +39,9 @@ As with the other Material buttons, put colors in `style:`; the top-level
 On iOS and macOS the client draws a tinted Cupertino button instead, which
 uses the top-level `bgcolor:` and `color:` directly; a color in `style:` wins
 over them.
+
+`size`, `border_radius`, `padding`, `alignment`, `min_size`,
+`opacity_on_click`, `disabled_bgcolor`, `focus_color` and `mouse_cursor` shape
+the iOS button only; on Android, web, Windows and Linux use the matching
+`style:` keys (`padding`, `shape`, `alignment`, `minimum_size`,
+`mouse_cursor`).

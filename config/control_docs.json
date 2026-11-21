@@ -19,6 +19,27 @@
       "page.add(column(children: [status, button(\"Remove\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
     ]
   },
+  "control-context-menu-action": {
+    "summary": "One entry of a [`context_menu`](/docs/control-context-menu). `content` is its label, and its own `on_click` runs when the user picks it. On Android, web, Windows and Linux the entry shows `icon` before the label and a check mark when `checked` is set; on iOS and macOS it shows `trailing_icon` after the label, in bold when `default` and in red when `destructive`. Set both icons when the menu runs everywhere.",
+    "example": [
+      "status = text(value: \"Right-click or long-press the file\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      context_menu(",
+      "        container(content: text(\"report.pdf\"), padding: 16, bgcolor: \"#f1f5f9\"),",
+      "        primary_trigger: \"longPress\",",
+      "        actions: [",
+      "          context_menu_action(\"Rename\", icon: \"edit\", trailing_icon: \"edit\", on_click: ->(_event) { page.update(status, value: \"Renaming report.pdf\") }),",
+      "          context_menu_action(\"Delete\", icon: \"delete\", trailing_icon: \"delete\", destructive: true, on_click: ->(_event) { page.update(status, value: \"Deleted report.pdf\") })",
+      "        ]",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
   "control-cupertino-action-sheet": {
     "summary": "The `cupertino_action_sheet` spelling of [`action_sheet`](/docs/control-action-sheet): a title, a message, a list of choices and a separate Cancel choice. It sends the same `ActionSheet` control, so the client draws it by platform: an iOS action sheet on iOS and macOS, and a column of list rows on Android, web, Windows and Linux. Present it in a bottom sheet with `page.show_bottom_sheet`, and build its choices with [`cupertino_action_sheet_action`](/docs/control-cupertino-action-sheet-action). With 0.0.23 the iOS action sheet floats over the dimmed page; with the next release the bottom sheet draws it on its own panel with rounded top corners, in the sheet's `bgcolor`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
@@ -101,6 +122,18 @@
       "page.add(column(children: [status, cupertino_button(\"Turn on location\", on_click: ->(_event) { page.show_dialog(dialog) })]))"
     ]
   },
+  "control-cupertino-app-bar": {
+    "summary": "An iOS-style top bar. It builds the same `AppBar` control as [`app_bar`](/docs/control-app-bar), with only the keywords the iOS navigation bar uses: on iOS and macOS a `CupertinoNavigationBar` with a centered `title`, `leading` and `trailing`, and the back button label from `previous_page_title`; on Android, web, Windows and Linux a Material app bar with the same `title`, `leading` and `bgcolor`. Assign it to `page.appbar`. Ruby sends `large: false` and `transition_between_routes: true` unless you set them.",
+    "example": [
+      "status = text(value: \"Inbox\")",
+      "page.appbar = cupertino_app_bar(",
+      "  title: text(\"Inbox\"),",
+      "  trailing: icon_button(\"edit\", tooltip: \"Compose\", on_click: ->(_event) { page.update(status, value: \"New message\") }),",
+      "  bgcolor: \"#f8fafc\"",
+      ")",
+      "page.add(status)"
+    ]
+  },
   "control-cupertino-bottom-sheet": {
     "summary": "The `cupertino_bottom_sheet` spelling of [`bottom_sheet`](/docs/control-bottom-sheet), often used for a `picker`, `timer_picker`, `date_picker` or [`cupertino_action_sheet`](/docs/control-cupertino-action-sheet). It sends the same `BottomSheet` control, so it is an iOS popup sheet on iOS and macOS and a Material bottom sheet on Android, web, Windows and Linux. Show it with `page.show_bottom_sheet` and close it with `page.close_bottom_sheet`. On iOS and macOS, picker content sits on a fixed panel, 220 high unless you set `height`. With 0.0.23 `cupertino_bottom_sheet` raises `ArgumentError` for `dismissible`, `barrier_color`, `draggable`, `scrollable`, `fullscreen` and the other sizing properties, which `bottom_sheet` accepts. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
@@ -118,6 +151,46 @@
       "page.add(column(children: [choice, cupertino_button(\"Choose a size\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
     ]
   },
+  "control-cupertino-context-menu": {
+    "summary": "An iOS-style context menu: a long press lifts `content` above a blurred page and shows `actions` under it. It builds the same `ContextMenu` control as [`context_menu`](/docs/control-context-menu), so on Android, web, Windows and Linux the same entries open from a right-click (a long press there needs `context_menu` with `primary_trigger: \"longPress\"`). Ruby sends `enable_haptic_feedback: true` unless you pass `false`. At least one action is required.",
+    "example": [
+      "status = text(value: \"Long-press the photo\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_context_menu(",
+      "        content: container(content: text(\"Beach.jpg\"), width: 200, height: 120, bgcolor: \"#bae6fd\", padding: 16),",
+      "        actions: [",
+      "          cupertino_context_menu_action(content: \"Share\", trailing_icon: \"share\", on_click: ->(_event) { page.update(status, value: \"Shared\") }),",
+      "          cupertino_context_menu_action(content: \"Delete\", trailing_icon: \"delete\", destructive: true, on_click: ->(_event) { page.update(status, value: \"Deleted\") })",
+      "        ]",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-cupertino-context-menu-action": {
+    "summary": "One entry of a [`cupertino_context_menu`](/docs/control-cupertino-context-menu). `content` is the label; on iOS and macOS `trailing_icon` shows after it, `default` draws it in bold and `destructive` in red, and picking it runs `on_click` and closes the menu. It builds the same `ContextMenuAction` control as `context_menu_action`, so on Android, web, Windows and Linux it is a plain menu entry. Ruby sends `default: false` and `destructive: false` unless you set them.",
+    "example": [
+      "status = text(value: \"Long-press the note\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_context_menu(",
+      "        content: container(content: text(\"Shopping list\"), padding: 16, bgcolor: \"#fef9c3\"),",
+      "        actions: [",
+      "          cupertino_context_menu_action(content: \"Pin\", trailing_icon: \"push_pin\", default: true, on_click: ->(_event) { page.update(status, value: \"Pinned\") }),",
+      "          cupertino_context_menu_action(content: \"Delete\", trailing_icon: \"delete\", destructive: true, on_click: ->(_event) { page.update(status, value: \"Deleted\") })",
+      "        ]",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
   "control-cupertino-date-picker": {
     "summary": "An iOS-style wheel for picking a date, a time, or both. Open it with `page.show_dialog(picker)`: on iOS and macOS the wheel slides up with Cancel and Done, and on Android, web, Windows and Linux the client shows the Material date picker dialog. When the user confirms, `on_change` gets the picked moment in `event.data`, an ISO 8601 string in UTC. With 0.0.23 a picker added to the page shows nothing; drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
@@ -131,6 +204,47 @@
       "    children: [",
       "      cupertino_button(\"Pick a date\", on_click: ->(_event) { page.show_dialog(picker) }),",
       "      chosen",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-cupertino-dialog-action": {
+    "summary": "A button for the `actions` of an [`alert_dialog`](/docs/control-alert-dialog). On iOS and macOS it is the native dialog action: `default` draws it in bold, `destructive` in red, and `text_style` styles the label. It builds the same `Button` control as [`button`](/docs/control-button), so on Android, web, Windows and Linux it is a Material elevated button, and outside an alert dialog it is an iOS button without those roles. Close the dialog yourself in `on_click` with `page.pop_dialog`.",
+    "example": [
+      "status = text(value: \"Draft kept\")",
+      "dialog = alert_dialog(",
+      "  title: text(\"Delete the draft?\"),",
+      "  content: text(\"You cannot undo this.\"),",
+      "  actions: [",
+      "    cupertino_dialog_action(content: \"Cancel\", default: true, on_click: ->(_event) { page.pop_dialog }),",
+      "    cupertino_dialog_action(",
+      "      content: \"Delete\",",
+      "      destructive: true,",
+      "      on_click: ->(_event) {",
+      "        page.pop_dialog",
+      "        page.update(status, value: \"Draft deleted\")",
+      "      }",
+      "    )",
+      "  ]",
+      ")",
+      "page.add(column(children: [button(\"Delete draft\", on_click: ->(_event) { page.show_dialog(dialog) }), status]))"
+    ]
+  },
+  "control-cupertino-filled-button": {
+    "summary": "An iOS-style filled button: on iOS and macOS a `CupertinoButton.filled` in the theme's primary color (or `bgcolor`). It builds the same `FilledButton` control as [`filled_button`](/docs/control-filled-button), so on Android, web, Windows and Linux it is a Material filled button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends an `alignment` the 0.0.23 client cannot read, so on iOS and macOS it draws an error box instead of the button, and `{ \"all\" => 8.0 }` corners come out square. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
+    "example": [
+      "status = text(value: \"Not subscribed\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_filled_button(",
+      "        \"Subscribe\",",
+      "        alignment: { x: 0, y: 0 },",
+      "        border_radius: 8,",
+      "        on_click: ->(_event) { page.update(status, value: \"Subscribed\") }",
+      "      ),",
+      "      status",
       "    ]",
       "  )",
       ")"
@@ -159,6 +273,47 @@
       "        on_click: open_setting.call(\"Bluetooth\")",
       "      ),",
       "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-cupertino-navigation-bar": {
+    "summary": "An iOS-style bottom tab bar. It builds the same `NavigationBar` control as [`navigation_bar`](/docs/control-navigation-bar): on iOS and macOS a `CupertinoTabBar` that uses `active_color`, `inactive_color` and `icon_size`, and on Android, web, Windows and Linux a Material navigation bar. Assign it to `page.navigation_bar`; `on_change` gets the picked index in `event.data`. Ruby sends `selected_index: 0` and `icon_size: 30` unless you set them.",
+    "example": [
+      "sections = %w[Home Search Profile]",
+      "heading = text(value: \"Home\", size: 24)",
+      "page.navigation_bar = cupertino_navigation_bar(",
+      "  destinations: [",
+      "    navigation_bar_destination(icon: \"home\", label: \"Home\"),",
+      "    navigation_bar_destination(icon: \"search\", label: \"Search\"),",
+      "    navigation_bar_destination(icon: \"person\", label: \"Profile\")",
+      "  ],",
+      "  active_color: \"#0f766e\",",
+      "  on_change: ->(event) { page.update(heading, value: sections[event.data.to_i]) }",
+      ")",
+      "page.add(heading)"
+    ]
+  },
+  "control-cupertino-tinted-button": {
+    "summary": "An iOS-style tinted button: on iOS and macOS a `CupertinoButton.tinted`, a light tint of the primary color (or of `bgcolor`) behind a colored label. It builds the same `FilledTonalButton` control as [`filled_tonal_button`](/docs/control-filled-tonal-button), so on Android, web, Windows and Linux it is a Material filled tonal button, which ignores `bgcolor` and `color` because this helper has no `style:`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on iOS and macOS, and the corners come out square. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `border_radius: 8`, as below.",
+    "example": [
+      "count = 0",
+      "label = text(value: \"0 in cart\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_tinted_button(",
+      "        \"Add to cart\",",
+      "        icon: \"add_shopping_cart\",",
+      "        alignment: { x: 0, y: 0 },",
+      "        border_radius: 8,",
+      "        on_click: ->(_event) {",
+      "          count += 1",
+      "          page.update(label, value: \"#{count} in cart\")",
+      "        }",
+      "      ),",
+      "      label",
       "    ]",
       "  )",
       ")"
@@ -294,8 +449,139 @@
       "page.add(list)"
     ]
   },
+  "control-filled-icon-button": {
+    "summary": "An icon button with a solid fill, for the most important icon action on a screen. On Android, web, Windows and Linux it is a Material filled icon button; on iOS and macOS a plain iOS button with `bgcolor` behind the icon. Set `selected` for a toggle: it shows `selected_icon` and changes the fill, and you update it in `on_click`. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments Ruby sends `alignment: \"center\"`, which the 0.0.23 client cannot read, so it draws an error box instead of the button on every platform, and `{ \"all\" => 8 }` padding comes out as none. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "example": [
+      "liked = false",
+      "page.add(",
+      "  filled_icon_button(",
+      "    \"favorite_border\",",
+      "    selected_icon: \"favorite\",",
+      "    selected: liked,",
+      "    tooltip: \"Like\",",
+      "    alignment: { x: 0, y: 0 },",
+      "    padding: 8,",
+      "    on_click: ->(event) {",
+      "      liked = !liked",
+      "      page.update(event.control, selected: liked)",
+      "    }",
+      "  )",
+      ")"
+    ]
+  },
+  "control-filled-tonal-icon-button": {
+    "summary": "An icon button with a soft, secondary-color fill: less emphasis than a [`filled_icon_button`](/docs/control-filled-icon-button), more than an [`icon_button`](/docs/control-icon-button). On iOS and macOS it is a plain iOS button with `bgcolor` behind the icon. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on every platform. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "example": [
+      "muted = false",
+      "page.add(",
+      "  filled_tonal_icon_button(",
+      "    \"volume_up\",",
+      "    selected_icon: \"volume_off\",",
+      "    selected: muted,",
+      "    tooltip: \"Mute\",",
+      "    alignment: { x: 0, y: 0 },",
+      "    padding: 8,",
+      "    on_click: ->(event) {",
+      "      muted = !muted",
+      "      page.update(event.control, selected: muted)",
+      "    }",
+      "  )",
+      ")"
+    ]
+  },
+  "control-menu-item-button": {
+    "summary": "One clickable entry of a [`submenu_button`](/docs/control-submenu-button) menu in a [`menu_bar`](/docs/control-menu-bar). `content` is the label (the first positional argument), `leading` and `trailing` add controls before and after it, and `on_click` runs when the user picks it; an entry without an `on_click` handler is drawn disabled. On Android, web, Windows and Linux it is a Material menu entry; on iOS and macOS a row of the sheet the submenu opens.",
+    "example": [
+      "status = text(value: \"No file open\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      menu_bar(",
+      "        [",
+      "          submenu_button(",
+      "            [",
+      "              menu_item_button(\"Open\", leading: icon(\"folder_open\"), on_click: ->(_event) { page.update(status, value: \"Opened a file\") }),",
+      "              menu_item_button(\"Save\", leading: icon(\"save\"), on_click: ->(_event) { page.update(status, value: \"Saved\") })",
+      "            ],",
+      "            content: \"File\"",
+      "          )",
+      "        ]",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-navigation-bar-destination": {
+    "summary": "One destination of a [`navigation_bar`](/docs/control-navigation-bar) or `cupertino_navigation_bar`: an `icon` (required), a `selected_icon` shown while it is selected, and a `label` string. The bar reports the picked destination's index in `on_change`; the destination has no events of its own.",
+    "example": [
+      "sections = %w[Feed Saved]",
+      "heading = text(value: \"Feed\", size: 24)",
+      "page.navigation_bar = navigation_bar(",
+      "  destinations: [",
+      "    navigation_bar_destination(icon: \"dynamic_feed\", label: \"Feed\"),",
+      "    navigation_bar_destination(icon: \"bookmark_border\", selected_icon: \"bookmark\", label: \"Saved\")",
+      "  ],",
+      "  on_change: ->(event) { page.update(heading, value: sections[event.data.to_i]) }",
+      ")",
+      "page.add(heading)"
+    ]
+  },
+  "control-navigation-drawer-destination": {
+    "summary": "One destination of a [`navigation_drawer`](/docs/control-navigation-drawer): an `icon`, a `selected_icon` shown while it is selected, and a `label` string. The drawer reports the picked destination's index in `on_change`; the destination has no events of its own.",
+    "example": [
+      "folders = %w[Inbox Archive]",
+      "folder = text(value: \"Inbox\", size: 20)",
+      "page.appbar = app_bar(title: text(\"Mail\"))",
+      "page.drawer = navigation_drawer(",
+      "  [",
+      "    navigation_drawer_destination(icon: \"inbox\", label: \"Inbox\"),",
+      "    navigation_drawer_destination(icon: \"archive\", selected_icon: \"unarchive\", label: \"Archive\")",
+      "  ],",
+      "  on_change: ->(event) { page.update(folder, value: folders[event.data.to_i]) }",
+      ")",
+      "page.add(folder)"
+    ]
+  },
+  "control-navigation-rail-destination": {
+    "summary": "One destination of a [`navigation_rail`](/docs/control-navigation-rail): an `icon` and a `label` (both required; the label may be a string or a control) and a `selected_icon` shown while it is selected. On Android, web, Windows and Linux `indicator_color`, `indicator_shape` and `padding` style this destination alone. The rail reports the picked destination's index in `on_change`.",
+    "example": [
+      "sections = %w[Photos Albums]",
+      "heading = text(value: \"Photos\", size: 24)",
+      "rail = navigation_rail(",
+      "  selected_index: 0,",
+      "  destinations: [",
+      "    navigation_rail_destination(icon: \"photo\", label: \"Photos\"),",
+      "    navigation_rail_destination(icon: \"photo_album\", selected_icon: \"photo_library\", label: \"Albums\", indicator_color: \"#fde68a\")",
+      "  ],",
+      "  on_change: ->(event) { page.update(heading, value: sections[event.data.to_i]) }",
+      ")",
+      "page.add(row(expand: true, children: [rail, column(expand: true, children: [heading])]))"
+    ]
+  },
+  "control-outlined-icon-button": {
+    "summary": "An icon button with an outline and no fill, for secondary icon actions next to a filled one. On iOS and macOS it is a plain iOS button. Known issue ([ruflet#94](https://github.com/AdamMusa/ruflet/issues/94)): with the default arguments the 0.0.23 client draws an error box instead of the button on every platform. The client fix is merged in ruflet-engine and reaches apps with the next update of the client template. Until then, pass `alignment: { x: 0, y: 0 }` and `padding: 8`, as below.",
+    "example": [
+      "status = text(value: \"Search the catalog\")",
+      "page.add(",
+      "  row(",
+      "    children: [",
+      "      outlined_icon_button(",
+      "        \"search\",",
+      "        tooltip: \"Search\",",
+      "        alignment: { x: 0, y: 0 },",
+      "        padding: 8,",
+      "        on_click: ->(_event) { page.update(status, value: \"Searching\") }",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
   "control-popup-menu-item": {
-    "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark. The client does not change it, so keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`, and the 0.0.23 client on iOS and macOS sends none. Leave out both text and icon for a divider. Icons, check marks and dividers show on Android, web, Windows and Linux only: on iOS and macOS the menu shows each item's text and nothing else, and an item without text draws an error box.",
+    "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark. The client does not change it, so keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`. With 0.0.23 the iOS and macOS menu sends no data, so `event.data` is always `nil` there. **Requires the next Ruflet release** (on `main`, not in 0.0.23). Leave out both text and icon for a divider. Icons, check marks and dividers show on Android, web, Windows and Linux only: on iOS and macOS the menu shows each item's text and nothing else, and an item without text draws an error box.",
     "example": [
       "newest_first = true",
       "sort = text(value: \"Sorted by name\")",
@@ -355,6 +641,122 @@
       "      text_color: :amber300,",
       "      on_click: ->(_event) { page.update(status, value: \"Photo restored\") }",
       "    )",
+      "  )",
+      ")"
+    ]
+  },
+  "control-step": {
+    "summary": "One step of a [`stepper`](/docs/control-stepper), built with `stepper_step` (there is no bare `step` helper). `title` is required; `subtitle` and `label` add text, `content` is shown while the step is open, `state` picks its icon and `is_active` draws it in the active color. The stepper's handlers decide which step is open.",
+    "example": [
+      "current = 0",
+      "steps = [",
+      "  stepper_step(title: \"Cart\", subtitle: \"2 items\", state: \"complete\", is_active: true, content: text(\"Socks, Hat\")),",
+      "  stepper_step(title: \"Shipping\", state: \"editing\", is_active: true, content: text_field(label: \"Address\")),",
+      "  stepper_step(title: \"Payment\", content: text(\"Pay on delivery\"))",
+      "]",
+      "checkout = stepper(",
+      "  steps,",
+      "  current_step: current,",
+      "  on_step_tap: ->(event) {",
+      "    current = event.data.to_i",
+      "    page.update(checkout, current_step: current)",
+      "  }",
+      ")",
+      "page.add(checkout)"
+    ]
+  },
+  "control-submenu-button": {
+    "summary": "A button in a [`menu_bar`](/docs/control-menu-bar), or inside another submenu, that opens a menu of `controls`: [`menu_item_button`](/docs/control-menu-item-button)s, nested `submenu_button`s and `divider`s. `content` is its label. On Android, web, Windows and Linux the menu drops down under the button (or opens beside it when nested); on iOS and macOS it opens as a sheet from the bottom of the screen. `on_open` and `on_close` fire as it opens and closes.",
+    "example": [
+      "status = text(value: \"Pick a command\")",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      menu_bar(",
+      "        [",
+      "          submenu_button(",
+      "            [",
+      "              menu_item_button(\"Undo\", on_click: ->(_event) { page.update(status, value: \"Undone\") }),",
+      "              submenu_button(",
+      "                [",
+      "                  menu_item_button(\"Upper case\", on_click: ->(_event) { page.update(status, value: \"UPPER CASE\") }),",
+      "                  menu_item_button(\"Lower case\", on_click: ->(_event) { page.update(status, value: \"lower case\") })",
+      "                ],",
+      "                content: \"Change case\"",
+      "              )",
+      "            ],",
+      "            content: \"Edit\",",
+      "            on_open: ->(_event) { page.update(status, value: \"Edit menu open\") }",
+      "          )",
+      "        ]",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-tab": {
+    "summary": "One tab of a [`tab_bar`](/docs/control-tab-bar), inside [`tabs`](/docs/control-tabs). `label` (the first positional argument) is a string or a control, and `icon` shows with it: above it on Android, web, Windows and Linux, before it on iOS and macOS. The tab has no events; the `tabs` control reports the selected index in `on_change`.",
+    "example": [
+      "page.add(",
+      "  tabs(",
+      "    length: 2,",
+      "    content: column(",
+      "      expand: true,",
+      "      children: [",
+      "        tab_bar([tab(\"Calls\", icon: \"call\"), tab(\"Messages\", icon: \"chat\")]),",
+      "        tab_bar_view([text(\"No recent calls\"), text(\"No messages\")], expand: true)",
+      "      ]",
+      "    ),",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-tab-bar": {
+    "summary": "The row of [`tab`](/docs/control-tab)s inside [`tabs`](/docs/control-tabs); it must be inside a `tabs` control, which holds the selection. On Android, web, Windows and Linux it is a Material tab bar with an indicator line under the selected tab, scrollable unless `scrollable: false`; on iOS and macOS it is a sliding segmented control whose thumb uses `indicator_color`, and the other styling keywords do not apply. `on_click` gets the tapped tab's index in `event.data`.",
+    "example": [
+      "page.add(",
+      "  tabs(",
+      "    length: 3,",
+      "    content: column(",
+      "      expand: true,",
+      "      children: [",
+      "        tab_bar(",
+      "          [tab(\"Day\"), tab(\"Week\"), tab(\"Month\")],",
+      "          scrollable: false,",
+      "          indicator_color: \"#0f766e\",",
+      "          label_color: \"#0f766e\"",
+      "        ),",
+      "        tab_bar_view([text(\"Today\"), text(\"This week\"), text(\"This month\")], expand: true)",
+      "      ]",
+      "    ),",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-tab-bar-view": {
+    "summary": "The pages of [`tabs`](/docs/control-tabs), one per [`tab`](/docs/control-tab) and in the same order; it must be inside a `tabs` control. On Android, web, Windows and Linux the user can also swipe between pages; on iOS and macOS it shows the selected page only. Give it a height or `expand: true`: it shows an error when its height is unbounded.",
+    "example": [
+      "page.add(",
+      "  tabs(",
+      "    length: 2,",
+      "    content: column(",
+      "      expand: true,",
+      "      children: [",
+      "        tab_bar([tab(\"Overview\"), tab(\"Specs\")]),",
+      "        tab_bar_view(",
+      "          [",
+      "            column(children: [text(\"A light, fast laptop.\")]),",
+      "            column(children: [text(\"16 GB memory\"), text(\"1 TB storage\")])",
+      "          ],",
+      "          expand: true",
+      "        )",
+      "      ]",
+      "    ),",
+      "    expand: true",
       "  )",
       ")"
     ]

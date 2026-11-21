@@ -1069,28 +1069,6 @@ class DocsCatalog
       "browsercontextmenu" => [
         "page.browser_context_menu(disabled: true)"
       ],
-      "fillediconbutton" => [
-        "filled_icon_button(",
-        '  icon: "add",',
-        '  tooltip: "Add item",',
-        "  on_click: ->(event) {}",
-        ")"
-      ],
-      "filledtonaliconbutton" => [
-        "filled_tonal_icon_button(",
-        '  icon: "favorite",',
-        '  selected_icon: "favorite",',
-        "  selected: true,",
-        "  on_click: ->(event) {}",
-        ")"
-      ],
-      "outlinediconbutton" => [
-        "outlined_icon_button(",
-        '  icon: "search",',
-        '  tooltip: "Search",',
-        "  on_click: ->(event) {}",
-        ")"
-      ],
       "lottie" => [
         "lottie(",
         '  src: "assets/success.json",',
@@ -1121,25 +1099,6 @@ class DocsCatalog
         "    expand: true",
         "  )",
         ")"
-      ],
-      "menubar" => [
-        "file_menu = submenu_button(",
-        "  [",
-        "    menu_item_button(",
-        '      "Open",',
-        '      leading: icon("folder_open"),',
-        "      on_click: ->(event) {}",
-        "    ),",
-        "    menu_item_button(",
-        '      "Save",',
-        '      leading: icon("save"),',
-        "      on_click: ->(event) {}",
-        "    )",
-        "  ],",
-        '  content: text("File")',
-        ")",
-        "",
-        "page.add(menu_bar([file_menu]))"
       ],
       "polygonmarker" => [
         "service_area = polygon_marker(",
