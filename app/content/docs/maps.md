@@ -101,8 +101,8 @@ The methods are `move_to(destination:, zoom:, rotation:, offset:)`,
 
 `interaction_configuration` takes a hash. Every key is optional, but always
 include `pinch_move_threshold`: a 0.0.23 client fails to draw a map whose hash
-lacks it. With the next release a missing `pinch_move_threshold` defaults to
-40. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+lacks it. With the next release a missing `pinch_move_threshold` defaults to 40.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ```ruby
 map(
@@ -128,13 +128,16 @@ map(
 - `enable_multi_finger_gesture_race` — let two-finger rotation, pinch-zoom and
   pinch-move compete (default false). The first gesture past its threshold
   wins and turns on the gestures its `*_win_gestures` value lists, added up
-  from 1 pinch-move, 2 pinch-zoom and 4 rotate:
-  - `pinch_move_threshold` (in logical pixels, flutter_map's default 40) with
-    `pinch_move_win_gestures` (default 3, pinch-move and pinch-zoom);
-  - `pinch_zoom_threshold` (default 0.5) with `pinch_zoom_win_gestures`
-    (default 3);
-  - `rotation_threshold` (in degrees, default 20) with `rotation_win_gestures`
-    (default 4, rotation only).
+  from 1 pinch-move, 2 pinch-zoom and 4 rotate. The thresholds and win
+  gestures below apply only to this race.
+- `pinch_move_threshold` / `pinch_move_win_gestures` — how far two fingers
+  must move together, in logical pixels (flutter_map's default 40), and what
+  pinch-move turns on when it wins (default 3, pinch-move and pinch-zoom).
+- `pinch_zoom_threshold` / `pinch_zoom_win_gestures` — how many zoom levels the
+  pinch must change (default 0.5), and what pinch-zoom turns on (default 3).
+- `rotation_threshold` / `rotation_win_gestures` — how far two fingers must
+  turn, in degrees (default 20), and what rotation turns on (default 4,
+  rotation only).
 - `keyboard_configuration` — how keys move a focused map, on desktop and the
   web. Without it the arrow keys pan the map. Once you send the hash, every
   key set below is on unless you turn it off: `enable_arrow_keys_panning`,

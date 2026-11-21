@@ -243,6 +243,23 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     cursor_keyboard_rotation_configuration trigger_keys behaviour set_north_on_click
   ].freeze
 
+  # MarkdownRenderer draws no nested list (an indented "- " stays text in the
+  # item above it), and a wrapped line that starts with "40. " opens a list.
+  test "guide pages of the group use only Markdown the renderer draws" do
+    problems = GUIDE_PAGES.flat_map do |slug|
+      previous = ""
+      (page(slug).then { |entry| entry.source.read }).gsub(/^```.*?^```/m, "").lines.filter_map do |line|
+        problem = if line.match?(/\A {2,}[-*] /) then "nested list"
+        elsif line.match?(/\A\d+\. /) && previous.strip.present? && !previous.match?(/\A\d+\. /) then "number opens a list"
+        end
+        previous = line
+        "#{slug}: #{problem}: #{line.strip}" if problem
+      end
+    end
+
+    assert_empty problems
+  end
+
   test "the maps page describes every interaction option" do
     section = DocsCatalog::SOURCE_ROOT.join("maps.md").read.split(/^### Gestures and keyboard$/, 2).last.split(/^### /, 2).first
 
