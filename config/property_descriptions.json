@@ -908,5 +908,330 @@
     "contextmenu": {
       "open": "On iOS and macOS the menu cannot be opened from code; it opens only from the user's long press."
     }
+  },
+  "services": {
+    "accelerometer": {
+      "events": {
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the acceleration along each axis in m/s², gravity included, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
+      }
+    },
+    "audio_recorder": {
+      "properties": {
+        "configuration": "Default recording settings, a Hash that `start_recording` sends when you pass no `configuration:`. Keys: `encoder` (default `\"wav\"`), `bit_rate` (128000), `sample_rate` (44100), `channels` (2), `auto_gain`, `cancel_echo` and `suppress_noise` (all false), `device` (`{ id:, label: }` from `get_input_devices`), `android_configuration` (`audio_source`, `manage_bluetooth`, `mute_audio`, `use_legacy`) and `ios_configuration` (`manage_audio_session`, `options`). Write encoder names as the client spells them, such as `\"aacLc\"`, `\"opus\"`, `\"flac\"`, `\"wav\"` or `\"pcm16bits\"`: the 0.0.23 client does not read `\"aac_lc\"` and records WAV instead. On `main` the client also reads `\"aac_lc\"`, and `device` also takes the id alone, a key of the `get_input_devices` Hash. **Requires the next Ruflet release** (on `main`, not in 0.0.23)."
+      },
+      "events": {
+        "on_state_change": "Fired when recording starts, pauses or stops: `event.data` (also `event.state`) is `\"recording\"`, `\"paused\"` or `\"stopped\"`.",
+        "on_stream": "Accepted, but no client sends it: recordings go to the `output_path` file.",
+        "on_upload": "Accepted, but no client sends it, and `start_recording` ignores `upload:`."
+      },
+      "methods": {
+        "has_permission": "Asks for microphone access the first time, then reports it. `on_result` receives `true` or `false`.",
+        "start_recording": "Starts recording to `output_path`, a writable file path on the device (build one from `page.get_application_documents_directory`). The web ignores the path. `configuration:` replaces the service's `configuration` for this recording. `on_result` receives `true` when recording started, or `false` without microphone access or, outside the web, without an `output_path`. `upload:` is ignored.",
+        "stop_recording": "Stops recording. `on_result` receives the recording's path, a blob URL on the web.",
+        "pause_recording": "Pauses the recording in progress. `on_result` receives `nil`.",
+        "resume_recording": "Resumes a paused recording. `on_result` receives `nil`.",
+        "cancel_recording": "Stops recording and deletes the file. `on_result` receives `nil`.",
+        "is_recording": "`on_result` receives `true` while a recording is running, paused or not.",
+        "is_paused": "`on_result` receives `true` while the recording is paused.",
+        "is_supported_encoder": "Checks one encoder name, such as `\"opus\"`. `on_result` receives `true` or `false`. With 0.0.23 it receives `nil` for a name the client does not know; on `main` such a name, or none, arrives as the error. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+        "get_input_devices": "Lists the microphones. `on_result` receives a Hash of device id => label."
+      }
+    },
+    "barometer": {
+      "events": {
+        "on_reading": "Fired with each reading: `event.data` is `{ pressure: ..., timestamp: ... }` (Symbol keys), the air pressure in hectopascals and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
+      }
+    },
+    "battery": {
+      "events": {
+        "on_state_change": "Fired when the charging state changes: `event.data[:state]` (also `event.state`) is `\"charging\"`, `\"discharging\"`, `\"full\"`, `\"connectedNotCharging\"` or `\"unknown\"`."
+      },
+      "methods": {
+        "get_battery_level": "`on_result` receives the charge as an Integer percentage from 0 to 100, or `nil` when the device cannot report it.",
+        "get_battery_state": "`on_result` receives the charging state: `\"charging\"`, `\"discharging\"`, `\"full\"`, `\"connectedNotCharging\"` or `\"unknown\"`.",
+        "is_in_battery_save_mode": "`on_result` receives `true` while the device is in battery-save (low power) mode."
+      }
+    },
+    "browser_context_menu": {
+      "methods": {
+        "disable": "Turns the browser's own right-click menu off, so the app's context menus can open. Only browsers have this menu: other clients answer with an error. `on_result` receives `nil`.",
+        "enable": "Turns the browser's right-click menu back on. `on_result` receives `nil`.",
+        "disabled": "Whether this service last sent `disable` (`false` until then). It is Ruby-side state, set when the call is sent, not read from the browser.",
+        "disabled?": "Same as `disabled`."
+      }
+    },
+    "camera": {
+      "properties": {
+        "preview_enabled": "Shows the live preview when true (the default). Set false to hide it while the camera keeps running."
+      },
+      "events": {
+        "on_state_change": "Fired when the camera's state changes: `event.data` is a Hash with these Symbol keys, read as `event.data[:is_initialized]`: `is_initialized`, `is_recording_video`, `is_recording_paused`, `is_taking_picture`, `is_streaming_images`, `is_preview_paused`, `flash_mode`, `exposure_mode`, `focus_mode`, `device_orientation`, `preview_size` (`width`, `height`), `aspect_ratio`, `has_error`, `error_description`, `description` (the camera) and the orientation-lock fields.",
+        "on_stream_image": "Fired for each frame while `start_image_stream` runs: `event.data` has the Symbol keys `width`, `height`, `format` (the camera's format group), `encoded_format` (`\"jpeg\"`), `bytes` (the frame as a JPEG binary String) and the sensor's `lens_aperture`, `sensor_exposure_time` and `sensor_sensitivity`. A frame that arrives while the previous one is still being encoded is dropped.",
+        "on_error": "Accepted, but the camera never sends it: failures arrive as the `error` of each method's `on_result`."
+      },
+      "methods": {
+        "get_available_cameras": "`on_result` receives an Array of camera descriptions, Hashes with the String keys `\"name\"`, `\"lens_direction\"` (`\"front\"`, `\"back\"` or `\"external\"`), `\"sensor_orientation\"` and `\"lens_type\"`. Pass one to `initialize_camera`.",
+        "initialize_camera": "Opens a camera: `description` is a Hash from `get_available_cameras`, and `resolution_preset` is `\"low\"`, `\"medium\"`, `\"high\"`, `\"veryHigh\"`, `\"ultraHigh\"` or `\"max\"`. Options: `enable_audio:` (default true), `fps:`, `video_bitrate:`, `audio_bitrate:` and `image_format_group:` (`\"jpeg\"`, `\"yuv420\"`, `\"bgra8888\"` or `\"nv21\"`). Every other method needs it first. `on_result` receives `nil`; read the new state from `on_state_change`.",
+        "take_picture": "`on_result` receives the picture as a binary String.",
+        "prepare_for_video_recording": "Prepares the platform for recording, which shortens the delay before `start_video_recording` on iOS. `on_result` receives `nil`.",
+        "start_video_recording": "Starts recording video. `on_result` receives `nil`.",
+        "pause_video_recording": "Pauses video recording. `on_result` receives `nil`.",
+        "resume_video_recording": "Resumes a paused video recording. `on_result` receives `nil`.",
+        "stop_video_recording": "Stops recording. `on_result` receives the video as a binary String.",
+        "pause_preview": "Freezes the preview. `on_result` receives `nil`.",
+        "resume_preview": "Resumes a paused preview. `on_result` receives `nil`.",
+        "supports_image_streaming": "`on_result` receives `true` when this camera can stream frames.",
+        "start_image_stream": "Starts sending frames to `on_stream_image`. `on_result` receives `nil`.",
+        "stop_image_stream": "Stops the frame stream. `on_result` receives `nil`.",
+        "lock_capture_orientation": "Locks the capture orientation to `\"portraitUp\"`, `\"portraitDown\"`, `\"landscapeLeft\"` or `\"landscapeRight\"`, or to the current device orientation when you pass nothing. `on_result` receives `nil`.",
+        "unlock_capture_orientation": "Lets the capture orientation follow the device again. `on_result` receives `nil`.",
+        "set_description": "Switches to another camera description from `get_available_cameras`. `on_result` receives `nil`.",
+        "set_flash_mode": "Sets the flash: `\"off\"`, `\"auto\"`, `\"always\"` or `\"torch\"`. `on_result` receives `nil`.",
+        "set_focus_mode": "Sets the focus mode: `\"auto\"` or `\"locked\"`. `on_result` receives `nil`.",
+        "set_focus_point": "Focuses on a point, `{ x:, y: }` with values from 0.0 to 1.0 across the preview, or `nil` to reset. `on_result` receives `nil`.",
+        "set_exposure_mode": "Sets the exposure mode: `\"auto\"` or `\"locked\"`. `on_result` receives `nil`.",
+        "set_exposure_point": "Meters exposure at a point, `{ x:, y: }` with values from 0.0 to 1.0, or `nil` to reset. `on_result` receives `nil`.",
+        "set_exposure_offset": "Sets the exposure offset in EV, between `get_min_exposure_offset` and `get_max_exposure_offset`. `on_result` receives the offset the camera applied.",
+        "get_exposure_offset_step_size": "`on_result` receives the smallest exposure offset step, in EV.",
+        "get_min_exposure_offset": "`on_result` receives the lowest exposure offset, in EV.",
+        "get_max_exposure_offset": "`on_result` receives the highest exposure offset, in EV.",
+        "set_zoom_level": "Sets the zoom, between `get_min_zoom_level` and `get_max_zoom_level`. `on_result` receives `nil`.",
+        "get_min_zoom_level": "`on_result` receives the lowest zoom level.",
+        "get_max_zoom_level": "`on_result` receives the highest zoom level."
+      }
+    },
+    "clipboard": {
+      "methods": {
+        "set": "Copies the value, converted with `to_s`, to the clipboard as text. `on_result` receives `nil`.",
+        "get": "`on_result` receives the clipboard's text, or `nil` when it holds no text.",
+        "set_image": "Copies an image to the clipboard: the encoded image (for example PNG) as a binary String or an Array of byte Integers. `on_result` receives `nil`.",
+        "get_image": "`on_result` receives the clipboard's image as a binary String, or `nil`.",
+        "set_files": "Puts files on the clipboard by path (each value converted with `to_s`). `on_result` receives `true` when the clipboard accepted them.",
+        "get_files": "`on_result` receives the paths of the files on the clipboard, an Array of Strings."
+      }
+    },
+    "connectivity": {
+      "events": {
+        "on_change": "Fired when the network connection changes: `event.data[:connectivity]` lists the active connection types, such as `[\"wifi\"]` or `[\"none\"]`."
+      },
+      "methods": {
+        "get_connectivity": "`on_result` receives the active connection types, an Array of `\"wifi\"`, `\"mobile\"`, `\"ethernet\"`, `\"vpn\"`, `\"bluetooth\"`, `\"satellite\"`, `\"other\"` or `\"none\"` when offline."
+      }
+    },
+    "file_picker": {
+      "events": {
+        "on_result": "Accepted, but no client sends it: each method returns its answer to its own `on_result:` callback.",
+        "on_upload": "Fired as `upload` sends a file: `event.data` has `:file_name`, `:progress` (from 0.0 to 1.0, sent about every 10%) and `:error` (the failure message, or `nil`)."
+      },
+      "methods": {
+        "pick_files": "Opens the file picker. Options: `dialog_title:`, `initial_directory:`, `file_type:` (`\"any\"`, `\"media\"`, `\"image\"`, `\"video\"`, `\"audio\"` or `\"custom\"`; `allowed_extensions:` such as `[\"pdf\"]` switches to `\"custom\"`), `allow_multiple:` and `with_data:`. `on_result` receives an Array of Hashes with `\"id\"`, `\"name\"`, `\"path\"` (`nil` on the web), `\"size\"` in bytes and `\"bytes\"` (only with `with_data: true`), or `[]` when the user cancels. The service waits `timeout:` seconds for the user, 10 by default; pass a longer one, or call `page.pick_files`, which has none.",
+        "save_file": "Opens a save dialog. Takes the `pick_files` options plus `file_name:` and `src_bytes:` (the contents, a binary String or an Array of byte Integers). Android, iOS and the web need `src_bytes:` and save it; the web also needs `file_name:`. `on_result` receives the chosen path, or `nil` when the user cancels.",
+        "get_directory_path": "Lets the user pick a folder (`dialog_title:`, `initial_directory:`). `on_result` receives its path, or `nil` when the user cancels. The web raises an error.",
+        "upload": "Uploads files picked with this service's last `pick_files` call. `files` is an Array of Hashes with `name:` (or the picked `id:`), `upload_url:`, the absolute URL of an endpoint your app provides, which receives the raw file body, and `method:` such as `\"PUT\"`. `on_result` receives `nil` at once; follow progress with `on_upload`. Pick with `with_data: false` (the default): the upload reads the file's stream."
+      }
+    },
+    "flashlight": {
+      "events": {
+        "on_error": "Accepted, but the flashlight never sends it: failures arrive as the `error` of each method's `on_result`."
+      },
+      "methods": {
+        "is_available": "`on_result` receives `true` when the device has a torch. Android and iOS only: other clients answer with an error.",
+        "on": "Turns the torch on. `on_result` receives `nil`. Android and iOS only.",
+        "off": "Turns the torch off. `on_result` receives `nil`. Android and iOS only."
+      }
+    },
+    "geolocator": {
+      "properties": {
+        "configuration": "Location settings for `on_position_change` (and the default for nothing else): `accuracy` (`\"lowest\"`, `\"low\"`, `\"medium\"`, `\"high\"`, `\"best\"`, the default, or `\"bestForNavigation\"`), `distance_filter` (meters a device moves before the next update, default 0), `time_limit`, plus Android keys (`interval_duration`, `foreground_notification_*`) and Apple keys (`activity_type`, `pause_location_updates_automatically`, `show_background_location_indicator`, `allow_background_location_updates`). Changing it restarts the position stream."
+      },
+      "events": {
+        "on_position_change": "Fired with each new position while the handler is set: `event.data[:position]` is a position Hash with Symbol keys, such as `event.data[:position][:latitude]`, and the fields of `get_current_position`.",
+        "on_error": "Fired when the position stream or `get_current_position` fails: `event.data` is the client's message."
+      },
+      "methods": {
+        "request_permission": "Shows the location permission prompt when the user has not answered yet. `on_result` receives the status: `\"denied\"`, `\"deniedForever\"`, `\"whileInUse\"`, `\"always\"` or `\"unableToDetermine\"`.",
+        "get_permission_status": "`on_result` receives the location permission status, as for `request_permission`, without prompting.",
+        "is_location_service_enabled": "`on_result` receives `true` when the device's location services are on.",
+        "get_current_position": "Reads the position once, with `configuration:` settings (see the property). `on_result` receives a Hash with String keys, such as `position[\"latitude\"]`: `latitude`, `longitude`, `accuracy` (meters), `altitude`, `altitude_accuracy`, `heading`, `heading_accuracy`, `speed` (m/s), `speed_accuracy`, `floor`, `mocked` and `timestamp` (an ISO 8601 String). A failure fires `on_error`. With 0.0.23, `on_result` then receives `nil` and no error; on `main` it receives the error too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+        "get_last_known_position": "`on_result` receives the last cached position Hash, or `nil`. The web answers `nil`.",
+        "distance_between": "Computes the distance between two latitude/longitude pairs on the client. `on_result` receives meters as a Float.",
+        "open_app_settings": "Opens the app's settings page so the user can change the permission. `on_result` receives `true` when it opened. The web answers `nil`.",
+        "open_location_settings": "Opens the device's location settings. `on_result` receives `true` when they opened. The web answers `nil`."
+      }
+    },
+    "gyroscope": {
+      "events": {
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the rotation rate around each axis in rad/s, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
+      }
+    },
+    "haptic_feedback": {
+      "methods": {
+        "heavy_impact": "Plays a heavy impact. `on_result` receives `nil`. Devices and browsers without haptics do nothing.",
+        "medium_impact": "Plays a medium impact. `on_result` receives `nil`.",
+        "light_impact": "Plays a light impact. `on_result` receives `nil`.",
+        "selection_click": "Plays the tick used when a selection changes. `on_result` receives `nil`.",
+        "vibrate": "Plays a short vibration. `on_result` receives `nil`."
+      }
+    },
+    "local_authentication": {
+      "methods": {
+        "authenticate": "Shows the system prompt with `localized_reason:`. `biometric_only: true` refuses the device PIN, pattern or passcode; `sensitive_transaction:` (default true) and `persist_across_backgrounding:` follow the platform plugin, and `android_messages:`, `ios_messages:` and `macos_messages:` change the prompt's texts. `on_result` receives `true` on success and `false` when the user failed the challenge; cancellation, lockout and missing hardware arrive as the error (read it with `Ruflet::LocalAuthError.from_error`). Waits 60 seconds by default.",
+        "authenticate_sync": "`authenticate` that waits for the answer and returns it. It raises Ruflet::LocalAuthError for a client error and Timeout::Error after `timeout`. Do not call it inside an event handler: handlers run on the thread that delivers the answer.",
+        "can_check_biometrics": "`on_result` receives `true` when the device has biometric hardware.",
+        "can_check_biometrics_sync": "`can_check_biometrics` that waits and returns the answer.",
+        "is_device_supported": "`on_result` receives `true` when the device can authenticate with biometrics or its credential.",
+        "is_device_supported_sync": "`is_device_supported` that waits and returns the answer.",
+        "device_supported?": "Same as `is_device_supported`.",
+        "get_available_biometrics": "`on_result` receives the enrolled biometrics: an Array of `\"face\"`, `\"fingerprint\"`, `\"iris\"`, `\"strong\"` or `\"weak\"`.",
+        "get_available_biometrics_sync": "`get_available_biometrics` that waits and returns the answer.",
+        "stop_authentication": "Cancels a prompt in progress (Android). `on_result` receives `true` when one was cancelled.",
+        "stop_authentication_sync": "`stop_authentication` that waits and returns the answer."
+      }
+    },
+    "magnetometer": {
+      "events": {
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the magnetic field along each axis in microteslas, and the reading time as an ISO 8601 String.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
+      }
+    },
+    "permission_handler": {
+      "methods": {
+        "request": "Asks for one permission, named as the client spells it, case-insensitive: for example `\"camera\"`, `\"microphone\"`, `\"location\"`, `\"locationWhenInUse\"`, `\"locationAlways\"`, `\"photos\"`, `\"contacts\"`, `\"notification\"`, `\"bluetooth\"` or `\"storage\"`. `on_result` receives the status: `\"granted\"`, `\"denied\"`, `\"permanentlyDenied\"`, `\"restricted\"`, `\"limited\"` or `\"provisional\"`, or `nil` for an unknown name. The app's `services.yaml` must declare the matching protected access.",
+        "get_status": "Reads one permission's status without prompting. `on_result` receives a status as for `request`, or `nil` for an unknown name.",
+        "open_app_settings": "Opens the app's settings page. `on_result` receives `true` when it opened."
+      }
+    },
+    "screen_brightness": {
+      "events": {
+        "on_system_screen_brightness_change": "Fired when the system brightness changes: `event.data[:brightness]` is the new level from 0.0 to 1.0. The web never sends it.",
+        "on_application_screen_brightness_change": "Fired when the app's brightness changes: `event.data[:brightness]` is the new level from 0.0 to 1.0. The web never sends it."
+      },
+      "methods": {
+        "get_system_screen_brightness": "`on_result` receives the system brightness from 0.0 to 1.0. The web answers `nil` to every method of this service.",
+        "can_change_system_screen_brightness": "`on_result` receives `true` when the app may change the system brightness.",
+        "set_system_screen_brightness": "Sets the system brightness, from 0.0 to 1.0. On this service object the call fails: it sends the level under a name the client does not read. Call it on the `page.screen_brightness` proxy instead.",
+        "get_application_screen_brightness": "`on_result` receives the brightness the app currently uses, from 0.0 to 1.0.",
+        "set_application_screen_brightness": "Sets the brightness while the app is in front, from 0.0 to 1.0. On this service object the call fails: it sends the level under a name the client does not read. Call it on the `page.screen_brightness` proxy instead.",
+        "reset_application_screen_brightness": "Returns the app to the system brightness. `on_result` receives `nil`.",
+        "is_animate": "`on_result` receives `true` when brightness changes animate.",
+        "set_animate": "Turns brightness animation on or off. On this service object the call fails, as for the brightness setters; call it on the `page.screen_brightness` proxy.",
+        "is_auto_reset": "`on_result` receives `true` when the app brightness resets when the app leaves the foreground.",
+        "set_auto_reset": "Turns the automatic reset on or off. On this service object the call fails, as for the brightness setters; call it on the `page.screen_brightness` proxy."
+      },
+      "proxy_methods": {
+        "set_system_screen_brightness": "Sets the system brightness, from 0.0 to 1.0, where `can_change_system_screen_brightness` allows it. `on_result` receives `nil`.",
+        "set_application_screen_brightness": "Sets the brightness while the app is in front, from 0.0 to 1.0. `on_result` receives `nil`.",
+        "set_animate": "Turns brightness animation on or off. `on_result` receives `nil`.",
+        "set_auto_reset": "Turns the automatic reset on or off. `on_result` receives `nil`."
+      }
+    },
+    "secure_storage": {
+      "properties": {
+        "android_options": "Android storage settings: `reset_on_error` (default true), `migrate_on_algorithm_change` (true), `enforce_biometrics` (false), `key_cipher_algorithm`, `storage_cipher_algorithm`, `shared_preferences_name`, `preferences_key_prefix`, `biometric_prompt_title` and `biometric_prompt_subtitle`.",
+        "ios_options": "iOS keychain settings: `accessibility` (default `\"unlocked\"`; also `\"passcode\"`, `\"unlocked_this_device\"`, `\"first_unlock\"` and `\"first_unlock_this_device\"`), `account_name`, `group_id`, `synchronizable` (false), `label`, `description`, `comment`, `access_control_flags` and the other keychain attributes.",
+        "macos_options": "macOS keychain settings: the `ios_options` keys plus `uses_data_protection_keychain` (default true).",
+        "web_options": "Web settings: `db_name` (default `\"FlutterEncryptedStorage\"`), `public_key` (`\"FlutterSecureStorage\"`) and `wrap_key`.",
+        "windows_options": "Windows settings: `use_backward_compatibility` (default false)."
+      },
+      "events": {
+        "on_change": "Fired on iOS and macOS when protected data becomes available or unavailable, for example when the device locks: `event.data[:available]` is `true` or `false`."
+      },
+      "methods": {
+        "set": "Stores `value` under `key`. Pass a String: the 0.0.23 client rejects other values. Options for one call: `android:`, `ios:`, `macos:`, `web:` and `windows:` (Hashes like the matching `*_options`), `timeout:` and `on_result:`, which receives `nil`.",
+        "get": "`on_result` receives the String stored under `key`, or `nil`. Takes the same per-call options as `set`.",
+        "get_all": "`on_result` receives every stored key and value as a Hash.",
+        "contains_key": "`on_result` receives `true` when `key` has a value.",
+        "remove": "Deletes `key`. `on_result` receives `nil`.",
+        "clear": "Deletes every value this app stored. `on_result` receives `nil`.",
+        "get_availability": "`on_result` receives `true` when protected data can be read now (iOS and macOS); other platforms answer `nil`."
+      }
+    },
+    "semantics_service": {
+      "methods": {
+        "announce_message": "Asks the screen reader to read `message`. `rtl: true` reads it right to left. The clients always announce politely, whatever `assertiveness:` says. `on_result` receives `nil`.",
+        "announce_tooltip": "Announces `message` as a tooltip (Android). `on_result` receives `nil`.",
+        "get_accessibility_features": "`on_result` receives the accessibility settings in use, a Hash of `true`/`false` values: `accessible_navigation`, `bold_text`, `disable_animations`, `high_contrast`, `invert_colors`, `reduce_motion`, `on_off_switch_labels` and `supports_announcements`."
+      }
+    },
+    "shake_detector": {
+      "properties": {
+        "minimum_shake_count": "Shakes needed before `on_shake` fires (default 1).",
+        "shake_slop_time_ms": "Milliseconds after a shake during which further movement is ignored (default 500).",
+        "shake_count_reset_time_ms": "Milliseconds without a shake after which the count starts again (default 3000).",
+        "shake_threshold_gravity": "Acceleration, in multiples of gravity, a movement must exceed to count as a shake (default 2.7)."
+      },
+      "events": {
+        "on_shake": "Fired when the device was shaken `minimum_shake_count` times. `event.data` is `nil`."
+      }
+    },
+    "share": {
+      "methods": {
+        "share_text": "Opens the share sheet for `text`, with `title:` and `subject:` (used by email targets). `preview_thumbnail:` takes a file Hash (see `share_files`), `share_position_origin:` the `{ x:, y:, width:, height: }` area an iPad popover points to, and `excluded_cupertino_activities:` the iOS activities to hide. On the web, `download_fallback_enabled:` and `mail_to_fallback_enabled:` (both true) allow the fallbacks when the browser cannot share. `on_result` receives `{\"status\" => \"success\" | \"dismissed\" | \"unavailable\", \"raw\" => ...}`.",
+        "share_uri": "Opens the share sheet for a link. Takes `share_position_origin:` and `excluded_cupertino_activities:`. `on_result` receives the status Hash, as for `share_text`.",
+        "share_files": "Shares files, each a Hash with `path:` or `data:` (a binary String or an Array of byte Integers), plus optional `name:` and `mime_type:`. Takes the `share_text` options. `page.share_files` also accepts plain path Strings; the service object does not. `on_result` receives the status Hash, as for `share_text`."
+      }
+    },
+    "shared_preferences": {
+      "methods": {
+        "set": "Stores `value` under `key`. Pass a String: the 0.0.23 client rejects other values. `on_result` receives `true` when it was saved.",
+        "get": "`on_result` receives the String stored under `key`, or `nil`.",
+        "contains_key": "`on_result` receives `true` when `key` has a value.",
+        "get_keys": "`on_result` receives the stored keys that start with `key_prefix`, an Array of Strings. Pass `\"\"` for every key.",
+        "remove": "Deletes `key`. `on_result` receives `true` when it was removed.",
+        "clear": "Deletes every stored value. `on_result` receives `true`."
+      }
+    },
+    "storage_paths": {
+      "methods": {
+        "get_application_documents_directory": "`on_result` receives the directory for the user's documents, a path String. The web answers `nil` to every method of this service.",
+        "get_application_support_directory": "`on_result` receives the directory for app files the user does not see.",
+        "get_application_cache_directory": "`on_result` receives the app's cache directory.",
+        "get_temporary_directory": "`on_result` receives a temporary directory the system may clear.",
+        "get_downloads_directory": "`on_result` receives the downloads directory, or `nil` where the platform has none.",
+        "get_library_directory": "`on_result` receives the Library directory on iOS and macOS, and `nil` elsewhere.",
+        "get_external_storage_directory": "`on_result` receives the app's directory on external storage on Android, and `nil` elsewhere.",
+        "get_external_storage_directories": "`on_result` receives an Array of the app's external storage directories on Android, and `nil` elsewhere.",
+        "get_external_cache_directories": "`on_result` receives an Array of the app's external cache directories on Android, and `nil` elsewhere.",
+        "get_console_log_filename": "`on_result` receives the path of `console.log` in the app's cache directory."
+      }
+    },
+    "url_launcher": {
+      "methods": {
+        "launch_url": "Opens `url`. `mode:` is `\"platformDefault\"` (the default), `\"inAppWebView\"`, `\"inAppBrowserView\"`, `\"externalApplication\"` or `\"externalNonBrowserApplication\"`; `web_view_configuration:` takes `enable_javascript`, `enable_dom_storage` and `headers`, `browser_configuration:` takes `show_title`, and `web_only_window_name:` names the browser tab, such as `\"_blank\"`. `on_result` receives `nil`. Some failures arrive as the error, but the client does not check whether the URL opened, so others leave both `nil`. Call `can_launch_url` first to find out whether an app can open it.",
+        "can_launch_url": "`on_result` receives `true` when an app can open `url`.",
+        "close_in_app_web_view": "Closes a page opened with `mode: \"inAppWebView\"`. `on_result` receives `nil`.",
+        "open_window": "Opens `url` in a browser popup window, `width:` by `height:` pixels (default 1200 by 800). Only the web opens one; other clients do nothing. `on_result` receives `nil`.",
+        "supports_launch_mode": "`on_result` receives `true` when the platform supports the launch `mode`.",
+        "supports_close_for_launch_mode": "`on_result` receives `true` when a page opened with `mode` can be closed with `close_in_app_web_view`."
+      }
+    },
+    "user_accelerometer": {
+      "events": {
+        "on_reading": "Fired with each reading: `event.data` is `{ x: ..., y: ..., z: ..., timestamp: ... }` (Symbol keys), the acceleration along each axis in m/s² without gravity, and the reading time in microseconds since the Unix epoch.",
+        "on_error": "Fired when the sensor stream fails: `event.data[:message]` is the client's message."
+      }
+    },
+    "wakelock": {
+      "methods": {
+        "enable": "Keeps the screen on while the app is open. `on_result` receives `nil`.",
+        "disable": "Lets the screen turn off again. `on_result` receives `nil`.",
+        "is_enabled": "`on_result` receives `true` while the screen is kept on."
+      }
+    }
+  },
+  "page": {
+    "set_clipboard": "Same as the clipboard's `set`.",
+    "get_clipboard": "Same as the clipboard's `get`.",
+    "set_clipboard_files": "Same as the clipboard's `set_files`.",
+    "get_clipboard_files": "Same as the clipboard's `get_files`.",
+    "set_clipboard_image": "Same as the clipboard's `set_image`.",
+    "get_clipboard_image": "Same as the clipboard's `get_image`.",
+    "battery_save_mode?": "Same as `is_in_battery_save_mode`.",
+    "upload_files": "Same as `upload`.",
+    "pick_files": "Same as the service's `pick_files`, without a timeout unless you pass one.",
+    "can_launch_url": "Sends the check but takes no `on_result:`, so the answer is lost. Use `page.url_launcher.can_launch_url(url, on_result: ...)` to read it."
   }
 }
