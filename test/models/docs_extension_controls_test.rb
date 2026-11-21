@@ -28,7 +28,7 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     "control-block-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
     "control-material-picker" => [ "Changing `color` from Ruby after the picker is shown" ],
     "control-multiple-choice-block-picker" => [ "Changing `colors` from Ruby after the picker is shown" ],
-    "control-slide-picker" => [ "The next release keeps the pick itself" ],
+    "control-slide-picker" => [ "The next release keeps the pick itself", "the client writes the pick back to `color`" ],
     "charts-and-canvas" => [
       "On 0.0.23 the canvas has no `capture` method.",
       "With the next release a chart `tooltip` styles the bubble",
@@ -221,7 +221,8 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   end
 
   # Ruflet main keeps the CodeEditor change text a String (ruflet#103); the
-  # 0.0.23 server decodes text that is valid JSON.
+  # 0.0.23 server decodes text that is valid JSON, so the examples count the
+  # written-back `value`, which both keep a String.
   test "the code editor says what 0.0.23 hands on_change" do
     complete_api = page("control-code-editor").content.split("\n## Complete API\n", 2).last
     line = complete_api.split(/^### Events$/, 2).last.lines.find { |entry| entry.start_with?("- `on_change` — ") }
@@ -230,6 +231,9 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     assert_includes line, "0.0.23 decodes text that is valid JSON"
     assert_includes line, "`event.data` is always the text, and only the user's edits fire it. #{DocsCatalog::NEXT_RELEASE_MARKER}."
     assert_includes page("control-code-editor").content, 'event.control.props["value"].to_s.length'
+    code_editor = DocsCatalog::EXTENSION_CATALOG.find { |extension| extension[:key] == "code_editor" }
+    assert_includes code_editor[:example], 'event.control.props["value"].to_s.length'
+    refute_includes code_editor[:example], "event.data.to_s.length"
   end
 
   # Every key the map clients read from `interaction_configuration`
@@ -246,12 +250,17 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   ].freeze
 
   # MarkdownRenderer draws no nested list (an indented "- " stays text in the
-  # item above it), and a wrapped line that starts with "40. " opens a list.
-  test "guide pages of the group use only Markdown the renderer draws" do
-    problems = GUIDE_PAGES.flat_map do |slug|
+  # item above it), an indented line that starts a block once stripped (a
+  # "40. ", a fence, a heading or a quote) ends the list item above it, as
+  # MarkdownRenderer#list_item does, and a wrapped line that starts with
+  # "40. " opens a list.
+  test "pages of the group use only Markdown the renderer draws" do
+    renderer = MarkdownRenderer.new("")
+    problems = (CONTROLS + GUIDE_PAGES + EXTENSION_PAGES).flat_map do |slug|
       previous = ""
-      (page(slug).then { |entry| entry.source.read }).gsub(/^```.*?^```/m, "").lines.filter_map do |line|
+      (page(slug).then { |entry| entry.content || entry.source.read }).gsub(/^```.*?^```/m, "").lines.filter_map do |line|
         problem = if line.match?(/\A {2,}[-*] /) then "nested list"
+        elsif line.match?(/\A[ \t]+\S/) && renderer.send(:block_start?, line.strip) then "indented line starts a block"
         elsif line.match?(/\A\d+\. /) && previous.strip.present? && !previous.match?(/\A\d+\. /) then "number opens a list"
         end
         previous = line
