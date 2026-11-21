@@ -234,12 +234,14 @@ class DocsCoverageTest < ActiveSupport::TestCase
   ].freeze
 
   # Lines that must stay unmarked: they work with 0.0.23, or (ContextMenu.open
-  # on iOS and macOS) main does not run them either.
+  # on iOS and macOS) main does not run them either. PopupMenuButton on_select
+  # is not one of them: with 0.0.23 on iOS and macOS the item wins the tap and
+  # the sheet's row handler, which sends `select`, never runs (a widget test of
+  # template main; ruflet-engine 99b0f633 fixed it).
   PINNED_RELEASED_LINES = [
     [ "control-reorderable-list-view", "events", "on_scroll" ],
     [ "control-reorderable-list-view", "properties", "scroll_interval" ],
-    [ "control-context-menu", "methods", "open" ],
-    [ "control-popup-menu-button", "events", "on_select" ]
+    [ "control-context-menu", "methods", "open" ]
   ].freeze
 
   # Hand-written sentences that describe main-only behavior and must say so.
@@ -258,7 +260,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     ],
     "control-progress-ring" => [ "`false` gives the newer Material look", "the iOS name for `value`" ],
     "control-expansion-panel-list" => [ "`expand_icon_color` — the color of the arrow icons", "`scroll`, `auto_scroll`, `scroll_interval` and `on_scroll`" ],
-    "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ],
+    "control-popup-menu-button" => [ "`on_cancel` when the sheet closes without a choice" ],
     "control-search-bar" => [ "On iOS and macOS, `open_view` focuses the bar", "with 0.0.23 both do nothing there" ],
     "control-list-tile" => [
       "there `selected` only tells screen readers",
@@ -496,6 +498,56 @@ end
     assert_includes generated_line("control-outlined-button", "events", "on_hover"),
       "On Android, web, Windows and Linux, the 0.0.23 client never sends it for a button with an `icon`. #{DocsCatalog::NEXT_RELEASE_MARKER}.",
       "With 0.0.23 the Material OutlinedButton.icon has no onHover"
+  end
+
+  # What the 0.0.23 client (template main) does on iOS and macOS where the
+  # engine default branch now differs, each checked with a widget test of
+  # both renderers: [slug, kind, name, words the line must keep].
+  PINNED_CUPERTINO_0023_LINES = [
+    # ruflet-engine#125: the iOS tab bar drops a tap on a disabled destination;
+    # the 0.0.23 cupertino_navigation_bar.dart _onTap selects it.
+    [ "control-navigation-bar-destination", "properties", "disabled",
+      "On iOS and macOS, the 0.0.23 client still selects it when tapped and sends the bar's `on_change`. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
+    [ "control-navigation-bar-destination", "properties", "disabled", "is drawn dimmed and ignores taps" ],
+    [ "control-navigation-bar-destination", "properties", "tooltip", "The iOS tab bar on iOS and macOS shows no tooltips." ],
+    # With 0.0.23 a Cupertino menu entry wins the tap, so the sheet's own row
+    # handler, which sends `select` and closes the sheet, never runs.
+    [ "control-popup-menu-button", "events", "on_select",
+      "On iOS and macOS, the 0.0.23 client never sends it. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
+    [ "control-submenu-button", "events", "on_close",
+      "the 0.0.23 client leaves the sheet open after a pick, so it fires only when the user taps outside the sheet. #{DocsCatalog::NEXT_RELEASE_MARKER}." ]
+  ].freeze
+
+  test "button, menu and navigation lines say what the 0.0.23 client does on iOS and macOS" do
+    PINNED_CUPERTINO_0023_LINES.each do |slug, kind, name, words|
+      assert_includes generated_line(slug, kind, name), words, "#{slug} #{kind} #{name} lost #{words.inspect}"
+    end
+    refute_includes generated_line("control-menu-item-button", "properties", "close_on_click"), "always closes the sheet",
+      "with 0.0.23 a pick leaves the iOS sheet open"
+    {
+      "control-navigation-bar" => "with 0.0.23 a tap still selects it and sends `on_change`",
+      "control-popup-menu-button" => "with 0.0.23 it sends neither there",
+      "control-menu-bar" => "with 0.0.23 the sheet stays open until the user taps outside it"
+    }.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+      assert_includes paragraph, DocsCatalog::NEXT_RELEASE_MARKER, "#{slug}: #{phrase.inspect} needs the next-release marker"
+    end
+  end
+
+  # The Navigation and Feedback guide runs as written: no block calls an app
+  # method the page never defines.
+  test "navigation and feedback examples define every app method they call" do
+    content = DocsCatalog::SOURCE_ROOT.join("navigation_feedback.md").read
+
+    %w[render_route(page) delete_item].each do |undefined|
+      refute_includes content, undefined, "navigation_feedback.md calls #{undefined}, which no example defines"
+    end
+    assert_includes content, "render_route = lambda do"
+    %w[control-navigation-bar control-navigation-rail control-navigation-drawer control-tabs].each do |slug|
+      assert_includes content, "(/docs/#{slug})", "navigation_feedback.md should link #{slug}"
+    end
   end
 
   # `page.show_drawer` and the other drawer shortcuts send a page method the

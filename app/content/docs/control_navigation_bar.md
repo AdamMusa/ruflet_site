@@ -47,5 +47,14 @@ bar only. `surface_tint_color` does too, and the 0.0.23 client ignores it.
 On iOS and macOS the tab bar always shows the labels and a thin separator line
 on top; `active_color`, `inactive_color` and `icon_size` style it there. The
 `border` keyword is accepted but no client draws it.
+
+Give a destination `disabled: true` to keep the user from picking it, or the
+bar `disabled: true` to turn off every destination. On Android, web, Windows
+and Linux a disabled destination is drawn dimmed and ignores taps; a disabled
+bar ignores taps on every platform.
+
+On iOS and macOS the tab bar draws a disabled destination like the others and
+ignores taps on it; with 0.0.23 a tap still selects it and sends `on_change`.
+**Requires the next Ruflet release** (on `main`, not in 0.0.23).
 [`cupertino_navigation_bar`](/docs/control-cupertino-navigation-bar) builds the
 same control with the iOS keywords only.

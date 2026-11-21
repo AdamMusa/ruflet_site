@@ -50,9 +50,13 @@ down under its button, a nested submenu opens beside it, and the keyboard
 moves through the entries. `style` and `clip_behavior` apply there only.
 
 On iOS and macOS the bar is a plain strip of buttons with a separator line.
-Tapping a submenu opens its entries as a sheet from the bottom of the screen;
-picking an entry runs its `on_click` and closes the sheet. Keep each menu one
-level deep there: nested submenus are for Android, web, Windows and Linux.
+Tapping a submenu opens its entries as a sheet from the bottom of the screen,
+and picking an entry runs its `on_click`. Keep each menu one level deep there:
+nested submenus are for Android, web, Windows and Linux.
+
+On iOS and macOS, picking an entry also closes the sheet and fires the
+submenu's `on_close`; with 0.0.23 the sheet stays open until the user taps
+outside it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Keep menu bars for wide, pointer-driven layouts. On phones, a
 [`popup_menu_button`](/docs/control-popup-menu-button) in the app bar or a

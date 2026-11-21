@@ -775,6 +775,11 @@
           "on_hover"
         ]
       },
+      "control-navigation-bar-destination": {
+        "properties": {
+          "disabled": "On iOS and macOS, the 0.0.23 client still selects it when tapped and sends the bar's `on_change`."
+        }
+      },
       "control-outlined-icon-button": {
         "properties": [
           "disabled_color",
@@ -785,7 +790,8 @@
       },
       "control-popup-menu-button": {
         "events": [
-          "on_cancel"
+          "on_cancel",
+          "on_select"
         ]
       },
       "control-progress-ring": {
@@ -825,10 +831,11 @@
         ]
       },
       "control-submenu-button": {
-        "events": [
-          "on_blur",
-          "on_focus"
-        ]
+        "events": {
+          "on_blur": "On iOS and macOS, the 0.0.23 client never sends it.",
+          "on_focus": "On iOS and macOS, the 0.0.23 client never sends it.",
+          "on_close": "On iOS and macOS, the 0.0.23 client leaves the sheet open after a pick, so it fires only when the user taps outside the sheet."
+        }
       },
       "control-switch": {
         "properties": [

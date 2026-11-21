@@ -608,7 +608,7 @@
       "secondary_items": "Entries for a secondary-button (right) click. On iOS and macOS the long press shows this list unless `primary_trigger` is `\"longPress\"` or `secondary_trigger` is `\"disabled\"`.",
       "tertiary_items": "Entries for a middle-button click. On iOS and macOS the long press shows them only when no other list has entries.",
       "primary_trigger": "What opens the menu with the primary button or a finger: `\"disabled\"` (default), `\"down\"` (a mouse click) or `\"longPress\"`. Set `\"longPress\"` so a long press opens the menu on Android touch screens. On iOS and macOS the menu always opens with a long press; this picks which list it shows.",
-      "secondary_trigger": "What opens the menu with the secondary (right) mouse button: `\"down\"` (default), `\"longPress\"` or `\"disabled\"`.",
+      "secondary_trigger": "What opens the menu with the secondary (right) mouse button: `\"down\"` (default), `\"longPress\"` or `\"disabled\"`. On iOS and macOS only `\"disabled\"` matters: the long press then shows `primary_items` (or `items`) instead of `secondary_items`.",
       "tertiary_trigger": "What opens the menu with the middle mouse button: `\"down\"` (default), `\"longPress\"` or `\"disabled\"`. Android, web, Windows and Linux only.",
       "enable_haptic_feedback": "Plays a haptic tap when the menu opens (default `false`). iOS and macOS only.",
       "on_select": "Fired when the user picks an entry, after that entry's own `on_click`. `event.data` is a hash with symbol keys: `:b` the mouse button (`\"primary\"`, `\"secondary\"` or `\"tertiary\"`; `nil` after `open`), `:tr` its trigger, `:ic` the number of entries, and `:g` / `:l` the pointer position in the window and in `content` as `{ x:, y: }`, plus `:id` and `:idx`, the chosen entry's id and its index in the list shown. On iOS and macOS `:g` and `:l` are `nil` and `:b` is the button the long press stands for.",
@@ -1183,7 +1183,7 @@
       "leading": "A control before the label, such as `icon(\"save\")`.",
       "trailing": "A control after the label, such as a keyboard shortcut hint `text(\"Ctrl+S\")`.",
       "style": "The entry's look per state, as for the text buttons. Android, web, Windows and Linux only.",
-      "close_on_click": "Closes the menu when the entry is clicked (default `true`). Android, web, Windows and Linux only; on iOS and macOS picking an entry always closes the sheet.",
+      "close_on_click": "Closes the menu when the entry is clicked (default `true`). Android, web, Windows and Linux only.",
       "focus_on_hover": "Moves keyboard focus to the entry while a mouse pointer is over it (default `true`). Android, web, Windows and Linux only.",
       "overflow_axis": "How a label that does not fit is laid out: `\"horizontal\"` (default) or `\"vertical\"`. Android, web, Windows and Linux only.",
       "semantic_label": "Text a screen reader reads instead of the entry's label.",
@@ -1217,7 +1217,9 @@
       "icon": "The destination's icon: an icon name or an `icon(...)` control (required).",
       "selected_icon": "Icon shown instead of `icon` while the destination is selected, such as a filled variant.",
       "label": "The destination's label, a string.",
-      "bgcolor": "Accepted for compatibility; no client draws it."
+      "bgcolor": "Accepted for compatibility; no client draws it.",
+      "disabled": "Keeps the user from picking this destination (default `false`); `navigation_bar(disabled: true)` turns off every destination. On Android, web, Windows and Linux the destination is drawn dimmed and ignores taps. On iOS and macOS the tab bar draws it like the others and ignores taps on it.",
+      "tooltip": "Text shown when a mouse pointer rests on the destination or the user long-presses it, on Android, web, Windows and Linux; without it the label is shown. The iOS tab bar on iOS and macOS shows no tooltips."
     },
     "navigationdrawer": {
       "controls": "The drawer's entries: `navigation_drawer_destination(icon:, label:)` destinations, plus any other controls such as a heading `text` or a `divider`. The first positional argument sets them.",
@@ -1320,7 +1322,7 @@
       "on_blur": "Fired when the button loses keyboard focus."
     },
     "popupmenubutton": {
-      "on_select": "Fired when an item is chosen; the data is the item's internal id, so handle each item's `on_click` instead.",
+      "on_select": "Fired when the user picks an item, after the item's own `on_click`. `event.data` is the item's internal control id, so act in each item's `on_click` instead.",
       "items": "The menu entries, built with `popup_menu_item`. The first positional argument sets them.",
       "icon": "The button's icon (default a \"more\" icon: three vertical dots on Android, web, Windows and Linux, an ellipsis on iOS and macOS).",
       "content": "A control shown as the button instead of the icon, such as `text(\"Sort\")`.",
@@ -1466,7 +1468,7 @@
       "on_open": "Fired when the menu opens. On iOS and macOS the menu opens as a sheet from the bottom of the screen.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus.",
-      "on_close": "Fired when the menu closes, whether or not the user picked an entry.",
+      "on_close": "Fired when the menu closes, whether or not the user picked an entry. On iOS and macOS picking an entry closes the sheet, which fires it.",
       "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Android, web, Windows and Linux only."
     },
     "tab": {
