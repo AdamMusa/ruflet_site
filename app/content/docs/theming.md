@@ -111,7 +111,25 @@ it sets. With `theme_mode`, Material builds the container's theme from its own
 keys alone. Cupertino always starts from the enclosing Cupertino theme. With a
 `theme` and no `dark_theme`, dark mode uses `theme`.
 
+`container` is the only control with `theme:`, `dark_theme:` and
+`theme_mode:`. To theme a whole screen of the view stack, wrap that view's
+content in a themed container.
+
+## Text direction and accessibility
+
+- `page.rtl = true` lays out every view right to left, on Material and Cupertino.
+- `page.show_semantics_debugger = true` draws the accessibility tree over the app, a box and label for each node a screen reader can reach, on Material and Cupertino. Set it back to `false` to turn it off.
+
+```ruby
+page.rtl = true
+page.show_semantics_debugger = false
+page.add(text_field(label: "الاسم"))
+page.update
+```
+
 ## Not applied
 
 - `page.locale_configuration` (supported locales and the current locale) is a Page keyword, but Ruflet stores it on the page's View, which the client does not read it from. It has no effect on 0.0.23 or on `main`: the client keeps English (United States) as its only supported locale for the built-in Material and Cupertino texts.
 - `page.theme_animation_style` is sent to the client, which does not read it.
+- `page.enable_screenshots` is a Page keyword that prepares the client to capture the whole app as an image. Ruflet stores it on the page's View, and Ruflet has no Page method that captures the app, so it has no effect on 0.0.23 or on `main`. Wrap what you want to capture in a [`screenshot`](/docs/control-screenshot) control instead.
+- `page.adaptive` changes nothing: the client always draws Cupertino widgets on iOS and macOS and Material widgets elsewhere.

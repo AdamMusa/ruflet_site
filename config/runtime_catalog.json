@@ -2621,6 +2621,23 @@
       "parameters": []
     },
     {
+      "name": "relayed",
+      "parameters": [
+        [
+          "keyreq",
+          "name"
+        ],
+        [
+          "keyreq",
+          "target"
+        ],
+        [
+          "keyreq",
+          "control"
+        ]
+      ]
+    },
+    {
       "name": "target",
       "parameters": []
     },

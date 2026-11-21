@@ -80,9 +80,10 @@ them; do not assign them.
 - `page.client_details` — the connection details Ruflet keeps, as a Hash with String keys: `"session_id"`, `"page_name"`, `"route"`, `"width"`, `"height"`, `"platform"`, `"platform_brightness"`, `"window"` and `"media"`. Later client updates to the Page are merged into it.
 - `page.web` / `page.web?` — `true` only when the connection details include `web`. The Ruflet server does not keep that flag from the client yet, so it is `false` on every client with 0.0.23 and on `main`. Check `page.platform` and the layout instead.
 
-The other client flags on the Page control (`pwa`, `wasm`, `debug`, `test`,
-`multi_view`, `pyodide`, `client_ip`, `client_user_agent` and `sess`) are not
-kept, and `page.pwa` and the others raise NoMethodError.
+When it connects, the client also sends `pwa`, `wasm`, `debug`, `test`,
+`multi_view` and `pyodide` (and `web`, above), but Ruflet keeps none of them.
+`client_ip`, `client_user_agent` and `sess` are Page keywords that no Ruflet
+client sends. `page.pwa`, `page.client_ip` and the others raise NoMethodError.
 
 ## Page events
 
@@ -137,7 +138,8 @@ closes, use the window's [`on_event`](#window).
 - `insert(index, *controls)`, `remove(*controls)`, `remove_at(index)` and `clean` — change the page's own controls and send the result.
 - `controls` / `controls=(list)` — read or replace them.
 - `update` — with no arguments, sends every change made in Ruby since the last update: control props, page properties and views.
-- `update(control, **props)` — sets those props on one mounted control and sends only them. `update(:page, **props)` sets page properties.
+- `update(control, **props)` — sets those props on one mounted control and sends only them. `update(:page, **props)` sets page properties. An icon name in `icon:` or another `*_icon:` prop becomes the client's icon code, as when the control was built, and an unknown name raises ArgumentError. With 0.0.23 that includes the `show_*_icon` flags, so `page.update(bar, show_close_icon: false)` raises ArgumentError, and an icon name in `leading:` or `trailing:` is sent as a String that the client does not draw.
+- On `main`, `update` treats the `show_*_icon` flags as booleans and turns an icon name in `leading:` or `trailing:` into the icon code too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `schedule_update` — the same as `update` with no arguments.
 - `patch_page(control_or_id, **props)` — the same as `update(control_or_id, **props)`.
 - `get_control(id)` — the mounted control with that control id, or with that wire id when it is a number.

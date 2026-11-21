@@ -31,7 +31,7 @@ as `on_select`, `on_text_change`, or `on_change_end`.
 Handlers receive a `Ruflet::Event` with these readers:
 
 - `name` — the event name without its `on_` prefix, such as `"change"` or `"tap_down"`
-- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings. On `main`, a String that is the control's own new value, such as typed text or a picked option, stays that String even when it looks like JSON (`"123"` or `"null"`); only an option key or radio value the app declared as a number or boolean still arrives as that value. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings. With 0.0.23 that includes what the user typed or picked: typed `"123"` arrives as `123` in `event.data` and in `event.control.props["value"]`, `"2.50"` as `2.5`, and `"null"` as `nil`. Read `event.raw_data` for the text exactly as typed. See [Typed values stay Strings](#typed-values-stay-strings) for `main`.
 - `raw_data` — the payload before a JSON String is parsed. A Hash already has Symbol keys here
 - `control` — the control that fired the event (`nil` for Page events)
 - `page` — the connected `Ruflet::Page`
@@ -81,6 +81,31 @@ Range sliders store `props["start_value"]` and `props["end_value"]`, and
 other controls the prop they change, such as `props["selected"]`,
 `props["selected_index"]` or `props["expanded"]`. `event.data` holds the change
 as the client sent it, which differs between controls and platforms.
+
+### Typed values stay Strings
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). With 0.0.23 typed `"123"` arrives as `123`, as described under `data` above.
+
+On `main`, what the user typed or picked stays a String, even when it looks
+like JSON: `"123"`, `"2.50"`, `"[1]"` and `"null"` arrive as those Strings, in
+`event.data` and in `event.control.props["value"]`. That covers a text field's
+`change` and `submit`, a code editor's `change`, a dropdown's `select` and a
+radio group's `change` when the payload is the control's new value, and a
+search bar's `change` and `submit` and a dropdown's `text_change` always. An
+option key or radio value the app declared as a number or boolean, such as
+`dropdown_option(key: 2, text: "Two")`, still arrives as that value, `2`. Other
+String payloads that hold JSON are still parsed.
+
+```ruby
+quantity = text(value: "")
+field = text_field(
+  label: "Quantity",
+  on_change: ->(event) { page.update(quantity, value: "You typed #{event.data.inspect}") }
+)
+page.add(column(children: [field, quantity]))
+```
+
+Typing `42` shows `You typed "42"` on `main`, and `You typed 42` (an Integer) with 0.0.23.
 
 ### Control state readers
 

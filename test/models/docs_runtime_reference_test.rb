@@ -119,6 +119,26 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     assert_includes content, "EVENT_CLASS_MAP"
   end
 
+  test "the events page names every Ruflet::Event reader and method" do
+    content = page("events-and-state").content
+    names = DocsCatalog.runtime_catalog.fetch(:event).map { |method| method[:name].to_s } - %w[initialize method_missing]
+    missing = names.reject { |name| code_named?(content, name) }
+
+    assert_empty missing, "events_and_state.md does not describe these Ruflet::Event methods: #{missing.join(', ')}"
+  end
+
+  test "the docs name every Ruflet entry point, DSL app method and DSL helper" do
+    reference = page("reference").content
+    every_page = Rails.root.glob("app/content/docs/*.md").map(&:read).join("\n")
+    catalog = DocsCatalog.runtime_catalog
+    names = ->(key) { catalog.fetch(key).map { |method| method[:name].to_s } }
+    missing = (names.(:dsl_app) - %w[initialize]).reject { |name| code_named?(reference, name) }.map { |name| "DSL app #{name}" }
+    missing += names.(:ruflet).reject { |name| code_named?(every_page, name) }.map { |name| "Ruflet.#{name}" }
+    missing += names.(:dsl_utilities).reject { |name| code_named?(every_page, name) }.map { |name| "DSL #{name}" }
+
+    assert_empty missing, "Document these in reference.md (or the page for their controls): #{missing.join(', ')}"
+  end
+
   test "the API reference names every value type and constant module" do
     content = page("reference").content
     names = DocsCatalog.runtime_catalog.fetch(:value_types).map { |type| type[:name] } +
@@ -132,19 +152,20 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   PINNED_MARKERS = {
     "page-reference" => [
       "`pop_views_until(route, result: nil)`", "`views_pop_until`", "`get_device_info(on_result:)`", "handler writer such as",
-      "are View keywords on `main` only"
+      "are View keywords on `main` only", "treats the `show_*_icon` flags as booleans"
     ],
     "events-and-state" => [
       "`ActionResultEvent`", "`PasteFilesEvent`", "`ViewsPopUntilEvent`", "`event.with_name(name)`",
       "`event.control.value` raises NoMethodError", "`page.pop_views_until(route, result: nil)` pops",
       "Any `page.on_<event> =` writer registers", "`event.relayed(name:, target:, control:)`",
-      "such as typed text or a picked option, stays that String"
+      "On `main`, what the user typed or picked stays a String"
     ],
     "services-and-plugins" => [ "`local_authentication.authenticate` waits 60 seconds" ],
     "theming" => [ "A style also takes `font_family_fallback`" ],
-    "reference" => [ "also ignores `font_family_fallback:`" ],
-    "service-geolocator" => [ "on `main` it receives the error too" ],
-    "service-audio-recorder" => [ "such a name, or none, arrives as the error", "`device` also takes the id alone" ]
+    "reference" => [ "also ignores `font_family_fallback:`", "builds the value of an `animation_style:` property" ],
+    "service-audio-recorder" => [ "such a name, or none, arrives as the error", "`device` also takes the id alone" ],
+    "service-secure-storage" => [ "On `main` a change takes effect at the next call" ],
+    "service-geolocator" => [ "on `main` it receives the error too", "On `main` it streams only while `on_position_change` is set" ]
   }.freeze
 
   # The server symbolizes the keys of an event's Hash payload, nested Hashes
@@ -241,6 +262,12 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   # `name` in code, as `name`, `name(...)`, `name: ...` or `page.name`.
   def named?(content, name)
     content.match?(/`(page\.)?#{Regexp.escape(name)}[`(:= ]/)
+  end
+
+  # A method in code, with or without a receiver: `name`, `name(...)`,
+  # `event.name`, `Ruflet.name(...)` or `Ruflet::DSL.name`.
+  def code_named?(content, name)
+    content.match?(/`(?:[\w:]+\.)?#{Regexp.escape(name)}[`( ]/)
   end
 
   # True when a "> **Requires the next Ruflet release**" callout comes after
