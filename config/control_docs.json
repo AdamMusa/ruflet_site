@@ -1,4 +1,123 @@
 {
+  "control-action-sheet-action": {
+    "summary": "One choice in an [`action_sheet`](/docs/control-action-sheet). Give its label as the first argument or as `content:`, a string or a control; `default: true` shows it in bold and `destructive: true` in red. Tapping it fires `on_click` and does not close the sheet, so close the sheet in the handler. On iOS and macOS it is an iOS action sheet button; on Android, web, Windows and Linux it is a list row, which ignores the common layout properties and dims while `disabled`.",
+    "example": [
+      "status = text(\"Nothing removed\")",
+      "sheet = nil",
+      "sheet = bottom_sheet(",
+      "  action_sheet(",
+      "    title: text(\"Remove this item?\"),",
+      "    actions: [",
+      "      action_sheet_action(\"Remove\", destructive: true, on_click: ->(_event) {",
+      "        page.close_bottom_sheet(sheet)",
+      "        page.update(status, value: \"Item removed\")",
+      "      })",
+      "    ],",
+      "    cancel: action_sheet_action(\"Keep it\", default: true, on_click: ->(_event) { page.close_bottom_sheet(sheet) })",
+      "  )",
+      ")",
+      "page.add(column(children: [status, button(\"Remove\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
+    ]
+  },
+  "control-cupertino-action-sheet": {
+    "summary": "The `cupertino_action_sheet` spelling of [`action_sheet`](/docs/control-action-sheet): a title, a message, a list of choices and a separate Cancel choice. It sends the same `ActionSheet` control, so the client draws it by platform: an iOS action sheet on iOS and macOS, and a column of list rows on Android, web, Windows and Linux. Present it in a bottom sheet with `page.show_bottom_sheet`, and build its choices with [`cupertino_action_sheet_action`](/docs/control-cupertino-action-sheet-action). With 0.0.23 the iOS action sheet floats over the dimmed page; with the next release the bottom sheet draws it on its own panel with rounded top corners, in the sheet's `bgcolor`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "status = text(\"Not shared\")",
+      "sheet = nil",
+      "share = ->(target) {",
+      "  ->(_event) {",
+      "    page.close_bottom_sheet(sheet)",
+      "    page.update(status, value: \"Shared to #{target}\")",
+      "  }",
+      "}",
+      "sheet = cupertino_bottom_sheet(",
+      "  cupertino_action_sheet(",
+      "    title: \"Share\",",
+      "    message: \"Send this note to\",",
+      "    actions: [",
+      "      cupertino_action_sheet_action(content: \"Messages\", on_click: share.call(\"Messages\")),",
+      "      cupertino_action_sheet_action(content: \"Mail\", on_click: share.call(\"Mail\"))",
+      "    ],",
+      "    cancel: cupertino_action_sheet_action(content: \"Cancel\", default: true, on_click: ->(_event) { page.close_bottom_sheet(sheet) })",
+      "  )",
+      ")",
+      "page.add(column(children: [status, cupertino_button(\"Share note\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
+    ]
+  },
+  "control-cupertino-action-sheet-action": {
+    "summary": "The `cupertino_action_sheet_action` spelling of [`action_sheet_action`](/docs/control-action-sheet-action), one choice in a [`cupertino_action_sheet`](/docs/control-cupertino-action-sheet). It takes keyword arguments only, so pass the label as `content:`. It sends the same `ActionSheetAction` control and behaves the same way: `default:` and `destructive:` style it, and `on_click` fires without closing the sheet.",
+    "example": [
+      "sheet = nil",
+      "sheet = cupertino_bottom_sheet(",
+      "  cupertino_action_sheet(",
+      "    actions: [",
+      "      cupertino_action_sheet_action(",
+      "        content: \"Delete photo\",",
+      "        destructive: true,",
+      "        on_click: ->(_event) { page.close_bottom_sheet(sheet) }",
+      "      )",
+      "    ],",
+      "    cancel: cupertino_action_sheet_action(content: \"Cancel\", on_click: ->(_event) { page.close_bottom_sheet(sheet) })",
+      "  )",
+      ")",
+      "page.add(cupertino_button(\"Delete\", on_click: ->(_event) { page.show_bottom_sheet(sheet) }))"
+    ]
+  },
+  "control-cupertino-activity-indicator": {
+    "summary": "The iOS spinner: spokes that turn while `animating` is true (the default), sized by `radius` (default 10). `progress`, from 0.0 to 1.0, shows only part of the spokes instead. It sends the same `ProgressRing` control as [`progress_ring`](/docs/control-progress-ring), so Android, web, Windows and Linux draw a Material progress ring, which ignores `radius` and `animating`; there the 0.0.23 client also ignores `progress` and always spins. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "spinner = cupertino_activity_indicator(radius: 16, color: :blue600)",
+      "spinning = true",
+      "page.add(",
+      "  row(",
+      "    spacing: 16,",
+      "    children: [",
+      "      spinner,",
+      "      cupertino_button(\"Pause\", on_click: ->(_event) {",
+      "        spinning = !spinning",
+      "        page.update(spinner, animating: spinning)",
+      "      })",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-cupertino-alert-dialog": {
+    "summary": "The `cupertino_alert_dialog` spelling of [`alert_dialog`](/docs/control-alert-dialog). It sends the same `AlertDialog` control, so the client draws it by platform: an iOS alert on iOS and macOS and a Material dialog on Android, web, Windows and Linux. Besides the common properties it accepts only `title`, `content`, `actions`, `modal`, `barrier_color`, `inset_animation`, `open` and `on_dismiss`, and raises `ArgumentError` for any other keyword; use `alert_dialog` for the Material styling properties. Open it with `page.show_dialog` and close it with `page.close_dialog` in the buttons' handlers. On iOS and macOS the buttons become iOS dialog actions, and `button(..., default: true)` or `destructive: true` makes one bold or red.",
+    "example": [
+      "status = text(\"Location off\")",
+      "dialog = nil",
+      "dialog = cupertino_alert_dialog(",
+      "  title: text(\"Allow location?\"),",
+      "  content: text(\"Maps uses your location to show nearby places.\"),",
+      "  actions: [",
+      "    button(\"Don't Allow\", on_click: ->(_event) { page.close_dialog(dialog) }),",
+      "    button(\"Allow\", default: true, on_click: ->(_event) {",
+      "      page.close_dialog(dialog)",
+      "      page.update(status, value: \"Location on\")",
+      "    })",
+      "  ]",
+      ")",
+      "page.add(column(children: [status, cupertino_button(\"Turn on location\", on_click: ->(_event) { page.show_dialog(dialog) })]))"
+    ]
+  },
+  "control-cupertino-bottom-sheet": {
+    "summary": "The `cupertino_bottom_sheet` spelling of [`bottom_sheet`](/docs/control-bottom-sheet), often used for a `picker`, `timer_picker`, `date_picker` or [`cupertino_action_sheet`](/docs/control-cupertino-action-sheet). It sends the same `BottomSheet` control, so it is an iOS popup sheet on iOS and macOS and a Material bottom sheet on Android, web, Windows and Linux. Show it with `page.show_bottom_sheet` and close it with `page.close_bottom_sheet`. On iOS and macOS, picker content sits on a fixed panel, 220 high unless you set `height`. With 0.0.23 `cupertino_bottom_sheet` raises `ArgumentError` for `dismissible`, `barrier_color`, `draggable`, `scrollable`, `fullscreen` and the other sizing properties, which `bottom_sheet` accepts. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "sizes = %w[Small Medium Large]",
+      "choice = text(\"Size: Medium\")",
+      "sheet = cupertino_bottom_sheet(",
+      "  picker(",
+      "    sizes.map { |size| text(size) },",
+      "    selected_index: 1,",
+      "    item_extent: 32,",
+      "    on_change: ->(event) { page.update(choice, value: \"Size: #{sizes[event.data.to_i]}\") }",
+      "  ),",
+      "  height: 216",
+      ")",
+      "page.add(column(children: [choice, cupertino_button(\"Choose a size\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
+    ]
+  },
   "control-cupertino-date-picker": {
     "summary": "An iOS-style wheel for picking a date, a time, or both. Open it with `page.show_dialog(picker)`: on iOS and macOS the wheel slides up with Cancel and Done, and on Android, web, Windows and Linux the client shows the Material date picker dialog. When the user confirms, `on_change` gets the picked moment in `event.data`, an ISO 8601 string in UTC. With 0.0.23 a picker added to the page shows nothing; drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
@@ -15,6 +134,164 @@
       "    ]",
       "  )",
       ")"
+    ]
+  },
+  "control-cupertino-list-tile": {
+    "summary": "The `cupertino_list_tile` spelling of [`list_tile`](/docs/control-list-tile). It sends the same `ListTile` control, so it is an iOS list row on iOS and macOS and a Material list row on Android, web, Windows and Linux. It accepts the properties of the iOS row: `title` (required), `subtitle`, `leading`, `trailing`, `additional_info`, `bgcolor`, `bgcolor_activated`, `notched`, `leading_size`, `leading_to_title`, `padding`, `toggle_inputs`, `url` and `on_click`; use `list_tile` for the Material-only properties. `additional_info`, `bgcolor_activated`, `notched`, `leading_size` and `leading_to_title` apply on iOS and macOS only. With 0.0.23 pad a row with `list_tile(content_padding: 16)`: `padding` takes effect only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "status = text(\"Pick a setting\")",
+      "open_setting = ->(name) { ->(_event) { page.update(status, value: \"Opened #{name}\") } }",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      cupertino_list_tile(",
+      "        leading: icon(\"wifi\"),",
+      "        title: text(\"Wi-Fi\"),",
+      "        additional_info: text(\"Home\"),",
+      "        trailing: icon(\"chevron_right\"),",
+      "        on_click: open_setting.call(\"Wi-Fi\")",
+      "      ),",
+      "      cupertino_list_tile(",
+      "        leading: icon(\"bluetooth\"),",
+      "        title: text(\"Bluetooth\"),",
+      "        additional_info: text(\"On\"),",
+      "        trailing: icon(\"chevron_right\"),",
+      "        on_click: open_setting.call(\"Bluetooth\")",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-data-cell": {
+    "summary": "One cell of a [`data_table`](/docs/control-data-table) or [`data_table2`](/docs/control-data-table-2) row: `data_cell(content)` with a control, usually a `text`. A cell fires `on_tap`, `on_double_tap` and `on_long_press`; `on_tap_down` gives the touch point in `event.local_position`. `show_edit_icon: true` adds a pencil icon to show that tapping edits the value, and `placeholder: true` draws the content as placeholder text. In a `data_table` those two, `on_tap_down` and `on_tap_cancel` apply on Android, web, Windows and Linux only.",
+    "example": [
+      "status = text(\"Tap a price to edit it\")",
+      "prices = { \"Coffee\" => \"3.50\", \"Tea\" => \"2.80\" }",
+      "page.add(",
+      "  column(",
+      "    children: [",
+      "      data_table(",
+      "        [data_column(text(\"Item\")), data_column(text(\"Price\"), numeric: true)],",
+      "        rows: prices.map { |item, price|",
+      "          data_row([",
+      "            data_cell(text(item)),",
+      "            data_cell(",
+      "              text(price),",
+      "              show_edit_icon: true,",
+      "              on_tap: ->(_event) { page.update(status, value: \"Editing the #{item} price\") }",
+      "            )",
+      "          ])",
+      "        }",
+      "      ),",
+      "      status",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-data-column": {
+    "summary": "A column heading of a [`data_table`](/docs/control-data-table): `data_column(label)` with a string or a control. `numeric: true` right-aligns the column for numbers, `tooltip` explains the heading, and `on_sort` makes the heading sortable: `event.data[:ci]` is the column index. The table does not sort itself: reorder `rows` and set `sort_column_index` and `sort_ascending`. On iOS and macOS `numeric`, `heading_row_alignment` and `tooltip` have no effect, no sort arrow is drawn, and `event.data[:asc]` is the table's current `sort_ascending`, so keep the direction in Ruby.",
+    "example": [
+      "scores = [[\"Ana\", 92], [\"Ben\", 78], [\"Chen\", 85]]",
+      "table = nil",
+      "table = data_table(",
+      "  [",
+      "    data_column(text(\"Player\")),",
+      "    data_column(",
+      "      text(\"Score\"),",
+      "      numeric: true,",
+      "      tooltip: \"Points this season\",",
+      "      on_sort: ->(event) {",
+      "        sorted = scores.sort_by(&:last).reverse",
+      "        page.update(",
+      "          table,",
+      "          rows: sorted.map { |name, score| data_row([data_cell(text(name)), data_cell(text(score.to_s))]) },",
+      "          sort_column_index: event.data[:ci].to_i,",
+      "          sort_ascending: false",
+      "        )",
+      "      }",
+      "    )",
+      "  ],",
+      "  rows: scores.map { |name, score| data_row([data_cell(text(name)), data_cell(text(score.to_s))]) }",
+      ")",
+      "page.add(table)"
+    ]
+  },
+  "control-data-column-2": {
+    "summary": "A column heading of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_column2(label, size:, fixed_width:, numeric:, on_sort:)`. The table shares its width between the columns by `size`: `\"s\"` (default), `\"m\"` or `\"l\"`, weighted by the table's `sm_ratio` and `lm_ratio`. `fixed_width` gives a column an exact width instead. `on_sort` gets the column index in `event.data[:ci]` and the new direction in `event.data[:asc]` on every platform.",
+    "example": [
+      "page.add(",
+      "  data_table2(",
+      "    [",
+      "      data_column2(text(\"SKU\"), fixed_width: 80),",
+      "      data_column2(text(\"Product\"), size: \"l\"),",
+      "      data_column2(text(\"Stock\"), size: \"s\", numeric: true)",
+      "    ],",
+      "    rows: [",
+      "      data_row2([data_cell(text(\"A-100\")), data_cell(text(\"Desk lamp\")), data_cell(text(\"14\"))]),",
+      "      data_row2([data_cell(text(\"B-220\")), data_cell(text(\"Office chair\")), data_cell(text(\"3\"))])",
+      "    ],",
+      "    height: 200",
+      "  )",
+      ")"
+    ]
+  },
+  "control-data-row": {
+    "summary": "A row of a [`data_table`](/docs/control-data-table): `data_row(cells)` with exactly one [`data_cell`](/docs/control-data-cell) per column. `color` sets its background and `selected` draws it as selected. With `on_select_change` and the table's `show_checkbox_column`, the row gets a checkbox: `event.data` is `true` when it is selected and `nil` when it is cleared, and the row does not change until you set `selected` with `page.update`. On iOS and macOS `on_long_press` is never sent, and the 0.0.23 client shows no checkbox and never sends `on_select_change`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "row = nil",
+      "row = data_row(",
+      "  [data_cell(text(\"Invoice 2041\")), data_cell(text(\"Paid\"))],",
+      "  selected: false,",
+      "  on_select_change: ->(event) { page.update(row, selected: event.data == true) }",
+      ")",
+      "page.add(",
+      "  data_table(",
+      "    [data_column(text(\"Invoice\")), data_column(text(\"Status\"))],",
+      "    rows: [row, data_row([data_cell(text(\"Invoice 2042\")), data_cell(text(\"Open\"))], color: \"#fef3c7\")],",
+      "    show_checkbox_column: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-data-row-2": {
+    "summary": "A row of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_row2(cells)` with one [`data_cell`](/docs/control-data-cell) per column. On top of a `data_row`'s `color`, `selected` and `on_select_change`, a row can have its own height (`specific_row_height`) and box `decoration`, and it fires `on_tap`, `on_double_tap`, `on_long_press`, `on_secondary_tap` and `on_secondary_tap_down`, which gives the pointer position in `event.local_position` and `event.global_position`.",
+    "example": [
+      "status = text(\"Tap or right-click a row\")",
+      "rows = %w[Inbox Archive Spam].map do |folder|",
+      "  data_row2(",
+      "    [data_cell(text(folder))],",
+      "    specific_row_height: 56,",
+      "    on_tap: ->(_event) { page.update(status, value: \"Opened #{folder}\") },",
+      "    on_secondary_tap_down: ->(event) {",
+      "      point = event.global_position",
+      "      page.update(status, value: \"Menu for #{folder} at #{point.x.round}, #{point.y.round}\")",
+      "    }",
+      "  )",
+      "end",
+      "page.add(column(children: [data_table2([data_column2(text(\"Folder\"))], rows: rows, height: 240), status]))"
+    ]
+  },
+  "control-expansion-panel": {
+    "summary": "One panel of an [`expansion_panel_list`](/docs/control-expansion-panel-list): a `header` row that stays visible and `content` shown below it while the panel is open (`expanded`). It takes keyword arguments only. The list fires `on_change` with the panel's index when the header is tapped; the panel itself has no events, and its common layout properties have no effect. `can_tap_header: true` lets the whole header toggle the panel on Android, web, Windows and Linux, where otherwise only the arrow does; on iOS and macOS the whole header always does, and the panel is redrawn only when Ruby updates the list.",
+    "example": [
+      "panels = [",
+      "  expansion_panel(",
+      "    header: list_tile(title: text(\"Shipping\")),",
+      "    content: list_tile(title: text(\"Orders ship within two working days.\")),",
+      "    expanded: true",
+      "  ),",
+      "  expansion_panel(",
+      "    header: list_tile(title: text(\"Returns\")),",
+      "    content: list_tile(title: text(\"Return any item within 30 days.\")),",
+      "    can_tap_header: true",
+      "  )",
+      "]",
+      "list = nil",
+      "list = expansion_panel_list(panels, on_change: ->(_event) { page.update(list, controls: panels) })",
+      "page.add(list)"
     ]
   },
   "control-popup-menu-item": {
@@ -63,6 +340,39 @@
       "  )",
       ")",
       "page.add(layout)"
+    ]
+  },
+  "control-snack-bar-action": {
+    "summary": "The styled action button of a [`snack_bar`](/docs/control-snack-bar): `snack_bar_action(label, on_click:)`, passed as the snack bar's `action:`. Its own `on_click` fires when it is tapped. It is never drawn on its own, so its common layout properties have no effect. On Android, web, Windows and Linux `text_color` and `bgcolor` color the button, `disabled_text_color` and `disabled_bgcolor` color it once it has been pressed, and tapping it closes the snack bar. On iOS and macOS it is a plain iOS button that leaves the snack bar open; there `disabled: true` turns it off.",
+    "example": [
+      "status = text(\"Photo deleted\")",
+      "page.add(status)",
+      "page.show_snack_bar(",
+      "  snack_bar(",
+      "    content: text(\"Photo deleted\"),",
+      "    action: snack_bar_action(",
+      "      \"Undo\",",
+      "      text_color: :amber300,",
+      "      on_click: ->(_event) { page.update(status, value: \"Photo restored\") }",
+      "    )",
+      "  )",
+      ")"
+    ]
+  },
+  "control-table-row": {
+    "summary": "One row of a [`table`](/docs/control-table): `table_row(cells, bgcolor:)`, with the cells as the first argument, as `controls:` or in a block, and `bgcolor` filling the row. Every row of a `table` must be a `table_row`. A row with fewer cells than the widest row is padded with empty cells, and a hidden cell keeps its column.",
+    "example": [
+      "page.add(",
+      "  table(",
+      "    [",
+      "      table_row([text(\"Day\"), text(\"Opens\"), text(\"Closes\")], bgcolor: :surfacecontainerhigh),",
+      "      table_row([text(\"Monday\"), text(\"9:00\"), text(\"18:00\")]),",
+      "      table_row([text(\"Saturday\"), text(\"10:00\")])",
+      "    ],",
+      "    border_color: :outlinevariant,",
+      "    cell_padding: 8",
+      "  )",
+      ")"
     ]
   }
 }

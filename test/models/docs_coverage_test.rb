@@ -9,30 +9,28 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # remove it here. A listed control that gains docs does not fail the test,
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
-    control-about-dialog control-absorb-pointer control-action-sheet control-action-sheet-action
+    control-absorb-pointer
     control-arc control-audio control-auto-complete-suggestion control-autofill-group
     control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
     control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
     control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
     control-chart-axis-label control-circle control-circle-layer control-circle-marker
     control-clip-oval control-clip-r-superellipse control-color control-color-picker
-    control-context-menu control-context-menu-action control-cupertino-action-sheet
-    control-cupertino-action-sheet-action control-cupertino-activity-indicator
-    control-cupertino-alert-dialog control-cupertino-app-bar control-cupertino-bottom-sheet
+    control-context-menu control-context-menu-action
+    control-cupertino-app-bar
     control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
     control-cupertino-dialog-action control-cupertino-filled-button
-    control-cupertino-list-tile control-cupertino-navigation-bar control-cupertino-picker
+    control-cupertino-navigation-bar control-cupertino-picker
     control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
-    control-cupertino-tinted-button control-custom-scroll-view control-data-cell control-data-column
-    control-data-column-2 control-data-row control-data-row-2 control-data-table-2
+    control-cupertino-tinted-button control-custom-scroll-view
     control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
-    control-expansion-panel control-expansion-panel-list control-fade-transition control-fill
+    control-fade-transition control-fill
     control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
     control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
     control-ignore-pointer control-image-source-attribution control-indexed-stack
     control-interactive-viewer control-interstitial-ad control-intrinsic-height
     control-intrinsic-width control-keyboard-listener control-line control-line-chart
-    control-line-chart-data control-line-chart-data-point control-list-section control-lottie
+    control-line-chart-data control-line-chart-data-point control-lottie
     control-map control-marker control-marker-layer control-material-picker control-menu-bar
     control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
     control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
@@ -47,9 +45,9 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-selection-area control-semantics control-shader-mask control-shadow control-shimmer
     control-simple-attribution control-size-transition control-slide-picker control-slide-transition
     control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
-    control-sliver-padding control-sliver-to-box-adapter control-snack-bar-action control-step
+    control-sliver-padding control-sliver-to-box-adapter control-step
     control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
-    control-table control-table-row control-text-source-attribution control-text-span
+    control-text-source-attribution control-text-span
     control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
     control-video control-window-drag-area
   ].freeze
@@ -229,6 +227,9 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-icon-button", "properties", "style", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
     [ "control-list-tile", "properties", "selected", "On iOS and macOS, the 0.0.23 client ignores it." ],
     [ "control-list-tile", "events", "on_long_press", "On iOS and macOS, the 0.0.23 client never sends it." ],
+    [ "control-list-tile", "properties", "toggle_inputs", "On iOS and macOS, the 0.0.23 client toggles a `switch` or `checkbox` in the row, but not a `radio`." ],
+    [ "control-bottom-sheet", "properties", "bgcolor", "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel." ],
+    [ "control-cupertino-bottom-sheet", "properties", "padding", "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel." ],
     [ "control-app-bar", "properties", "large", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
     [ "control-app-bar", "properties", "trailing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
     [ "control-cupertino-sliding-segmented-button", "properties", "bgcolor", "The 0.0.23 client ignores it." ],
@@ -248,12 +249,32 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # Hand-written sentences that describe main-only behavior and must say so.
   # A phrase may span a line break in the Markdown source.
   PINNED_PROSE_MARKERS = {
-    "control-data-table" => [ "the 0.0.23 client draws no checkbox column", "the 0.0.23 client also ignores `vertical_lines`" ],
-    "control-banner" => [ "On iOS and macOS, the 0.0.23 client never sends it." ],
-    "control-bottom-sheet" => [ "`fullscreen` — on iOS and macOS these need the" ],
+    "control-data-table" => [
+      "the 0.0.23 client draws no checkbox column",
+      "the 0.0.23 client also ignores `vertical_lines`",
+      "there the 0.0.23 client shows no checkboxes"
+    ],
+    "control-banner" => [ "On iOS and macOS, the 0.0.23 client never sends it.", "`surface_tint_color` tints the banner by its elevation" ],
+    "control-bottom-sheet" => [
+      "`fullscreen` — on iOS and macOS these need the",
+      "`maintain_bottom_view_insets_padding` — let a tall sheet grow",
+      "With 0.0.23 other content is shown without a panel or background"
+    ],
+    "control-progress-ring" => [ "`false` gives the newer Material look", "the iOS name for `value`" ],
+    "control-expansion-panel-list" => [ "`expand_icon_color` — the color of the arrow icons", "`scroll`, `auto_scroll`, `scroll_interval` and `on_scroll`" ],
     "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ],
     "control-search-bar" => [ "On iOS and macOS, `open_view` focuses the bar", "with 0.0.23 both do nothing there" ],
-    "control-list-tile" => [ "there `selected` only tells screen readers" ],
+    "control-list-tile" => [
+      "there `selected` only tells screen readers",
+      "toggles a `switch` or `checkbox` in the row, but not a `radio`",
+      "`on_long_press` fires on iOS and macOS only with the next release",
+      "its `padding` keyword takes effect only with the next release"
+    ],
+    "control-cupertino-list-tile" => [ "`padding` takes effect only with the next release" ],
+    "control-cupertino-activity-indicator" => [ "there the 0.0.23 client also ignores `progress` and always spins" ],
+    "control-cupertino-bottom-sheet" => [ "which `bottom_sheet` accepts" ],
+    "control-action-sheet" => [ "the `bottom_sheet` draws the action sheet on its own panel" ],
+    "control-cupertino-action-sheet" => [ "the bottom sheet draws it on its own panel" ],
     "control-cupertino-sliding-segmented-button" => [
       "comes from the `sliding` flag this helper sends",
       "on iOS and macOS, size each segment to its content",
@@ -267,7 +288,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # page wrong without them.
   PINNED_PROSE_QUALIFIERS = {
     "control-data-table" => [
-      "`event.data[\"asc\"]` is the new direction on Android, web, Windows and Linux.",
+      "`event.data[:asc]` is the new direction on Android, web, Windows and Linux.",
       "On iOS and macOS it is the table's current `sort_ascending`"
     ],
     "control-list-tile" => [
@@ -275,7 +296,17 @@ class DocsCoverageTest < ActiveSupport::TestCase
       "`hover_color` — Android, web, Windows and Linux only",
       "`shape` — Android, web, Windows and Linux only"
     ],
-    "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only" ],
+    "control-bottom-sheet" => [ "`shape` / `elevation` — Android, web, Windows and Linux only", "`padding` / `height` — iOS and macOS only",
+      "`:surfacecontainerlow` is the color the Material sheet itself uses" ],
+    "control-alert-dialog" => [ "`inset_animation` — how the alert moves when the keyboard opens", "Android, web, Windows and Linux ignore those two flags." ],
+    "control-action-sheet" => [ "Tapping an action does not close the sheet", "With 0.0.23 the sheet floats over the dimmed page" ],
+    "control-snack-bar" => [
+      "On iOS and macOS every snackbar closes after `duration` unless you pass",
+      "tapping the action does not close it",
+      "showing the same `snack_bar` a second time does nothing there"
+    ],
+    "control-expansion-tile" => [ "On iOS and macOS it is redrawn only when Ruby sets `expanded`" ],
+    "control-expansion-panel-list" => [ "On iOS and macOS it is redrawn only when Ruby updates the list" ],
     "control-progress-ring" => [ "`stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator" ],
     "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, web, Windows and Linux only" ],
     "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
@@ -315,6 +346,75 @@ class DocsCoverageTest < ActiveSupport::TestCase
       end
     end
   end
+
+  # Controls whose every property and event line has its own description in
+  # config/property_descriptions.json, never the generated "Sets the X
+  # property." or "Fired on X.". The list may only grow.
+  FULLY_DESCRIBED_CONTROLS = %w[
+    control-about-dialog control-action-sheet control-action-sheet-action control-alert-dialog
+    control-banner control-bottom-sheet control-cupertino-action-sheet
+    control-cupertino-action-sheet-action control-cupertino-activity-indicator
+    control-cupertino-alert-dialog control-cupertino-bottom-sheet control-cupertino-list-tile
+    control-data-cell control-data-column control-data-column-2 control-data-row control-data-row-2
+    control-data-table control-data-table-2 control-expansion-panel control-expansion-panel-list
+    control-expansion-tile control-list-section control-list-tile control-progress-bar
+    control-progress-ring control-snack-bar control-snack-bar-action control-spinkit control-table
+    control-table-row
+  ].freeze
+
+  test "fully described controls describe every property and event" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    missing = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+      control = catalog[slug]
+      next [ "#{slug}: not in the catalog" ] unless control
+
+      %w[properties events].flat_map do |kind|
+        Array(control[kind.to_sym]).map(&:to_s).reject do |name|
+          descriptions.dig("widget_overrides", control[:widget_type].to_s, name) || descriptions.dig(kind, name)
+        end.map { |name| "#{slug} #{kind} #{name}" }
+      end
+    end
+
+    assert_empty missing, "Describe these in config/property_descriptions.json (\"properties\", \"events\" or \"widget_overrides\"):\n#{missing.join("\n")}"
+  end
+
+  # Ruflet's server turns the keys of an event's hash payload into symbols, so
+  # `event.data["ci"]` is always nil and `event.data[:ci]` is right. These pages
+  # still read string keys; fix them, then remove them here.
+  STRING_KEY_PAYLOAD_PAGES = %w[control-draggable-scrollable-sheet control-qrcode-scanner qrcode-scanner].freeze
+
+  test "pages read hash event payloads with symbol keys" do
+    offenders = DocsCatalog.all_entries.filter_map do |entry|
+      text = entry.content || (entry.source&.exist? ? entry.source.read : "")
+      entry.slug if text.match?(/\bevent\.data\[["']/)
+    end
+
+    assert_empty offenders - STRING_KEY_PAYLOAD_PAGES, "Read hash payloads with symbol keys, for example `event.data[:ci]`: #{(offenders - STRING_KEY_PAYLOAD_PAGES).join(', ')}"
+  end
+
+# Both clients match a theme or palette color name against
+# /^([a-zA-Z]+)([0-9]*)$/ (colors.dart), so `:surface_container_low` or
+# `:blue_600` draws no color at all. These pages must spell them
+# `:surfacecontainerlow` and `:blue600`.
+test "examples on fully described pages spell color names without underscores" do
+  offenders = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+    page(slug).content.scan(/\b\w*color: *(?::|")[a-z]+_[a-z0-9_]*/).map { |hit| "#{slug}: #{hit}" }
+  end
+
+  assert_empty offenders, "Write color names without underscores, for example `:surfacecontainerlow`:\n#{offenders.join("\n")}"
+end
+
+# Example fixes a review made, which compile either way.
+test "examples a review fixed keep their fix" do
+  expansion = page("control-expansion-tile").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+  sheet = page("control-bottom-sheet").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+  assert_includes expansion, "page.update(event.control, expanded: expanded)", "iOS and macOS redraw an ExpansionTile only when Ruby sets `expanded`"
+  assert_includes sheet, "page.close_bottom_sheet(sheet)"
+  refute_includes sheet, "copy_link", "The BottomSheet example must run as written"
+end
 
   test "the curated Cupertino date picker example opens the picker as a dialog" do
     example = page("control-cupertino-date-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]

@@ -307,7 +307,54 @@
     "fullscreen": "Fills the whole screen.",
     "automatically_imply_leading": "Adds a back or menu button automatically when the page has somewhere to go back to or a drawer.",
     "transition_between_routes": "Animates the bar between pages on iOS.",
-    "previous_page_title": "Title of the previous page, shown next to the iOS back button."
+    "previous_page_title": "Title of the previous page, shown next to the iOS back button.",
+    "message": "Smaller text below the title, as a string or a control.",
+    "cancel": "An `action_sheet_action` set apart below the other actions, for closing the sheet without choosing one.",
+    "application_name": "Name of the app, shown as the dialog title. Without it the dialog uses the app's window title.",
+    "application_version": "Version shown next to the app name, for example `\"2.1.0\"`.",
+    "application_legalese": "Small print shown in the dialog and on the licenses page, such as a copyright notice.",
+    "application_icon": "Control shown as the app's icon, usually an `icon` or an `image`.",
+    "view": "`\"about\"` (default) opens the about dialog; `\"licenses\"` opens the open-source licenses page directly, as a full page instead of a dialog.",
+    "bar_height": "Thickness of the bar, in logical pixels (default 4; 3 on iOS and macOS).",
+    "stop_indicator_color": "Color of the dot at the end of the track. It shows only with `year_2023: false`. iOS and macOS ignore it.",
+    "stop_indicator_radius": "Radius of the dot at the end of the track, in logical pixels. It shows only with `year_2023: false`. iOS and macOS ignore it.",
+    "placeholder": "A control shown in place of the content while it loads.",
+    "show_edit_icon": "Shows a pencil icon in the cell to tell users they can edit it; handle the cell's `on_tap` to start editing.",
+    "cells": "The `data_cell` controls of the row, one per column; the first positional argument sets them.",
+    "heading_row_alignment": "How the heading is aligned in its cell: `\"start\"`, `\"center\"` or `\"end\"`.",
+    "fixed_width": "Fixed width of the column, in logical pixels; it replaces the `size` share.",
+    "specific_row_height": "Height of this row, in logical pixels, instead of the table's `data_row_height`.",
+    "data_row_height": "Height of every data row, in logical pixels.",
+    "bottom_margin": "Space below the last row, in logical pixels (default 0).",
+    "empty": "Control shown in place of the rows while the table has none.",
+    "fixed_left_columns": "Number of columns at the start that stay in place while the table scrolls sideways (default 0).",
+    "fixed_top_rows": "Number of rows at the top, the heading row included, that stay in place while the table scrolls (default 1).",
+    "fixed_columns_color": "Background color of the fixed columns.",
+    "fixed_corner_color": "Background color of the corner where the fixed rows and fixed columns meet.",
+    "lm_ratio": "Width of an `\"l\"` column relative to an `\"m\"` column (default 1.2).",
+    "sm_ratio": "Width of an `\"s\"` column relative to an `\"m\"` column (default 0.67).",
+    "heading_row_decoration": "Box decoration of the heading row, for example `{ bgcolor: \"#f1f5f9\", border_radius: 8 }`.",
+    "heading_checkbox_theme": "Checkbox theme of the heading checkbox: `{ fill_color:, check_color:, border_side:, shape: }`.",
+    "data_row_checkbox_theme": "Checkbox theme of the row checkboxes: `{ fill_color:, check_color:, border_side:, shape: }`.",
+    "show_heading_checkbox": "Shows the select-all checkbox in the heading row while `show_checkbox_column` is on (default true).",
+    "checkbox_alignment": "Alignment of the checkboxes in their column, as `{ x:, y: }` from -1.0 to 1.0 (centered by default).",
+    "sort_arrow_animation_duration": "Length of the sort arrow's turn animation, in milliseconds.",
+    "sort_arrow_icon": "Icon used for the sort arrow (default `\"arrow_upward\"`).",
+    "sort_arrow_icon_color": "Color of the sort arrow.",
+    "visible_horizontal_scroll_bar": "Keeps the horizontal scroll bar visible while the table can scroll sideways.",
+    "visible_vertical_scroll_bar": "Keeps the vertical scroll bar visible while the table can scroll up and down.",
+    "can_tap_header": "Lets a tap anywhere on the header toggle the panel, not only on the arrow button (default false). iOS and macOS ignore it: the whole header always toggles the panel there.",
+    "additional_divider_margin": "Extra inset of the dividers on top of `divider_margin`, so they start after leading icons (default 56 on Android, web, Windows and Linux and 44 on iOS and macOS when `has_leading` is true, 0 otherwise).",
+    "divider_margin": "Inset of the dividers between rows from the section's leading edge, in logical pixels (default 16 on Android, web, Windows and Linux, 20 on iOS and macOS).",
+    "has_leading": "Tells the section that its rows have leading icons, so the dividers start after them (default true).",
+    "top_margin": "Extra space above the section, in logical pixels (default 0; 22 on iOS and macOS for the `\"base\"` variant).",
+    "rows_bgcolor": "Background color of the rows.",
+    "separator_color": "Color of the dividers between rows.",
+    "column_widths": "Widths per column index: `{ 0 => { type: \"flex\", value: 2 } }`, where `type` is `\"flex\"`, `\"fixed\"`, `\"fraction\"` or `\"intrinsic\"`; a bare number is a fixed width.",
+    "default_column_width": "Width of the columns missing from `column_widths`, in the same form (default: equal flex shares).",
+    "inner_borders": "Also draws lines between the rows and columns when `border_color` is set (default true).",
+    "cell_padding": "Padding inside every cell.",
+    "default_vertical_alignment": "Vertical position of the cells in their row: `\"top\"` (default), `\"middle\"`, `\"bottom\"`, `\"baseline\"` or `\"fill\"`."
   },
   "events": {
     "on_click": "Fired when the control is clicked/tapped.",
@@ -335,7 +382,7 @@
     "on_error": "Fired when an error occurs.",
     "on_image_error": "Fired when the image fails to load.",
     "on_loaded": "Fired when the control has loaded.",
-    "on_visible": "Fired when the control becomes visible.",
+    "on_visible": "Fired when the control appears on screen.",
     "on_resize": "Fired when the control is resized.",
     "on_drag_start": "Fired when a drag begins.",
     "on_animation_end": "Fired when an animation completes.",
@@ -359,9 +406,9 @@
     "on_reorder_end": "Fired when the user drops a dragged item.",
     "on_confirm_dismiss": "Fired before the control is dismissed. Reply with `page.invoke(event.control, \"confirm_dismiss\", args: { dismiss: true })`, or `dismiss: false` to keep it; without a reply the client cancels the dismissal after five minutes.",
     "on_update": "Fired while the control is dragged, with the direction and progress.",
-    "on_select_all": "Fired when the header checkbox selects or clears every row.",
-    "on_select_change": "Fired when the row's checkbox is toggled.",
-    "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and the new direction (`asc`).",
+    "on_select_all": "Fired when the user taps the select-all checkbox in the heading row; `event.data` is `true` to select every row and `nil` to clear them. Without this handler the table calls each row's `on_select_change` instead.",
+    "on_select_change": "Fired when the user selects or clears the row; `event.data` is `true` when it is selected and `nil` when it is cleared. The row does not change by itself: set its `selected` with `page.update`.",
+    "on_sort": "Fired when the user taps the column heading to sort; `event.data[:ci]` is the column index and `event.data[:asc]` the new direction.",
     "on_secondary_tap": "Fired on a secondary (right-button) click.",
     "on_tap_up": "Fired when a pointer that pressed down lifts.",
     "on_pan_start": "Fired when a drag in any direction starts.",
@@ -380,19 +427,99 @@
     "on_position_change": "Fired when the position changes.",
     "on_upload": "Fired with the progress of a file upload.",
     "on_color_change": "Fired when the user picks a color; `event.data` is the color.",
-    "on_action": "Fired when the action button is pressed.",
+    "on_action": "Fired when the user taps the button of a string `action`.",
     "on_complete": "Fired when playback finishes."
   },
   "widget_overrides": {
+    "aboutdialog": {
+      "controls": "Extra controls shown below the app name and version.",
+      "modal": "When true, tapping outside the dialog does not close it (default false). The licenses page has no backdrop, so it ignores it.",
+      "barrier_color": "Color of the dimmed backdrop behind the dialog. The licenses page has none.",
+      "on_dismiss": "Fired when the dialog or the licenses page closes, whether the user closed it or your code did; its `open` is `false` again."
+    },
+    "actionsheet": {
+      "title": "Title at the top of the sheet, as a string or a control.",
+      "actions": "The `action_sheet_action` buttons, from top to bottom.",
+      "cancel": "An `action_sheet_action` set apart below the other actions, for closing the sheet without choosing one. On iOS and macOS it is drawn as a separate rounded button; Android, web, Windows and Linux draw it under a divider."
+    },
+    "actionsheetaction": {
+      "content": "Label of the action, as a string or a control; required.",
+      "default": "Draws the action in bold as the default choice.",
+      "destructive": "Draws the action in red for choices such as Delete (the theme's error color on Android, web, Windows and Linux).",
+      "mouse_cursor": "Cursor shown while the pointer is over the action on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "on_click": "Fired when the user taps the action. The sheet does not close by itself: close it in the handler, for example with `page.close_bottom_sheet`."
+    },
+    "alertdialog": {
+      "title": "Title of the dialog, as a string or a control.",
+      "content": "Body of the dialog, usually a `text` or a `column`.",
+      "actions": "Buttons along the bottom of the dialog. On iOS and macOS each button is drawn as an iOS dialog action; give a button `default: true` or `destructive: true` to style it.",
+      "modal": "When true, tapping outside the dialog does not close it (default false).",
+      "barrier_color": "Color of the dimmed backdrop behind the dialog.",
+      "inset_animation": "How the dialog moves when the on-screen keyboard changes the space it has: `{ duration: 100, curve: \"decelerate\" }` (the default) or a number of milliseconds. Android, web, Windows and Linux ignore it.",
+      "on_dismiss": "Fired when the dialog closes, whether the user tapped outside it or your code closed it; its `open` is `false` again.",
+      "bgcolor": "Background color of the dialog. iOS and macOS ignore it.",
+      "icon": "Icon shown above the title, as an icon name or a control. iOS and macOS ignore it.",
+      "icon_color": "Color of `icon`. iOS and macOS ignore it.",
+      "icon_padding": "Padding around `icon`. iOS and macOS ignore it.",
+      "title_padding": "Padding around the title. iOS and macOS ignore it.",
+      "title_text_style": "Text style of a string title, for example `{ size: 20, weight: \"bold\" }`. iOS and macOS ignore it.",
+      "content_padding": "Padding around the content (default 24 at the sides and bottom, 20 at the top). iOS and macOS ignore it.",
+      "content_text_style": "Default text style of the content. iOS and macOS ignore it.",
+      "actions_padding": "Padding around the row of actions. iOS and macOS ignore it.",
+      "actions_alignment": "How the actions are spread along their row: `\"end\"` (default), `\"start\"`, `\"center\"`, `\"spaceBetween\"`, `\"spaceAround\"` or `\"spaceEvenly\"`. iOS and macOS ignore it.",
+      "action_button_padding": "Padding around each action button. iOS and macOS ignore it.",
+      "actions_overflow_button_spacing": "Space between the actions when they do not fit in one row and stack vertically, in logical pixels. iOS and macOS ignore it.",
+      "inset_padding": "Space between the dialog and the screen edges (default 40 at the sides, 24 at the top and bottom). iOS and macOS ignore it.",
+      "alignment": "Where the dialog sits on the screen, as `{ x:, y: }` from -1.0 to 1.0, for example `{ x: 0, y: -1 }` for the top; centered by default. iOS and macOS ignore it.",
+      "clip_behavior": "How the dialog clips its content: `\"none\"` (default), `\"hardEdge\"`, `\"antiAlias\"` or `\"antiAliasWithSaveLayer\"`. iOS and macOS ignore it.",
+      "elevation": "Shadow depth of the dialog. iOS and macOS ignore it.",
+      "shadow_color": "Color of the dialog's shadow. iOS and macOS ignore it.",
+      "shape": "Shape of the dialog, for example its corner radius. iOS and macOS ignore it.",
+      "scrollable": "Lets the title and content scroll when they do not fit on the screen (default false). iOS and macOS ignore it; the iOS dialog scrolls its content by itself.",
+      "semantics_label": "What screen readers announce when the dialog opens. iOS and macOS ignore it."
+    },
     "autocomplete": {
       "on_select": "Fired when a suggestion is picked; `event.value` is its value and `event.selection` holds its key and value."
+    },
+    "banner": {
+      "content": "The message, usually a `text`; required.",
+      "actions": "Buttons shown with the message. At least one is required: without one the client shows an error box instead of the banner. On iOS and macOS each action is drawn inside an iOS button that fires the action's `on_click`.",
+      "bgcolor": "Background color of the banner. On iOS and macOS the default is the system's secondary background color.",
+      "content_padding": "Padding around the message and the actions. On iOS and macOS the default is 16 on every side.",
+      "force_actions_below": "Puts the actions under the message instead of beside it (default false). On iOS and macOS the actions are always below the message.",
+      "content_text_style": "Text style of the message. iOS and macOS ignore it.",
+      "divider_color": "Color of the line under the banner. iOS and macOS ignore it.",
+      "elevation": "Shadow depth of the banner. iOS and macOS ignore it.",
+      "leading_padding": "Padding around `leading`. iOS and macOS ignore it.",
+      "min_action_bar_height": "Minimum height of the row of actions, in logical pixels (default 52). iOS and macOS ignore it.",
+      "shadow_color": "Color of the banner's shadow. iOS and macOS ignore it.",
+      "surface_tint_color": "Tint the banner's surface takes to show its elevation. iOS and macOS ignore it.",
+      "margin": "Space around the banner. iOS and macOS ignore it.",
+      "on_visible": "Fired when the banner appears.",
+      "on_dismiss": "Fired when the banner closes; its `open` is `false` again."
     },
     "barchart": {
       "group_alignment": "How the bar groups are spread along the x axis, for example `\"spaceEvenly\"` or `\"center\"`."
     },
     "bottomsheet": {
       "dismissible": "When false, tapping outside the sheet does not close it (default true).",
-      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it, so use `dismissible: false` to keep the sheet open everywhere."
+      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it, so use `dismissible: false` to keep the sheet open everywhere.",
+      "content": "The control shown in the sheet; required (the first positional argument).",
+      "bgcolor": "Background color of the sheet. On iOS and macOS the default is the system background color.",
+      "barrier_color": "Color of the dimmed backdrop behind the sheet. A `fullscreen` sheet on iOS and macOS has none.",
+      "draggable": "Lets the user drag the sheet down to close it (default false). On iOS and macOS a `fullscreen` sheet can be dragged unless you pass `false`.",
+      "use_safe_area": "Keeps the sheet's content clear of system areas such as the status bar, notches and the home indicator (default true).",
+      "scrollable": "Lets the sheet grow past its usual limit of 9/16 of the screen height, up to the status bar, for tall or scrolling content (default false).",
+      "fullscreen": "Opens the sheet at the full screen height (default false). On iOS and macOS it is shown as a stacked page sheet.",
+      "maintain_bottom_view_insets_padding": "Moves the content up by the height of the on-screen keyboard, so a text field in the sheet stays visible (default true).",
+      "size_constraints": "Size limits of the sheet, for example `{ max_width: 640 }`. A `fullscreen` sheet ignores them.",
+      "padding": "Padding around the content on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "height": "Height of the sheet on iOS and macOS; a `picker`, `timer_picker` or `date_picker` panel is 220 high by default. Android, web, Windows and Linux ignore it.",
+      "on_dismiss": "Fired when the sheet closes, whether the user dismissed it or your code closed it; its `open` is `false` again.",
+      "elevation": "Shadow depth of the sheet. iOS and macOS ignore it.",
+      "shape": "Shape of the sheet, for example rounded top corners. iOS and macOS ignore it.",
+      "clip_behavior": "How the sheet clips its content. iOS and macOS ignore it.",
+      "animation_style": "Durations and curves of the open and close animations: `{ duration:, reverse_duration:, curve:, reverse_curve: }`, with durations in milliseconds. iOS and macOS ignore it."
     },
     "button": {
       "default": "Only an alert dialog's action on iOS and macOS uses it: the action shows in bold as the default one.",
@@ -404,27 +531,141 @@
     "checkbox": {
       "error": "Shows the checkbox in its error color. iOS and macOS ignore it."
     },
+    "cupertinoactionsheet": {
+      "title": "Title at the top of the sheet, as a string or a control.",
+      "actions": "The `action_sheet_action` buttons, from top to bottom.",
+      "cancel": "An `action_sheet_action` set apart below the other actions, for closing the sheet without choosing one. On iOS and macOS it is drawn as a separate rounded button; Android, web, Windows and Linux draw it under a divider."
+    },
+    "cupertinoactionsheetaction": {
+      "content": "Label of the action, as a string or a control; required.",
+      "default": "Draws the action in bold as the default choice.",
+      "destructive": "Draws the action in red for choices such as Delete (the theme's error color on Android, web, Windows and Linux).",
+      "mouse_cursor": "Cursor shown while the pointer is over the action on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "on_click": "Fired when the user taps the action. The sheet does not close by itself: close it in the handler, for example with `page.close_bottom_sheet`."
+    },
     "cupertinoactivityindicator": {
       "animating": "On iOS and macOS, spins the indeterminate indicator while true; set `false` to pause it. Android, web, Windows and Linux ignore it.",
-      "radius": "Radius of the activity indicator on iOS and macOS, in logical pixels. Android, web, Windows and Linux ignore it."
+      "radius": "Radius of the activity indicator on iOS and macOS, in logical pixels. Android, web, Windows and Linux ignore it.",
+      "progress": "Progress from 0.0 to 1.0, the iOS name for `value`; when both are set, `progress` wins."
+    },
+    "cupertinoalertdialog": {
+      "title": "Title of the dialog, as a string or a control.",
+      "content": "Body of the dialog, usually a `text` or a `column`.",
+      "actions": "Buttons along the bottom of the dialog. On iOS and macOS each button is drawn as an iOS dialog action; give a button `default: true` or `destructive: true` to style it.",
+      "modal": "When true, tapping outside the dialog does not close it (default false).",
+      "barrier_color": "Color of the dimmed backdrop behind the dialog.",
+      "inset_animation": "How the dialog moves when the on-screen keyboard changes the space it has: `{ duration: 100, curve: \"decelerate\" }` (the default) or a number of milliseconds. Android, web, Windows and Linux ignore it.",
+      "on_dismiss": "Fired when the dialog closes, whether the user tapped outside it or your code closed it; its `open` is `false` again."
     },
     "cupertinobottomsheet": {
       "dismissible": "When false, tapping outside the sheet does not close it (default true).",
-      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control."
+      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control.",
+      "content": "The control shown in the sheet; required (the first positional argument).",
+      "bgcolor": "Background color of the sheet. On iOS and macOS the default is the system background color.",
+      "barrier_color": "Color of the dimmed backdrop behind the sheet. A `fullscreen` sheet on iOS and macOS has none.",
+      "draggable": "Lets the user drag the sheet down to close it (default false). On iOS and macOS a `fullscreen` sheet can be dragged unless you pass `false`.",
+      "use_safe_area": "Keeps the sheet's content clear of system areas such as the status bar, notches and the home indicator (default true).",
+      "scrollable": "Lets the sheet grow past its usual limit of 9/16 of the screen height, up to the status bar, for tall or scrolling content (default false).",
+      "fullscreen": "Opens the sheet at the full screen height (default false). On iOS and macOS it is shown as a stacked page sheet.",
+      "maintain_bottom_view_insets_padding": "Moves the content up by the height of the on-screen keyboard, so a text field in the sheet stays visible (default true).",
+      "size_constraints": "Size limits of the sheet, for example `{ max_width: 640 }`. A `fullscreen` sheet ignores them.",
+      "padding": "Padding around the content on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "height": "Height of the sheet on iOS and macOS; a `picker`, `timer_picker` or `date_picker` panel is 220 high by default. Android, web, Windows and Linux ignore it.",
+      "on_dismiss": "Fired when the sheet closes, whether the user dismissed it or your code closed it; its `open` is `false` again."
     },
     "cupertinodatepicker": {
       "inline": "Draws the picker where you add it; this helper sends `true`. With `false` it is a dialog that `page.show_dialog` opens."
+    },
+    "cupertinolisttile": {
+      "title": "Main text of the row, as a string or a control; required.",
+      "subtitle": "Secondary text below the title, as a string or a control.",
+      "url": "Opens this URL in the browser when the row is tapped.",
+      "chevron": "Adds a chevron after `trailing` to show that the row opens something (default false).",
+      "toggle_inputs": "Makes a tap anywhere on the row toggle the `switch`, `checkbox` or `radio` inside it (default false).",
+      "padding": "The `cupertino_list_tile` spelling of `content_padding`: padding inside the row.",
+      "additional_info": "Detail text shown before `trailing`, like the value on the right of an iOS Settings row, as a string or a control. Android, web, Windows and Linux ignore it.",
+      "bgcolor_activated": "Background color while the row is pressed on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "leading_size": "Size of the box `leading` is drawn in on iOS and macOS (default 28, or 30 when `notched`). Android, web, Windows and Linux ignore it.",
+      "leading_to_title": "Gap between `leading` and the title on iOS and macOS (default 16, or 12 when `notched`). Android, web, Windows and Linux ignore it.",
+      "notched": "Uses the iOS inset-grouped row style, with a larger leading area (default false). Android, web, Windows and Linux ignore it.",
+      "on_click": "Fired when the user taps the row."
     },
     "cupertinoslidingsegmentedbutton": {
       "bgcolor": "Color of the track behind the segments, on iOS and macOS. Android, web, Windows and Linux ignore it.",
       "proportional_width": "On iOS and macOS, sizes each segment to its content instead of giving all segments the same width. Android, web, Windows and Linux ignore it.",
       "thumb_color": "Color of the thumb that slides to the selected segment, on iOS and macOS. Android, web, Windows and Linux ignore it."
     },
+    "datacell": {
+      "content": "The cell's control, usually a `text`; required (the first positional argument).",
+      "placeholder": "Marks the content as placeholder text that the user has not filled in yet, drawn in a lighter style. In a `data_table` on iOS and macOS it has no effect.",
+      "show_edit_icon": "Shows a pencil icon in the cell to tell users they can edit it; handle `on_tap` to start editing. In a `data_table` on iOS and macOS it has no effect.",
+      "on_tap": "Fired when the user taps the cell.",
+      "on_double_tap": "Fired when the user double-taps the cell.",
+      "on_long_press": "Fired when the user long-presses the cell.",
+      "on_tap_down": "Fired when a pointer first touches the cell. `event.local_position` and `event.global_position` give the point (`.x`, `.y`), and `event.kind` the pointer kind, such as `\"touch\"` or `\"mouse\"`; `event.data` holds them as `{ k:, l: { x:, y: }, g: { x:, y: } }`. In a `data_table` on iOS and macOS it is never sent.",
+      "on_tap_cancel": "Fired when a tap that started on the cell is cancelled. In a `data_table` on iOS and macOS it is never sent."
+    },
     "datacolumn": {
-      "on_sort": "Fired when the column heading is tapped to sort; `event.data` has the column index (`ci`) and `asc`, the new direction on Android, web, Windows and Linux. On iOS and macOS `asc` is the table's current `sort_ascending`, so keep the direction in Ruby."
+      "on_sort": "Fired when the user taps the heading to sort; `event.data[:ci]` is the column index and `event.data[:asc]` the new direction on Android, web, Windows and Linux. On iOS and macOS `event.data[:asc]` is the table's current `sort_ascending`, so keep the direction in Ruby.",
+      "label": "Heading text or control; required (the first positional argument).",
+      "numeric": "Right-aligns the column, for numbers (default false). In a `data_table` on iOS and macOS it has no effect.",
+      "heading_row_alignment": "How the heading is aligned in its cell: `\"start\"`, `\"center\"` or `\"end\"`. In a `data_table` on iOS and macOS it has no effect.",
+      "tooltip": "Tooltip shown on the heading. In a `data_table` on iOS and macOS it has no effect."
     },
     "datacolumn2": {
-      "size": "Relative width of the column: `\"s\"` (default), `\"m\"` or `\"l\"`."
+      "size": "Relative width of the column: `\"s\"` (default), `\"m\"` or `\"l\"`.",
+      "label": "Heading text or control; required (the first positional argument).",
+      "numeric": "Right-aligns the column, for numbers (default false).",
+      "tooltip": "Tooltip shown on the heading.",
+      "on_sort": "Fired when the user taps the heading to sort; `event.data[:ci]` is the column index and `event.data[:asc]` the new direction."
+    },
+    "datarow": {
+      "color": "Background color of the row.",
+      "selected": "Draws the row as selected and checks its checkbox (default false).",
+      "on_long_press": "Fired when the user long-presses the row. In a `data_table` on iOS and macOS it is never sent."
+    },
+    "datarow2": {
+      "color": "Background color of the row.",
+      "selected": "Draws the row as selected and checks its checkbox (default false).",
+      "decoration": "Box decoration of the row, for example `{ bgcolor: \"#f8fafc\", border_radius: 8 }`.",
+      "on_tap": "Fired when the user taps the row.",
+      "on_double_tap": "Fired when the user double-taps the row.",
+      "on_long_press": "Fired when the user long-presses the row.",
+      "on_secondary_tap": "Fired on a secondary (right-button) click on the row.",
+      "on_secondary_tap_down": "Fired when a secondary (right) button presses the row. `event.local_position` and `event.global_position` give the point (`.x`, `.y`), and `event.kind` the pointer kind; `event.data` holds them as `{ k:, l: { x:, y: }, g: { x:, y: } }`."
+    },
+    "datatable": {
+      "columns": "The `data_column` headings; the first positional argument sets them.",
+      "rows": "The `data_row` rows.",
+      "bgcolor": "Background color of the table. iOS and macOS ignore it.",
+      "border": "Border around the table. iOS and macOS ignore it.",
+      "border_radius": "Corner radius of the table's border. iOS and macOS ignore it.",
+      "gradient": "Gradient that fills the table. iOS and macOS ignore it.",
+      "clip_behavior": "How the table clips its content (default `\"none\"`). iOS and macOS ignore it.",
+      "checkbox_horizontal_margin": "Space around the row checkboxes, in logical pixels. iOS and macOS ignore it.",
+      "column_spacing": "Space between columns, in logical pixels. iOS and macOS ignore it.",
+      "data_row_color": "Background color of the data rows. iOS and macOS ignore it.",
+      "data_row_min_height": "Minimum height of a data row, in logical pixels. iOS and macOS ignore it.",
+      "data_row_max_height": "Maximum height of a data row, in logical pixels. iOS and macOS ignore it.",
+      "data_text_style": "Text style of the cells. iOS and macOS ignore it.",
+      "divider_thickness": "Thickness of the lines between rows, in logical pixels. iOS and macOS ignore it.",
+      "heading_row_height": "Height of the heading row, in logical pixels. iOS and macOS ignore it.",
+      "heading_text_style": "Text style of the headings. iOS and macOS ignore it.",
+      "horizontal_margin": "Space before the first and after the last column, in logical pixels. iOS and macOS ignore it.",
+      "sort_column_index": "Index of the column that shows the sort arrow. iOS and macOS draw no sort arrow.",
+      "sort_ascending": "Direction of the sort arrow: `true` for ascending (default false). On iOS and macOS `on_sort` sends it back as `asc`.",
+      "heading_row_color": "Background color of the heading row. On iOS and macOS the default is the system's secondary background color.",
+      "show_checkbox_column": "Adds a column of checkboxes for selecting rows; it shows only when at least one row has `on_select_change` (default false)."
+    },
+    "datatable2": {
+      "columns": "The `data_column2` headings; the first positional argument sets them.",
+      "rows": "The `data_row2` rows.",
+      "min_width": "Minimum width of the table, in logical pixels; on a narrower screen the table scrolls sideways.",
+      "show_checkbox_column": "Adds a column of checkboxes for selecting rows; it shows only when at least one row has `on_select_change` (default false).",
+      "data_row_color": "Background color of the data rows.",
+      "data_text_style": "Text style of the cells.",
+      "heading_row_color": "Background color of the heading row.",
+      "heading_text_style": "Text style of the headings."
     },
     "draggable": {
       "affinity": "Axis a drag must start along to pick the control up: `\"horizontal\"` or `\"vertical\"`."
@@ -470,16 +711,101 @@
       "select_icon": "The `dropdown_m2` spelling of `trailing_icon`.",
       "on_change": "The `dropdown_m2` spelling of `on_select`; the handler runs when an option is picked."
     },
+    "expansionpanel": {
+      "header": "Control shown in the panel's header row, usually a `list_tile`.",
+      "content": "Control shown below the header while the panel is open.",
+      "expanded": "Whether the panel is open (default false). The client flips it when the user taps the header.",
+      "bgcolor": "Background color of the panel. On iOS and macOS the default is the system's secondary background color.",
+      "highlight_color": "Color of the header's highlight while it is pressed. iOS and macOS ignore it.",
+      "splash_color": "Color of the ink ripple when the header is tapped. iOS and macOS ignore it."
+    },
+    "expansionpanellist": {
+      "controls": "The `expansion_panel` panels; the first positional argument sets them.",
+      "divider_color": "Color of the lines between panels.",
+      "elevation": "Shadow depth of the panels (default 2). iOS and macOS ignore it.",
+      "expanded_header_padding": "Padding around a panel's header while the panel is open (default 16 above and below). iOS and macOS ignore it.",
+      "spacing": "Gap between an open panel and its neighbours, in logical pixels (default 16). iOS and macOS ignore it.",
+      "expand_icon_color": "Color of the panels' arrow icons.",
+      "on_change": "Fired when the user taps a panel's header or arrow; `event.data` is the panel's index. The client has already flipped that panel's `expanded` and sent it to Ruby, so read `panel.props[\"expanded\"]`."
+    },
+    "expansiontile": {
+      "controls": "The controls revealed below the header when the tile is open; the first positional argument sets them.",
+      "expanded": "Whether the tile is open (default false). The client flips it when the user taps the tile.",
+      "bgcolor": "Background color while the tile is open. On iOS and macOS the default is the system's secondary background color.",
+      "collapsed_bgcolor": "Background color while the tile is closed.",
+      "tile_padding": "Padding of the header row. On iOS and macOS the default is 12 on every side.",
+      "controls_padding": "Padding around the revealed controls.",
+      "trailing": "Control shown at the end of the header row in place of the arrow icon.",
+      "show_trailing_icon": "Shows the arrow icon when `trailing` is not set (default true). iOS and macOS always show it.",
+      "maintain_state": "Keeps the hidden controls alive while the tile is closed (default false). iOS and macOS ignore it and remove them.",
+      "affinity": "Where the arrow icon sits: `\"leading\"`, `\"trailing\"` or `\"platform\"`. iOS and macOS ignore it.",
+      "animation_style": "Duration and curves of the open and close animation: `{ duration:, reverse_duration:, curve:, reverse_curve: }`, with durations in milliseconds. iOS and macOS ignore it.",
+      "clip_behavior": "How the tile clips its content. iOS and macOS ignore it.",
+      "icon_color": "Color of the arrow icon while the tile is open. iOS and macOS ignore it.",
+      "collapsed_icon_color": "Color of the arrow icon while the tile is closed. iOS and macOS ignore it.",
+      "text_color": "Color of the title while the tile is open. iOS and macOS ignore it.",
+      "collapsed_text_color": "Color of the title while the tile is closed. iOS and macOS ignore it.",
+      "shape": "Border shape of the tile while it is open. iOS and macOS ignore it.",
+      "collapsed_shape": "Border shape of the tile while it is closed. iOS and macOS ignore it.",
+      "dense": "Uses a more compact header. iOS and macOS ignore it.",
+      "enable_feedback": "Plays the platform's tap sound and haptic feedback when the header is tapped. iOS and macOS ignore it.",
+      "expanded_alignment": "Alignment of the revealed controls, as `{ x:, y: }` from -1.0 to 1.0. iOS and macOS ignore it.",
+      "expanded_cross_axis_alignment": "Horizontal alignment of the revealed controls: `\"center\"` (default), `\"start\"`, `\"end\"` or `\"stretch\"`. iOS and macOS ignore it.",
+      "min_tile_height": "Minimum height of the header row, in logical pixels. iOS and macOS ignore it.",
+      "visual_density": "Compactness of the header: `\"standard\"`, `\"compact\"`, `\"comfortable\"` or `\"adaptivePlatformDensity\"`. iOS and macOS ignore it.",
+      "on_change": "Fired when the user opens or closes the tile; `event.data` is `true` when it opens and `nil` when it closes."
+    },
     "formrow": {
       "prefix": "Label or control shown at the start of the row.",
       "helper": "Text or control shown below the row.",
       "error": "Error text or control shown below the row."
     },
+    "listsection": {
+      "controls": "The rows of the section; the first positional argument, `children:` or a block sets them.",
+      "variant": "`\"insetGrouped\"` (default): rounded rows inset from the screen edges; `\"base\"`: rows from edge to edge.",
+      "bgcolor": "Background color behind the section.",
+      "border_radius": "Corner radius of the rows' background (default 12 on Android, web, Windows and Linux and 10 on iOS and macOS for `\"insetGrouped\"`, square for `\"base\"`).",
+      "margin": "Space around the section (by default 16 at the sides and 8 above and below for `\"insetGrouped\"` on Android, web, Windows and Linux)."
+    },
     "listtile": {
       "dense": "Uses a more compact layout with less vertical space. iOS and macOS ignore it.",
       "hover_color": "Color of the tile while the pointer is over it. iOS and macOS ignore it.",
       "is_three_line": "Gives the subtitle room for two lines, so the tile is three lines tall. iOS and macOS ignore it.",
-      "shape": "Shape of the tile's background and tap highlight. iOS and macOS ignore it."
+      "shape": "Shape of the tile's background and tap highlight. iOS and macOS ignore it.",
+      "title": "Main text of the row, as a string or a control; required.",
+      "subtitle": "Secondary text below the title, as a string or a control.",
+      "url": "Opens this URL in the browser when the row is tapped.",
+      "chevron": "Adds a chevron after `trailing` to show that the row opens something (default false).",
+      "toggle_inputs": "Makes a tap anywhere on the row toggle the `switch`, `checkbox` or `radio` inside it (default false).",
+      "content_padding": "Padding inside the row, around its content.",
+      "padding": "The `cupertino_list_tile` spelling of `content_padding`: padding inside the row.",
+      "selected": "Draws the row in its selected colors on Android, web, Windows and Linux. On iOS and macOS it only tells screen readers that the row is selected.",
+      "additional_info": "Detail text shown before `trailing`, like the value on the right of an iOS Settings row, as a string or a control. Android, web, Windows and Linux ignore it.",
+      "bgcolor_activated": "Background color while the row is pressed on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "leading_size": "Size of the box `leading` is drawn in on iOS and macOS (default 28, or 30 when `notched`). Android, web, Windows and Linux ignore it.",
+      "leading_to_title": "Gap between `leading` and the title on iOS and macOS (default 16, or 12 when `notched`). Android, web, Windows and Linux ignore it.",
+      "notched": "Uses the iOS inset-grouped row style, with a larger leading area (default false). Android, web, Windows and Linux ignore it.",
+      "autofocus": "Gives the row keyboard focus when it first appears. iOS and macOS ignore it.",
+      "horizontal_spacing": "Gap between `leading` and the title, in logical pixels. iOS and macOS ignore it.",
+      "min_leading_width": "Minimum width of the leading area, in logical pixels. iOS and macOS ignore it.",
+      "min_vertical_padding": "Minimum padding above and below the content, in logical pixels. iOS and macOS ignore it.",
+      "min_height": "Minimum height of the row, in logical pixels. iOS and macOS ignore it.",
+      "visual_density": "Compactness of the row: `\"standard\"`, `\"compact\"`, `\"comfortable\"` or `\"adaptivePlatformDensity\"`. iOS and macOS ignore it.",
+      "style": "Which text sizes the row uses: `\"list\"` (default) or `\"drawer\"`. iOS and macOS ignore it.",
+      "title_alignment": "Vertical position of `leading` and `trailing` next to the text: `\"threeLine\"`, `\"titleHeight\"`, `\"top\"`, `\"center\"` or `\"bottom\"`. iOS and macOS ignore it.",
+      "icon_color": "Color of the leading and trailing icons. iOS and macOS ignore it.",
+      "text_color": "Color of the title, subtitle, leading and trailing text. iOS and macOS ignore it.",
+      "selected_color": "Color of the text and icons while `selected`. iOS and macOS ignore it.",
+      "selected_tile_color": "Background color while `selected`. iOS and macOS ignore it.",
+      "focus_color": "Background color while the row has keyboard focus. iOS and macOS ignore it.",
+      "splash_color": "Color of the ink ripple when the row is tapped. iOS and macOS ignore it.",
+      "enable_feedback": "Plays the platform's tap sound and haptic feedback when the row is tapped. iOS and macOS ignore it.",
+      "mouse_cursor": "Cursor shown while the pointer is over the row. iOS and macOS ignore it.",
+      "title_text_style": "Text style of a string title. iOS and macOS ignore it.",
+      "subtitle_text_style": "Text style of a string subtitle. iOS and macOS ignore it.",
+      "leading_and_trailing_text_style": "Text style of string leading and trailing text. iOS and macOS ignore it.",
+      "on_click": "Fired when the user taps the row.",
+      "on_long_press": "Fired when the user long-presses the row."
     },
     "navigationrail": {
       "group_alignment": "Vertical position of the destinations, from -1.0 (top) to 1.0 (bottom)."
@@ -487,12 +813,26 @@
     "popupmenubutton": {
       "on_select": "Fired when an item is chosen; the data is the item's internal id, so handle each item's `on_click` instead."
     },
+    "progressbar": {
+      "value": "Progress from 0.0 to 1.0; leave it unset for an indeterminate bar.",
+      "bgcolor": "Color of the track behind the filled part. On iOS and macOS the default is the system's light gray.",
+      "color": "Color of the filled part. On iOS and macOS the default is the system blue.",
+      "track_gap": "Gap between the filled part and the track, in logical pixels. It shows only with `year_2023: false`. iOS and macOS ignore it.",
+      "year_2023": "On Android, web, Windows and Linux, uses the 2023 Material 3 design (the default); set `false` for the newer look with a track gap and an end dot. iOS and macOS ignore it."
+    },
     "progressring": {
       "animating": "On iOS and macOS, spins the indeterminate indicator while true; set `false` to pause it. Android, web, Windows and Linux ignore it.",
       "radius": "Radius of the activity indicator on iOS and macOS, in logical pixels. Android, web, Windows and Linux ignore it.",
       "stroke_cap": "Shape of the ring's line ends: `\"butt\"`, `\"round\"` or `\"square\"`. iOS and macOS ignore it.",
-      "track_gap": "Gap between the active and inactive parts of the ring's track, in logical pixels. iOS and macOS ignore it.",
-      "year_2023": "On Android, web, Windows and Linux, uses the 2023 Material 3 design; set `false` for the newer look."
+      "track_gap": "Gap between the active and inactive parts of the ring's track, in logical pixels. It shows only with `year_2023: false`. iOS and macOS ignore it.",
+      "year_2023": "On Android, web, Windows and Linux, uses the 2023 Material 3 design; set `false` for the newer look.",
+      "value": "Progress from 0.0 to 1.0; leave it unset for a spinning indicator.",
+      "progress": "Progress from 0.0 to 1.0, the iOS name for `value`; when both are set, `progress` wins.",
+      "bgcolor": "Color of the ring's track. iOS and macOS ignore it.",
+      "stroke_width": "Thickness of the ring, in logical pixels. iOS and macOS ignore it.",
+      "stroke_align": "Where the stroke sits on the ring's path: `-1.0` inside, `0.0` centered, `1.0` outside (default: centered, or inside with `year_2023: false`). iOS and macOS ignore it.",
+      "size_constraints": "Size limits of the ring, for example `{ min_width: 48, min_height: 48 }`. iOS and macOS ignore it; size the iOS indicator with `radius`.",
+      "padding": "Space around the ring. iOS and macOS ignore it."
     },
     "reorderablelistview": {
       "spacing": "Space between items, in logical pixels."
@@ -517,13 +857,51 @@
       "direction": "Direction the shimmer sweeps: `\"ltr\"` (default), `\"rtl\"`, `\"ttb\"` or `\"btt\"`."
     },
     "snackbar": {
-      "action": "Label of the action button shown in the snack bar.",
-      "duration": "How long the snack bar stays visible, in milliseconds."
+      "action": "The action button: a string label, whose button fires the snack bar's `on_action`, or a `snack_bar_action`, whose own `on_click` fires.",
+      "duration": "How long the snack bar stays visible, in milliseconds (default 4000).",
+      "content": "The message, usually a `text`; required (the first positional argument).",
+      "persist": "Keeps the snack bar open after `duration` until the user taps its action or close icon. On Android, web, Windows and Linux a snack bar with an `action` persists unless you pass `false`; on iOS and macOS it closes after `duration` unless you pass `true`.",
+      "show_close_icon": "Shows a close (x) button that dismisses the snack bar.",
+      "bgcolor": "Background color. On iOS and macOS the default is the system gray.",
+      "padding": "Padding inside the snack bar. On iOS and macOS the default is 16 on the left, 8 on the right and 10 above and below.",
+      "margin": "Space around a `\"floating\"` snack bar; ignored when `width` is set. On iOS and macOS it is the space around the bar (default 12 at the sides and bottom).",
+      "width": "Width of a `\"floating\"` snack bar. On iOS and macOS it sets the bar's width.",
+      "behavior": "`\"fixed\"` (default) spans the bottom edge of the screen; `\"floating\"` floats above it, and only then are `margin` and `width` used. iOS and macOS ignore it: their snack bar always floats near the bottom.",
+      "action_overflow_threshold": "Fraction of the snack bar's width, from 0.0 to 1.0, that the action may take before it moves below the message (default 0.25). iOS and macOS ignore it.",
+      "dismiss_direction": "Which swipes dismiss the snack bar, for example `\"down\"` (the default) or `\"horizontal\"`. iOS and macOS ignore it: the bar cannot be swiped away there.",
+      "close_icon_color": "Color of the close button. iOS and macOS ignore it.",
+      "clip_behavior": "How the snack bar clips its content (default `\"hardEdge\"`). iOS and macOS ignore it.",
+      "elevation": "Shadow depth of the snack bar. iOS and macOS ignore it.",
+      "shape": "Shape of the snack bar. iOS and macOS ignore it.",
+      "on_visible": "Fired when the snack bar appears.",
+      "on_dismiss": "Fired when the snack bar closes on its own: its time ran out, or the user swiped it away or tapped its action or close icon. Its `open` is `false` again."
+    },
+    "snackbaraction": {
+      "label": "Text of the button; required (the first positional argument).",
+      "text_color": "Color of the label. iOS and macOS ignore it.",
+      "bgcolor": "Background color of the button. iOS and macOS ignore it.",
+      "disabled_text_color": "Color of the label once the button has been pressed: an action works only once. iOS and macOS ignore it.",
+      "disabled_bgcolor": "Background color once the button has been pressed. iOS and macOS ignore it.",
+      "disabled": "Disables the button on iOS and macOS. Android, web, Windows and Linux ignore it.",
+      "on_click": "Fired when the user taps the button. On Android, web, Windows and Linux the snack bar then closes; on iOS and macOS it stays until its time runs out."
     },
     "spinkit": {
       "variant": "The indicator style; set it with the variant keyword you pass to `spinkit`, such as `three_bounce:`.",
       "size": "Size of the indicator, in logical pixels (default 50).",
-      "duration": "Length of one animation cycle, in milliseconds."
+      "duration": "Length of one animation cycle, in milliseconds.",
+      "line_width": "Line thickness of the `ring` and `dual_ring` variants (default 7) and of `spinning_lines` (default 2), in logical pixels.",
+      "border_width": "Border thickness of the `ripple` variant, in logical pixels (default 6)."
+    },
+    "table": {
+      "rows": "The `table_row` rows; the first positional argument, `rows:` or a block sets them.",
+      "controls": "Same as `rows`.",
+      "border_color": "Color of the table's lines; nothing is drawn without it.",
+      "border_width": "Width of the lines, in logical pixels (default 1).",
+      "border_radius": "Corner radius of the outer border."
+    },
+    "tablerow": {
+      "controls": "The row's cells; the first positional argument, `controls:` or a block sets them. A hidden cell keeps its column.",
+      "bgcolor": "Background color of the row."
     }
   },
   "method_notes": {

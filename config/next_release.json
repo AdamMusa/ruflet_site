@@ -653,15 +653,18 @@
         ]
       },
       "control-bottom-sheet": {
-        "properties": [
-          "draggable",
-          "fullscreen",
-          "maintain_bottom_view_insets_padding",
-          "scrollable",
-          "show_drag_handle",
-          "size_constraints",
-          "use_safe_area"
-        ]
+        "properties": {
+          "draggable": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "fullscreen": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "maintain_bottom_view_insets_padding": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "scrollable": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "show_drag_handle": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "size_constraints": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "use_safe_area": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "bgcolor": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel.",
+          "height": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel.",
+          "padding": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel."
+        }
       },
       "control-chip": {
         "properties": [
@@ -684,6 +687,18 @@
           "on_dismiss",
           "on_select"
         ]
+      },
+      "control-cupertino-bottom-sheet": {
+        "properties": {
+          "bgcolor": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel.",
+          "height": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel.",
+          "padding": "On iOS and macOS, the 0.0.23 client uses it only when the content is a `picker`, `timer_picker` or `date_picker`; other content is shown without a sheet panel."
+        }
+      },
+      "control-cupertino-list-tile": {
+        "properties": {
+          "toggle_inputs": "On iOS and macOS, the 0.0.23 client toggles a `switch` or `checkbox` in the row, but not a `radio`."
+        }
       },
       "control-cupertino-slider": {
         "events": [
@@ -742,9 +757,10 @@
         ]
       },
       "control-list-tile": {
-        "properties": [
-          "selected"
-        ],
+        "properties": {
+          "selected": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "toggle_inputs": "On iOS and macOS, the 0.0.23 client toggles a `switch` or `checkbox` in the row, but not a `radio`."
+        },
         "events": [
           "on_long_press"
         ]
