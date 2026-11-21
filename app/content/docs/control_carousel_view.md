@@ -40,6 +40,9 @@ first argument, as `children:`, or in a block.
 - `flex_weights` — a weighted layout such as `[1, 7, 1]` for one large item between two small ones. It wins over `item_extent`.
 - `consume_max_weight` — with `flex_weights`, let items grow to the largest weight as they scroll in (default `true`); `false` keeps the layout fixed.
 
+`shrink_extent` and `consume_max_weight` apply on Android, web, Windows and
+Linux only: the iOS carousel does not shrink or grow its items.
+
 ## Properties
 
 - `horizontal` — scroll horizontally (default `true`); `false` scrolls vertically.
