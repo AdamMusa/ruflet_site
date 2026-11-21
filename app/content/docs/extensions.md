@@ -141,19 +141,19 @@ release configuration.
 
 | Key | Ruby API provided | Kind |
 |---|---|---|
-| [`ads`](/docs/control-banner-ad) | `banner_ad(...)` and `interstitial_ad(...)` | Control family |
-| [`audio`](/docs/extension-audio) | `audio(...)` | Media control |
+| [`ads`](/docs/extension-ads) | `banner_ad(...)`, and `interstitial_ad(...)` registered with `page.add_service` | Control family |
+| [`audio`](/docs/extension-audio) | `page.audio(...)` | Media service |
 | [`audio_recorder`](/docs/service-audio-recorder) | `page.audio_recorder(...)` | Device service; documented under Services |
 | [`camera`](/docs/service-camera) | `page.camera(...)` | Device service; documented under Services |
 | [`charts`](/docs/extension-charts) | Bar, line, pie, scatter, candlestick, and radar chart helpers | Control family |
 | [`code_editor`](/docs/extension-code-editor) | `code_editor(...)` | Editing control |
-| [`color_pickers`](/docs/extension-color-pickers) | `control("ColorPicker", ...)` and related wire controls | Control family |
-| [`datatable2`](/docs/extension-datatable2) | `control("DataTable2", ...)` | Data control |
+| [`color_pickers`](/docs/extension-color-pickers) | `color_picker(...)`, `block_picker(...)`, `hue_ring_picker(...)`, `material_picker(...)`, `multiple_choice_block_picker(...)` and `slide_picker(...)` | Control family |
+| [`datatable2`](/docs/extension-datatable2) | `data_table2(...)` with `data_column2(...)` and `data_row2(...)` | Data control |
 | [`flashlight`](/docs/service-flashlight) | `page.flashlight` | Device service; documented under Services |
 | [`geolocator`](/docs/service-geolocator) | `page.geolocator(...)` | Device service; documented under Services |
 | [`local_auth`](/docs/service-local-authentication) | `page.local_authentication(...)` | Device service; documented under Services. **Requires the next Ruflet release** (on `main`, not in 0.0.23). |
 | [`lottie`](/docs/extension-lottie) | `lottie(...)` | Animation control |
-| [`map`](/docs/extension-map) | `map(...)` and map-layer helpers | Control family |
+| [`map`](/docs/extension-map) | `map(...)` with layer, marker and attribution helpers | Control family |
 | [`permission_handler`](/docs/service-permission-handler) | `page.permission_handler(...)` | Device service; documented under Services |
 | [`qrcode_scanner`](/docs/qrcode-scanner) | `qrcode_scanner(...)` | Scanner control |
 | [`rive`](/docs/extension-rive) | `rive(...)` | Animation control |
@@ -161,6 +161,16 @@ release configuration.
 | [`spinkit`](/docs/control-spinkit) | `spinkit(...)` | Animation control |
 | [`video`](/docs/extension-video) | `video(...)` | Media control |
 | [`webview`](/docs/extension-webview) | `web_view(...)` | Web content control |
+
+The generic builder still works too: `control(type, **props)` builds an
+extension control from its wire name, so
+`control("ColorPicker", color: "#2563eb")` sends the same `ColorPicker`
+control as `color_picker(color: "#2563eb")`.
+
+Extension controls pass their properties to the client unchanged. Write enum
+values in Flutter's spelling, such as `"fitWidth"` or `"spaceBetween"`: the
+0.0.23 client does not read `"fit_width"`. With the next release both spellings
+work. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Widgets remain documented under
 [Widgets](/docs/component-reference), even when an extension supplies their
@@ -198,12 +208,14 @@ The first Ruflet-owned extension is
 `RufletExtension`, and it uses the normal Ruby DSL:
 
 ```ruby
+result = text(value: "Point the camera at a code")
 scanner = qrcode_scanner(
   formats: [:qr_code],
   on_detect: ->(event) {
     page.update(result, value: event.value.to_s)
   }
 )
+page.add(column(children: [scanner, result]))
 ```
 
 To build an extension package, see

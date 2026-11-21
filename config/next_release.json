@@ -1,5 +1,5 @@
 {
-  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them), \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them) and \"design_client_ignored\" (the 0.0.23 client acts on them with one design only: \"cupertino\" lists lines that need main on iOS and macOS, \"material\" lines that need main on Android, web, Windows and Linux; a name may map to its own note). Empty every list when the next release ships.",
+  "note": "APIs on Ruflet main but not in the latest published release. DocsCatalog adds the next-release callout under the H1 of each listed control page (by slug) and service page (by helper), unless the page already contains it. It appends the inline marker to the generated property, event and method lines listed under \"members\" (0.0.23 Ruby rejects them), \"client_ignored\" (0.0.23 Ruby accepts them, but the 0.0.23 client ignores them; a name may map to its own note when that client does only part of what the line says) and \"design_client_ignored\" (the 0.0.23 client acts on them with one design only: \"cupertino\" lists lines that need main on iOS and macOS, \"material\" lines that need main on Android, web, Windows and Linux; a name may map to its own note). Empty every list when the next release ships.",
   "released": "0.0.23",
   "controls": [
     "control-about-dialog",
@@ -410,10 +410,42 @@
         "surface_tint_color"
       ]
     },
+    "control-bar-chart": {
+      "properties": {
+        "tooltip": "With the next release the styled bubble shows the touched bar's own `tooltip` text, or its value."
+      }
+    },
+    "control-bar-chart-rod": {
+      "properties": [
+        "show_tooltip"
+      ]
+    },
+    "control-candlestick-chart": {
+      "properties": {
+        "show_tooltips_for_selected_spots_only": "With the next release the selected candles that have their own `tooltip` text show their bubble.",
+        "tooltip": "With the next release a candle with its own `tooltip` text shows it in this bubble."
+      }
+    },
+    "control-candlestick-chart-spot": {
+      "properties": {
+        "selected": "With the next release a selected candle with its own `tooltip` text shows it permanently.",
+        "show_tooltip": "The 0.0.23 client ignores it."
+      }
+    },
     "control-chip": {
       "properties": [
         "delete_icon_tooltip"
       ]
+    },
+    "control-code-editor": {
+      "events": {
+        "on_change": "With the next release `event.data` is always the text, and only the user's edits fire it."
+      }
+    },
+    "control-color-picker": {
+      "properties": {
+        "hsv_color": "With the next release, when both are set, the one you changed last wins."
+      }
     },
     "control-cupertino-app-bar": {
       "properties": [
@@ -514,10 +546,28 @@
         "badge"
       ]
     },
+    "control-line-chart": {
+      "properties": {
+        "tooltip": "With the next release the styled bubble shows each touched point's own `tooltip` text, or its `y` value."
+      },
+      "events": {
+        "on_event": "On 0.0.23 each entry of `spots` arrives as an empty String, so only `type` is usable."
+      }
+    },
+    "control-line-chart-data-point": {
+      "properties": [
+        "show_tooltip"
+      ]
+    },
     "control-list-tile": {
       "properties": [
         "padding"
       ]
+    },
+    "control-map": {
+      "properties": {
+        "interaction_configuration": "With the next release a missing `pinch_move_threshold` defaults to 40, and `cursor_keyboard_rotation_configuration` takes `trigger_keys`, one key name such as `\"Shift Left\"` or `:shift_left`, or a list of them."
+      }
     },
     "control-menu-item-button": {
       "properties": [
@@ -601,6 +651,18 @@
       "events": [
         "on_scroll"
       ]
+    },
+    "control-scatter-chart": {
+      "properties": {
+        "show_tooltips_for_selected_spots_only": "With the next release the selected spots that have their own `tooltip` text show their bubble.",
+        "tooltip": "With the next release a spot with its own `tooltip` text shows it in this bubble."
+      }
+    },
+    "control-scatter-chart-spot": {
+      "properties": {
+        "selected": "With the next release a selected spot with its own `tooltip` text shows it permanently.",
+        "show_tooltip": "The 0.0.23 client ignores it."
+      }
     },
     "control-screenshot": {
       "properties": [
