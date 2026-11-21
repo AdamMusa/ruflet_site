@@ -49,6 +49,9 @@ When the user taps a panel's header, the client flips that panel's
 `panel.props["expanded"]`. To open or close a panel from code, set its
 `expanded` and update the list: `page.update(answers, controls: panels)`.
 
+With the next release `panel.expanded` reads the same value as
+`panel.props["expanded"]`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 On Android, web, Windows and Linux the panel opens as soon as it is tapped. On
 iOS and macOS it is redrawn only when Ruby updates the list, so update the
 list in `on_change`, as the example does.

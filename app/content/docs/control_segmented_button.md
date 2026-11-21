@@ -34,10 +34,28 @@ page.add(view_label)
 
 ## Usage
 
+The client writes the new selection to `selected` before it sends
+`on_change`, and `event.data` is the same list of values. Read it later from
+the button's `props["selected"]`. `event.control.selected` returns the same list
+as `props["selected"]`; with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 On iOS and macOS each segment is a Cupertino button, filled when selected and
-tinted otherwise. There is no check mark: `selected_icon` replaces a selected
-segment's icon only when you set it. `style` and the segments' `tooltip` apply
-on Android, web, Windows and Linux only.
+tinted otherwise. On a selected segment, `selected_icon` takes the place of the
+segment's icon. When it is not set, Android, Windows and Linux show a
+check mark there and iOS and macOS show no icon. Set
+`show_selected_icon: false` to keep each segment's own icon. `style` and the segments' `tooltip` apply on Android, Windows and Linux only. `border_color`, `selected_color`, `unselected_color`,
+`click_color`, `disabled_color` and `disabled_text_color` apply on iOS and
+macOS only. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
+
+Set `show_selected_icon` when you build the button: with 0.0.23,
+`page.update(button, show_selected_icon: false)` raises ArgumentError, because
+Ruflet reads every key that ends in `_icon` as an icon name there. In the next
+release the update works. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`sliding: true` draws the iOS sliding segmented control on iOS and macOS, as
+[`cupertino_sliding_segmented_button`](/docs/control-cupertino-sliding-segmented-button)
+does, and only then do `bgcolor`, `thumb_color` and `proportional_width` take
+effect. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 By default exactly one segment must be selected, so start with one value in
 `selected`. For a multi-select filter, allow both multiple and empty

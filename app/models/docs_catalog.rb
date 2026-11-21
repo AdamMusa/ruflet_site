@@ -549,6 +549,8 @@ class DocsCatalog
 
   # Curated summaries and examples for controls that have no prose page,
   # keyed by slug: { "control-x": { "summary": "...", "example": ["line", ...] } }.
+  # An optional "example_callout" puts the next-release callout, followed by
+  # that sentence, above the example.
   def self.control_docs
     @control_docs ||= CONTROL_DOCS_PATH.exist? ? JSON.parse(CONTROL_DOCS_PATH.read) : {}
   end
@@ -920,6 +922,11 @@ class DocsCatalog
     # --- Example ----------------------------------------------------------
     lines << "## Example"
     lines << ""
+    # A curated example that needs the next release on a control 0.0.23 has.
+    if curated && curated["example_callout"].present?
+      lines << "> #{NEXT_RELEASE_MARKER}. #{curated.fetch('example_callout')}"
+      lines << ""
+    end
     lines << "```ruby"
     lines.concat(curated ? Array(curated.fetch("example")) : generated_control_example(control, helper))
     lines << "```"
@@ -1051,14 +1058,6 @@ class DocsCatalog
 
   def self.crafted_control_example(widget_type)
     {
-      "option" => [
-        'dropdown_option("ruby", text: "Ruby")'
-      ],
-      "autofillgroup" => [
-        "autofill_group(",
-        '  text_field(label: "Email", autofill_hints: ["email"])',
-        ")"
-      ],
       "browsercontextmenu" => [
         "page.browser_context_menu(disabled: true)"
       ],
@@ -1075,12 +1074,6 @@ class DocsCatalog
         '  selected_icon: "favorite",',
         "  selected: true,",
         "  on_click: ->(event) {}",
-        ")"
-      ],
-      "hero" => [
-        "hero(",
-        '  image("assets/logo.png"),',
-        '  tag: "app-logo"',
         ")"
       ],
       "outlinediconbutton" => [
@@ -1140,19 +1133,6 @@ class DocsCatalog
         "",
         "page.add(menu_bar([file_menu]))"
       ],
-      "nestedscrollview" => [
-        "nested_scroll_view(",
-        '  [sliver_app_bar(title: text("Inbox"), pinned: true, expanded_height: 160)],',
-        '  body: list_view((1..30).map { |n| list_tile(title: text("Message #{n}")) }),',
-        "  expand: true",
-        ")"
-      ],
-      "overlay" => [
-        "overlay([",
-        "  progress_ring(),",
-        '  snack_bar("Saved")',
-        "])"
-      ],
       "polygonmarker" => [
         "service_area = polygon_marker(",
         "  coordinates: [",
@@ -1176,25 +1156,6 @@ class DocsCatalog
         "    initial_zoom: 12,",
         "    expand: true",
         "  )",
-        ")"
-      ],
-      "shadermask" => [
-        "shader_mask(",
-        '  text(value: "Ruflet", style: { size: 36 }),',
-        '  blend_mode: "srcIn"',
-        ")"
-      ],
-      "shimmer" => [
-        "shimmer(",
-        "  container(width: 240, height: 80, bgcolor: \"#d1d5db\"),",
-        '  base_color: "#d1d5db",',
-        '  highlight_color: "#f9fafb"',
-        ")"
-      ],
-      "textspan" => [
-        "text_span(",
-        '  "Ruflet documentation",',
-        '  url: "https://ruflet.dev"',
         ")"
       ]
     }[widget_type.to_s]

@@ -53,6 +53,12 @@ tapped. On iOS and macOS it is redrawn only when Ruby sets `expanded`, so set
 it in `on_change`, as the example does. Setting `expanded` with `page.update`
 also opens or closes a tile from code on every platform.
 
+The client sets the tile's `expanded` and sends it to Ruby before it fires
+`on_change`, so `event.control.props["expanded"]` is the new state too: `true`
+when the tile opens and `false` when it closes.
+
+With the next release `event.control.expanded` reads the same value. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 On iOS and macOS the tile uses `title`, `subtitle`, `leading`, `trailing`,
 `expanded`, `bgcolor` / `collapsed_bgcolor`, `tile_padding` (12 on every side
 by default) and `controls_padding`, and removes the hidden controls while it

@@ -22,7 +22,7 @@ sheet = draggable_scrollable_sheet(
   snap_sizes: [0.5],
   header: text("Nearby places"),
   on_extent_change: ->(event) {
-    page.update(extent, value: "Sheet at #{(event.data["extent"] * 100).round}%")
+    page.update(extent, value: "Sheet at #{(event.data[:extent] * 100).round}%")
   }
 )
 
@@ -33,7 +33,7 @@ page.add(
       container(
         expand: true,
         padding: 16,
-        bgcolor: :surface_container_high,
+        bgcolor: :surfacecontainerhigh,
         content: column(
           children: [
             extent,
@@ -58,11 +58,11 @@ Give the sheet's rows as the first argument, as `children:`, or in a block.
 - `header` — a control pinned above the rows, below the drag handle.
 - `show_drag_handle` — draw the drag handle (default `true`).
 - `padding` and `spacing` — space around and between the rows.
-- `bgcolor`, `elevation` and `border_radius` — the sheet surface.
+- `bgcolor`, `elevation` and `border_radius` — the sheet surface. `elevation` applies on Android, web, Windows and Linux only.
 - `extent_change_interval` — the minimum milliseconds between two `on_extent_change` events (default 50).
 
 ## Events and methods
 
-- `on_extent_change` — the sheet size changed. `event.data` has `"extent"`, `"min"` and `"max"`, as fractions.
+- `on_extent_change` — the sheet size changed. `event.data` has the keys `:extent`, `:min` and `:max`, as fractions.
 - `animate_to(size, duration: 300, curve: "easeOut")` — animate the mounted sheet to a fraction of its parent's height.
 - `jump_to(size)` — move the mounted sheet at once.

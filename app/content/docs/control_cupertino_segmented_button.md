@@ -3,7 +3,7 @@
 A row of connected segments for picking one option by index. It builds the same
 `SegmentedButton` control as [`segmented_button`](/docs/control-segmented-button):
 on iOS and macOS the client draws the iOS segmented control, elsewhere a
-Material segmented button.
+Material segmented button. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -35,10 +35,15 @@ page.add(
 
 ## Usage
 
+The client writes the chosen index to `selected_index` before it sends
+`on_change`, so `event.data` and `event.control.props["selected_index"]` hold
+the same Integer. `event.control.selected_index` returns it too; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 `cupertino_segmented_button` raises `ArgumentError` unless it has at least two
 visible segments, and `IndexError` when `selected_index` is out of range.
 
-The color properties style the iOS control only. On Android, web, Windows and
+The color properties style the iOS control only. On Android, Windows and
 Linux the Material button ignores them, and `padding` makes it fill the
 available width, inset by that padding. For
 the sliding iOS style, use

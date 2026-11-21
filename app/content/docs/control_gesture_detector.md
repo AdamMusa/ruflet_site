@@ -39,7 +39,10 @@ page.add(
 - `on_pan_start` / `on_pan_update` / `on_pan_end` — drags in any direction; `event.local_delta` is the movement since the last update
 - `on_horizontal_drag_*` / `on_vertical_drag_*` — drags along one axis
 - `on_scale_start` / `on_scale_update` / `on_scale_end` — pinch and rotate
-- `on_enter` / `on_exit` / `on_hover` / `on_scroll` — mouse and trackpad
+- `on_scale_update` — `event.scale` is the scale since the gesture started, `event.rotation` the rotation in radians and `event.focal_point_delta` the movement
+- `on_enter` / `on_exit` / `on_hover` / `on_scroll` — mouse and trackpad; `event.local_position` gives the pointer, `on_hover` adds `event.local_delta` and `on_scroll` `event.scroll_delta`
+- `on_long_press_start` / `on_long_press_end` and the `_down`, `_cancel` and `_up` variants, also for the secondary and tertiary (middle) mouse buttons
+- `on_force_press_*` — pressure-sensitive presses; `event.pressure` gives the pressure
 - `drag_interval` / `hover_interval` — minimum milliseconds between update events
 - `mouse_cursor` — for example `"click"`
 
