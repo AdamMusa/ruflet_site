@@ -30,7 +30,7 @@ page.add(
 - `suggestions` — `auto_complete_suggestion(key:, value:)` entries; the first positional argument sets them
 - `value` — the text in the field; on iOS and macOS only the starting text, so a later `page.update` of `value` does not change the field there
 - `suggestions_max_height` — height of the suggestion list (default 200)
-- `on_change` — the text changed; `event.data` is the text
+- `on_change` — the text changed; `event.data` is the text; with 0.0.23, text such as `42` arrives parsed (see below)
 - `on_select` — a suggestion was picked; `event.value` is its value, `event.selection` holds its `key` and `value`, and `event.data[:index]` (a Symbol key) is its position in `suggestions`
 
 ## Usage

@@ -389,7 +389,7 @@
     "animate_cursor_opacity": "Fades the text cursor in and out instead of blinking it. By default iOS and macOS fade it and other platforms blink it; a browser follows the device it runs on.",
     "selection_color": "Color of the highlight behind selected text.",
     "strut_style": "Minimum line height and spacing for the typed text.",
-    "scroll_padding": "Space kept between the field and the screen edges when it scrolls into view, for example `{ all: 20 }` (default 20).",
+    "scroll_padding": "Space kept between the field and the screen edges when it scrolls into view: a number for every side, or a `{ left:, top:, right:, bottom: }` map (default 20).",
     "focused_color": "Color of the typed text while the field has focus.",
     "focused_bgcolor": "Background color while the field has focus.",
     "focused_border_color": "Border color while the field has focus.",
@@ -666,7 +666,7 @@
     "chip": {
       "label": "Text or control shown in the chip (required); the first positional argument sets it.",
       "selected": "Whether the chip is selected (default false). With an `on_select` handler the client toggles it on each tap.",
-      "leading": "Control shown before the label, such as an icon or an avatar.",
+      "leading": "Control shown before the label, such as `icon(\"star\")` or an avatar. A bare icon name such as `\"star\"` draws nothing.",
       "selected_color": "Background color while the chip is selected.",
       "bgcolor": "Background color while the chip is not selected.",
       "padding": "Space inside the chip around its content.",
@@ -836,7 +836,7 @@
       "prefix_visibility_mode": "When the prefix shows: `\"never\"`, `\"editing\"`, `\"notEditing\"` or `\"always\"`. Android, Windows and Linux ignore it, in a browser too.",
       "suffix_visibility_mode": "When the suffix shows: `\"never\"`, `\"editing\"`, `\"notEditing\"` or `\"always\"`. Android, Windows and Linux ignore it, in a browser too.",
       "placeholder_text": "Prompt shown while the field is empty; `hint_text` wins when both are set. Prefer `hint_text`, which every platform shows. Android, Windows and Linux ignore it, in a browser too.",
-      "padding": "Space between the field's border and its text (`cupertino_text_field` sends 7 on every side). Android, Windows and Linux ignore it, in a browser too.",
+      "padding": "Space between the field's border and its text: a number for every side, or a `{ left:, top:, right:, bottom: }` map; this helper sends `{ all: 7 }`. Android, Windows and Linux ignore it, in a browser too.",
       "blend_mode": "How the field's background color or gradient is combined with what is behind it, for example `\"multiply\"`. Android, Windows and Linux ignore it, in a browser too.",
       "gradient": "Gradient that fills the field's background. Android, Windows and Linux ignore it, in a browser too.",
       "image": "Image painted behind the text, for example `{ src: \"assets/paper.png\", fit: \"cover\", opacity: 0.3 }`. Android, Windows and Linux ignore it, in a browser too.",
@@ -854,7 +854,7 @@
     "cupertinotimerpicker": {
       "value": "The duration, in whole seconds, for example `90` for 1 min 30 s (default 0); the client updates it as the user changes it.",
       "minute_interval": "Step between the minutes the picker offers, for example 5 (default 1). Use a number that divides 60.",
-      "alignment": "Position of the wheels in the space the picker has (default `\"center\"`). Android, Windows and Linux ignore it, in a browser too.",
+      "alignment": "Position of the wheels in the space the picker has, as `{ x:, y: }` from -1 to 1; `{ x: 0, y: 0 }` is the center, and this helper sends `\"center\"`. Android, Windows and Linux ignore it, in a browser too.",
       "bgcolor": "Background color of the wheels. Android, Windows and Linux ignore it, in a browser too.",
       "item_extent": "Height of each row of the wheels, in logical pixels (default 32). Android, Windows and Linux ignore it, in a browser too.",
       "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, and `.to_i` gives the number. `event.control.props[\"value\"]` holds the same value in both cases."
@@ -1005,7 +1005,7 @@
       "max_menu_height": "The `dropdown_m2` spelling of `menu_height`. iOS and macOS ignore it, in a browser too.",
       "prefix_icon": "The `dropdown_m2` spelling of `leading_icon`.",
       "select_icon": "The `dropdown_m2` spelling of `trailing_icon`.",
-      "on_change": "The `dropdown_m2` spelling of `on_select`; the handler runs when an option is picked.",
+      "on_change": "The `dropdown_m2` spelling of `on_select`: the handler runs when an option is picked and gets the same `event.data`, the option's key, with `event.name` `\"change\"`.",
       "value": "Key of the selected option; the client updates it when the user picks one.",
       "options": "The `dropdown_option` entries; the first positional argument sets them.",
       "text": "Text shown in the field; by default the selected option's text.",
@@ -1056,7 +1056,9 @@
     "form": {
       "controls": "The fields and other controls of the form, laid out like a `column`'s; the first positional argument or a block sets them.",
       "horizontal_alignment": "Horizontal alignment of the controls, as in a `column`.",
-      "intrinsic_width": "Sizes the form to its widest control, as in a `column`."
+      "intrinsic_width": "Sizes the form to its widest control, as in a `column`.",
+      "on_change": "Fired after a field of the form changes, once the field's own handler has run. `event.control` is the form, and `event.data` is the data of the field's event, such as the typed text or a dropdown option's key.",
+      "on_submit": "Fired when the user submits one of the form's text fields, for example with the keyboard's done key. `event.control` is the form, and `event.data` is the field's text."
     },
     "expansionpanel": {
       "header": "Control shown in the panel's header row, usually a `list_tile`.",
@@ -1276,7 +1278,7 @@
       "proportional_width": "With `sliding: true`, on iOS and macOS (in a browser too), sizes each segment to its content instead of giving all the same width. The other designs ignore it.",
       "on_change": "Fired when the user changes the selection; `event.data` is the list of selected values, which the client also writes to `selected`.",
       "disabled_text_color": "Color of the text of a disabled segment. Android, Windows and Linux ignore it, in a browser too.",
-      "show_selected_icon": "Shows `selected_icon` on selected segments in place of their own icon (default true). Set `false` to keep each segment's icon.",
+      "show_selected_icon": "Shows `selected_icon` on selected segments in place of their own icon (default true). Set `false` to keep each segment's icon; set it when you build the button, because with 0.0.23 `page.update` of this key raises ArgumentError.",
       "selected_icon": "Icon or control shown on selected segments. When it is not set, Android, Windows and Linux show a check mark there and iOS and macOS show no icon. A browser counts as the device it runs on."
     },
     "semantics": {
@@ -1383,7 +1385,7 @@
       "prefix_visibility_mode": "When the prefix shows: `\"never\"`, `\"editing\"`, `\"notEditing\"` or `\"always\"`. Android, Windows and Linux ignore it, in a browser too.",
       "suffix_visibility_mode": "When the suffix shows: `\"never\"`, `\"editing\"`, `\"notEditing\"` or `\"always\"`. Android, Windows and Linux ignore it, in a browser too.",
       "placeholder_text": "Prompt shown while the field is empty; `hint_text` wins when both are set. Prefer `hint_text`, which every platform shows. Android, Windows and Linux ignore it, in a browser too.",
-      "padding": "Space between the field's border and its text (`cupertino_text_field` sends 7 on every side). Android, Windows and Linux ignore it, in a browser too.",
+      "padding": "Space between the field's border and its text: a number for every side, or a `{ left:, top:, right:, bottom: }` map; `cupertino_text_field` sends `{ all: 7 }`. Android, Windows and Linux ignore it, in a browser too.",
       "blend_mode": "How the field's background color or gradient is combined with what is behind it, for example `\"multiply\"`. Android, Windows and Linux ignore it, in a browser too.",
       "gradient": "Gradient that fills the field's background. Android, Windows and Linux ignore it, in a browser too.",
       "image": "Image painted behind the text, for example `{ src: \"assets/paper.png\", fit: \"cover\", opacity: 0.3 }`. Android, Windows and Linux ignore it, in a browser too.",
@@ -1413,7 +1415,7 @@
     "timerpicker": {
       "value": "The duration, in whole seconds, for example `90` for 1 min 30 s (default 0); the client updates it as the user changes it.",
       "minute_interval": "Step between the minutes the picker offers, for example 5 (default 1). Use a number that divides 60.",
-      "alignment": "Position of the wheels in the space the picker has (default `\"center\"`). Android, Windows and Linux ignore it, in a browser too.",
+      "alignment": "Position of the wheels in the space the picker has, as `{ x:, y: }` from -1 to 1; `{ x: 0, y: 0 }` is the center, and `cupertino_timer_picker` sends `\"center\"`. Android, Windows and Linux ignore it, in a browser too.",
       "bgcolor": "Background color of the wheels. Android, Windows and Linux ignore it, in a browser too.",
       "item_extent": "Height of each row of the wheels, in logical pixels (default 32). Android, Windows and Linux ignore it, in a browser too.",
       "on_change": "Fired as the user changes the duration. When `value` is an Integer, `event.data` is the new duration in seconds; otherwise it is the duration in microseconds, and `.to_i` gives the number. `event.control.props[\"value\"]` holds the same value in both cases."

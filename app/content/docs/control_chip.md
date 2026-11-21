@@ -27,7 +27,7 @@ page.add(column(children: [row(spacing: 8, children: filters), shown]))
 
 - `label` — the chip's text or control (required); the first positional argument sets it
 - `selected` / `selected_color` / `show_checkmark`
-- `leading` — a leading control (often an avatar or icon)
+- `leading` — a control before the label, such as `icon("star")` or an avatar; a bare icon name such as `"star"` draws nothing
 - `delete_icon` / `on_delete` — make the chip deletable
 - `bgcolor`
 - `padding`

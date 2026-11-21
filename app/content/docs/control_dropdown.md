@@ -49,6 +49,10 @@ Use `on_select` when an option is selected. Editable dropdowns also expose
 `on_blur` work on every dropdown. `on_change` is the `dropdown_m2` spelling of
 `on_select`, and the 0.0.23 client never sends it, so handle `on_select`.
 
+With 0.0.23, Ruflet parses `on_text_change` data as JSON when it can, so typed
+`42` arrives as the Integer 42; call `.to_s` when you need the text. In the
+next release the typed text stays a String. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Options
 
 ```ruby

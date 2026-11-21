@@ -551,8 +551,12 @@ end
   INPUT_PAYLOAD_NEXT_RELEASE = {
     "control-auto-complete" => "In the next release the typed text stays a String in both.",
     "control-cupertino-date-picker" => "In the next release the client reads `\"date_and_time\"` too",
+    "control-cupertino-text-field" => "In the next release the typed text stays a String in both.",
     "control-cupertino-timer-picker" => "In the next release both are the String `\"90000000\"`.",
-    "control-dropdown" => "In the next release a String key stays a String, and an Integer key such as `1` still arrives as the Integer 1.",
+    "control-dropdown" => [
+      "In the next release a String key stays a String, and an Integer key such as `1` still arrives as the Integer 1.",
+      "Ruflet parses `on_text_change` data as JSON when it can"
+    ],
     "control-radio-group" => "In the next release a String `value` stays a String, and an Integer `value` such as `2` still arrives as the Integer 2.",
     "control-search-bar" => "In the next release the query stays a String in both.",
     "control-text-field" => "In the next release the typed text stays a String in both.",
@@ -568,11 +572,13 @@ end
         assert_includes chunk, marker, "#{slug}: say what the next release sends instead: #{chunk}"
       end
     end
-    INPUT_PAYLOAD_NEXT_RELEASE.each do |slug, phrase|
-      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+    INPUT_PAYLOAD_NEXT_RELEASE.each do |slug, phrases|
+      Array(phrases).each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
 
-      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
-      assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
     end
     %w[control-timer-picker control-cupertino-timer-picker].each do |slug|
       line = generated_line(slug, "events", "on_change")
@@ -582,12 +588,47 @@ end
     end
   end
 
+  # A list item that calls event.data the typed text or query is true on main
+  # only (ruflet #103); with 0.0.23 typed "42" arrives as 42. The item says so
+  # and points to the marked paragraph.
+  test "input list items that call event.data the typed text name the 0.0.23 parsing" do
+    items = INPUT_PAGES.flat_map do |slug|
+      prose_chunks(slug).grep(/\A- .*`event\.data` is the (text|query)\b/).map { |item| [ slug, item ] }
+    end
+
+    assert_operator items.size, :>=, 3
+    items.each do |slug, item|
+      assert_includes item, "with 0.0.23", "#{slug}: 0.0.23 parses typed text such as 42: #{item}"
+    end
+  end
+
+  # The 0.0.23 client reads an `{ all: n }` padding map as 0 and throws on a
+  # named alignment such as "center" (ruflet-engine #119 reads both on the
+  # engine branch). Input page examples use numbers and `{ x:, y: }` maps, and
+  # every line that shows those shapes names the 0.0.23 behavior.
+  test "input pages show all-maps and named alignments only with their 0.0.23 caveat" do
+    INPUT_PAGES.each do |slug|
+      content = page(slug).content
+      content.scan(/^```ruby\n(.*?)^```/m).flatten.each_with_index do |code, index|
+        refute_match(/\ball:\s/, code, "#{slug} Ruby block #{index + 1}: the 0.0.23 client reads { all: n } as 0")
+        refute_match(/alignment:\s*[":]/, code, "#{slug} Ruby block #{index + 1}: the 0.0.23 client cannot read a named alignment")
+      end
+      (prose_chunks(slug) + generated_api_lines(content).map(&:last)).grep(/\{ all: \d+ \}|alignment: "/).each do |chunk|
+        assert_includes chunk, "0.0.23", "#{slug}: say what 0.0.23 does with this shape: #{chunk}"
+      end
+    end
+    example = page("control-cupertino-timer-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+    assert_includes example, "alignment: { x: 0, y: 0 }", "0.0.23 shows an error box for the helper's default alignment on iOS and macOS"
+  end
+
   # Earlier statements a review found wrong on both releases.
   test "input pages keep the payload and option fixes a review made" do
     disabled = generated_line("control-dropdown-option", "properties", "disabled")
 
     refute_includes disabled, "still offer", "the next release dims a disabled option on iOS and macOS"
     assert_includes disabled, "the 0.0.23 client still lets the user pick it there."
+    assert_includes generated_line("control-dropdown", "events", "on_change"), "the same `event.data`, the option's key"
     range = prose_chunks("control-date-range-picker").join("\n")
 
     assert_includes range, "and not from `event.data`: on Android, Windows and Linux it is an empty String."

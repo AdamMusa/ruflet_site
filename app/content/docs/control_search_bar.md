@@ -40,7 +40,7 @@ page.add(column(children: [search, picked]))
 - `full_screen` — open the view full screen
 - `bar_bgcolor` / `view_bgcolor` / `divider_color`
 - `capitalization` / `keyboard_type`
-- `on_change` / `on_submit` — `event.data` is the query
+- `on_change` / `on_submit` — `event.data` is the query; with 0.0.23, a query such as `42` arrives parsed (see Usage)
 - `on_tap` — the bar was tapped
 - `on_tap_outside_view` — **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 

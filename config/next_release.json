@@ -714,16 +714,22 @@
         ]
       },
       "control-cupertino-text-field": {
-        "properties": [
-          "error",
-          "error_max_lines",
-          "error_style",
-          "fill_color",
-          "filled",
-          "focused_bgcolor",
-          "focused_border_color",
-          "focused_border_width"
-        ]
+        "properties": {
+          "error": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_max_lines": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_style": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "fill_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "filled": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "padding": "On iOS and macOS the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding; a number such as `7` works there."
+        }
+      },
+      "control-cupertino-timer-picker": {
+        "properties": {
+          "alignment": "On iOS and macOS the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels; an `{ x:, y: }` map works there."
+        }
       },
       "control-data-row": {
         "events": {
@@ -859,16 +865,22 @@
         ]
       },
       "control-text-field": {
-        "properties": [
-          "error",
-          "error_max_lines",
-          "error_style",
-          "fill_color",
-          "filled",
-          "focused_bgcolor",
-          "focused_border_color",
-          "focused_border_width"
-        ]
+        "properties": {
+          "error": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_max_lines": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_style": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "fill_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "filled": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "padding": "On iOS and macOS the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding; a number such as `7` works there."
+        }
+      },
+      "control-timer-picker": {
+        "properties": {
+          "alignment": "On iOS and macOS the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels; an `{ x:, y: }` map works there."
+        }
       }
     },
     "material": {

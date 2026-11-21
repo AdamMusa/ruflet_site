@@ -57,3 +57,7 @@ steps.
 `item_extent`, `alignment` and `bgcolor` style the iOS wheels and apply on iOS
 and macOS only. On iOS and macOS the wheels fill the height they are given,
 so give the picker a `height`.
+
+Give `alignment` as an `{ x:, y: }` map, for example `{ x: 0, y: 0 }` for the
+center. With 0.0.23 a named alignment such as `"center"` shows Flutter's error
+box in place of the wheels on iOS and macOS; the next release reads it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

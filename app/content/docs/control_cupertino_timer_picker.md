@@ -5,8 +5,9 @@ builds the same `TimerPicker` control as
 [`timer_picker`](/docs/control-timer-picker) and sends the iOS defaults:
 `item_extent: 32`, `alignment: "center"`, `minute_interval: 1`,
 `second_interval: 1` and `mode: "hour_minute_seconds"`, which clients read as
-`"hms"`. On Android, Windows and Linux the client draws a row of
-dropdowns instead. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
+`"hms"`. With 0.0.23, also pass `alignment: { x: 0, y: 0 }`, as in the example:
+the iOS and macOS client cannot read `"center"` (see Usage). On Android,
+Windows and Linux the client draws a row of dropdowns instead. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -19,6 +20,7 @@ page.add(
         value: 5400,
         mode: "hm",
         minute_interval: 5,
+        alignment: { x: 0, y: 0 },
         height: 200,
         on_change: ->(event) {
           seconds = event.control.props["value"].to_i
@@ -37,7 +39,8 @@ page.add(
 - `mode` — `"hms"` (default), `"hm"` or `"ms"`; the default `"hour_minute_seconds"` this helper sends reads as `"hms"`
 - `minute_interval` / `second_interval` — steps between the offered minutes and seconds
 - `item_extent` — height of each row of the wheels
-- `alignment` / `bgcolor`
+- `alignment` — where the wheels sit in the picker, as `{ x:, y: }` from -1 to 1; `{ x: 0, y: 0 }` is the center
+- `bgcolor`
 - `on_change` — the duration changed
 
 ## Usage
@@ -57,3 +60,10 @@ given.
 with 0.0.23 it raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `item_extent`, `alignment` and `bgcolor` apply on iOS and macOS only.
+
+On iOS and macOS the 0.0.23 client cannot read the `alignment: "center"` this
+helper sends by default, and shows Flutter's error box in place of the wheels.
+Pass `alignment: { x: 0, y: 0 }`, as above, or use
+[`timer_picker`](/docs/control-timer-picker), which sends no alignment. In the
+next release the client reads named alignments such as `"center"` and
+`"top_left"` too. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
