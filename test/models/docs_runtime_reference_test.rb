@@ -139,6 +139,99 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     assert_empty missing, "Document these in reference.md (or the page for their controls): #{missing.join(', ')}"
   end
 
+  # The DSL helpers the reference describes itself. The others (paint and
+  # the path_* helpers, local_auth, qrcode_scanner) belong to the pages of
+  # their controls and services. Ruflet.client_action is on the services page.
+  REFERENCE_DSL_HELPERS = %w[
+    animation animation_style app base_page basepage control default_host default_port dialogs duration
+    duration_in_milliseconds map_layer maplayer page pagelet service service_registry serviceregistry widget window
+  ].freeze
+
+  # A name used elsewhere (page.window, the Page's `window` keyword,
+  # `typed_data` in prose) must not count as the entry that documents it.
+  test "the reference and the events page give each entry point, helper and Event reader its own entry" do
+    catalog = DocsCatalog.runtime_catalog
+    names = ->(key) { catalog.fetch(key).map { |method| method[:name].to_s } }
+    reference = page("reference").content
+    dsl = reference[/^## DSL entry points\n(.*?)^## /m, 1].to_s
+    events = page("events-and-state").content
+
+    assert_empty REFERENCE_DSL_HELPERS - names.(:dsl_utilities), "REFERENCE_DSL_HELPERS lists names the catalog does not"
+    missing = REFERENCE_DSL_HELPERS.reject do |name|
+      escaped = Regexp.escape(name)
+      dsl.match?(/`(?:Ruflet(?:::DSL)?\.)?#{escaped}\(|`Ruflet::DSL\.#{escaped}`| \/ `#{escaped}`/)
+    end.map { |name| "DSL #{name}" }
+    missing += (names.(:ruflet) - %w[client_action]).reject do |name|
+      reference.match?(/^- `Ruflet\.#{Regexp.escape(name)}[`( ]/)
+    end.map { |name| "Ruflet.#{name}" }
+    missing += (names.(:event) - %w[initialize method_missing]).reject do |name|
+      events.match?(/^- `(?:event\.)?#{Regexp.escape(name)}[`( ]/)
+    end.map { |name| "Event##{name}" }
+
+    assert_empty missing, "Give these a list entry (or a call) of their own: #{missing.join(', ')}"
+  end
+
+  # Ruflet::UI::Types holds these constants, the same objects as
+  # Ruflet::<name> (identical in 0.0.23 and on main). MainAxisAlignment,
+  # CrossAxisAlignment and TextAlign are not among them.
+  UI_TYPES = %w[Duration Offset StrutStyle TextBaseline TextDecoration TextDecorationStyle TextOverflow TextStyle TextThemeStyle].freeze
+
+  test "the reference names only the constants that Ruflet::UI::Types holds" do
+    catalog = DocsCatalog.runtime_catalog.fetch(:constant_modules).map { |mod| mod[:name] }
+    paragraph = page("reference").content.split(/\n{2,}/).find { |chunk| chunk.include?("`Ruflet::UI::Types` is") }
+
+    assert_empty catalog.grep(/\ARuflet::UI::Types::/).map { |name| name.split("::").last } - UI_TYPES
+    assert paragraph, "reference.md no longer says which constants Ruflet::UI::Types holds"
+    paragraph.squish.split(/(?<=\.)\s+/).each do |sentence|
+      named = sentence.scan(/`(?:Ruflet::(?:UI::Types::)?)?([A-Z]\w+)`/).flatten
+      if sentence.include?("only under")
+        assert_empty named & UI_TYPES, "Ruflet::UI::Types holds these: #{sentence}"
+      else
+        assert_empty named - UI_TYPES, "Ruflet::UI::Types does not hold these: #{sentence}"
+      end
+    end
+    assert_empty page("reference").content.scan(/Ruflet::UI::Types::(\w+)/).flatten - UI_TYPES
+  end
+
+  # Claims that reviews corrected, checked against the Ruby source, the
+  # engine and the template 0.0.23 builds with: the page, a phrase that finds
+  # the paragraph or list item, what it must say and what it must not say.
+  CORRECTED_CLAIMS = [
+    # ruflet_backend.dart updatePageSize sends {"type": "resized"} on desktop.
+    [ "page-reference", "`page.window.on(:event)", [ '`"resized"`' ], [ "no window event" ] ],
+    # ruflet_backend.dart _registerClient: these flags, and no client_ip,
+    # client_user_agent or sess.
+    [ "page-reference", "When it connects, the client also sends", [ "`client_ip`, `client_user_agent` and `sess` are Page keywords that no Ruflet client sends" ],
+      [ /client also sends[^.]*`(?:client_ip|client_user_agent|sess)`/ ] ],
+    # 0.0.23 parses typed text; a text field keeps "null" and a JSON object in props.
+    [ "events-and-state", "- `data` — the client's payload", [ 'typed `"123"` arrives as `123` in `event.data`', 'keeps `"null"` and a JSON object' ],
+      [ /arrives as `"123"`/, 'in `event.data` and in `event.control.props["value"]`, `"2.50"`' ] ],
+    # ruflet_core.rb resolved_run_port: "abc".to_i is 0.
+    [ "reference", "- `Ruflet.resolved_run_port(port)`", [ "gives 0" ], [] ],
+    # dsl.rb read_duration_part: numbers, Floats included, count.
+    [ "reference", "- `duration(days:", [ "`duration(seconds: 1.5)` is `1500`" ], [ "A numeric String such as `\"2\"` counts" ] ],
+    # The 0.0.23 client ignores font_family_fallback: not in the unmarked key list.
+    [ "theming", "A text style, in `text_theme`", [ "`font_family`" ], [ "font_family_fallback" ] ],
+    # geolocator.dart restarts a failed stream on the next patch, not by itself.
+    [ "service-geolocator", "- `configuration` —", [ "at the next update of the service" ], [ "or after the stream failed" ] ]
+  ].freeze
+
+  test "the claims that reviews corrected stay corrected" do
+    CORRECTED_CLAIMS.each do |slug, phrase, wanted, unwanted|
+      chunk = page(slug).content.split(/\n(?=- |\n)/).map(&:squish).find { |candidate| candidate.include?(phrase) }
+
+      assert chunk, "#{slug} no longer says #{phrase.inspect}"
+      wanted.each { |text| assert_includes chunk, text, "#{slug}: #{phrase.inspect} must say #{text.inspect}" }
+      unwanted.each do |text|
+        assert_not(text.is_a?(Regexp) ? chunk.match?(text) : chunk.include?(text), "#{slug}: #{phrase.inspect} must not say #{text.inspect}")
+      end
+    end
+    # url_launcher's on_result does not report whether the URL opened.
+    launch = DocsCatalog::SERVICE_EXAMPLES.fetch("url_launcher")
+    assert_includes launch, "Asked the browser to open"
+    assert_no_match(/"Opened\b/, launch)
+  end
+
   test "the API reference names every value type and constant module" do
     content = page("reference").content
     names = DocsCatalog.runtime_catalog.fetch(:value_types).map { |type| type[:name] } +
@@ -152,7 +245,7 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   PINNED_MARKERS = {
     "page-reference" => [
       "`pop_views_until(route, result: nil)`", "`views_pop_until`", "`get_device_info(on_result:)`", "handler writer such as",
-      "are View keywords on `main` only", "treats the `show_*_icon` flags as booleans"
+      "are View keywords on `main` only", "treats the `show_*_icon` flags as booleans", "`show_drawer` / `close_drawer`"
     ],
     "events-and-state" => [
       "`ActionResultEvent`", "`PasteFilesEvent`", "`ViewsPopUntilEvent`", "`event.with_name(name)`",
@@ -172,24 +265,28 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   # included, so a String key is always nil in a real app: event.data["state"],
   # values_at("x"), event.data[:position]["latitude"],
   # event.data.fetch(:state)["x"], or data = event.data; data["state"].
-  # Symbol, Integer and method steps (event.data[:locales].first) may come
-  # before the String key.
-  PAYLOAD_STEPS = /(?:\[[^\]"']*\]|&?\.(?:fetch|dig)\([^)"']*\)|&?\.(?:first|last))*/
-  STRING_KEY = /(?:&?\[\s*["']|&?\.(?:values_at|dig|fetch|key\?)\(\s*["']|&?\.(?:values_at|dig)\([^)]*["'])/
-  STRING_KEY_READ = /\.data#{PAYLOAD_STEPS}#{STRING_KEY}/
+  # event.raw_data holds the same Hash, and to_h, slice and except keep its
+  # Symbol keys. Symbol, Integer and method steps (event.data[:locales].first)
+  # may come before the String key.
+  PAYLOAD_STEPS = /(?:\[[^\]"']*\]|&?\.(?:fetch|dig)\([^)"']*\)|&?\.(?:first|last|to_h|to_hash)\b)*/
+  STRING_KEY = /(?:&?\[\s*["']|&?\.(?:values_at|dig|fetch|fetch_values|key\?|has_key\?|slice|except)\(\s*["']|&?\.(?:values_at|dig|fetch_values|slice|except)\([^)]*["'])/
+  STRING_KEY_READ = /\.(?:raw_)?data#{PAYLOAD_STEPS}#{STRING_KEY}/
   # A local that holds the payload or part of it: data = event.data[:position]
-  PAYLOAD_ALIAS = /(?<![\w.])([a-z_]\w*)\s*=(?![=~>])\s*[a-z_]\w*\.data\b#{PAYLOAD_STEPS}\s*(?:$|[;)}|]|\|\||or\b|&&)/
+  PAYLOAD_ALIAS = /(?<![\w.])([a-z_]\w*)\s*=(?![=~>])\s*[a-z_]\w*\.(?:raw_)?data\b#{PAYLOAD_STEPS}\s*(?:$|[;)}|]|\|\||or\b|&&)/
 
   test "the String-key check catches direct, chained and aliased reads" do
     wrong = [
       'event.data["connectivity"]', "event.data.values_at('x', 'y')", 'event.data.dig(:position, "latitude")',
       'event.data[:position]["latitude"]', 'event.data.fetch(:state)["x"]', 'event.data[:locales].first["language_code"]',
-      'data = event.data; show.call(Array(data["connectivity"]))', "position = e.data[:position]\nposition.fetch(\"latitude\")"
+      'data = event.data; show.call(Array(data["connectivity"]))', "position = e.data[:position]\nposition.fetch(\"latitude\")",
+      'event.raw_data["state"]', 'event.data.to_h["state"]', 'event.data.slice("type").values.first', 'event.data.except(:x, "type")',
+      "payload = event.raw_data\npayload[\"type\"]"
     ]
     right = [
       "event.data[:connectivity]", "event.data.values_at(:x, :y, :z).map { |axis| axis.to_f }", "event.data.fetch(:state)[:x]",
       "data = event.data; show.call(Array(data[:connectivity]))", 'result["latitude"]', 'page.client_details["route"]',
-      "->(data, error) { data[\"latitude\"] }", 'connections.include?("none")'
+      "->(data, error) { data[\"latitude\"] }", 'connections.include?("none")', 'event.data.transform_keys(&:to_s)["state"]',
+      "event.data.slice(:type, :x)", 'event.raw_data.to_s.include?("1")'
     ]
 
     wrong.each { |code| assert_not_empty string_key_reads(code), "not caught: #{code}" }
@@ -224,13 +321,42 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
     assert_includes drawers.to_s, "> #{MARKER}", "page.show_drawer and page.scroll_to need the main client"
   end
 
+  # services-and-plugins also carries the markers of other sections.
+  test "the next-release marker appears only where PINNED_MARKERS pins it" do
+    (PINNED_MARKERS.keys - %w[services-and-plugins]).each do |slug|
+      content = page(slug).content
+      content.split(/\n(?=- |\n)/).select { |chunk| chunk.include?(MARKER) }.each do |chunk|
+        scope = chunk.lstrip.start_with?("> ") ? section_around(content, chunk) : chunk
+
+        assert PINNED_MARKERS.fetch(slug).any? { |phrase| scope.squish.include?(phrase) },
+          "#{slug}: this marker covers nothing PINNED_MARKERS lists, so it may mark what works on 0.0.23: #{chunk.squish[0, 120]}"
+      end
+    end
+  end
+
+  # A Material color or theme role written with the underscores of its
+  # Ruflet::Colors constant: :deep_orange_500, "blue_grey", :on_primary.
+  UNDERSCORED_COLOR = /\A(?:
+    (?:deep_|light_|blue_)?(?:red|pink|purple|indigo|blue|cyan|teal|green|lime|yellow|amber|orange|brown|grey)(?:_?accent)?(?:_?\d+)? |
+    (?:white|black)_?\d+ |
+    (?:on_)?(?:inverse_)?(?:primary|secondary|tertiary|error|surface|outline)(?:_(?:container|variant|fixed|dim|bright|tint|lowest|low|highest|high))*
+  )\z/x
+
   test "named colors on these pages use the client spelling" do
     pattern = /(?:color|bgcolor|color_scheme_seed):\s*:([a-z0-9_]+)/
     wrong = %w[page-reference theming reference].flat_map do |slug|
       page(slug).content.scan(pattern).flatten.select { |name| name.include?("_") }.map { |name| "#{slug} :#{name}" }
     end
+    slugs = %w[page-reference events-and-state services-and-plugins reference theming] +
+      DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
+    code = slugs.to_h { |slug| [ slug, page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.join("\n") ] }
+    code["SERVICE_EXAMPLES"] = DocsCatalog::SERVICE_EXAMPLES.values.join("\n")
+    code.each do |where, source|
+      names = source.scan(/(?<![:\w]):([a-z][a-z0-9_]*)\b/).flatten + source.scan(/(?:[\w\]]:|=>)\s*"([a-z][a-z0-9_]*)"/).flatten
+      wrong += names.select { |name| name.include?("_") && name.match?(UNDERSCORED_COLOR) }.map { |name| "#{where} #{name}" }
+    end
 
-    assert_empty wrong, "The clients match named colors without underscores (:deeporange500): #{wrong.join(', ')}"
+    assert_empty wrong.uniq, "The clients match named colors without underscores (:deeporange500): #{wrong.uniq.join(', ')}"
   end
 
   private
@@ -272,6 +398,14 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
 
   # True when a "> **Requires the next Ruflet release**" callout comes after
   # the last heading before `phrase`, so the callout covers it.
+  # The text from the heading before +chunk+ to the next heading.
+  def section_around(content, chunk)
+    at = content.index(chunk)
+    start = content.rindex(/^#+ /, at) || 0
+    finish = content.index(/^#+ /, at + chunk.length) || content.length
+    content[start...finish]
+  end
+
   def under_callout?(content, phrase)
     at = content.index(phrase)
     heading = content.rindex(/^#+ /, at)

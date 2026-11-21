@@ -74,8 +74,12 @@ Constants for String-valued properties:
 - `Ruflet::TextDecoration` — `NONE`, `UNDERLINE`, `OVERLINE` and `LINE_THROUGH`, which are bit flags: `Ruflet::TextDecoration.combine([Ruflet::TextDecoration::UNDERLINE, Ruflet::TextDecoration::OVERLINE])`.
 - `Ruflet::TextDecorationStyle` — `SOLID`, `DOUBLE`, `DOTTED`, `DASHED` and `WAVY`.
 
-The `Ruflet::UI::Types` names (`Ruflet::UI::Types::TextBaseline` and the
-others) are the same modules.
+`Ruflet::UI::Types` is a second name for five of these modules and four of the
+types: `Ruflet::UI::Types::TextBaseline` is `Ruflet::TextBaseline`, and the same
+goes for `TextDecoration`, `TextDecorationStyle`, `TextOverflow`,
+`TextThemeStyle`, `TextStyle`, `StrutStyle`, `Offset` and `Duration`.
+`MainAxisAlignment`, `CrossAxisAlignment` and `TextAlign` exist only under
+`Ruflet::`.
 
 ```ruby
 heading = Ruflet::TextStyle.new(size: 24, weight: "bold", color: :indigo700)
@@ -100,9 +104,9 @@ page.add(
 ## DSL entry points
 
 - `Ruflet.run(entrypoint = nil, host: "0.0.0.0", port: nil) { |page| ... }` — starts the server and calls the block, or `entrypoint` (any object with `call`, such as a lambda), with the `page` of each connected client. It raises ArgumentError without either. `port` is resolved by `Ruflet.resolved_run_port`; `host` does not read `RUFLET_HOST`.
-- `Ruflet.resolved_run_port(port)` — the port `Ruflet.run` listens on: `port`, else the `RUFLET_PORT` environment variable, else 8550. A negative or blank value gives 8550.
+- `Ruflet.resolved_run_port(port)` — the port `Ruflet.run` listens on: `port`, else the `RUFLET_PORT` environment variable, else 8550. A negative or blank value gives 8550, and a value that does not start with digits, such as `"abc"`, gives 0, so the server takes any free port.
 - `Ruflet.with_run_interceptor(interceptor) { ... }` — while the block runs, `Ruflet.run` calls `interceptor.call(entrypoint:, host:, port:)` instead of starting a server and returns what it returns. An interceptor that returns `:pass` lets `Ruflet.run` start the server as usual. The innermost interceptor wins. Hot reload and the Rails mobile loader use it to capture an app's entrypoint.
-- `Ruflet.app(host: nil, port: nil) { ... }` / `Ruflet::DSL.app` — builds an app from DSL calls; call `.run` on it. `host` defaults to `Ruflet::DSL.default_host` (`RUFLET_HOST`, or `"0.0.0.0"` when it is blank), and `port` to `Ruflet::DSL.default_port` (`RUFLET_PORT`, or 8550 when it is blank or negative).
+- `Ruflet.app(host: nil, port: nil) { ... }` / `Ruflet::DSL.app` — builds an app from DSL calls; call `.run` on it. `host` defaults to `Ruflet::DSL.default_host` (`RUFLET_HOST`, or `"0.0.0.0"` when it is blank), and `port` to `Ruflet::DSL.default_port` (`RUFLET_PORT`, read as `Ruflet.resolved_run_port` reads it).
 - Inside the block, `page(**props) { ... }` sets page properties and builds the controls, `service(type, **props)` declares a service, and the control helpers add controls.
 - The returned app answers `host`, `port` and `page_props` (the page properties it will send, a Hash with String keys that starts as `{ "route" => "/" }`), `set_endpoint!(host:, port:)`, which changes the host and port before `run`, and `run`, which starts the server and gives every client the page properties, the services and the controls.
 
@@ -139,7 +143,7 @@ app(port: 8551).run
 These helpers work in a DSL block, at the top level, and in `Ruflet.run`:
 
 - `control(type, **props) { ... }` / `widget(type, **props) { ... }` — builds a control by its type name, such as `control(:text, value: "Hi")`. Use it for an extension control that has no helper.
-- `duration(days:, hours:, minutes:, seconds:, milliseconds:, microseconds:)` — the total as an Integer number of milliseconds, for duration properties: `duration(seconds: 1, milliseconds: 500)` is `1500`. `Ruflet::DSL.duration_in_milliseconds(parts)` does the same with a Hash. A numeric String such as `"2"` counts; any other value counts as 0.
+- `duration(days:, hours:, minutes:, seconds:, milliseconds:, microseconds:)` — the total as an Integer number of milliseconds, for duration properties: `duration(seconds: 1, milliseconds: 500)` is `1500`. `Ruflet::DSL.duration_in_milliseconds(parts)` does the same with a Hash. Each part is a number or a numeric String such as `"2"` or `"1.5"`, so `duration(seconds: 1.5)` is `1500`; any other value counts as 0. The total is rounded to whole milliseconds.
 - `pagelet(content, **props)` — a page-like area inside the page, with its own `appbar`, `navigation_bar` or `bottom_appbar`, `drawer`, `end_drawer`, `bottom_sheet`, `floating_action_button` and `floating_action_button_location`, and `bgcolor`. It needs `content`, and a `height:` or a parent that bounds its height, such as `expand: true` in a column; otherwise the client shows "height is unbounded". iOS and macOS draw it with Cupertino widgets.
 - `window(**props)` — a `Window` control. Ruflet creates the one the client draws, `page.window`; see [Window](/docs/page-reference#window).
 - `base_page(**props)` / `basepage`, `service_registry(services, **props)` / `serviceregistry`, `dialogs(controls, **props)` and `map_layer(**props)` / `maplayer` — the base and container controls Ruflet uses itself. No client draws a `BasePage` or a bare `MapLayer`, and the page already holds its own service registry and dialogs. Use `page`, `page.add_service`, `page.show_dialog` and the [map layer helpers](/docs/maps) instead.

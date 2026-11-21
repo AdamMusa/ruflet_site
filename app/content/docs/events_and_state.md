@@ -31,7 +31,7 @@ as `on_select`, `on_text_change`, or `on_change_end`.
 Handlers receive a `Ruflet::Event` with these readers:
 
 - `name` — the event name without its `on_` prefix, such as `"change"` or `"tap_down"`
-- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings. With 0.0.23 that includes what the user typed or picked: typed `"123"` arrives as `123` in `event.data` and in `event.control.props["value"]`, `"2.50"` as `2.5`, and `"null"` as `nil`. Read `event.raw_data` for the text exactly as typed. See [Typed values stay Strings](#typed-values-stay-strings) for `main`.
+- `data` — the client's payload: a Hash, an Array, a String, a number or `nil`. The server turns the keys of a Hash into Symbols, nested Hashes included. A String that holds JSON is parsed, and its keys stay Strings. With 0.0.23 that includes what the user typed or picked: typed `"123"` arrives as `123` in `event.data`, `"2.50"` as `2.5`, `"[1]"` as `[1]` and `"null"` as `nil`. A text field's `event.control.props["value"]` gets the same parsed number, boolean or Array, but keeps `"null"` and a JSON object as typed. Read `event.raw_data` for the text exactly as typed. See [Typed values stay Strings](#typed-values-stay-strings) for `main`.
 - `raw_data` — the payload before a JSON String is parsed. A Hash already has Symbol keys here
 - `control` — the control that fired the event (`nil` for Page events)
 - `page` — the connected `Ruflet::Page`
