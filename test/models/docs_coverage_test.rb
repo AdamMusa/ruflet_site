@@ -545,6 +545,13 @@ end
       "when it was checked the client sends `false`, which arrives in Ruby as `nil`"
     assert_includes generated_line("control-context-menu-action", "events", "on_click"),
       "one that becomes unchecked sends `false`, which arrives in Ruby as `nil`"
+    assert prose_chunks("control-popup-menu-item").any? { |chunk|
+      chunk.include?("keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`.")
+    }, "control-popup-menu-item: the summary says a false click payload arrives as nil"
+    # Only a top-level `false` becomes `nil`: a Hash payload is kept, `false`
+    # values and all (event_data_docs_test.rb checks this too).
+    assert_includes generated_line("control-tab-bar", "events", "on_hover"),
+      "`event.data` is a hash with symbol keys: `:hovering` (`true` or `false`) and `:index`."
     # The shared line is what container, gesture_detector and map show, and
     # their pages do not all describe on_hover's data.
     assert_equal "Fired when a mouse pointer moves onto or off the control; touch input never fires it.",
@@ -598,6 +605,15 @@ end
       assert paragraph, "#{slug} no longer says #{phrase.inspect}"
       assert_includes paragraph, DocsCatalog::NEXT_RELEASE_MARKER, "#{slug}: #{phrase.inspect} needs the next-release marker"
     end
+    # What main does, ahead of the 0.0.23 sentence in the same paragraph.
+    assert prose_chunks("control-menu-bar").any? { |chunk|
+      chunk.include?("On iOS and macOS, picking an entry also closes the sheet and fires the submenu's `on_close`, and a disabled entry ignores taps. With 0.0.23")
+    }, "control-menu-bar: on main a disabled entry in the iOS sheet ignores taps"
+    # The popup_menu_item summary (config/control_docs.json) marks the 0.0.23
+    # iOS menu, like its on_click line.
+    assert prose_chunks("control-popup-menu-item").any? { |chunk|
+      chunk.include?("With 0.0.23 the iOS and macOS menu sends no data, so `event.data` is always `nil` there. #{DocsCatalog::NEXT_RELEASE_MARKER}.")
+    }, "control-popup-menu-item: the summary lost the marked 0.0.23 iOS sentence"
   end
 
   # A hand-written paragraph about iOS and macOS that names a line the 0.0.23
@@ -622,7 +638,8 @@ end
   # The Navigation and Feedback guide runs as written: every method its
   # examples call without a receiver is a Ruflet helper, `page`, a Kernel
   # method, or something the page defines (a `def`, or a variable an example
-  # assigns and reads, such as the `render_route` lambda).
+  # assigns and reads, such as the `render_route` lambda), and every method
+  # called on `page` is a public Page method (config/runtime_catalog.json).
   test "navigation and feedback examples define every app method they call" do
     content = DocsCatalog::SOURCE_ROOT.join("navigation_feedback.md").read
     nodes = content.scan(/^```ruby\n(.*?)^```/m).flatten.flat_map do |code|
@@ -641,6 +658,17 @@ end
 
     assert_operator nodes.grep(Prism::CallNode).size, :>, 50
     assert_empty undefined.map(&:slice), "navigation_feedback.md calls these, which no example defines"
+
+    page_methods = JSON.parse(Rails.root.join("config/runtime_catalog.json").read).fetch("page").reject { |method| method["internal"] }.map { |method| method["name"] }
+    page_calls = nodes.grep(Prism::CallNode).select do |call|
+      receiver = call.receiver
+      (receiver.is_a?(Prism::CallNode) && receiver.receiver.nil? && receiver.name == :page) ||
+        (receiver.is_a?(Prism::LocalVariableReadNode) && receiver.name == :page)
+    end
+
+    assert_operator page_calls.size, :>, 10
+    assert_empty page_calls.reject { |call| page_methods.include?(call.name.to_s) }.map(&:slice),
+      "navigation_feedback.md calls these on page, which are not public Page methods"
     assert_includes content, "render_route = lambda do"
     %w[control-view control-navigation-bar control-navigation-rail control-navigation-drawer control-tabs
        control-app-bar control-popup-menu-button control-menu-bar control-context-menu].each do |slug|
