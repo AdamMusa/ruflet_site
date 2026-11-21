@@ -280,7 +280,26 @@ class DocsCoverageTest < ActiveSupport::TestCase
       "on iOS and macOS, size each segment to its content",
       "the colors of the track and of the sliding thumb"
     ],
-    "control-cupertino-date-picker" => [ "drawing it in place with `page.add`" ]
+    "control-cupertino-date-picker" => [ "drawing it in place with `page.add`" ],
+    "rails-api-reference" => [
+      "The connection and the session stay up",
+      "in its own `Rails.application.executor` run",
+      "The Active Record query cache lasts one message",
+      "goes back to the pool when the message is done",
+      "reloads it while clients stay connected"
+    ]
+  }.freeze
+
+  # Hand-written sentences about behavior 0.0.23 already has, next to marked
+  # ones: they must stay unmarked.
+  PINNED_RELEASED_PROSE = {
+    "rails-api-reference" => [
+      "the endpoint logs the error to `Rails.logger`",
+      "An error raised by the entrypoint itself still ends the session.",
+      "stays set for the whole connection, and is reset once"
+    ],
+    "configuration-reference" => [ "`ruflet update` still fails when it cannot reach GitHub" ],
+    "rails-native-styling" => [ "`ring-inset`, `ring-offset-N`, `ring-offset-<color>`, `outline-none` and `outline-hidden`" ]
   }.freeze
 
   # Hand-written sentences that say which platforms a line applies to. They
@@ -335,6 +354,19 @@ class DocsCoverageTest < ActiveSupport::TestCase
 
         assert paragraph, "#{slug} no longer says #{phrase.inspect}"
         assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+  end
+
+  test "hand-written sentences about released behavior stay unmarked" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    PINNED_RELEASED_PROSE.each do |slug, phrases|
+      phrases.each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        refute_includes paragraph, marker, "#{slug}: #{phrase.inspect} works on 0.0.23 and must not be marked"
       end
     end
   end
@@ -433,9 +465,12 @@ end
   private
 
   # The hand-written part of a page (everything above a prose page's Complete
-  # API appendix), split into paragraphs and list items, each on one line.
+  # API appendix), split into paragraphs and list items, each on one line. A
+  # guide page has no generated content, only its Markdown source.
   def prose_chunks(slug)
-    page(slug).content.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
+    entry = page(slug)
+    text = entry.content || entry.source.read
+    text.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
   end
 
   # The one generated "- `name` ..." line of a kind on a control page.

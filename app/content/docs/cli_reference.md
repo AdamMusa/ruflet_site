@@ -172,6 +172,21 @@ Doctor reports Ruby, the managed template, Flutter, and platform-tool status.
 `--fix` downloads supported missing Ruflet and Flutter assets. Platform SDKs,
 signing identities, and system packages can still require manual setup.
 
+Without `--fix`, the doctor installs no Flutter. It still finds a Flutter SDK
+that `--fix` or a build installed earlier under
+`~/.ruflet/flutter/<version>/<host>/flutter`, where 0.0.23 reports
+`Flutter: missing` unless Flutter is on your `PATH` or, for a pinned version,
+in the project's FVM directory. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+When Ruflet needs its own Flutter SDK but cannot download Flutter's release
+list (offline, or an error answer), `ruflet doctor --fix` and the commands
+that need Flutter (`build`, `install`, `debug`, `devices`, `emulators` and
+`update`) use an SDK already installed there instead of failing. With an
+exact `x.y.z` version from `RUFLET_FLUTTER_VERSION` or `.fvmrc`, only that
+version counts; otherwise the newest installed SDK is used, a stable release
+first on the stable channel. With 0.0.23 they stop and report that Flutter is
+required and the FVM bootstrap failed. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Environment variables
 
 Commands also read these environment variables. The
