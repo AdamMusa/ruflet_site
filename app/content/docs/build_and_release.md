@@ -37,6 +37,12 @@ From these Ruflet derives the display name, the bundle identifier
 platform. A mobile build stops if the name, package name, or organization is
 missing.
 
+`ruflet new` writes this identity into the `app` section of `services.yaml`,
+with `app_name` as the name. That section fills whatever `ruflet.yaml` leaves
+out, so either file works; see
+[App identity in `services.yaml`](/docs/configuration-reference#app-identity-in-services-yaml)
+for how a name set in both is resolved.
+
 ## Server-driven builds
 
 Server-driven is the default build mode. The installed client connects to a
@@ -120,6 +126,16 @@ build:
   icon_background: "#FFFFFF"
   theme_color: "#FFFFFF"
 ```
+
+Every build passes these to the client's flutter_native_splash and
+flutter_launcher_icons configuration and runs both generators. Splash screens
+are generated for Android, iOS and the web, and icons for every platform
+except Linux. A section named after a platform, such as `android:` or `ios:`,
+overrides the shared values there and adds that platform's own options:
+adaptive icons and the Android 12 splash, the iOS launch-screen content mode,
+the web splash image mode, the Windows icon size. The
+[Configuration Reference](/docs/configuration-reference#platform-sections)
+lists every key.
 
 ## Install a build
 

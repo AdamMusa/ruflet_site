@@ -5731,37 +5731,6 @@
       ]
     },
     {
-      "title": "Dropdown",
-      "methods": [
-        {
-          "name": "attach_handler",
-          "parameters": [
-            [
-              "req",
-              "event_name"
-            ],
-            [
-              "req",
-              "handler"
-            ]
-          ]
-        },
-        {
-          "name": "on",
-          "parameters": [
-            [
-              "req",
-              "event_name"
-            ],
-            [
-              "block",
-              "block"
-            ]
-          ]
-        }
-      ]
-    },
-    {
       "title": "SearchBar",
       "methods": [
         {
@@ -6682,32 +6651,11 @@
           "parameters": []
         },
         {
-          "name": "handle_field_event",
-          "parameters": [
-            [
-              "req",
-              "control"
-            ],
-            [
-              "req",
-              "name"
-            ],
-            [
-              "req",
-              "event"
-            ]
-          ]
-        },
-        {
           "name": "reset",
           "parameters": []
         },
         {
           "name": "save",
-          "parameters": []
-        },
-        {
-          "name": "sync_form_fields!",
           "parameters": []
         },
         {

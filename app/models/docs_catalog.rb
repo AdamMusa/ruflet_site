@@ -438,10 +438,11 @@ class DocsCatalog
           entry("rails-native-services", "Services", "Declare native services and invoke device capabilities from ERB-to-native screens.", SOURCE_ROOT.join("rails_native_services.md"), "Integrations", parent_slug: "rails-erb-to-native"),
           entry("rails-api-reference", "Rails API", "Public `ruflet_rails` methods, configuration, generator options, tasks, and view helpers.", SOURCE_ROOT.join("rails_api_reference.md"), "Integrations"),
           entry("rails-native-html", page_heading(SOURCE_ROOT.join("rails_native_html.md")), "Rails HTML in a native Ruflet shell, and how it compares with the other Rails modes.", SOURCE_ROOT.join("rails_native_html.md"), "Integrations"),
-          entry("rails-native-styling", "Styling Rails Pages", "Style Rails HTML normally when it is displayed inside a Ruflet native WebView shell.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
+          entry("rails-native-styling", "Styling Rails Pages", "Style native-shell HTML with CSS, and ERB-to-native screens with Tailwind-style utility classes.", SOURCE_ROOT.join("rails_native_styling.md"), "Integrations"),
           entry("rails-native-interactivity", "Rails Navigation and Actions", "Use ordinary Rails links and forms with supported native-shell navigation annotations.", SOURCE_ROOT.join("rails_native_interactivity.md"), "Integrations"),
           entry("rails-assets", "Assets and URLs", "Resolve Rails asset URLs that a native Ruflet client can reach.", SOURCE_ROOT.join("rails_assets.md"), "Integrations"),
-          entry("rails-native-shell", "Native Shell", "Wrap Rails views in a native shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations")
+          entry("rails-native-shell", "Native Shell", "Wrap Rails views in a native shell and promote supported ERB-declared chrome and service actions.", SOURCE_ROOT.join("rails_webview_apps.md"), "Integrations"),
+          entry("ruflet-record", "RufletRecord", "Store app data in SQLite with RufletRecord models, schema helpers, lazy queries and transactions.", SOURCE_ROOT.join("ruflet_record.md"), "Integrations")
         ]
       ),
       Section.new(

@@ -44,6 +44,26 @@ class RufletApiSyncTest < ActiveSupport::TestCase
     refute entries.key?("ElevatedButton")
   end
 
+  test "events a renderer fires through a helper stay in the catalog" do
+    # webview_mobile_and_mac.dart fires these through
+    # `_reportUrl("page_started", url)`, not a triggerEvent literal.
+    web_view = DocsCatalog.control_catalog.find { |entry| entry.fetch(:title) == "WebView" }
+
+    assert_empty %w[on_page_started on_page_ended on_url_change] - web_view.fetch(:events)
+  end
+
+  test "control methods leave out runtime plumbing and common Control overrides" do
+    entries = DocsCatalog.control_catalog.index_by { |entry| entry.fetch(:title) }
+    method_names = ->(title) { entries.fetch(title).fetch(:methods).map { |method| method[:name] || method["name"] } }
+
+    assert_includes method_names.call("Form"), "validate"
+    refute_includes method_names.call("Form"), "handle_field_event"
+    refute_includes method_names.call("Form"), "sync_form_fields!"
+    assert_empty method_names.call("Dropdown") & %w[on attach_handler]
+    common = DocsCatalog.service_catalog.fetch(:common_control_methods).map { |method| method[:name] || method["name"] }
+    assert_empty %w[on attach_handler] - common, "on and attach_handler stay documented with the common methods"
+  end
+
   test "on-prefixed schema properties are not mislabeled as events" do
     entries = DocsCatalog.control_catalog.index_by { |entry| entry.fetch(:title) }
 

@@ -86,28 +86,56 @@ jobs:
       # The API catalogs in config/ are generated from these exact Ruflet and
       # ruflet-engine commits. When you regenerate them with
       # script/sync_ruflet_api, update both refs to the commits you synced from.
+      # The docs tests also read Ruflet's config schema from it.
       - name: Check out Ruflet source
         uses: actions/checkout@v6
         with:
           repository: AdamMusa/ruflet
-          ref: 51bea9b1730c0165d206afbe5f46a2973beaaf59
+          ref: 27e2ffa827bed29a5ea93b988c328c22e1d910bb
           path: .ruflet-sources/ruflet
           sparse-checkout: |
             packages/ruflet_core
             packages/ruflet_server
+            packages/ruflet/lib/ruflet/cli/build/config_schema
 
       - name: Check out ruflet-engine source
         uses: actions/checkout@v6
         with:
           repository: AdamMusa/ruflet-engine
-          ref: a4632931a307761c5b8060e529307a4f0a5cb4ba
+          ref: b35622d6269738df50cece70f3fe7f911e5d10bc
           path: .ruflet-sources/ruflet-engine
+
+      # The RufletRecord page documents the published 0.0.23 gem: its
+      # unmarked examples also run against this commit, which set
+      # ruflet_record's VERSION to 0.0.23.
+      - name: Check out RufletRecord 0.0.23 source
+        uses: actions/checkout@v6
+        with:
+          repository: AdamMusa/ruflet
+          ref: b34072be854ec713184a4b7772f5e0645d830022
+          path: .ruflet-sources/ruflet-record-0.0.23
+          sparse-checkout: |
+            packages/ruflet_record
+
+      # The Ruflet source above can predate ruflet_record changes on main, so
+      # the RufletRecord examples run against ruflet_record from this main
+      # commit instead. Move it forward when ruflet_record changes on main.
+      - name: Check out RufletRecord main source
+        uses: actions/checkout@v6
+        with:
+          repository: AdamMusa/ruflet
+          ref: c061df08c843f04ed19cb88f7a5b8e1cc7ca5ef4
+          path: .ruflet-sources/ruflet-record-main
+          sparse-checkout: |
+            packages/ruflet_record
 
       - name: Run tests
         env:
           RAILS_ENV: test
           RUFLET_SOURCE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet
           RUFLET_ENGINE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-engine
+          RUFLET_RECORD_RELEASE_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-record-0.0.23
+          RUFLET_RECORD_MAIN_ROOT: ${{ github.workspace }}/.ruflet-sources/ruflet-record-main
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test

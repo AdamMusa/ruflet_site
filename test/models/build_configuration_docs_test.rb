@@ -1,4 +1,5 @@
 require "test_helper"
+require "open3"
 require "ruflet/cli"
 
 # Checks the build-configuration pages against the mappings in Ruflet's build
@@ -79,6 +80,80 @@ class BuildConfigurationDocsTest < ActiveSupport::TestCase
     assert_includes content, "ruflet build ipa --self"
     assert_includes content, "--self is not supported for web"
     assert_includes content, "/docs/cli-reference"
+  end
+
+  # Environment variables one Ruflet process sets for another; not settings.
+  INTERNAL_ENVIRONMENT = %w[
+    RUFLET_APP_SCRIPT RUFLET_ASSETS_DIR RUFLET_BOOTSNAP_DIR RUFLET_RAILS_DESKTOP
+    RUFLET_RAILS_DESKTOP_SERVER RUFLET_READY_FD RUFLET_RUNTIME_ERROR_FILE
+    RUFLET_RUNTIME_PORT_FILE RUFLET_RUNTIME_TRANSPORT RUFLET_SUPPRESS_SERVER_BANNER
+    RUFLET_TARGET RUFLET_URL RUFLET_WATCH_ROOT RUFLET_WEB_CLIENT_DIR
+  ].freeze
+
+  test "configuration reference names every environment variable the released gems read" do
+    content = source("configuration-reference")
+    read = %w[ruflet ruflet_core ruflet_server ruflet_rails].flat_map do |name|
+      Dir[File.join(Gem.loaded_specs.fetch(name).full_gem_path, "lib", "**", "*.rb")].flat_map do |path|
+        File.read(path).scan(/["'](RUFLET_[A-Z0-9_]+)["']/).flatten
+      end
+    end
+
+    missing = read.uniq.sort - INTERNAL_ENVIRONMENT
+    missing.reject! { |name| content.include?("`#{name}`") }
+    assert_empty missing, "Undocumented environment variables (ruflet #{Ruflet::VERSION})"
+  end
+
+  PLATFORMS = %w[android ios web macos windows linux].freeze
+
+  # Ruflet main declares every ruflet.yaml and services.yaml key in
+  # cli/build/config_schema. The keys there are released too unless the page
+  # marks them, so each must be named on the configuration reference: a key
+  # only some platforms take under that platform's heading, the rest anywhere.
+  # `splash_<platform>` on the page names the key for every platform.
+  test "configuration reference names every key in Ruflet's config schema" do
+    schema = config_schema_keys
+    skip "Set RUFLET_SOURCE_ROOT to a Ruflet checkout with cli/build/config_schema" unless schema
+
+    content = source("configuration-reference")
+    named = ->(text) { text.scan(/`([a-z0-9_<>]+)`/).flatten.flat_map { |key| key.include?("<platform>") ? PLATFORMS.map { |platform| key.sub("<platform>", platform) } : key } }
+    everywhere = named.call(content)
+    sections = content[/^## Platform sections\n.*?(?=^## )/m].to_s.split(/^### `(\w+)`\n/).drop(1).each_slice(2).to_h { |name, text| [ name, named.call(text) ] }
+    platform_key = /\A(?:(?:build|assets)\.)?(#{PLATFORMS.join('|')})\.([a-z0-9_]+)\z/
+    by_platform = schema.filter_map { |path, _| path.match(platform_key)&.captures&.reverse }.group_by(&:first).transform_values { |pairs| pairs.map(&:last).uniq }
+
+    missing = schema.filter_map do |path, type|
+      next if type == "map"
+
+      if (match = path.match(platform_key))
+        leaf = match[2]
+        platforms = by_platform.fetch(leaf)
+        next if platforms.sort == PLATFORMS.sort ? everywhere.include?(leaf) : platforms.all? { |platform| Array(sections[platform]).include?(leaf) }
+      else
+        next if everywhere.include?(path.split(".").last)
+      end
+      path
+    end
+
+    assert_empty missing.uniq, "Config keys the configuration reference does not name"
+  end
+
+  def config_schema_keys
+    root = ENV["RUFLET_SOURCE_ROOT"].to_s
+    dir = File.join(root, "packages/ruflet/lib/ruflet/cli/build")
+    return nil if root.empty? || !File.file?(File.join(dir, "config_schema.rb"))
+
+    # A separate process: the schema lives in Ruflet::CLI, which the bundled
+    # 0.0.23 gem defines too.
+    script = <<~RUBY
+      require "json"
+      require #{File.join(dir, 'config_schema').inspect}
+      Dir[#{File.join(dir, 'config_schema', '*.rb').inspect}].sort.each { |file| require file }
+      schema = Ruflet::CLI::Build::ConfigSchema
+      puts JSON.generate(%w[ruflet.yaml services.yaml].flat_map { |file| schema.keys(file: file).map { |key| [ key.path, key.type ] } })
+    RUBY
+    stdout, stderr, status = Open3.capture3(RbConfig.ruby, "-e", script)
+    assert status.success?, stderr
+    JSON.parse(stdout).uniq
   end
 
   test "ERB grid docs describe the responsive row mapping" do

@@ -11,6 +11,21 @@ Use `ruflet help` or `ruflet --help` for the command summary. Use
 `ruflet --version`, `ruflet -v`, or `ruflet version` to print the installed
 version.
 
+In 0.0.23 commands have no help of their own; `ruflet help build` prints the
+same summary. Do not pass `--help` to a command there, because the command
+treats it as an argument:
+
+- `ruflet new --help` and `ruflet create --help` create a project in a directory named `--help`.
+- `ruflet build --help` stops with `Unsupported build target: --help`.
+- `ruflet install --help` looks for a build to install.
+- `ruflet doctor --help` runs the doctor.
+- `ruflet devices --help` passes `--help` to Flutter, which prints the help of `flutter devices` and lists no devices.
+- `ruflet run --help`, `ruflet update --help`, `ruflet debug --help` and `ruflet emulators --help` print only a bare list of options under `Usage: ruflet [options]`.
+
+This reference lists each command's options.
+
+> **Requires the next Ruflet release** (on `main`, not in 0.0.23). `ruflet <command> --help`, `-h` and `ruflet help <command>` print that command's usage, summary and options. A flag the command does not read stops it with `ruflet <command>: invalid option: <flag>` and the command's help on standard error, exit status 64. `build` and `devices` still pass the flags they do not read to Flutter, so `ruflet build apk --help` and `ruflet devices --help` reach Flutter.
+
 ## Create a project
 
 ```text
@@ -34,8 +49,11 @@ ruflet run [script|path] [--web|--desktop] [--port PORT] [--no-reload]
   Ruby file are accepted.
 - Mobile development is the default target. `--web` opens the managed web
   client and `--desktop` starts the managed desktop client.
-- The server listens on port `8550` by default. `--port PORT` overrides it;
-  `RUFLET_PORT` provides the runtime default.
+- The server listens on port `8550` by default, or on the next free port when
+  that one is taken. `--port PORT` sets the port to start from. `ruflet run`
+  passes the port it picked to the app as `RUFLET_PORT`, in place of any value
+  already set, so `RUFLET_PORT` sets the port only for an app started without
+  `ruflet run`.
 - Hot reload is enabled by default and watches Ruby files. Press `r` in the
   running terminal to rerun the app against the live page. Press `R` to restart
   the Ruby backend. Use `--no-reload` to disable the watcher.
@@ -74,6 +92,8 @@ ruflet debug [platform] [--platform NAME] [--device-id ID]
 renderer name. This command requires managed Flutter client source and is for
 client-side debugging; normal app development uses `ruflet run`.
 
+`--device ID` and `--device=ID` are other spellings of `--device-id ID`.
+
 ## Build
 
 ```text
@@ -110,7 +130,11 @@ Self-contained builds embed the Ruby project:
   self-contained.
 
 Ruflet forwards remaining build options to Flutter after preparing extensions,
-permissions, assets, and runtime mode.
+permissions, assets, and runtime mode. Ruflet's own flags may sit anywhere,
+but the first other argument is the target, so put Flutter's flags after it:
+`ruflet build apk --release`.
+
+The target may also come after Flutter's flags, as in `ruflet build --release apk`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Install
 
@@ -120,6 +144,8 @@ ruflet install [-d|--device DEVICE_ID] [-v|--verbose]
 
 Install the last compatible build from `build/`. Run a platform build first.
 Without a device id, Ruflet presents a numbered chooser for connected devices.
+
+`--device=DEVICE_ID` is read too, and `-d` without a device id is an error. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Devices and emulators
 
@@ -134,6 +160,8 @@ emulators; `--start --emulator ID` launches one. Emulator creation and deletion
 are not implemented by Ruflet, so use the Android or Apple platform tools for
 those operations.
 
+`--cold` with `--start --emulator ID` cold boots an Android emulator. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Doctor
 
 ```text
@@ -144,11 +172,25 @@ Doctor reports Ruby, the managed template, Flutter, and platform-tool status.
 `--fix` downloads supported missing Ruflet and Flutter assets. Platform SDKs,
 signing identities, and system packages can still require manual setup.
 
+## Environment variables
+
+Commands also read these environment variables. The
+[Configuration Reference](/docs/configuration-reference#environment-variables)
+describes each one.
+
+- `new`, `create`, `build`, `install`, `debug`, `update` and `doctor` refresh the downloaded client template before they run. `RUFLET_TEMPLATE_REPO_URL`, `RUFLET_TEMPLATE_REPO_REF` and `RUFLET_CACHE_DIR` choose where it comes from and where it is kept. `RUFLET_TEMPLATE_ROOT` makes `new` and `build` copy a local template instead, and `doctor` reports it.
+- `run`: `RUFLET_CLIENT_AUTO_UPDATE`, `RUFLET_CLIENT_UPDATE_INTERVAL` and `RUFLET_CLIENT_CHANNEL` control the prebuilt web and desktop clients, which `update` also reads.
+- `build`: `RUFLET_CONFIG`, `RUFLET_CLIENT_DIR`, `RUFLET_FLUTTER_VERSION`, `RUFLET_FULL_RUNTIME_PATH`, `RUFLET_RUBY_RUNTIME_PATH`, `RUFLET_MRBC`, `RUFLET_IOS_TEAM_ID` and the `RUFLET_ANDROID_*` signing variables.
+- The running app: `RUFLET_HOST`, `RUFLET_STRICT_PORT`, `RUFLET_PROTOCOL_TRACE` and `RUFLET_DEBUG`, and in Rails `RUFLET_RAILS_DEBUG_EVENTS`.
+
 ## Exit status and diagnostics
 
 Commands return zero on success and nonzero on invalid options, unsupported
 targets, missing configuration, failed downloads, or failed platform tools.
+An invalid option exits with status 64. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 Use `--verbose` where supported before reporting a build or tooling problem.
+`RUFLET_PROTOCOL_TRACE=summary` prints the messages a running app exchanges
+with its client.
 
 See [Configuration Reference](/docs/configuration-reference) for build keys and
 [Build and Release](/docs/build-and-release) for delivery modes.

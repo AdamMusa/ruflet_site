@@ -175,8 +175,25 @@ def schema_entry(klass, keys)
     "helper_signatures" => helper_signatures(helpers),
     "properties" => keywords.reject { |name| event_keyword?(name) },
     "events" => keywords.select { |name| event_keyword?(name) },
-    "methods" => method_signatures(klass)
+    "methods" => control_method_signatures(klass)
   }
+end
+
+# Public methods a control defines for the runtime rather than for
+# applications: the page links a Form to its fields through these.
+INTERNAL_CONTROL_METHODS = {
+  "FormControl" => %w[handle_field_event sync_form_fields!]
+}.freeze
+
+# A control's own methods, without the runtime plumbing above and without its
+# overrides of the common Control API. Dropdown redefines `on` and
+# `attach_handler` to accept Material 2 event names, but every control has
+# both; they are documented once, with the common methods.
+def control_method_signatures(klass)
+  common = Ruflet::Control.public_instance_methods.map(&:to_s)
+  internal = INTERNAL_CONTROL_METHODS.fetch(klass.name.split("::").last, [])
+  names = klass.public_instance_methods(false).map(&:to_s) - common - internal
+  method_signatures(klass, names)
 end
 
 def raw_registry_entries
@@ -396,10 +413,40 @@ def dart_control_attributes(path, receivers: %w[control], source: nil)
 end
 
 # `triggerEvent("click")` on a matching receiver means the control accepts
-# `on_click`.
+# `on_click`. A renderer may also hand the event name to a helper that fires
+# it: WebView calls `_reportUrl("page_started", url)`, and `_reportUrl`
+# passes its first parameter to `widget.control.triggerEvent`. A literal
+# passed first to such a helper names an event too.
 def dart_triggered_events(source, receivers)
   receiver = Regexp.union(receivers)
-  source.scan(/(?<!\w)(?:#{receiver})\s*\??\.triggerEvent\(\s*["']([a-z_0-9]+)["']/).flatten.uniq.map { |name| "on_#{name}" }
+  names = source.scan(/(?<!\w)(?:#{receiver})\s*\??\.triggerEvent\(\s*["']([a-z_0-9]+)["']/).flatten
+  dart_event_forwarders(source, receiver).each do |helper|
+    names.concat(source.scan(/(?<![\w.])#{Regexp.escape(helper)}\(\s*["']([a-z_0-9]+)["']/).flatten)
+  end
+  names.uniq.map { |name| "on_#{name}" }
+end
+
+# Names of the methods in `source` whose first parameter is a String that
+# the body passes to `receiver.triggerEvent` as the event name.
+def dart_event_forwarders(source, receiver)
+  declaration = /(?<![\w.])([A-Za-z_]\w*)\s*\(\s*String\??\s+(\w+)\b[^)]*\)\s*(?:async\s*)?\{/
+  source.to_enum(:scan, declaration).filter_map do
+    match = Regexp.last_match
+    name, parameter = match.captures
+    body = dart_block(source, match.end(0) - 1)
+    name if body.match?(/(?<!\w)(?:#{receiver})\s*\??\.triggerEvent\(\s*#{Regexp.escape(parameter)}\b/)
+  end.uniq
+end
+
+# The `{ ... }` block that opens at `start`, braces balanced.
+def dart_block(source, start)
+  depth = 0
+  source[start..].each_char.with_index do |char, offset|
+    depth += 1 if char == "{"
+    depth -= 1 if char == "}"
+    return source[start, offset + 1] if depth.zero?
+  end
+  source[start..]
 end
 
 # Several engine renderers branch on a child's wire type inside one build
