@@ -62,7 +62,7 @@ page.add(
 - `body` — one control (required).
 - `float_header_slivers` — when the user scrolls back, bring a `floating` header back before the body scrolls (default `false`).
 - `horizontal` and `reverse` — scroll direction (both default `false`).
-- `scroll`, `auto_scroll` and `on_scroll` — act on the outer scroll, which moves the header.
+- `scroll`, `auto_scroll` and `on_scroll` — act on the outer scroll, which moves the header. `on_scroll` reports the position in `event.data` with the same keys as [`list_view`](/docs/control-list-view#scroll-events).
 - `clip_behavior` and the common layout properties.
 
 ## Usage

@@ -36,7 +36,11 @@ page.add(
 - `header` / `footer` — controls before and after the items that cannot be moved
 - `show_default_drag_handles` — set `false` to drag only by your own `reorderable_drag_handle`
 - `on_reorder` — `event.old_index` and `event.new_index`
-- `on_reorder_start` / `on_reorder_end`
+- `on_reorder_start` — `event.old_index` is the item the user picked up
+- `on_reorder_end` — `event.new_index` is where it was dropped; it fires even when the item lands where it started, so update your list in `on_reorder`
+- `on_scroll` — `event.data` has the scroll position, with the same keys as [`list_view`](/docs/control-list-view#scroll-events)
+- `mouse_cursor` — the cursor over the default drag handles; Android, web, Windows and Linux only
+- `semantic_child_count` is accepted, but no Ruflet client reads it on this list
 - `auto_scroll_animation` and `keyboard_dismiss_behavior`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Usage
