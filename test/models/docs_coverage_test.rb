@@ -10,7 +10,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
     control-absorb-pointer
-    control-arc control-audio control-auto-complete-suggestion control-autofill-group
+    control-arc control-audio
     control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
     control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
     control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
@@ -18,15 +18,14 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-clip-oval control-clip-r-superellipse control-color control-color-picker
     control-context-menu control-context-menu-action
     control-cupertino-app-bar
-    control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
+    control-cupertino-context-menu control-cupertino-context-menu-action
     control-cupertino-dialog-action control-cupertino-filled-button
-    control-cupertino-navigation-bar control-cupertino-picker
-    control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
+    control-cupertino-navigation-bar
     control-cupertino-tinted-button control-custom-scroll-view
-    control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
+    control-drag-target control-draggable control-draggable-scrollable-sheet
     control-fade-transition control-fill
-    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
-    control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
+    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box
+    control-fractionally-sized-box control-hero control-hue-ring-picker
     control-ignore-pointer control-image-source-attribution control-indexed-stack
     control-interactive-viewer control-interstitial-ad control-intrinsic-height
     control-intrinsic-width control-keyboard-listener control-line control-line-chart
@@ -34,8 +33,8 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-map control-marker control-marker-layer control-material-picker control-menu-bar
     control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
     control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
-    control-navigation-rail-destination control-nested-scroll-view control-option
-    control-outlined-icon-button control-oval control-overlay control-path control-picker
+    control-navigation-rail-destination control-nested-scroll-view
+    control-outlined-icon-button control-oval control-overlay control-path
     control-pie-chart control-pie-chart-section control-placeholder control-points
     control-polygon-layer control-polygon-marker control-polyline-layer control-polyline-marker
     control-radar-chart control-radar-chart-title control-radar-data-set
@@ -48,7 +47,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-sliver-padding control-sliver-to-box-adapter control-step
     control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
     control-text-source-attribution control-text-span
-    control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
+    control-tile-layer control-transparent-pointer control-vertical-divider
     control-video control-window-drag-area
   ].freeze
 
@@ -211,7 +210,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-bottom-sheet", "properties", "fullscreen", "On iOS and macOS, the 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "year_2023", "The 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "semantics_label", "On iOS and macOS, the 0.0.23 client ignores it." ],
-    [ "control-checkbox", "properties", "spacing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-checkbox", "properties", "spacing", "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it." ],
     [ "control-context-menu", "events", "on_select", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-search-bar", "events", "on_tap_outside_bar", "On iOS and macOS, the 0.0.23 client never sends it." ],
@@ -308,7 +307,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-expansion-tile" => [ "On iOS and macOS it is redrawn only when Ruby sets `expanded`" ],
     "control-expansion-panel-list" => [ "On iOS and macOS it is redrawn only when Ruby updates the list" ],
     "control-progress-ring" => [ "`stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator" ],
-    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, web, Windows and Linux only" ],
+    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, Windows and Linux only" ],
     "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
   }.freeze
 
@@ -416,6 +415,204 @@ test "examples a review fixed keep their fix" do
   refute_includes sheet, "copy_link", "The BottomSheet example must run as written"
 end
 
+  # The input controls' state readers (`event.control.value` and friends) are
+  # on main only; each page that teaches `props[...]` names its reader once,
+  # with the marker.
+  STATE_READER_PROSE = {
+    "control-auto-complete" => "`event.control.value` returns the same text",
+    "control-checkbox" => "`event.control.value` (and `terms.value`)",
+    "control-chip" => "`event.control.selected`",
+    "control-cupertino-checkbox" => "`event.control.value` returns",
+    "control-cupertino-date-picker" => "`event.control.value` returns the same moment",
+    "control-cupertino-picker" => "`event.control.selected_index` returns",
+    "control-cupertino-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-slider" => "`event.control.value` returns",
+    "control-cupertino-sliding-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-switch" => "`event.control.value` returns",
+    "control-cupertino-text-field" => "`event.control.selection` the same range",
+    "control-cupertino-timer-picker" => "`event.control.value` returns",
+    "control-date-picker" => "`event.control.entry_mode` return",
+    "control-date-range-picker" => "`event.control.start_value` and `event.control.end_value`",
+    "control-dropdown" => "`event.control.value` and `field.value`",
+    "control-picker" => "`event.control.selected_index` returns",
+    "control-radio-group" => "`event.control.value` and `choice.value`",
+    "control-range-slider" => "`event.control.start_value` and `event.control.end_value`",
+    "control-search-bar" => "`event.control.value` and `search.value`",
+    "control-segmented-button" => "`event.control.selected` returns",
+    "control-slider" => "`event.control.value` returns",
+    "control-switch" => "`event.control.value` and `toggle.value`",
+    "control-text-field" => "`field.selection` the same range",
+    "control-time-picker" => "`event.control.entry_mode` return",
+    "control-timer-picker" => "`event.control.value` returns"
+  }.freeze
+
+  # Generated lines of input controls that one design ignores, and the note
+  # each must keep. Clients draw iOS and macOS with Cupertino widgets and
+  # other platforms with Material ones, whichever helper built the control.
+  # A web app follows the device the browser runs on (Flutter maps a browser
+  # on an iPhone, iPad or Mac to iOS or macOS), so each note says so.
+  PLATFORM_NOTES = {
+    "material" => { "properties" => "iOS and macOS ignore it, in a browser too", "events" => "iOS and macOS never send it, in a browser too" },
+    "cupertino" => { "properties" => "Android, Windows and Linux ignore it, in a browser too" }
+  }.freeze
+  PLATFORM_ONLY_LINES = {
+    "control-checkbox" => { "material" => %w[hover_color overlay_color splash_radius visual_density] },
+    "control-chip" => { "material" => %w[border_side check_color clip_behavior delete_drawer_animation_style delete_icon_color delete_icon_size_constraints elevation elevation_on_click enable_animation_style label_padding label_text_style leading_drawer_animation_style leading_size_constraints mouse_cursor select_animation_style selected_shadow_color shadow_color visual_density] },
+    "control-cupertino-date-picker" => { "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-cupertino-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-cupertino-radio" => { "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-cupertino-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-cupertino-switch" => { "cupertino" => %w[off_label_color on_label_color] },
+    "control-cupertino-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-cupertino-timer-picker" => { "cupertino" => %w[item_extent] },
+    "control-date-picker" => { "material" => %w[barrier_color entry_mode error_format_text error_invalid_text field_hint_text field_label_text inset_padding keyboard_type on_entry_mode_change switch_to_calendar_icon switch_to_input_icon], "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-date-range-picker" => { "material" => %w[barrier_color current_date entry_mode error_format_text error_invalid_range_text error_invalid_text field_end_hint_text field_end_label_text field_start_hint_text field_start_label_text keyboard_type locale save_text switch_to_calendar_icon switch_to_input_icon] },
+    "control-dropdown" => { "material" => %w[border_color border_width capitalization dense elevation enable_filter enable_search error_style error_text expanded_insets fill_color filled focused_border_color focused_border_width helper_style helper_text hint_style hover_color input_filter label_style menu_height menu_style menu_width selected_trailing_icon text_align text_size] },
+    "control-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-radio" => { "material" => %w[hover_color overlay_color splash_radius visual_density], "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-range-slider" => { "material" => %w[inactive_color mouse_cursor overlay_color round] },
+    "control-search-bar" => { "material" => %w[bar_border_side bar_elevation bar_hint_text_style bar_overlay_color bar_padding bar_scroll_padding bar_shadow_color bar_shape bar_size_constraints bar_text_style capitalization divider_color full_screen keyboard_type shrink_wrap view_bar_padding view_bgcolor view_elevation view_header_height view_header_text_style view_hint_text view_hint_text_style view_leading view_padding view_shape view_side view_size_constraints view_trailing] },
+    "control-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-slider" => { "material" => %w[inactive_color interaction mouse_cursor overlay_color round secondary_active_color secondary_track_value] },
+    "control-switch" => { "material" => %w[active_color hover_color overlay_color padding splash_radius track_color], "cupertino" => %w[off_label_color on_label_color] },
+    "control-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-time-picker" => { "material" => %w[barrier_color entry_mode error_invalid_text help_text hour_label_text locale minute_label_text on_entry_mode_change orientation switch_to_input_icon switch_to_timer_icon] },
+    "control-timer-picker" => { "cupertino" => %w[item_extent] }
+  }.freeze
+
+  test "input pages name their main-only state reader with the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    STATE_READER_PROSE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer names its state reader (#{phrase.inspect})"
+      assert_includes paragraph, marker, "#{slug}: the state reader needs the next-release marker"
+      assert_includes paragraph, "with 0.0.23", "#{slug}: say what the reader does with 0.0.23"
+    end
+  end
+
+  test "input lines one design ignores say so" do
+    PLATFORM_ONLY_LINES.each do |slug, designs|
+      lines = generated_api_lines(page(slug).content).to_h { |kind, name, line| [ name, [ kind, line ] ] }
+      designs.each do |design, names|
+        names.each do |name|
+          kind, line = lines[name]
+
+          assert line, "#{slug} renders no line for #{name}"
+          assert_includes line, PLATFORM_NOTES.dig(design, kind), "#{slug} #{name} lost its platform note"
+        end
+      end
+    end
+  end
+
+  # The input and form pages. Their hand-written text must not put "web" on
+  # the Material side, and a page that splits by platform says once that a
+  # web app follows the device it runs on.
+  INPUT_PAGES = %w[
+    control-auto-complete control-auto-complete-suggestion control-autofill-group control-checkbox
+    control-chip control-cupertino-checkbox control-cupertino-date-picker control-cupertino-picker
+    control-cupertino-radio control-cupertino-segmented-button control-cupertino-slider
+    control-cupertino-sliding-segmented-button control-cupertino-switch control-cupertino-text-field
+    control-cupertino-timer-picker control-date-picker control-date-range-picker control-dropdown
+    control-dropdown-option control-form control-form-row control-option control-picker control-radio
+    control-radio-group control-range-slider control-search-bar control-segment
+    control-segmented-button control-slider control-switch control-text-field control-time-picker
+    control-timer-picker
+  ].freeze
+  BROWSER_FOLLOWS_DEVICE = "A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.".freeze
+
+  test "input pages say that a web app follows the device" do
+    INPUT_PAGES.each do |slug|
+      prose = prose_chunks(slug).join("\n")
+
+      refute_match(/Android, web,|\bweb, Windows/, prose, "#{slug}: a browser on an Apple device draws the iOS design")
+      next unless prose.match?(/iOS and macOS|Android, Windows and Linux/)
+
+      assert_includes prose, BROWSER_FOLLOWS_DEVICE, "#{slug} splits by platform without saying what a browser gets"
+    end
+  end
+
+  # Event data that is a Hash reaches Ruby with Symbol keys (the server runs
+  # it through normalize_event_data), so `event.data["key"]` is always nil.
+  test "input pages read Hash event data with Symbol keys" do
+    INPUT_PAGES.each do |slug|
+      text = page(slug).content
+
+      refute_match(/event\.data\[\s*"/, text, "#{slug} reads event.data with a String key")
+      refute_match(/`event\.data` is `\{ "/, text, "#{slug} shows event.data with String keys")
+    end
+  end
+
+  # 0.0.23 parses String event data as JSON, so typed "42", a String key "1"
+  # and a radio value "2" arrive as Integers, and so do a timer picker's
+  # microseconds. Ruflet main (ruflet #103) keeps them Strings. Each page
+  # scopes the parsing to 0.0.23 and says, with the marker, what main does.
+  INPUT_PAYLOAD_NEXT_RELEASE = {
+    "control-auto-complete" => "In the next release the typed text stays a String in both.",
+    "control-cupertino-date-picker" => "In the next release the client reads `\"date_and_time\"` too",
+    "control-cupertino-timer-picker" => "In the next release both are the String `\"90000000\"`.",
+    "control-dropdown" => "In the next release a String key stays a String, and an Integer key such as `1` still arrives as the Integer 1.",
+    "control-radio-group" => "In the next release a String `value` stays a String, and an Integer `value` such as `2` still arrives as the Integer 2.",
+    "control-search-bar" => "In the next release the query stays a String in both.",
+    "control-text-field" => "In the next release the typed text stays a String in both.",
+    "control-timer-picker" => "In the next release both are the String `\"90000000\"`."
+  }.freeze
+
+  test "input pages scope parsed event data to 0.0.23 and mark what main does" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    INPUT_PAGES.each do |slug|
+      prose_chunks(slug).grep(/as JSON|arrives as the Integer|both the Integer|the Integer 90000000/).each do |chunk|
+        assert_match(/with 0\.0\.23/i, chunk, "#{slug}: say that 0.0.23 parses this event data, not main: #{chunk}")
+        assert_includes chunk, marker, "#{slug}: say what the next release sends instead: #{chunk}"
+      end
+    end
+    INPUT_PAYLOAD_NEXT_RELEASE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+      assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+    end
+    %w[control-timer-picker control-cupertino-timer-picker].each do |slug|
+      line = generated_line(slug, "events", "on_change")
+
+      refute_includes line, "also an Integer", "#{slug} on_change: main sends the microseconds as a String"
+      assert_includes line, "`.to_i` gives the number", "#{slug} on_change lost its .to_i advice"
+    end
+  end
+
+  # Earlier statements a review found wrong on both releases.
+  test "input pages keep the payload and option fixes a review made" do
+    disabled = generated_line("control-dropdown-option", "properties", "disabled")
+
+    refute_includes disabled, "still offer", "the next release dims a disabled option on iOS and macOS"
+    assert_includes disabled, "the 0.0.23 client still lets the user pick it there."
+    range = prose_chunks("control-date-range-picker").join("\n")
+
+    assert_includes range, "and not from `event.data`: on Android, Windows and Linux it is an empty String."
+    refute_match(/`event\.data` holds them/, range, "on Android, Windows and Linux the range picker's event.data is an empty String")
+  end
+
+  # A Ruby example that forgets to define a name still compiles: Ruby parses
+  # the name as a method call. Every receiverless call in these examples must
+  # be a Ruflet helper or one of the Kernel methods below.
+  EXAMPLE_KERNEL_CALLS = %w[page lambda proc format puts raise Integer Float String Array].freeze
+
+  test "input page examples define every name they use" do
+    require "prism"
+    helpers = DocsCatalog.control_catalog.flat_map { |control| Array(control[:helpers]) }
+    allowed = (helpers + EXAMPLE_KERNEL_CALLS).to_set
+
+    INPUT_PAGES.each do |slug|
+      page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.each_with_index do |code, index|
+        unknown = receiverless_calls(Prism.parse(code).value).reject { |name| allowed.include?(name) }
+
+        assert_empty unknown.uniq, "#{slug} Ruby block #{index + 1} uses names it never defines"
+      end
+    end
+  end
+
   test "the curated Cupertino date picker example opens the picker as a dialog" do
     example = page("control-cupertino-date-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
 
@@ -494,6 +691,13 @@ end
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     slugs.map { |slug| page(slug) }
+  end
+
+  # Names called without a receiver anywhere in a Prism tree.
+  def receiverless_calls(node)
+    calls = node.is_a?(Prism::CallNode) && node.receiver.nil? ? [ node.name.to_s ] : []
+    node.compact_child_nodes.each { |child| calls.concat(receiverless_calls(child)) }
+    calls
   end
 
   # DocsCatalog.find falls back to the first page for an unknown slug, so a

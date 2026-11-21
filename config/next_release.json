@@ -607,6 +607,13 @@
         "badge"
       ]
     },
+    "control-segmented-button": {
+      "properties": [
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
+      ]
+    },
     "control-selection-area": {
       "properties": [
         "badge"
@@ -732,6 +739,11 @@
           "on_select_all"
         ]
       },
+      "control-dropdown-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+        }
+      },
       "control-filled-icon-button": {
         "properties": [
           "disabled_color",
@@ -774,6 +786,11 @@
           "on_focus",
           "on_hover"
         ]
+      },
+      "control-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+        }
       },
       "control-outlined-icon-button": {
         "properties": [
@@ -862,9 +879,9 @@
         ]
       },
       "control-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-activity-indicator": {
         "properties": [
@@ -878,18 +895,18 @@
         ]
       },
       "control-cupertino-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       },
       "control-filled-icon-button": {
         "properties": [
@@ -917,13 +934,13 @@
         ]
       },
       "control-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       }
     }
   }

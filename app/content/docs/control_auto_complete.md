@@ -31,7 +31,7 @@ page.add(
 - `value` — the text in the field; on iOS and macOS only the starting text, so a later `page.update` of `value` does not change the field there
 - `suggestions_max_height` — height of the suggestion list (default 200)
 - `on_change` — the text changed; `event.data` is the text
-- `on_select` — a suggestion was picked; `event.value` is its value and `event.selection` holds its `key` and `value`
+- `on_select` — a suggestion was picked; `event.value` is its value, `event.selection` holds its `key` and `value`, and `event.data[:index]` (a Symbol key) is its position in `suggestions`
 
 ## Usage
 
@@ -39,5 +39,14 @@ page.add(
 copies the other. Give only `value:`, as above, so that the user searches the
 same text they see. When you also pass a `key`, it must hold the searchable
 text: typing "Ger" does not find `key: "de", value: "Germany"`. After a pick,
-Material clients fill the field with the `value` and iOS and macOS with the
-`key`.
+Android, Windows and Linux fill the field with the `value`, and iOS and macOS
+with the `key`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
+
+The client writes the typed text to `value` as the user types, so read it
+later from the control's `props["value"]`. With 0.0.23, Ruflet parses
+`on_change` data as JSON when it can, so typed `42` arrives as the Integer 42
+in `event.data` and in `props["value"]`; call `.to_s` when you need the text.
+In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`event.control.value` returns the same text as `props["value"]`; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

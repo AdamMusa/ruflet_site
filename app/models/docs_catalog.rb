@@ -1051,14 +1051,6 @@ class DocsCatalog
 
   def self.crafted_control_example(widget_type)
     {
-      "option" => [
-        'dropdown_option("ruby", text: "Ruby")'
-      ],
-      "autofillgroup" => [
-        "autofill_group(",
-        '  text_field(label: "Email", autofill_hints: ["email"])',
-        ")"
-      ],
       "browsercontextmenu" => [
         "page.browser_context_menu(disabled: true)"
       ],
