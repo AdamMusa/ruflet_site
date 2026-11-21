@@ -162,6 +162,11 @@ release configuration.
 | [`video`](/docs/extension-video) | `video(...)` | Media control |
 | [`webview`](/docs/extension-webview) | `web_view(...)` | Web content control |
 
+The generic builder still works too: `control(type, **props)` builds an
+extension control from its wire name, so
+`control("ColorPicker", color: "#2563eb")` sends the same `ColorPicker`
+control as `color_picker(color: "#2563eb")`.
+
 Extension controls pass their properties to the client unchanged. Write enum
 values in Flutter's spelling, such as `"fitWidth"` or `"spaceBetween"`: the
 0.0.23 client does not read `"fit_width"`. With the next release both spellings

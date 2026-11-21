@@ -190,6 +190,15 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     end
   end
 
+  # The examples now use the typed helpers. `control("ColorPicker", ...)`
+  # still works on 0.0.23 and on main, so one page keeps showing it.
+  test "the extensions page still shows the generic control builder" do
+    prose = DocsCatalog::SOURCE_ROOT.join("extensions.md").read.squish
+
+    assert_includes prose, '`control(type, **props)` builds an extension control from its wire name'
+    assert_includes prose, '`control("ColorPicker", color: "#2563eb")` sends the same `ColorPicker` control'
+  end
+
   test "the ads page says no generated client carries an AdMob app id" do
     platforms = DocsCatalog::EXTENSION_CATALOG.find { |extension| extension[:key] == "ads" }.fetch(:platforms)
 
@@ -253,16 +262,21 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   # item above it), an indented line that starts a block once stripped (a
   # "40. ", a fence, a heading or a quote) ends the list item above it, as
   # MarkdownRenderer#list_item does, and a wrapped line that starts with
-  # "40. " opens a list.
+  # "40. " opens a list. An unindented line that goes on with a list item's
+  # text also ends the item: the renderer makes it a paragraph of its own and
+  # splits the list, where CommonMark keeps it in the item.
   test "pages of the group use only Markdown the renderer draws" do
     renderer = MarkdownRenderer.new("")
     problems = (CONTROLS + GUIDE_PAGES + EXTENSION_PAGES).flat_map do |slug|
       previous = ""
+      in_item = false
       (page(slug).then { |entry| entry.content || entry.source.read }).gsub(/^```.*?^```/m, "").lines.filter_map do |line|
         problem = if line.match?(/\A {2,}[-*] /) then "nested list"
         elsif line.match?(/\A[ \t]+\S/) && renderer.send(:block_start?, line.strip) then "indented line starts a block"
         elsif line.match?(/\A\d+\. /) && previous.strip.present? && !previous.match?(/\A\d+\. /) then "number opens a list"
+        elsif in_item && line.match?(/\A\S/) && !renderer.send(:block_start?, line) then "unindented line continues a list item"
         end
+        in_item = line.match?(/\A(?:[-*]|\d+\.)\s+\S/) || (in_item && line.match?(/\A[ \t]+\S/))
         previous = line
         "#{slug}: #{problem}: #{line.strip}" if problem
       end
