@@ -286,7 +286,8 @@ class DocsCoverageTest < ActiveSupport::TestCase
       "in its own `Rails.application.executor` run",
       "The Active Record query cache lasts one message",
       "goes back to the pool when the message is done",
-      "reloads it while clients stay connected"
+      "reloads it while clients stay connected",
+      "gets the reloaded classes when it looks up a constant by name"
     ]
   }.freeze
 
@@ -296,10 +297,15 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "rails-api-reference" => [
       "the endpoint logs the error to `Rails.logger`",
       "An error raised by the entrypoint itself still ends the session.",
+      "holds one only while it runs, with 0.0.23 as well",
+      "keeps running the code it was created with",
       "stays set for the whole connection, and is reset once"
     ],
     "configuration-reference" => [ "`ruflet update` still fails when it cannot reach GitHub" ],
-    "rails-native-styling" => [ "`ring-inset`, `ring-offset-N`, `ring-offset-<color>`, `outline-none` and `outline-hidden`" ]
+    "rails-native-styling" => [
+      "Cancels an `uppercase`, `lowercase` or `capitalize` written before it",
+      "`ring-inset`, `ring-offset-N`, `ring-offset-<color>`, `outline-none` and `outline-hidden`"
+    ]
   }.freeze
 
   # Hand-written sentences that say which platforms a line applies to. They
@@ -465,12 +471,12 @@ end
   private
 
   # The hand-written part of a page (everything above a prose page's Complete
-  # API appendix), split into paragraphs and list items, each on one line. A
-  # guide page has no generated content, only its Markdown source.
+  # API appendix), split into paragraphs, list items and table rows, each on
+  # one line. A guide page has no generated content, only its Markdown source.
   def prose_chunks(slug)
     entry = page(slug)
     text = entry.content || entry.source.read
-    text.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
+    text.split("\n## Complete API\n", 2).first.split(/\n(?=- |\| |\n)/).map(&:squish)
   end
 
   # The one generated "- `name` ..." line of a kind on a control page.
