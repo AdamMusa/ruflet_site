@@ -16,26 +16,23 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
     control-chart-axis-label control-circle control-circle-layer control-circle-marker
     control-clip-oval control-clip-r-superellipse control-color control-color-picker
-    control-context-menu control-context-menu-action
-    control-cupertino-app-bar
-    control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
-    control-cupertino-dialog-action control-cupertino-filled-button
-    control-cupertino-navigation-bar control-cupertino-picker
+    control-cupertino-checkbox
+    control-cupertino-picker
     control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
-    control-cupertino-tinted-button control-custom-scroll-view
+    control-custom-scroll-view
     control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
     control-fade-transition control-fill
-    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
+    control-fitted-box control-form
     control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
     control-ignore-pointer control-image-source-attribution control-indexed-stack
     control-interactive-viewer control-interstitial-ad control-intrinsic-height
     control-intrinsic-width control-keyboard-listener control-line control-line-chart
     control-line-chart-data control-line-chart-data-point control-lottie
-    control-map control-marker control-marker-layer control-material-picker control-menu-bar
-    control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
-    control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
-    control-navigation-rail-destination control-nested-scroll-view control-option
-    control-outlined-icon-button control-oval control-overlay control-path control-picker
+    control-map control-marker control-marker-layer control-material-picker
+    control-merge-semantics control-multiple-choice-block-picker
+    control-native-ad
+    control-nested-scroll-view control-option
+    control-oval control-overlay control-path control-picker
     control-pie-chart control-pie-chart-section control-placeholder control-points
     control-polygon-layer control-polygon-marker control-polyline-layer control-polyline-marker
     control-radar-chart control-radar-chart-title control-radar-data-set
@@ -45,8 +42,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-selection-area control-semantics control-shader-mask control-shadow control-shimmer
     control-simple-attribution control-size-transition control-slide-picker control-slide-transition
     control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
-    control-sliver-padding control-sliver-to-box-adapter control-step
-    control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
+    control-sliver-padding control-sliver-to-box-adapter
     control-text-source-attribution control-text-span
     control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
     control-video control-window-drag-area
@@ -428,6 +424,154 @@ end
     assert example, "control-menu-item-button has no generated example"
     refute_includes example, "trailing:", "MenuItemButton `trailing` is ignored by the 0.0.23 client"
     assert_includes page("control-cupertino-app-bar").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1], "trailing:"
+  end
+
+  # Buttons, menus, app bars, navigation, tabs, view and stepper: every
+  # property and event line has a written description (a widget override or a
+  # shared one), never the "Sets the X property." fallback or a description
+  # guessed from the name. Layout keys shared by most controls are listed once
+  # on each page and documented elsewhere.
+  BUTTON_MENU_NAVIGATION_CONTROLS = %w[
+    app-bar bottom-app-bar button context-menu context-menu-action cupertino-app-bar cupertino-button
+    cupertino-context-menu cupertino-context-menu-action cupertino-dialog-action cupertino-filled-button
+    cupertino-navigation-bar cupertino-tinted-button filled-button filled-icon-button filled-tonal-button
+    filled-tonal-icon-button floating-action-button icon-button menu-bar menu-item-button navigation-bar
+    navigation-bar-destination navigation-drawer navigation-drawer-destination navigation-rail
+    navigation-rail-destination outlined-button outlined-icon-button popup-menu-button popup-menu-item step
+    stepper submenu-button tab tab-bar tab-bar-view tabs text-button view
+  ].map { |name| "control-#{name}" }.freeze
+
+  # Keys every control shares whose description belongs to other pages.
+  SHARED_UNOWNED_KEYS = %w[adaptive on_animation_end on_size_change on_action_result action].freeze
+
+  test "button, menu and navigation controls describe every property and event" do
+    descriptions = DocsCatalog.send(:attribute_descriptions)
+    common = DocsCatalog.send(:common_properties)
+    undescribed = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      control = DocsCatalog.control_catalog.find { |entry| entry[:slug] == slug }
+      assert control, "#{slug} is not in the catalog"
+      %w[properties events].flat_map do |kind|
+        names = Array(control[kind.to_sym]).map(&:to_s) - common - SHARED_UNOWNED_KEYS
+        names.reject do |name|
+          descriptions.dig("widget_overrides", control[:widget_type].to_s, name) || descriptions.dig(kind, name)
+        end.map { |name| "#{slug} #{kind} #{name}" }
+      end
+    end
+
+    assert_empty undescribed, "Describe these in config/property_descriptions.json:\n#{undescribed.join("\n")}"
+  end
+
+  # Lines that state a platform limit a review checked against both renderers:
+  # [slug, kind, name, words the line must keep].
+  PINNED_PLATFORM_LINES = [
+    [ "control-button", "properties", "border_radius", "Android, web, Windows and Linux ignore it" ],
+    [ "control-filled-button", "properties", "opacity_on_click", "Android, web, Windows and Linux ignore it" ],
+    [ "control-cupertino-button", "properties", "alignment", "pass `{ x: 0, y: 0 }`" ],
+    [ "control-filled-icon-button", "properties", "padding", "pass `padding: 8`" ],
+    [ "control-icon-button", "properties", "bgcolor", "Android, web, Windows and Linux ignore it" ],
+    [ "control-floating-action-button", "properties", "shape", "Android, web, Windows and Linux only" ],
+    [ "control-app-bar", "properties", "center_title", "Android, web, Windows and Linux only" ],
+    [ "control-app-bar", "properties", "previous_page_title", "Android, web, Windows and Linux ignore it" ],
+    [ "control-context-menu", "properties", "tertiary_trigger", "Android, web, Windows and Linux only" ],
+    [ "control-context-menu", "events", "on_select", "symbol keys" ],
+    [ "control-navigation-bar", "properties", "active_color", "Android, web, Windows and Linux ignore it" ],
+    [ "control-navigation-rail", "properties", "extended", "Android, web, Windows and Linux only" ],
+    [ "control-tab-bar", "properties", "indicator_size", "Android, web, Windows and Linux only" ],
+    [ "control-view", "events", "on_scroll", "symbol keys" ],
+    [ "control-app-bar", "properties", "automatically_imply_leading", "On Android, web, Windows and Linux it shows a menu button instead" ],
+    [ "control-cupertino-app-bar", "properties", "automatically_imply_leading", "iOS and macOS have no menu button" ],
+    [ "control-app-bar", "properties", "leading", "a menu button for the `drawer` on Android, web, Windows and Linux" ],
+    [ "control-cupertino-app-bar", "properties", "leading", "a menu button for the `drawer` on Android, web, Windows and Linux" ],
+    [ "control-navigation-drawer", "events", "on_dismiss", "Picking a destination does not close it." ],
+    [ "control-view", "properties", "drawer", "call `page.invoke` with this view and `\"show_drawer\"`" ],
+    [ "control-view", "properties", "end_drawer", "call `page.invoke` with this view and `\"show_end_drawer\"`" ]
+  ].freeze
+
+  test "button, menu and navigation lines keep their platform limits" do
+    PINNED_PLATFORM_LINES.each do |slug, kind, name, words|
+      assert_includes generated_line(slug, kind, name), words, "#{slug} #{kind} #{name} lost #{words.inspect}"
+    end
+    assert_includes generated_line("control-context-menu", "properties", "items"),
+      "On Android, web, Windows and Linux, the 0.0.23 client shows them only from `open`; a click shows the trigger's own list or `actions`. #{DocsCatalog::NEXT_RELEASE_MARKER}."
+    assert_includes generated_line("control-outlined-button", "events", "on_hover"),
+      "On Android, web, Windows and Linux, the 0.0.23 client never sends it for a button with an `icon`. #{DocsCatalog::NEXT_RELEASE_MARKER}.",
+      "With 0.0.23 the Material OutlinedButton.icon has no onHover"
+  end
+
+  # `page.show_drawer` and the other drawer shortcuts send a page method the
+  # 0.0.23 client does not know, so a generated line may name them only with
+  # the marker. `page.invoke(view, "show_drawer")` works on 0.0.23 and main.
+  test "button, menu and navigation lines name the drawer shortcuts only with the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    wrong = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      generated_api_lines(page(slug).content).filter_map do |kind, name, line|
+        "#{slug} #{kind} #{name}" if line.match?(/page\.(show|close)_(end_)?drawer/) && !line.include?(marker)
+      end
+    end
+
+    assert_empty wrong, "These lines tell 0.0.23 apps to call a drawer method its client rejects:\n#{wrong.join("\n")}"
+  end
+
+  # Ways of writing that work on 0.0.23 and that a review found missing.
+  test "button, menu and navigation pages keep the forms that work on 0.0.23" do
+    %w[control-icon-button control-filled-icon-button control-filled-tonal-icon-button control-outlined-icon-button].each do |slug|
+      assert_includes generated_line(slug, "properties", "icon"), "or the symbol `:add`", "#{slug}: symbol icon names work on 0.0.23"
+    end
+    assert prose_chunks("control-icon-button").any? { |chunk| chunk.include?("or a symbol such as `:add`") },
+      "control-icon-button: symbol icon names work on 0.0.23"
+
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    drawer = page("control-navigation-drawer").content
+    invoke_section = drawer[/^### Open and close the drawer from code\n(.*?)(?=^### |\z)/m, 1]
+
+    assert invoke_section, "control-navigation-drawer lost the section that opens a view's drawer"
+    refute_includes invoke_section, marker, "page.invoke(view, \"show_drawer\") works on 0.0.23"
+    assert_includes invoke_section, "page.invoke(home, \"show_drawer\")"
+    assert_includes invoke_section, "page.invoke(home, \"close_drawer\")"
+    assert_includes invoke_section, "page.views = [home]"
+    assert prose_chunks("control-navigation-drawer").any? { |chunk| chunk.include?("With 0.0.23 that means a view's drawer opened with `page.invoke`") },
+      "control-navigation-drawer: on iOS and macOS a 0.0.23 app opens the drawer with page.invoke on a view"
+    refute_includes drawer, "cannot be opened at all", "a 0.0.23 app can open a view's drawer with page.invoke"
+  end
+
+  test "button, menu and navigation pages keep their next-release and known-issue notes" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    {
+      "control-context-menu" => [ "a click skips `items` and shows `actions`", "and fires both events" ],
+      "control-navigation-drawer" => [ "With 0.0.23 the client answers these calls with an \"Unknown Page method\" error" ],
+      "control-icon-button" => [ "the 0.0.23 client\nignores it", "With 0.0.23 the Material icon button ignores `style:`" ]
+    }.each do |slug, phrases|
+      phrases.each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase.squish) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    %w[control-cupertino-button control-cupertino-filled-button control-cupertino-tinted-button
+       control-filled-icon-button control-filled-tonal-icon-button control-outlined-icon-button].each do |slug|
+      example = page(slug).content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+      assert_includes example, "alignment: { x: 0, y: 0 }", "#{slug}: with default arguments the client cannot read the alignment Ruby sends (ruflet#94)"
+    end
+  end
+
+  # Every name a "Common properties" item starts with (the part before " — ")
+  # must be a keyword, event or method of the control. `cupertino_button` has
+  # no `style:`, for example, so listing it would document an ArgumentError.
+  test "button, menu and navigation pages list only real keywords under Common properties" do
+    wrong = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      next [] unless DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
+
+      control = DocsCatalog.control_catalog.find { |entry| entry[:slug] == slug }
+      known = %i[properties events methods].flat_map { |kind| Array(control[kind]).map { |entry| entry.is_a?(Hash) ? entry[:name].to_s : entry.to_s } }
+      section = page(slug).content[/^## Common properties\n\n(.*?)(?=^## |\z)/m, 1].to_s
+      section.scan(/^- (.+)$/).flatten.flat_map do |item|
+        item.split(" — ", 2).first.scan(/`([a-z_0-9?]+)`/).flatten.reject { |name| known.include?(name) }.map { |name| "#{slug}: #{name}" }
+      end
+    end
+
+    assert_empty wrong, "These Common properties names are not keywords of their control:\n#{wrong.join("\n")}"
   end
 
   private
