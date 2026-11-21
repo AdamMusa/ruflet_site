@@ -390,7 +390,7 @@
     "on_animation_end": "Fired when an `animate_*` animation finishes. `event.data` names the animation: `\"opacity\"`, `\"rotation\"`, `\"scale\"`, `\"offset\"`, `\"align\"`, `\"margin\"` or `\"position\"`; a container's own `animate` reports `\"container\"`.",
     "on_size_change": "Fired after the control's size changes, at most once per `size_change_interval`. `event.data` is `{ w: width, h: height }` in logical pixels.",
     "on_action_result": "Fired when a client `action:` has finished; the event carries its result or error.",
-    "on_end_reached": "Fired when the user scrolls within `end_reached_threshold` of the end, for loading more items. It fires once per content length: add items, and it can fire again. `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`.",
+    "on_end_reached": "Fired when the user scrolls within `end_reached_threshold` of the end, for loading more items. It fires once, then again after the content grows (you added items) or after the user scrolls back more than twice `end_reached_threshold` from the end. `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`.",
     "on_refresh": "Fired when the user pulls down to refresh; the indicator spins until the handler returns.",
     "on_paste_files": "Fired when the user pastes files into the field; `event.files` lists them.",
     "on_tap_outside_view": "Fired when the user taps outside the open search view.",
@@ -1547,8 +1547,8 @@
       "content": "The control that works as the window's title bar; the first positional argument sets it.",
       "maximizable": "Double-clicking the area maximizes or restores the window (default `true`).",
       "on_double_tap": "Fired after a double click maximized or restored the window; `event.data` is `\"maximize\"` or `\"unmaximize\"`.",
-      "on_drag_end": "Fired when the user stops dragging the window; `event.velocity` gives the speed.",
-      "on_drag_start": "Fired when the user starts dragging the window; `event.local_position` gives the point."
+      "on_drag_end": "Fired when the user stops dragging the window. `event.data` is a hash: `:v` is the velocity as `{ x:, y: }` in logical pixels per second, and `:l` and `:g` are the last point in the area and in the window.",
+      "on_drag_start": "Fired when the user starts dragging the window. `event.data` is a hash: `:l` is the point in the area and `:g` the point in the window, each `{ x:, y: }` in logical pixels, and `:k` is the pointer kind, such as `\"mouse\"`."
     }
   },
   "method_notes": {

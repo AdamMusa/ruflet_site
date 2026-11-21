@@ -82,6 +82,6 @@ Pull to refresh (`on_refresh`), `on_end_reached` for loading the next page,
 `keyboard_dismiss_behavior`, `animate_changes` with `item_animation`, and
 `scroll_to` are covered in [Controls and Layout](/docs/controls-and-layout#scrolling).
 
-- `on_end_reached` — `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`. It fires once per list length, so it can fire again after you add items.
+- `on_end_reached` — `event.data` has the keys `:pixels`, `:max_scroll_extent` and `:viewport_dimension`. It fires once, then again after the list grows (you added items) or after the user scrolls back more than twice `end_reached_threshold` from the end.
 - `item_animation` — `{ type:, duration:, curve: }`, where `type` is `"fade"`, `"size"`, `"fade_size"` (default) or `"slide"` and `duration` defaults to 250 milliseconds.
 - `refresh_bgcolor` and `refresh_displacement` apply on Android, web, Windows and Linux only; `refresh_trigger_distance` on iOS and macOS only.

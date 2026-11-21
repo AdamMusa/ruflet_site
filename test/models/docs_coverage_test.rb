@@ -362,6 +362,16 @@ class DocsCoverageTest < ActiveSupport::TestCase
     control-transparent-pointer control-vertical-divider control-window-drag-area
   ].freeze
 
+  # Two merged branches once each assigned FULLY_DESCRIBED_CONTROLS. Ruby only
+  # warns and keeps the second list, so the tests above silently checked fewer
+  # controls.
+  test "each list in this test is assigned once" do
+    names = File.read(__FILE__).scan(/^\s*([A-Z][A-Z0-9_]*)\s*=(?!=)/).flatten
+    twice = names.tally.select { |_name, count| count > 1 }.keys
+
+    assert_empty twice, "Merge these constants of #{File.basename(__FILE__)} into one list each: #{twice.join(', ')}"
+  end
+
   test "fully described controls describe every property and event" do
     descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
     catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
@@ -394,17 +404,17 @@ class DocsCoverageTest < ActiveSupport::TestCase
     assert_empty offenders - STRING_KEY_PAYLOAD_PAGES, "Read hash payloads with symbol keys, for example `event.data[:ci]`: #{(offenders - STRING_KEY_PAYLOAD_PAGES).join(', ')}"
   end
 
-# Both clients match a theme or palette color name against
-# /^([a-zA-Z]+)([0-9]*)$/ (colors.dart), so `:surface_container_low` or
-# `:blue_600` draws no color at all. These pages must spell them
-# `:surfacecontainerlow` and `:blue600`.
-test "examples on fully described pages spell color names without underscores" do
-  offenders = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
-    page(slug).content.scan(/\b\w*color: *(?::|")[a-z]+_[a-z0-9_]*/).map { |hit| "#{slug}: #{hit}" }
-  end
+  # Both clients match a theme or palette color name against
+  # /^([a-zA-Z]+)([0-9]*)$/ (colors.dart), so `:surface_container_low` or
+  # `:blue_600` draws no color at all. These pages must spell them
+  # `:surfacecontainerlow` and `:blue600`.
+  test "examples on fully described pages and layout guides spell color names without underscores" do
+    offenders = (FULLY_DESCRIBED_CONTROLS + LAYOUT_GUIDES).flat_map do |slug|
+      page_text(slug).scan(/\b\w*color: *(?::|")[a-z]+_[a-z0-9_]*/).map { |hit| "#{slug}: #{hit}" }
+    end
 
-  assert_empty offenders, "Write color names without underscores, for example `:surfacecontainerlow`:\n#{offenders.join("\n")}"
-end
+    assert_empty offenders, "Write color names without underscores, for example `:surfacecontainerlow`:\n#{offenders.join("\n")}"
+  end
 
 # Example fixes a review made, which compile either way.
 test "examples a review fixed keep their fix" do
@@ -465,6 +475,9 @@ end
     assert_includes properties.fetch("expand"), "an integer sets the share"
     assert_includes events.fetch("on_size_change"), "`{ w: width, h: height }`"
     assert_includes events.fetch("on_end_reached"), "the keys `:pixels`"
+    # end_reached_listener.dart re-arms when the content grows or when the
+    # user scrolls back more than twice the threshold from the end.
+    assert_includes events.fetch("on_end_reached"), "scrolls back more than twice `end_reached_threshold` from the end"
     %w[opacity rotation scale offset align margin position container].each do |name|
       assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
     end
@@ -477,14 +490,35 @@ end
   # A generated line carries the marker only when its key needs the next
   # release (the test above), so a description that names a shape only Ruflet
   # main reads points to the guide section that carries the marker instead.
+  # The shapes are the `all:` shorthand and the named alignments of engine
+  # #119 (`"center"` alone also works on 0.0.23, as a container alignment).
+  # Overrides of controls that only have next-release pages need no link.
+  MAIN_ONLY_SHAPES = [
+    /Ruflet main/,
+    /`(?:\{ *)?all:/,
+    /`"(?:top|center|bottom)_?(?:left|center|right)"`/i
+  ].freeze
+
   test "descriptions that name main-only shapes link to the marked guide section" do
     descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    next_release_pages = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("controls")
+    slugs_by_widget = DocsCatalog.control_catalog.group_by { |control| control[:widget_type].to_s }.transform_values { |controls| controls.map { |control| control[:slug] } }
     texts = %w[properties events].flat_map { |kind| descriptions.fetch(kind).map { |name, text| [ "#{kind}.#{name}", text ] } }
-    texts += descriptions.fetch("widget_overrides").flat_map { |widget, names| names.map { |name, text| [ "#{widget}.#{name}", text ] } }
+    texts += descriptions.fetch("widget_overrides").flat_map do |widget, names|
+      next [] if (slugs_by_widget[widget] || []).then { |slugs| slugs.any? && (slugs - next_release_pages).empty? }
 
-    unlinked = texts.select { |_name, text| text.include?("Ruflet main") && !text.include?("](/docs/controls-and-layout#option-values)") }.map(&:first)
+      names.map { |name, text| [ "#{widget}.#{name}", text ] }
+    end
 
-    assert_empty unlinked, "Link these to [Option values](/docs/controls-and-layout#option-values), which marks the main-only shapes: #{unlinked.join(', ')}"
+    unlinked = texts.select do |_name, text|
+      MAIN_ONLY_SHAPES.any? { |shape| text.match?(shape) } &&
+        !text.include?("](/docs/controls-and-layout#option-values)") && !text.include?(DocsCatalog::NEXT_RELEASE_MARKER)
+    end
+
+    assert_empty unlinked.map(&:first), "Link these to [Option values](/docs/controls-and-layout#option-values), which marks the main-only shapes: #{unlinked.map(&:first).join(', ')}"
+    assert_equal [ true, true, true, false ], [
+      "`{ all: 16 }`", "such as `\"top_left\"`", "or `\"bottomRight\"`", "`\"center\"` is also accepted"
+    ].map { |text| MAIN_ONLY_SHAPES.any? { |shape| text.match?(shape) } }
   end
 
   # Wording true for one wire type of this group. A shared entry would also
@@ -513,14 +547,45 @@ end
     refute_includes descriptions.fetch("events").fetch("on_scroll"), "event.data", "web_view also uses the shared on_scroll text, and its payload is { x:, y: }"
   end
 
+  # The layout, scrolling, sliver, transition, gesture and accessibility
+  # pages, and their guide.
+  LAYOUT_GUIDES = %w[controls-and-layout].freeze
+  LAYOUT_PAGES = (%w[
+    control-absorb-pointer control-animated-switcher control-badge control-card control-carousel-view
+    control-circle-avatar control-clip-oval control-clip-r-superellipse control-column control-container
+    control-custom-scroll-view control-dismissible control-divider control-drag-target control-draggable
+    control-draggable-scrollable-sheet control-fade-transition control-fitted-box
+    control-fractionally-sized-box control-gesture-detector control-grid-view control-hero control-icon
+    control-ignore-pointer control-image control-indexed-stack control-interactive-viewer
+    control-intrinsic-height control-intrinsic-width control-keyboard-listener control-list-view
+    control-markdown control-merge-semantics control-nested-scroll-view control-overlay control-page-view
+    control-placeholder control-reorderable-drag-handle control-reorderable-list-view control-responsive-row
+    control-rotated-box control-rotation-transition control-row control-ruflet-app control-safe-area
+    control-scale-transition control-screenshot control-selection-area control-semantics control-shader-mask
+    control-shimmer control-size-transition control-slide-transition control-sliver-app-bar
+    control-sliver-fill-remaining control-sliver-grid control-sliver-list control-sliver-padding
+    control-sliver-to-box-adapter control-stack control-text control-text-span control-transparent-pointer
+    control-vertical-divider control-window-drag-area
+  ] + LAYOUT_GUIDES).freeze
+
   # Hand-written sentences of the layout pages that describe main-only
   # behavior (each must carry the marker) or one design only (each must stay).
+  # Together with the callouts below, these are the only places a layout page
+  # may carry the marker: add a phrase only after its example fails on 0.0.23.
   LAYOUT_PROSE_MARKERS = {
     "controls-and-layout" => [
       "Snake case, such as `\"space_between\"`, also works on Ruflet main",
       "On Ruflet main these alignments also take a name",
       "On Ruflet main such a hash can also give `all:`",
-      "lays out its children like a `column`, so `expand` works inside it too"
+      "lays out its children like a `column`, so `expand` works inside it too",
+      "`text_field(text_input_action:)` — the keyboard's action key",
+      "`text_field(on_paste_files:)` — the user pasted files into the field",
+      "`list_tile(chevron: true)` — draws a trailing chevron",
+      "`list_tile(focus_color:)` — the Material keyboard-focus highlight",
+      "`search_bar(on_tap_outside_view:)` — the user tapped outside the open search view",
+      "`semantics(identifier:)` — a stable ID for accessibility tools and UI tests",
+      "`app_bar(large: true)` — the Material 3 large app bar",
+      "This example uses several of them."
     ],
     "control-row" => [ "`on_end_reached`, `end_reached_threshold` and `keyboard_dismiss_behavior` work on a scrolling row too" ],
     "control-container" => [
@@ -528,7 +593,10 @@ end
       "On Ruflet main `alignment` also takes other names",
       "On Ruflet main those hashes can also give `all:`"
     ],
+    "control-dismissible" => [ "`movement_duration` / `resize_duration` — slide and close times" ],
     "control-image" => [ "`src_base64:` is the same data under its own name" ],
+    "control-page-view" => [ "`next_page`, `previous_page`, `jump_to_page` and `go_to_page` methods" ],
+    "control-reorderable-list-view" => [ "`spacing` — space between items; the 0.0.23 client ignores it", "`auto_scroll_animation` and `keyboard_dismiss_behavior`" ],
     "control-semantics" => [ "Drawing the wrapped `content` needs the next release" ],
     "control-screenshot" => [ "An Integer `pixel_ratio:` needs the next release" ]
   }.freeze
@@ -541,29 +609,94 @@ end
     "control-text" => [ "on Android, web, Windows and Linux it fires only for `selectable: true` text" ],
     "control-badge" => [ "iOS and macOS need a label" ],
     "control-card" => [ "draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only" ],
+    "control-container" => [ "On leave the client sends `false`, which arrives in Ruby as `nil`" ],
     "control-reorderable-list-view" => [ "`semantic_child_count` is accepted, but no Ruflet client reads it" ]
   }.freeze
 
   # Sections of hand-written layout pages that need the next release: each
   # heading must be followed directly by the callout.
   LAYOUT_SECTION_CALLOUTS = {
-    "control-column" => "Refreshing and loading more",
-    "control-list-view" => "Refreshing and loading more",
-    "control-grid-view" => "Refreshing and loading more"
+    "control-column" => [ "Refreshing and loading more" ],
+    "control-list-view" => [ "Refreshing and loading more" ],
+    "control-grid-view" => [ "Refreshing and loading more" ],
+    "control-semantics" => [ "Example" ],
+    "controls-and-layout" => [ "Scrolling", "Transitions, clips and sizing boxes", "Control methods" ]
   }.freeze
 
   test "main-only sections of layout pages open with the callout" do
     callout = "> #{DocsCatalog::NEXT_RELEASE_MARKER}."
 
-    LAYOUT_SECTION_CALLOUTS.each do |slug, heading|
-      section = page(slug).content[/^## #{Regexp.escape(heading)}\n\n(.*?)(?=^## |\z)/m, 1]
+    LAYOUT_SECTION_CALLOUTS.each do |slug, headings|
+      headings.each do |heading|
+        section = page_text(slug)[/^## #{Regexp.escape(heading)}\n\n(.*?)(?=^## |\z)/m, 1]
 
-      assert section, "#{slug} has no ## #{heading} section"
-      assert section.start_with?(callout), "#{slug}: ## #{heading} needs the next-release callout right under the heading"
+        assert section, "#{slug} has no ## #{heading} section"
+        assert section.start_with?(callout), "#{slug}: ## #{heading} needs the next-release callout right under the heading"
+      end
     end
 
     example = page("control-semantics").content[/^## Example\n\n(.*?)^```ruby/m, 1]
     assert_includes example.to_s, callout, "The 0.0.23 client draws nothing for semantics, so its example needs the callout"
+  end
+
+  # The other direction: a marker on a layout page sits only in the callout
+  # under the H1 of a config/next_release.json page, in a callout under a
+  # LAYOUT_SECTION_CALLOUTS heading, or in a LAYOUT_PROSE_MARKERS sentence, so
+  # a sentence that works on 0.0.23 cannot gain one unnoticed. Generated
+  # property, event and method lines follow config/next_release.json instead.
+  test "layout pages carry the marker only where it is pinned" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    next_release_pages = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("controls")
+
+    unexpected = LAYOUT_PAGES.flat_map do |slug|
+      hand_written(page_text(slug)).split(/^(?=## )/).flat_map do |section|
+        heading = section[/\A## (.+)$/, 1]
+        chunks = section.split(/\n(?=- |\n)/).map(&:squish).select { |chunk| chunk.include?(marker) }
+        chunks.each_with_index.reject do |chunk, index|
+          if chunk.start_with?("> #{marker}")
+            heading ? index.zero? && Array(LAYOUT_SECTION_CALLOUTS[slug]).include?(heading) : next_release_pages.include?(slug)
+          else
+            Array(LAYOUT_PROSE_MARKERS[slug]).any? { |phrase| chunk.include?(phrase) }
+          end
+        end.map { |chunk, _index| "#{slug} (#{heading || 'intro'}): #{chunk.truncate(120)}" }
+      end
+    end
+
+    assert_operator LAYOUT_PAGES.size, :>, 60
+    assert_empty unexpected, "Only main-only behavior gets the next-release marker. Remove it, or pin the sentence in LAYOUT_PROSE_MARKERS after checking that it fails on 0.0.23:\n#{unexpected.join("\n")}"
+  end
+
+  # Descriptions point to /docs/controls-and-layout#option-values instead of
+  # carrying the marker, so a renamed heading would leave them pointing
+  # nowhere. Every /docs link of every page must reach a page and a heading.
+  test "docs links reach an existing page and heading" do
+    entries = DocsCatalog.all_entries.index_by(&:slug)
+    heading_ids = Hash.new { |ids, slug| ids[slug] = MarkdownRenderer.render(entry_text(entries.fetch(slug))).headings.map(&:id) }
+
+    links = entries.values.flat_map do |entry|
+      entry_text(entry).gsub(/^```.*?^```$/m, "").scan(%r{\]\(/docs/([a-z0-9-]+)(?:#([a-z0-9-]+))?\)}).map { |slug, anchor| [ entry.slug, slug, anchor ] }
+    end
+    broken = links.uniq.filter_map do |from, slug, anchor|
+      next "#{from}: /docs/#{slug} is not a page" unless entries.key?(slug)
+      next unless anchor
+
+      "#{from}: /docs/#{slug}##{anchor} is not a heading" unless heading_ids[slug].include?(anchor)
+    end
+
+    assert_operator links.count { |_from, slug, anchor| slug == "controls-and-layout" && anchor == "option-values" }, :>, 100
+    assert_empty broken, broken.join("\n")
+  end
+
+  test "layout descriptions a review fixed keep their fix" do
+    overrides = JSON.parse(Rails.root.join("config/property_descriptions.json").read).fetch("widget_overrides")
+
+    assert_includes overrides.dig("container", "on_hover"), "arrives in Ruby as `nil`", "a container's on_hover leave payload false reaches Ruby as nil"
+    # drag_target.dart sends the Set literal {"src_id", id}, which arrives as a
+    # two-item list, so DragTargetEvent finds no src_id.
+    assert_includes overrides.dig("dragtarget", "on_leave"), "`event.data[1]`"
+    assert_includes overrides.dig("dragtarget", "on_leave"), "`event.src_id` is nil here"
+    assert_includes overrides.dig("windowdragarea", "on_drag_start"), "`:l` is the point in the area"
+    assert_includes overrides.dig("windowdragarea", "on_drag_end"), "`:v` is the velocity"
   end
 
   test "layout pages read event payloads with symbol keys and decorate text with constants" do
@@ -697,6 +830,14 @@ end
 
   def page_text(slug)
     entry_text(page(slug))
+  end
+
+  # The part of a page's Markdown above its generated API lists: the Complete
+  # API appendix of a prose page, or the Properties list of a generated page.
+  def hand_written(markdown)
+    return markdown.split("\n## Complete API\n", 2).first if markdown.include?("\n## Complete API\n")
+
+    markdown.split(/^## Properties$/, 2).first
   end
 
   STRING_KEY_SPAN = /`(["'])\w+\1`/

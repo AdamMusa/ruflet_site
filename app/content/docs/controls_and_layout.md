@@ -280,7 +280,7 @@ page.add(
         spacing: 16,
         children: [
           clip_oval(image("https://picsum.photos/id/64/96", width: 64, height: 64, fit: "cover")),
-          clip_rsuperellipse(container(width: 64, height: 64, bgcolor: :blue_600), border_radius: 16)
+          clip_rsuperellipse(container(width: 64, height: 64, bgcolor: :blue600), border_radius: 16)
         ]
       ),
       intrinsic_height(
@@ -378,7 +378,7 @@ page.add(
   column(
     children: [
       text_field(label: "Search", text_input_action: "search", on_submit: ->(event) { puts event.data }),
-      list_tile(title: text("Account"), chevron: true, focus_color: :blue_100, on_click: ->(_event) {}),
+      list_tile(title: text("Account"), chevron: true, focus_color: :blue100, on_click: ->(_event) {}),
       semantics(text("Signed in"), identifier: "status-label")
     ]
   )
