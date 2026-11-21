@@ -137,7 +137,7 @@
     ]
   },
   "control-cupertino-list-tile": {
-    "summary": "The `cupertino_list_tile` spelling of [`list_tile`](/docs/control-list-tile). It sends the same `ListTile` control, so it is an iOS list row on iOS and macOS and a Material list row on Android, web, Windows and Linux. It accepts the properties of the iOS row: `title` (required), `subtitle`, `leading`, `trailing`, `additional_info`, `bgcolor`, `bgcolor_activated`, `notched`, `leading_size`, `leading_to_title`, `padding`, `toggle_inputs`, `url` and `on_click`; use `list_tile` for the Material-only properties. `additional_info`, `bgcolor_activated`, `notched`, `leading_size` and `leading_to_title` apply on iOS and macOS only. With 0.0.23 pad a row with `list_tile(content_padding: 16)`: `padding` takes effect only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "The `cupertino_list_tile` spelling of [`list_tile`](/docs/control-list-tile). It sends the same `ListTile` control, so it is an iOS list row on iOS and macOS and a Material list row on Android, web, Windows and Linux. It accepts the properties of the iOS row: `title` (required), `subtitle`, `leading`, `trailing`, `additional_info`, `bgcolor`, `bgcolor_activated`, `notched`, `leading_size`, `leading_to_title`, `padding`, `toggle_inputs`, `url` and `on_click`; use `list_tile` for the Material-only properties. `additional_info`, `bgcolor_activated`, `notched`, `leading_size` and `leading_to_title` apply on iOS and macOS only. With 0.0.23 pad a row with `list_tile(content_padding: 16)`. `padding` takes effect only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "status = text(\"Pick a setting\")",
       "open_setting = ->(name) { ->(_event) { page.update(status, value: \"Opened #{name}\") } }",
@@ -220,7 +220,7 @@
     ]
   },
   "control-data-column-2": {
-    "summary": "A column heading of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_column2(label, size:, fixed_width:, numeric:, on_sort:)`. The table shares its width between the columns by `size`: `\"s\"` (default), `\"m\"` or `\"l\"`, weighted by the table's `sm_ratio` and `lm_ratio`. `fixed_width` gives a column an exact width instead. `on_sort` gets the column index in `event.data[:ci]` and the new direction in `event.data[:asc]` on every platform. With 0.0.23 the client draws `\"small\"`, `\"medium\"` and `\"large\"`, which `size: :medium` sends, as `\"s\"` columns. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "A column heading of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_column2(label, size:, fixed_width:, numeric:, on_sort:)`. The table shares its width between the columns by `size`: `\"s\"` (default), `\"m\"` or `\"l\"`, weighted by the table's `sm_ratio` and `lm_ratio`. `fixed_width` gives a column an exact width instead. `on_sort` gets the column index in `event.data[:ci]` and the new direction in `event.data[:asc]` on every platform. With 0.0.23 the client draws `\"small\"`, `\"medium\"` and `\"large\"`, which `size: :medium` sends, as `\"s\"` columns. The next release also accepts those names, so `size: :medium` gives an `\"m\"` column. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "page.add(",
       "  data_table2(",
