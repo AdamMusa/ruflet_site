@@ -51,7 +51,8 @@ If a child has no `col`, it spans all `columns`.
 ## Breakpoints
 
 `breakpoints` maps a name to the minimum viewport width (in pixels) at which it
-applies. The defaults follow Bootstrap:
+applies. The width is the page's, not the row's own, so a narrow row in a wide
+window uses the wide breakpoint. The defaults follow Bootstrap:
 
 | Name  | Min width |
 |-------|-----------|
@@ -79,7 +80,7 @@ responsive_row(
 - `spacing` — horizontal gap between children in the same run (default `10`).
 - `run_spacing` — vertical gap between wrapped runs (default `10`).
 - `alignment` — horizontal alignment of children within a run (`"start"`,
-  `"center"`, `"end"`, `"space_between"`, `"space_around"`, `"space_evenly"`).
+  `"center"`, `"end"`, `"spaceBetween"`, `"spaceAround"`, `"spaceEvenly"`).
 - `vertical_alignment` — cross-axis alignment of children (`"start"`,
   `"center"`, `"end"`, `"stretch"`).
 - `breakpoints` — the breakpoint → min-width map described above.

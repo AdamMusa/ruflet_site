@@ -9,47 +9,31 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # remove it here. A listed control that gains docs does not fail the test,
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
-    control-absorb-pointer
     control-arc control-audio control-auto-complete-suggestion control-autofill-group
     control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
     control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
-    control-candlestick-chart-spot control-canvas control-carousel-view control-chart-axis
-    control-chart-axis-label control-circle control-circle-layer control-circle-marker
-    control-clip-oval control-clip-r-superellipse control-color control-color-picker
-    control-context-menu control-context-menu-action
-    control-cupertino-app-bar
+    control-candlestick-chart-spot control-canvas control-chart-axis control-chart-axis-label
+    control-circle control-circle-layer control-circle-marker control-color control-color-picker
+    control-context-menu control-context-menu-action control-cupertino-app-bar
     control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
-    control-cupertino-dialog-action control-cupertino-filled-button
-    control-cupertino-navigation-bar control-cupertino-picker
-    control-cupertino-radio control-cupertino-slider control-cupertino-timer-picker
-    control-cupertino-tinted-button control-custom-scroll-view
-    control-drag-target control-draggable control-draggable-scrollable-sheet control-dropdown-option
-    control-fade-transition control-fill
-    control-filled-icon-button control-filled-tonal-icon-button control-fitted-box control-form
-    control-form-row control-fractionally-sized-box control-hero control-hue-ring-picker
-    control-ignore-pointer control-image-source-attribution control-indexed-stack
-    control-interactive-viewer control-interstitial-ad control-intrinsic-height
-    control-intrinsic-width control-keyboard-listener control-line control-line-chart
-    control-line-chart-data control-line-chart-data-point control-lottie
-    control-map control-marker control-marker-layer control-material-picker control-menu-bar
-    control-menu-item-button control-merge-semantics control-multiple-choice-block-picker
-    control-native-ad control-navigation-bar-destination control-navigation-drawer-destination
-    control-navigation-rail-destination control-nested-scroll-view control-option
-    control-outlined-icon-button control-oval control-overlay control-path control-picker
-    control-pie-chart control-pie-chart-section control-placeholder control-points
-    control-polygon-layer control-polygon-marker control-polyline-layer control-polyline-marker
-    control-radar-chart control-radar-chart-title control-radar-data-set
-    control-radar-data-set-entry control-rect control-reorderable-drag-handle
-    control-rich-attribution control-rotated-box control-rotation-transition control-ruflet-app
-    control-scale-transition control-scatter-chart control-scatter-chart-spot control-screenshot
-    control-selection-area control-semantics control-shader-mask control-shadow control-shimmer
-    control-simple-attribution control-size-transition control-slide-picker control-slide-transition
-    control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
-    control-sliver-padding control-sliver-to-box-adapter control-step
-    control-stepper control-submenu-button control-tab control-tab-bar control-tab-bar-view
-    control-text-source-attribution control-text-span
-    control-tile-layer control-timer-picker control-transparent-pointer control-vertical-divider
-    control-video control-window-drag-area
+    control-cupertino-dialog-action control-cupertino-filled-button control-cupertino-navigation-bar
+    control-cupertino-picker control-cupertino-radio control-cupertino-slider
+    control-cupertino-timer-picker control-cupertino-tinted-button control-dropdown-option
+    control-fill control-filled-icon-button control-filled-tonal-icon-button control-form
+    control-form-row control-hue-ring-picker control-image-source-attribution
+    control-interstitial-ad control-line control-line-chart control-line-chart-data
+    control-line-chart-data-point control-lottie control-map control-marker control-marker-layer
+    control-material-picker control-menu-bar control-menu-item-button
+    control-multiple-choice-block-picker control-native-ad control-navigation-bar-destination
+    control-navigation-drawer-destination control-navigation-rail-destination control-option
+    control-outlined-icon-button control-oval control-path control-picker control-pie-chart
+    control-pie-chart-section control-points control-polygon-layer control-polygon-marker
+    control-polyline-layer control-polyline-marker control-radar-chart control-radar-chart-title
+    control-radar-data-set control-radar-data-set-entry control-rect control-rich-attribution
+    control-scatter-chart control-scatter-chart-spot control-shadow control-simple-attribution
+    control-slide-picker control-step control-stepper control-submenu-button control-tab
+    control-tab-bar control-tab-bar-view control-text-source-attribution control-tile-layer
+    control-timer-picker control-video
   ].freeze
 
   GENERIC_SERVICE_SUMMARY = /\AComplete `page\.\w+` service reference\.\z/
@@ -348,18 +332,34 @@ class DocsCoverageTest < ActiveSupport::TestCase
   end
 
   # Controls whose every property and event line has its own description in
-  # config/property_descriptions.json, never the generated "Sets the X
-  # property." or "Fired on X.". The list may only grow.
+  # config/property_descriptions.json (a widget override or a shared entry),
+  # never the generated "Sets the X property." or "Fired on X.", and whose
+  # every method has a method note. The list may only grow.
   FULLY_DESCRIBED_CONTROLS = %w[
-    control-about-dialog control-action-sheet control-action-sheet-action control-alert-dialog
-    control-banner control-bottom-sheet control-cupertino-action-sheet
+    control-about-dialog control-absorb-pointer control-action-sheet control-action-sheet-action
+    control-alert-dialog control-animated-switcher control-badge control-banner control-bottom-sheet
+    control-card control-carousel-view control-circle-avatar control-clip-oval
+    control-clip-r-superellipse control-column control-container control-cupertino-action-sheet
     control-cupertino-action-sheet-action control-cupertino-activity-indicator
     control-cupertino-alert-dialog control-cupertino-bottom-sheet control-cupertino-list-tile
-    control-data-cell control-data-column control-data-column-2 control-data-row control-data-row-2
-    control-data-table control-data-table-2 control-expansion-panel control-expansion-panel-list
-    control-expansion-tile control-list-section control-list-tile control-progress-bar
-    control-progress-ring control-snack-bar control-snack-bar-action control-spinkit control-table
-    control-table-row
+    control-custom-scroll-view control-data-cell control-data-column control-data-column-2
+    control-data-row control-data-row-2 control-data-table control-data-table-2 control-dismissible
+    control-divider control-drag-target control-draggable control-draggable-scrollable-sheet
+    control-expansion-panel control-expansion-panel-list control-expansion-tile
+    control-fade-transition control-fitted-box control-fractionally-sized-box
+    control-gesture-detector control-grid-view control-hero control-icon control-ignore-pointer
+    control-image control-indexed-stack control-interactive-viewer control-intrinsic-height
+    control-intrinsic-width control-keyboard-listener control-list-section control-list-tile
+    control-list-view control-markdown control-merge-semantics control-nested-scroll-view
+    control-overlay control-page-view control-placeholder control-progress-bar control-progress-ring
+    control-reorderable-drag-handle control-reorderable-list-view control-responsive-row
+    control-rotated-box control-rotation-transition control-row control-ruflet-app control-safe-area
+    control-scale-transition control-screenshot control-selection-area control-semantics
+    control-shader-mask control-shimmer control-size-transition control-slide-transition
+    control-sliver-app-bar control-sliver-fill-remaining control-sliver-grid control-sliver-list
+    control-sliver-padding control-sliver-to-box-adapter control-snack-bar control-snack-bar-action
+    control-spinkit control-stack control-table control-table-row control-text control-text-span
+    control-transparent-pointer control-vertical-divider control-window-drag-area
   ].freeze
 
   test "fully described controls describe every property and event" do
@@ -383,7 +383,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # Ruflet's server turns the keys of an event's hash payload into symbols, so
   # `event.data["ci"]` is always nil and `event.data[:ci]` is right. These pages
   # still read string keys; fix them, then remove them here.
-  STRING_KEY_PAYLOAD_PAGES = %w[control-draggable-scrollable-sheet control-qrcode-scanner qrcode-scanner].freeze
+  STRING_KEY_PAYLOAD_PAGES = %w[control-qrcode-scanner qrcode-scanner].freeze
 
   test "pages read hash event payloads with symbol keys" do
     offenders = DocsCatalog.all_entries.filter_map do |entry|
@@ -428,6 +428,178 @@ end
     assert example, "control-menu-item-button has no generated example"
     refute_includes example, "trailing:", "MenuItemButton `trailing` is ignored by the 0.0.23 client"
     assert_includes page("control-cupertino-app-bar").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1], "trailing:"
+  end
+
+
+  test "fully described controls have no generic property, event or method lines" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    generic = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+      control = catalog[slug]
+      next [ "#{slug} is not in the catalog" ] unless control
+
+      widget = control[:widget_type].to_s
+      overrides = descriptions.dig("widget_overrides", widget) || {}
+      lines = %w[properties events].flat_map do |kind|
+        Array(control[kind.to_sym]).map(&:to_s)
+                                   .reject { |name| overrides.key?(name) || descriptions[kind].key?(name) }
+                                   .map { |name| "#{slug} #{kind} #{name}" }
+      end
+      lines + Array(control[:methods]).map { |method| method[:name].to_s }
+                                      .reject { |name| descriptions.dig("method_notes", widget, name) }
+                                      .map { |name| "#{slug} methods #{name}" }
+    end
+
+    assert_empty generic, "Describe these lines in config/property_descriptions.json:\n#{generic.join("\n")}"
+  end
+
+  test "shared layout descriptions say what the clients do" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    properties = descriptions.fetch("properties")
+    events = descriptions.fetch("events")
+    common = DocsCatalog.send(:common_properties)
+
+    assert_empty common - properties.keys - events.keys, "Every key in config/control_common_properties.json needs a shared description"
+    assert_includes properties.fetch("adaptive"), "no Ruflet client reads it"
+    assert_includes properties.fetch("expand"), "an integer sets the share"
+    assert_includes events.fetch("on_size_change"), "`{ w: width, h: height }`"
+    assert_includes events.fetch("on_end_reached"), "the keys `:pixels`"
+    %w[opacity rotation scale offset align margin position container].each do |name|
+      assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
+    end
+  end
+
+  # Wording true for one wire type of this group. A shared entry would also
+  # render on other controls with the same key (an audio's src_base64, a
+  # lottie's animate, a web_view's on_scroll, which sends { x:, y: }).
+  LAYOUT_ONLY_DESCRIPTIONS = {
+    "container" => %w[animate image shadow],
+    "image" => %w[src_base64 error_content],
+    "markdown" => %w[code_theme]
+  }.freeze
+  SCROLL_EVENT_WIDGETS = %w[column row listview gridview customscrollview nestedscrollview reorderablelistview responsiverow].freeze
+
+  test "wording for one layout control stays in its widget override" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    overrides = descriptions.fetch("widget_overrides")
+
+    LAYOUT_ONLY_DESCRIPTIONS.each do |widget, names|
+      names.each do |name|
+        assert overrides.dig(widget, name), "widget_overrides.#{widget} needs #{name}"
+        assert_nil descriptions.fetch("properties")[name], "A shared #{name} description also renders on other controls; keep it in widget_overrides.#{widget}"
+      end
+    end
+    SCROLL_EVENT_WIDGETS.each do |widget|
+      assert_includes overrides.dig(widget, "on_scroll").to_s, "`:event_type`", "widget_overrides.#{widget} needs the on_scroll payload"
+    end
+    refute_includes descriptions.fetch("events").fetch("on_scroll"), "event.data", "web_view also uses the shared on_scroll text, and its payload is { x:, y: }"
+  end
+
+  # Hand-written sentences of the layout pages that describe main-only
+  # behavior (each must carry the marker) or one design only (each must stay).
+  LAYOUT_PROSE_MARKERS = {
+    "controls-and-layout" => [
+      "Snake case, such as `\"space_between\"`, also works on Ruflet main",
+      "On Ruflet main these alignments also take a name",
+      "lays out its children like a `column`, so `expand` works inside it too"
+    ],
+    "control-row" => [ "`on_end_reached`, `end_reached_threshold` and `keyboard_dismiss_behavior` work on a scrolling row too" ],
+    "control-container" => [ "`opacity_on_click` — the opacity an `ink: true` container fades to" ],
+    "control-image" => [ "`src_base64:` is the same data under its own name" ],
+    "control-semantics" => [ "Drawing the wrapped `content` needs the next release" ],
+    "control-screenshot" => [ "An Integer `pixel_ratio:` needs the next release" ]
+  }.freeze
+
+  LAYOUT_PROSE_QUALIFIERS = {
+    "controls-and-layout" => [
+      "`cupertino_switch` sends the same `Switch` control as `switch`",
+      "No Ruflet client reads it, and the design follows the platform with or without it."
+    ],
+    "control-text" => [ "on Android, web, Windows and Linux it fires only for `selectable: true` text" ],
+    "control-badge" => [ "iOS and macOS need a label" ],
+    "control-card" => [ "draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only" ],
+    "control-reorderable-list-view" => [ "`semantic_child_count` is accepted, but no Ruflet client reads it" ]
+  }.freeze
+
+  # Sections of hand-written layout pages that need the next release: each
+  # heading must be followed directly by the callout.
+  LAYOUT_SECTION_CALLOUTS = {
+    "control-column" => "Refreshing and loading more",
+    "control-list-view" => "Refreshing and loading more",
+    "control-grid-view" => "Refreshing and loading more"
+  }.freeze
+
+  test "main-only sections of layout pages open with the callout" do
+    callout = "> #{DocsCatalog::NEXT_RELEASE_MARKER}."
+
+    LAYOUT_SECTION_CALLOUTS.each do |slug, heading|
+      section = page(slug).content[/^## #{Regexp.escape(heading)}\n\n(.*?)(?=^## |\z)/m, 1]
+
+      assert section, "#{slug} has no ## #{heading} section"
+      assert section.start_with?(callout), "#{slug}: ## #{heading} needs the next-release callout right under the heading"
+    end
+
+    example = page("control-semantics").content[/^## Example\n\n(.*?)^```ruby/m, 1]
+    assert_includes example.to_s, callout, "The 0.0.23 client draws nothing for semantics, so its example needs the callout"
+  end
+
+  test "layout pages read event payloads with symbol keys and decorate text with constants" do
+    slugs = FULLY_DESCRIBED_CONTROLS + %w[controls-and-layout]
+    string_keys = slugs.select { |slug| page_text(slug).match?(/\bevent\.data(?:\[:\w+\])*\[["']/) }
+    string_key_names = slugs.flat_map { |slug| string_payload_keys(page_text(slug)).map { |key| "#{slug}: #{key}" } }
+    texts = DocsCatalog.all_entries.to_h { |entry| [ entry.slug, entry_text(entry) ] }
+    string_decorations = texts.select { |_slug, text| text.match?(/\bdecoration: ["']/) }.keys
+    symbol_decorations = texts.select { |_slug, text| text.match?(/\bdecoration: :(?!:)/) }.keys
+
+    assert_empty string_keys, "The server gives event.data hashes Symbol keys, so read event.data[:key]: #{string_keys.join(', ')}"
+    assert_empty string_key_names, "The server gives event.data hashes Symbol keys, so name them as `:key`:\n#{string_key_names.join("\n")}"
+    assert_empty string_decorations, "Clients read decoration as a Ruflet::TextDecoration bit mask; a String draws nothing: #{string_decorations.join(', ')}"
+    assert_empty symbol_decorations, "A Symbol decoration reaches the client as a String and draws nothing; use Ruflet::TextDecoration: #{symbol_decorations.join(', ')}"
+  end
+
+  test "the payload key check finds String keys in prose" do
+    flagged = [
+      "- `on_end_reached` — `event.data` has the keys `\"pixels\"` and `:viewport_dimension`.",
+      "- `on_extent_change` — `event.data` has `\"extent\"`, `:min` and `:max`.",
+      "`event.data` has the keys `:selection`, a hash with `\"base_offset\"` and `:extent_offset`.",
+      "`event.data` is `{ \"w\" => width, \"h\" => height }`.",
+      "Read the position from `event.data`:\n\n- `\"event_type\"` — `\"start\"` or `\"end\"`\n- `:pixels` — the offset; `\"max_scroll_extent\"` bounds it"
+    ]
+    kept = [
+      "`event.data` is a hash with the keys `:event_type` (`\"start\"` or `\"end\"`), `:pixels` and `:velocity`.",
+      "Read the position from `event.data`:\n\n- `:event_type` — `\"start\"` or `\"end\"`\n- `:direction` (`\"idle\"` or `\"forward\"`) on user events",
+      "`event.data` names the animation: `\"opacity\"` or `\"scale\"`.",
+      "- `col` — a hash per breakpoint such as `{ \"xs\" => 12, \"md\" => 6 }`."
+    ]
+
+    assert_equal [ 1, 1, 1, 1, 2 ], flagged.map { |text| string_payload_keys(text).size }
+    assert_equal [ 0, 0, 0, 0 ], kept.map { |text| string_payload_keys(text).size }
+  end
+
+  test "layout pages keep their next-release markers and platform notes" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    # Guides such as controls-and-layout render from their source file.
+    chunks = lambda do |slug|
+      entry = page(slug)
+      next prose_chunks(slug) if entry.content
+
+      entry.source.read.split(/\n(?=- |\n)/).map(&:squish)
+    end
+
+    LAYOUT_PROSE_MARKERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        chunk = chunks.call(slug).find { |candidate| candidate.include?(phrase) }
+
+        assert chunk, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes chunk, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    LAYOUT_PROSE_QUALIFIERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        assert chunks.call(slug).any? { |chunk| chunk.include?(phrase) }, "#{slug} no longer says #{phrase.inspect}"
+      end
+    end
   end
 
   private
@@ -494,6 +666,47 @@ end
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     slugs.map { |slug| page(slug) }
+  end
+
+  # A page's Markdown, generated or read from its source file.
+  def entry_text(entry)
+    entry.content || (entry.source&.exist? ? entry.source.read : "")
+  end
+
+  def page_text(slug)
+    entry_text(page(slug))
+  end
+
+  STRING_KEY_SPAN = /`(["'])\w+\1`/
+  STRING_KEY_HASH = /`\{\s*(["'])\w+\1\s*=>/
+  PAYLOAD_KEY_INTRO = /(?:\bkeys?|`event\.data` has|\bhash with)\s+/
+
+  # Code spans that name an event.data key as a String: in a key list ("has
+  # the keys ...", "`event.data` has ...", "a hash with ...", to the end of the
+  # sentence), in a hash literal of a sentence about `event.data`, or in a
+  # bullet list under a line about `event.data` that ends with a colon. Values
+  # may be Strings, so text in parentheses and a value list after a dash are
+  # skipped.
+  def string_payload_keys(markdown)
+    in_payload_list = false
+    markdown.gsub(/^```.*?^```$/m, "").split(/\n(?=- |\n)/).map(&:squish).reject(&:empty?).flat_map do |chunk|
+      found = []
+      if in_payload_list && chunk.start_with?("- ")
+        found.concat(string_key_spans(chunk.gsub(/\([^()]*\)/, "").sub(/ — `.*\z/, "")))
+      else
+        in_payload_list = chunk.include?("`event.data`") && chunk.end_with?(":")
+      end
+      chunk.split(/(?<=[.;])\s+/).each do |sentence|
+        keys = sentence.split(PAYLOAD_KEY_INTRO, 2)[1]
+        found.concat(string_key_spans(keys.gsub(/\([^()]*\)/, ""))) if keys
+        found << sentence[STRING_KEY_HASH] if sentence.include?("`event.data`") && sentence.match?(STRING_KEY_HASH)
+      end
+      found
+    end
+  end
+
+  def string_key_spans(text)
+    text.to_enum(:scan, STRING_KEY_SPAN).map { Regexp.last_match[0] }
   end
 
   # DocsCatalog.find falls back to the first page for an unknown slug, so a

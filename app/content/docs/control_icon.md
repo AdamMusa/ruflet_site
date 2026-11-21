@@ -11,8 +11,10 @@ icon("home")
 ## Common properties
 
 - `icon`
-- `size`
+- `size` — in logical pixels (default 24)
 - `color`
+- `semantics_label` — what screen readers say for the icon
+- `fill`, `weight`, `grade` and `optical_size` — axes of variable icon fonts such as Material Symbols; fonts without them ignore these
 
 ## Usage
 
