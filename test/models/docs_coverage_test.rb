@@ -692,7 +692,8 @@ end
 
     assert_includes overrides.dig("container", "on_hover"), "arrives in Ruby as `nil`", "a container's on_hover leave payload false reaches Ruby as nil"
     # drag_target.dart sends the Set literal {"src_id", id}, which arrives as a
-    # two-item list, so DragTargetEvent finds no src_id.
+    # two-item list, so DragTargetEvent finds no src_id. When the engine sends
+    # a map instead (AdamMusa/ruflet-engine#127), change this line with it.
     assert_includes overrides.dig("dragtarget", "on_leave"), "`event.data[1]`"
     assert_includes overrides.dig("dragtarget", "on_leave"), "`event.src_id` is nil here"
     assert_includes overrides.dig("windowdragarea", "on_drag_start"), "`:l` is the point in the area"
