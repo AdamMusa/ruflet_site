@@ -19,7 +19,7 @@ column(
 
 - `color`
 - `thickness`
-- `height` — the total space the divider occupies (the line sits in the middle)
+- `height` — the total space the divider occupies (the line sits in the middle); 16 by default on Android, web, Windows and Linux and 1 on iOS and macOS, where the default line is 0.5 thick
 - `leading_indent` / `trailing_indent`
 - `radius`
 

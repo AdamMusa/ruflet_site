@@ -32,7 +32,7 @@ page.add(
 - `background_image_src` — an image drawn behind `content`
 - `bgcolor` / `color` — background and content colors; on iOS and macOS `color` applies to text content only, not to an `icon`
 - `radius`, or `min_radius` / `max_radius`
-- `on_image_error` — an image failed to load
+- `on_image_error` — an image failed to load; `event.data` is `"foreground"` or `"background"`, naming the image
 
 ## Usage
 

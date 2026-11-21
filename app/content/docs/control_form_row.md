@@ -3,8 +3,9 @@
 > **Requires the next Ruflet release** (on `main`, not in 0.0.23). With 0.0.23 the client shows "Unknown control".
 
 A labeled row for one field: a leading `prefix` label, the field aligned to the
-end, and optional `helper` and `error` lines below. Material clients draw a
-padded row; iOS clients draw a `CupertinoFormRow`.
+end, and optional `helper` and `error` lines below. On iOS and macOS the
+client draws a `CupertinoFormRow`, and on Android, Windows and Linux a padded
+row. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 

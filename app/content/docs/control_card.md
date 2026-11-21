@@ -14,7 +14,7 @@ card(
       children: [
         text(value: "Monthly report", style: { size: 18, weight: "w700" }),
         text("Revenue is up 12% over last month."),
-        filled_button(content: text("Open"), on_click: ->(_e) { open_report })
+        filled_button(content: text("Open"), on_click: ->(_e) { page.go("/reports/monthly") })
       ]
     )
   )
@@ -31,6 +31,8 @@ card(
 - `clip_behavior`
 - `margin`
 - `variant` — `"elevated"`, `"filled"`, or `"outlined"`
+- `semantic_container` — screen readers treat the card as one element (default `true`)
+- `show_border_on_foreground` — draw the `shape` border over the content (default `true`); Android, web, Windows and Linux only
 
 ## Usage
 
