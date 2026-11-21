@@ -312,7 +312,7 @@
     ]
   },
   "control-dropdown-option": {
-    "summary": "One option of a [`dropdown`](/docs/control-dropdown). `key` is what the dropdown stores in its `value` and reports in `on_select`, and `text` is what the user sees; either defaults to the other, and the first positional argument sets `key`. `content` shows a control in the menu instead of `text`. `leading_icon`, `trailing_icon` and `style` apply on Android, Windows and Linux only: on iOS and macOS the options wheel shows each option's `content` or `text`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design. A `disabled` option cannot be picked. On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "summary": "One option of a [`dropdown`](/docs/control-dropdown). `key` is what the dropdown stores in its `value` and reports in `on_select`, and `text` is what the user sees; either defaults to the other, and the first positional argument sets `key`. `content` shows a control in the menu instead of `text`. `leading_icon`, `trailing_icon` and `style` apply on Android, Windows and Linux only: on iOS and macOS the options wheel shows each option's `content` or `text`. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design. A `disabled` option cannot be picked. On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "size = text(value: \"Size: M\")",
       "page.add(",

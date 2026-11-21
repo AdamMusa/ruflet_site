@@ -111,6 +111,6 @@ Android, Windows and Linux only: `bgcolor`, `border`, `border_color`,
 `enable_filter` and `enable_search`. Use `hint_text` for a prompt that every
 platform shows.
 
-A `disabled` option cannot be picked. On iOS and macOS the wheel dims it and
-Done stays off while the wheel rests on it; the 0.0.23 client still lets the
-user pick it there. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+A `disabled` option cannot be picked. On iOS and macOS the 0.0.23 client still
+lets the user pick it. In the next release the wheel there dims it and Done
+stays off while the wheel rests on it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).

@@ -747,7 +747,7 @@
       },
       "control-dropdown-option": {
         "properties": {
-          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+          "disabled": "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it."
         }
       },
       "control-filled-icon-button": {
@@ -795,7 +795,7 @@
       },
       "control-option": {
         "properties": {
-          "disabled": "On iOS and macOS the wheel dims it and Done stays off while the wheel rests on it; the 0.0.23 client still lets the user pick it there."
+          "disabled": "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it."
         }
       },
       "control-outlined-icon-button": {

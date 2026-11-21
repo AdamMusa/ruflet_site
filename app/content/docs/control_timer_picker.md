@@ -31,7 +31,7 @@ page.add(
 
 ## Common properties
 
-- `value` — the duration in whole seconds (default 0)
+- `value` — the duration, as an Integer number of seconds; left out, the picker starts at 0 and reports microseconds (see Usage)
 - `mode` — `"hms"` (hours, minutes and seconds; default), `"hm"` or `"ms"`
 - `minute_interval` / `second_interval` — steps between the offered minutes and seconds
 - `on_change` — the duration changed

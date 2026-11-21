@@ -660,7 +660,7 @@ end
     disabled = generated_line("control-dropdown-option", "properties", "disabled")
 
     refute_includes disabled, "still offer", "the next release dims a disabled option on iOS and macOS"
-    assert_includes disabled, "the 0.0.23 client still lets the user pick it there."
+    assert_includes disabled, "the 0.0.23 client still lets the user pick it."
     assert_includes generated_line("control-dropdown", "events", "on_change"), "the same `event.data`, the option's key"
     range = prose_chunks("control-date-range-picker").join("\n")
 
@@ -676,6 +676,10 @@ end
 
     assert_includes timer, "and so they are when you leave `value` out, because this helper sends `value: 0`"
     refute_includes timer, "Without one they are both", "cupertino_timer_picker sends value: 0, so leaving it out still reports seconds"
+    plain_timer = prose_chunks("control-timer-picker")
+
+    assert_includes plain_timer.join("\n"), "Without an Integer `value` (also when you leave it out) the client sends the duration in microseconds", "timer_picker sends no value, so the client reports microseconds"
+    assert_includes plain_timer.find { |chunk| chunk.start_with?("- `value`") }.to_s, "left out, the picker starts at 0 and reports microseconds", "timer_picker sends no value: leaving it out does not give seconds"
   end
 
   # What 0.0.23 rejects (ruflet #109) and the shapes its client misreads
@@ -694,7 +698,9 @@ end
     [ "control-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
     [ "control-cupertino-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
     [ "control-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too.",
-    [ "control-cupertino-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too."
+    [ "control-cupertino-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too.",
+    [ "control-dropdown-option", "disabled" ] => "In the next release the wheel there dims it and Done stays off while the wheel rests on it.",
+    [ "control-option", "disabled" ] => "In the next release the wheel there dims it and Done stays off while the wheel rests on it."
   }.freeze
 
   test "input pages keep their 0.0.23 notes on rejected keys and misread shapes" do
@@ -753,6 +759,93 @@ end
     end
 
     assert_empty wrong, "List these names in config/next_release.json, or drop the marker:\n#{wrong.join("\n")}"
+  end
+
+  # The other direction: a hand-written list item that names a key or event
+  # 0.0.23 does not have, or that its client ignores everywhere ("members" and
+  # "client_ignored" of config/next_release.json), carries the marker.
+  test "input list items of main-only names carry the marker" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    main_only = %w[members client_ignored].flat_map do |list|
+      config.fetch(list).flat_map { |slug, kinds| kinds.values.flat_map { |names| names.is_a?(Hash) ? names.keys : names }.map { |name| [ slug, name ] } }
+    end.group_by(&:first).transform_values { |rows| rows.map(&:last) }
+
+    checked = 0
+    missing = (INPUT_PAGES - config.fetch("controls")).flat_map do |slug|
+      prose_chunks(slug).grep(/\A- `/).filter_map do |item|
+        names = item[/\A- ((?:`[a-z_0-9]+`(?: \/ | and |, )?)+)/, 1].to_s.scan(/`([a-z_0-9]+)`/).flatten
+        next if (names & main_only.fetch(slug, [])).empty?
+
+        checked += 1
+        "#{slug}: #{item}" unless item.include?(marker)
+      end
+    end
+
+    assert_operator checked, :>=, 4
+    assert_empty missing, "These items name main-only keys or events; add the marker:\n#{missing.join("\n")}"
+  end
+
+  # Hand-written sentences about main-only behavior that the pins above do not
+  # cover. Each must keep the marker.
+  DISABLED_OPTION_NOTE = "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it.".freeze
+  INPUT_PROSE_MARKERS = {
+    "control-cupertino-checkbox" => [ "On Android, Windows and Linux, the 0.0.23 client ignores `spacing`." ],
+    "control-cupertino-date-picker" => [ "drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release" ],
+    "control-cupertino-slider" => [ "On iOS and macOS, the 0.0.23 client never sends `on_focus` or `on_blur`." ],
+    "control-cupertino-sliding-segmented-button" => [ "The sliding look on iOS and macOS comes from the `sliding` flag this helper sends." ],
+    "control-dropdown" => [ DISABLED_OPTION_NOTE ],
+    "control-dropdown-option" => [ DISABLED_OPTION_NOTE ],
+    "control-radio" => [ "On iOS and macOS, the 0.0.23 client ignores `label_style`." ],
+    "control-search-bar" => [ "with 0.0.23 both do nothing there" ],
+    "control-segmented-button" => [ "`sliding: true` draws the iOS sliding segmented control on iOS and macOS" ],
+    "control-text-field" => [ "need the next release; with 0.0.23 the iOS field ignores them" ]
+  }.freeze
+
+  # A marker on an input page sits in the callout under the H1 of a
+  # config/next_release.json page, in a list item (the tests above check its
+  # names), or right after a pinned sentence: the text since the previous
+  # marker must hold one of the page's pinned phrases. So a sentence that works
+  # on 0.0.23 cannot gain a marker unnoticed, not even inside a paragraph that
+  # has one.
+  test "input pages carry the marker only after a pinned sentence" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    next_release_pages = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("controls")
+
+    INPUT_PROSE_MARKERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    unexpected = INPUT_PAGES.flat_map do |slug|
+      pinned = [ INPUT_PAYLOAD_NEXT_RELEASE, INPUT_RELEASE_PROSE, STATE_READER_PROSE, INPUT_PROSE_MARKERS ].flat_map { |pins| Array(pins[slug]) }
+      hand_written(page_text(slug)).split(/^(?=## )/).flat_map do |section|
+        heading = section[/\A## (.+)$/, 1]
+        section.split(/\n(?=- |\n)/).map(&:squish).select { |chunk| chunk.include?(marker) }.flat_map do |chunk|
+          next [] if chunk.start_with?("- `")
+          next [] if chunk.start_with?("> #{marker}") && heading.nil? && next_release_pages.include?(slug)
+
+          chunk.split(marker, -1)[0...-1].reject { |before| pinned.any? { |phrase| before.include?(phrase) } }
+               .map { |before| "#{slug} (#{heading || 'intro'}): ...#{before.last(120)}#{marker}" }
+        end
+      end
+    end
+
+    assert_empty unexpected, "Only main-only behavior gets the next-release marker. Remove it, or pin the sentence in INPUT_PROSE_MARKERS after checking that it fails on 0.0.23:\n#{unexpected.join("\n")}"
+  end
+
+  # With 0.0.23 `props["value"]` of a text input holds the Integer only after a
+  # change event, so a sentence there that calls it the Integer says "can".
+  test "text input pages never say props value is always the Integer" do
+    %w[control-auto-complete control-cupertino-text-field control-search-bar control-text-field].each do |slug|
+      text = [ hand_written(page_text(slug)).gsub(/^```.*?^```$/m, ""), *generated_api_lines(page(slug).content).map(&:last) ].join(" ")
+      wrong = text.squish.split(/(?<=[.:;])\s+/).select { |sentence| sentence.include?("props[\"value\"]") && sentence.include?("Integer") && !sentence.include?(" can ") }
+
+      assert_empty wrong, "#{slug}: with 0.0.23 props[\"value\"] is the Integer only after a change event:\n#{wrong.join("\n")}"
+    end
   end
 
   # A Ruby example that forgets to define a name still compiles: Ruby parses
