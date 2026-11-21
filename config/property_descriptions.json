@@ -368,7 +368,7 @@
     "on_submit": "Fired when the input is submitted.",
     "on_focus": "Fired when the control gains focus.",
     "on_blur": "Fired when the control loses focus.",
-    "on_hover": "Fired when a mouse pointer moves onto or off the control; touch input never fires it. The control's page describes `event.data`.",
+    "on_hover": "Fired when a mouse pointer moves onto or off the control; touch input never fires it.",
     "on_long_press": "Fired on a long press.",
     "on_double_tap": "Fired on a double tap.",
     "on_tap_down": "Fired when a pointer presses down.",
@@ -589,7 +589,7 @@
       "on_blur": "Fired when the button loses keyboard focus.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_focus": "Fired when the button gains keyboard focus.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
       "opacity_on_click": "Opacity, from 0.0 to 1.0, the button fades to while pressed on iOS and macOS (default 0.4). Android, web, Windows and Linux ignore it; Material buttons show an ink ripple.",
       "padding": "Space around the label on iOS and macOS; without it the button uses the padding of its `size`. Android, web, Windows and Linux ignore it; use `style: { padding: ... }` there.",
@@ -623,7 +623,7 @@
       "checked": "Shows a check mark beside the entry: `true` or `false` (leave it out for an entry without one). Android, web, Windows and Linux only. The client does not toggle it; update it from `on_click`.",
       "mouse_cursor": "Mouse cursor over the entry, for example `\"click\"`. Android, web, Windows and Linux only.",
       "value": "Accepted for compatibility; the client does not read it. Tell entries apart by their own `on_click`, or by `event.data[:idx]` in the menu's `on_select`.",
-      "on_click": "Fired when the user picks the entry. On Android, web, Windows and Linux, a `checked` entry that becomes checked sends `true` in `event.data`; otherwise `event.data` is `nil`."
+      "on_click": "Fired when the user picks the entry. On Android, web, Windows and Linux, a `checked` entry that becomes checked sends `true` in `event.data`, and one that becomes unchecked sends `false`, which arrives in Ruby as `nil`. Other entries, and every entry on iOS and macOS, send no data."
     },
     "cupertinoactionsheet": {
       "title": "Title at the top of the sheet, as a string or a control.",
@@ -981,7 +981,7 @@
       "size": "Size of the button on iOS and macOS: `\"small\"`, `\"medium\"` or `\"large\"` (the default); it sets the default padding and text size. Android, web, Windows and Linux ignore it.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus.",
       "elevation": "Shadow depth. On Android, web, Windows and Linux it only takes effect together with `style:` (default 1 there); use `style: { elevation: ... }`. On iOS and macOS a value above 0 draws a shadow under the button."
@@ -1011,7 +1011,7 @@
       "url": "A link the client opens in the browser when the button is clicked, before `on_click` fires.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },
@@ -1036,7 +1036,7 @@
       "size": "Size of the button on iOS and macOS: `\"small\"`, `\"medium\"` or `\"large\"` (the default); it sets the default padding and text size. Android, web, Windows and Linux ignore it.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus.",
       "elevation": "Shadow depth. On Android, web, Windows and Linux it only takes effect together with `style:` (default 1 there); use `style: { elevation: ... }`. On iOS and macOS a value above 0 draws a shadow under the button."
@@ -1066,7 +1066,7 @@
       "url": "A link the client opens in the browser when the button is clicked, before `on_click` fires.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },
@@ -1122,7 +1122,7 @@
       "url": "A link the client opens in the browser when the button is clicked, before `on_click` fires.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },
@@ -1189,10 +1189,11 @@
       "semantic_label": "Text a screen reader reads instead of the entry's label.",
       "clip_behavior": "How the entry clips its content: `\"none\"` (default), `\"hardEdge\"`, `\"antiAlias\"` or `\"antiAliasWithSaveLayer\"`. Android, web, Windows and Linux only.",
       "autofocus": "Gives the entry keyboard focus when it first appears (default `false`).",
+      "disabled": "Draws the entry dimmed and ignores taps (default `false`).",
       "on_focus": "Fired when the entry gains keyboard focus, for example while a mouse pointer is over it.",
       "on_blur": "Fired when the entry loses keyboard focus.",
       "on_click": "Fired when the user picks the entry. An entry without an `on_click` handler is drawn disabled.",
-      "on_hover": "Fired when a mouse pointer moves onto the entry (`event.data` is `true`) and off it (`event.data` is `nil`)."
+      "on_hover": "Fired when a mouse pointer moves onto the entry (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`)."
     },
     "navigationbar": {
       "destinations": "The destinations, built with `navigation_bar_destination(icon:, label:)`; two to five work best.",
@@ -1288,7 +1289,7 @@
       "size": "Size of the button on iOS and macOS: `\"small\"`, `\"medium\"` or `\"large\"` (the default); it sets the default padding and text size. Android, web, Windows and Linux ignore it.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },
@@ -1317,7 +1318,7 @@
       "url": "A link the client opens in the browser when the button is clicked, before `on_click` fires.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },
@@ -1351,7 +1352,7 @@
       "padding": "Space around the entry's content. Android, web, Windows and Linux only.",
       "label_text_style": "Text style of the entry, for example `{ weight: \"bold\" }`. Android, web, Windows and Linux only.",
       "mouse_cursor": "Mouse cursor over the entry, for example `\"click\"`. Android, web, Windows and Linux only.",
-      "on_click": "Fired when the user picks the entry. For a `checked` entry, `event.data` is `true` when the entry was unchecked and is now checked, and `nil` otherwise (the 0.0.23 client on iOS and macOS always sends `nil`); other entries send no data."
+      "on_click": "Fired when the user picks the entry. For a `checked` entry, `event.data` is `true` when the entry was unchecked and is now checked; when it was checked the client sends `false`, which arrives in Ruby as `nil`. Other entries send no data."
     },
     "progressbar": {
       "value": "Progress from 0.0 to 1.0; leave it unset for an indeterminate bar.",
@@ -1469,7 +1470,7 @@
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus.",
       "on_close": "Fired when the menu closes, whether or not the user picked an entry. On iOS and macOS picking an entry closes the sheet, which fires it.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Android, web, Windows and Linux only."
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Android, web, Windows and Linux only."
     },
     "tab": {
       "label": "The tab's text: a string or a control. The first positional argument sets it.",
@@ -1498,7 +1499,7 @@
       "splash_border_radius": "Corner radius of the press highlight. Android, web, Windows and Linux only.",
       "enable_feedback": "Plays the platform's click sound or haptic tap when a tab is pressed. Android, web, Windows and Linux only.",
       "mouse_cursor": "Mouse cursor over the tabs, for example `\"click\"`. Android, web, Windows and Linux only.",
-      "on_click": "Fired when the user taps a tab, even the selected one. `event.data` is its index.",
+      "on_click": "Fired when the user picks a tab. `event.data` is its index. On Android, web, Windows and Linux it fires for every tap, even on the selected tab; on iOS and macOS only when the selection moves to another tab.",
       "on_hover": "Fired when a mouse pointer moves onto or off a tab. `event.data` is a hash with symbol keys: `:hovering` (`true` or `false`) and `:index`."
     },
     "tabbarview": {
@@ -1545,7 +1546,7 @@
       "size": "Size of the button on iOS and macOS: `\"small\"`, `\"medium\"` or `\"large\"` (the default); it sets the default padding and text size. Android, web, Windows and Linux ignore it.",
       "on_click": "Fired when the button is pressed. Not fired while `disabled`.",
       "on_long_press": "Fired when the button is pressed and held. Not fired while `disabled`.",
-      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (`event.data` is `nil`). Touch input never fires it.",
+      "on_hover": "Fired when a mouse pointer moves onto the button (`event.data` is `true`) and off it (the client sends `false`, which arrives in Ruby as `nil`). Touch input never fires it.",
       "on_focus": "Fired when the button gains keyboard focus.",
       "on_blur": "Fired when the button loses keyboard focus."
     },

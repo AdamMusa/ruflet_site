@@ -1,4 +1,5 @@
 require "test_helper"
+require "prism"
 
 # Every Ruflet control and service the reference lists must be documented.
 # The test reads only the site's own files (config/*.json, app/content/docs and
@@ -475,7 +476,15 @@ end
     [ "control-app-bar", "properties", "center_title", "Android, web, Windows and Linux only" ],
     [ "control-app-bar", "properties", "previous_page_title", "Android, web, Windows and Linux ignore it" ],
     [ "control-context-menu", "properties", "tertiary_trigger", "Android, web, Windows and Linux only" ],
+    [ "control-context-menu", "properties", "secondary_trigger",
+      "On iOS and macOS only `\"disabled\"` matters: the long press then shows `primary_items` (or `items`) instead of `secondary_items`." ],
     [ "control-context-menu", "events", "on_select", "symbol keys" ],
+    [ "control-popup-menu-button", "events", "on_select", "Fired when the user picks an item, after the item's own `on_click`." ],
+    # CupertinoSlidingSegmentedControl calls onValueChanged only when the
+    # segment changes; the Material TabBar calls onTap for every tap.
+    [ "control-tab-bar", "events", "on_click",
+      "On Android, web, Windows and Linux it fires for every tap, even on the selected tab; on iOS and macOS only when the selection moves to another tab." ],
+    [ "control-menu-item-button", "properties", "disabled", "Draws the entry dimmed and ignores taps (default `false`)." ],
     [ "control-navigation-bar", "properties", "active_color", "Android, web, Windows and Linux ignore it" ],
     [ "control-navigation-rail", "properties", "extended", "Android, web, Windows and Linux only" ],
     [ "control-tab-bar", "properties", "indicator_size", "Android, web, Windows and Linux only" ],
@@ -498,6 +507,41 @@ end
     assert_includes generated_line("control-outlined-button", "events", "on_hover"),
       "On Android, web, Windows and Linux, the 0.0.23 client never sends it for a button with an `icon`. #{DocsCatalog::NEXT_RELEASE_MARKER}.",
       "With 0.0.23 the Material OutlinedButton.icon has no onHover"
+    refute_includes generated_line("control-popup-menu-button", "events", "on_select"), "before the item's own"
+    # The iOS sheet ignores close_on_click: on main a pick always closes it,
+    # and with 0.0.23 a pick of an entry with on_click leaves it open.
+    assert_equal "- `close_on_click` — Closes the menu when the entry is clicked (default `true`). Android, web, Windows and Linux only.",
+      generated_line("control-menu-item-button", "properties", "close_on_click").chomp
+    # Shared by sliver_app_bar, which on iOS and macOS draws a Cupertino bar.
+    assert_equal "Adds a back button when the page can go back. On Android, web, Windows and Linux it adds a menu button instead when the page has a drawer.",
+      DocsCatalog.send(:attribute_descriptions).dig("properties", "automatically_imply_leading")
+    assert prose_chunks("control-app-bar").any? { |chunk|
+      chunk.include?("adds a back button when `automatically_imply_leading` (default `true`) allows, or, on Android, web, Windows and Linux, a menu button when the page has a `drawer`")
+    }, "control-app-bar: iOS and macOS have no menu button"
+  end
+
+  # A `false` event payload reaches the handler as `nil` (ruflet_server's
+  # Protocol.normalize_control_event_payload; event_data_docs_test.rb checks
+  # it against the Ruflet source), so a line that describes it says so.
+  test "button, menu and navigation lines say a false payload arrives as nil" do
+    lines = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      generated_api_lines(page(slug).content).filter_map { |kind, name, line| [ slug, name, line ] if kind == "events" && name.in?(%w[on_hover on_click]) }
+    end
+    leaving = lines.select { |_slug, name, line| name == "on_hover" && line.include?("off it") }
+
+    assert_equal 11, leaving.size, leaving.map(&:first).join(", ")
+    leaving.each do |slug, _name, line|
+      assert_includes line, "and off it (the client sends `false`, which arrives in Ruby as `nil`)", slug
+    end
+    lines.each { |slug, name, line| refute_match(/`event\.data` is `false`/, line, "#{slug} #{name}") }
+    assert_includes generated_line("control-popup-menu-item", "events", "on_click"),
+      "when it was checked the client sends `false`, which arrives in Ruby as `nil`"
+    assert_includes generated_line("control-context-menu-action", "events", "on_click"),
+      "one that becomes unchecked sends `false`, which arrives in Ruby as `nil`"
+    # The shared line is what container, gesture_detector and map show, and
+    # their pages do not all describe on_hover's data.
+    assert_equal "Fired when a mouse pointer moves onto or off the control; touch input never fires it.",
+      DocsCatalog.send(:attribute_descriptions).dig("events", "on_hover")
   end
 
   # What the 0.0.23 client (template main) does on iOS and macOS where the
@@ -515,7 +559,19 @@ end
     [ "control-popup-menu-button", "events", "on_select",
       "On iOS and macOS, the 0.0.23 client never sends it. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
     [ "control-submenu-button", "events", "on_close",
-      "the 0.0.23 client leaves the sheet open after a pick, so it fires only when the user taps outside the sheet. #{DocsCatalog::NEXT_RELEASE_MARKER}." ]
+      "On iOS and macOS, the 0.0.23 client leaves the sheet open when the user picks an entry that has `on_click`, so it fires only once the user taps outside the sheet; " \
+      "a tap on an entry without `on_click`, or on a disabled one, closes the sheet and fires it. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
+    # With 0.0.23 the sheet's row handler ignores `disabled` and sends `click`;
+    # on main a disabled row has no onTap.
+    [ "control-menu-item-button", "properties", "disabled",
+      "On iOS and macOS, the 0.0.23 client still sends `on_click` when the user taps a disabled entry in a submenu's sheet, and closes the sheet. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
+    # With 0.0.23 a popup item on iOS and macOS is a CupertinoContextMenuAction,
+    # which sends `click` without data; on main the sheet row sends !checked.
+    [ "control-popup-menu-item", "events", "on_click",
+      "On iOS and macOS, the 0.0.23 client sends no data, so `event.data` is always `nil` there. #{DocsCatalog::NEXT_RELEASE_MARKER}." ],
+    # The 0.0.23 cupertino_context_menu.dart reads no trigger.
+    [ "control-context-menu", "properties", "secondary_trigger",
+      "On iOS and macOS, the 0.0.23 client ignores it. #{DocsCatalog::NEXT_RELEASE_MARKER}." ]
   ].freeze
 
   test "button, menu and navigation lines say what the 0.0.23 client does on iOS and macOS" do
@@ -527,7 +583,8 @@ end
     {
       "control-navigation-bar" => "with 0.0.23 a tap still selects it and sends `on_change`",
       "control-popup-menu-button" => "with 0.0.23 it sends neither there",
-      "control-menu-bar" => "with 0.0.23 the sheet stays open until the user taps outside it"
+      "control-menu-bar" => "With 0.0.23 the sheet stays open after the user picks an entry that has `on_click`, until the user taps outside it, " \
+        "and a tap on a disabled entry still runs its `on_click` and closes the sheet."
     }.each do |slug, phrase|
       paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
 
@@ -536,16 +593,50 @@ end
     end
   end
 
-  # The Navigation and Feedback guide runs as written: no block calls an app
-  # method the page never defines.
+  # A hand-written paragraph about iOS and macOS that names a line the 0.0.23
+  # Cupertino client lacks (config/next_release.json "design_client_ignored"
+  # "cupertino") describes main-only behavior, so it carries the marker.
+  test "button, menu and navigation pages mark their iOS paragraphs about main-only lines" do
+    cupertino = DocsCatalog.next_release[:design_client_ignored].fetch("cupertino")
+    unmarked = BUTTON_MENU_NAVIGATION_CONTROLS.flat_map do |slug|
+      next [] unless DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
+
+      names = cupertino.fetch(slug, {}).values.flat_map { |list| list.is_a?(Hash) ? list.keys : list }
+      prose = page(slug).content.split("\n## Complete API\n", 2).first.gsub(/^```.*?^```/m, "")
+      prose.split(/\n(?=- |\n)/).map(&:squish).reject { |chunk| chunk.include?(DocsCatalog::NEXT_RELEASE_MARKER) }.filter_map do |chunk|
+        hit = names.find { |name| chunk.include?("`#{name}`") }
+        "#{slug} (#{hit}): #{chunk}" if hit && chunk.include?("iOS")
+      end
+    end
+
+    assert_empty unmarked, "These paragraphs describe what only main does on iOS and macOS:\n#{unmarked.join("\n")}"
+  end
+
+  # The Navigation and Feedback guide runs as written: every method its
+  # examples call without a receiver is a Ruflet helper, `page`, a Kernel
+  # method, or something the page defines (a `def`, or a variable an example
+  # assigns and reads, such as the `render_route` lambda).
   test "navigation and feedback examples define every app method they call" do
     content = DocsCatalog::SOURCE_ROOT.join("navigation_feedback.md").read
-
-    %w[render_route(page) delete_item].each do |undefined|
-      refute_includes content, undefined, "navigation_feedback.md calls #{undefined}, which no example defines"
+    nodes = content.scan(/^```ruby\n(.*?)^```/m).flatten.flat_map do |code|
+      result = Prism.parse(code)
+      assert result.success?, "navigation_feedback.md has a block that does not parse:\n#{code}"
+      ruby_nodes(result.value)
     end
+    defined = nodes.grep(Prism::DefNode).map(&:name)
+    assigned = nodes.grep(Prism::LocalVariableWriteNode).map(&:name)
+    helpers = DocsCatalog.control_catalog.flat_map { |control| Array(control[:helpers]) } +
+      DocsCatalog.service_catalog.fetch(:services).map { |service| service[:helper] }
+    undefined = nodes.grep(Prism::CallNode).select { |call| call.receiver.nil? }.reject do |call|
+      helpers.include?(call.name.to_s) || call.name == :page || defined.include?(call.name) ||
+        Kernel.private_method_defined?(call.name) || (call.variable_call? && assigned.include?(call.name))
+    end
+
+    assert_operator nodes.grep(Prism::CallNode).size, :>, 50
+    assert_empty undefined.map(&:slice), "navigation_feedback.md calls these, which no example defines"
     assert_includes content, "render_route = lambda do"
-    %w[control-navigation-bar control-navigation-rail control-navigation-drawer control-tabs].each do |slug|
+    %w[control-view control-navigation-bar control-navigation-rail control-navigation-drawer control-tabs
+       control-app-bar control-popup-menu-button control-menu-bar control-context-menu].each do |slug|
       assert_includes content, "(/docs/#{slug})", "navigation_feedback.md should link #{slug}"
     end
   end
@@ -583,6 +674,7 @@ end
     assert_includes invoke_section, "page.views = [home]"
     assert prose_chunks("control-navigation-drawer").any? { |chunk| chunk.include?("With 0.0.23 that means a view's drawer opened with `page.invoke`") },
       "control-navigation-drawer: on iOS and macOS a 0.0.23 app opens the drawer with page.invoke on a view"
+    assert_includes invoke_section.squish, "This works with 0.0.23 and on every platform."
     refute_includes drawer, "cannot be opened at all", "a 0.0.23 app can open a view's drawer with page.invoke"
   end
 
@@ -606,6 +698,10 @@ end
 
       assert_includes example, "alignment: { x: 0, y: 0 }", "#{slug}: with default arguments the client cannot read the alignment Ruby sends (ruflet#94)"
     end
+    # ruflet#94 is a 0.0.23 client bug; the engine default branch reads that alignment.
+    summary = DocsCatalog.control_docs.dig("control-cupertino-filled-button", "summary")
+    assert_includes summary, "an `alignment` the 0.0.23 client cannot read, so on iOS and macOS it draws an error box instead of the button,"
+    refute_includes summary, "everywhere with"
   end
 
   # Every name a "Common properties" item starts with (the part before " — ")
@@ -632,6 +728,11 @@ end
   # API appendix), split into paragraphs and list items, each on one line.
   def prose_chunks(slug)
     page(slug).content.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
+  end
+
+  # A Prism node and every node under it.
+  def ruby_nodes(node)
+    [ node ] + node.compact_child_nodes.flat_map { |child| ruby_nodes(child) }
   end
 
   # The one generated "- `name` ..." line of a kind on a control page.

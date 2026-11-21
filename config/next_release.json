@@ -766,9 +766,10 @@
         ]
       },
       "control-menu-item-button": {
-        "properties": [
-          "autofocus"
-        ],
+        "properties": {
+          "autofocus": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "disabled": "On iOS and macOS, the 0.0.23 client still sends `on_click` when the user taps a disabled entry in a submenu's sheet, and closes the sheet."
+        },
         "events": [
           "on_blur",
           "on_focus",
@@ -793,6 +794,11 @@
           "on_cancel",
           "on_select"
         ]
+      },
+      "control-popup-menu-item": {
+        "events": {
+          "on_click": "On iOS and macOS, the 0.0.23 client sends no data, so `event.data` is always `nil` there."
+        }
       },
       "control-progress-ring": {
         "properties": [
@@ -834,7 +840,7 @@
         "events": {
           "on_blur": "On iOS and macOS, the 0.0.23 client never sends it.",
           "on_focus": "On iOS and macOS, the 0.0.23 client never sends it.",
-          "on_close": "On iOS and macOS, the 0.0.23 client leaves the sheet open after a pick, so it fires only when the user taps outside the sheet."
+          "on_close": "On iOS and macOS, the 0.0.23 client leaves the sheet open when the user picks an entry that has `on_click`, so it fires only once the user taps outside the sheet; a tap on an entry without `on_click`, or on a disabled one, closes the sheet and fires it."
         }
       },
       "control-switch": {

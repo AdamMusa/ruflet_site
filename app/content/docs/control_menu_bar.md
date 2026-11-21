@@ -55,8 +55,10 @@ and picking an entry runs its `on_click`. Keep each menu one level deep there:
 nested submenus are for Android, web, Windows and Linux.
 
 On iOS and macOS, picking an entry also closes the sheet and fires the
-submenu's `on_close`; with 0.0.23 the sheet stays open until the user taps
-outside it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+submenu's `on_close`, and a disabled entry ignores taps. With 0.0.23 the sheet
+stays open after the user picks an entry that has `on_click`, until the user
+taps outside it, and a tap on a disabled entry still runs its `on_click` and
+closes the sheet. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Keep menu bars for wide, pointer-driven layouts. On phones, a
 [`popup_menu_button`](/docs/control-popup-menu-button) in the app bar or a
