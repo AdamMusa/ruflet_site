@@ -125,6 +125,14 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     assert_operator components.scan("<table>").length, :>=, 6
   end
 
+  test "double stars inside code spans stay code and leave bold alone" do
+    html = MarkdownRenderer.render("- `page(**props)` and `service(type, **props)` add controls. **Requires the next release**.").html
+
+    assert_includes html, "<code>page(**props)</code> and <code>service(type, **props)</code> add controls. <strong>Requires the next release</strong>."
+    assert_includes MarkdownRenderer.render("**`code` in bold** and [`link`](/docs/x)").html,
+      %(<strong><code>code</code> in bold</strong> and <a href="/docs/x"><code>link</code></a>)
+  end
+
   test "renders inline markdown images" do
     html = MarkdownRenderer.render("![iOS](/assets/platform_ios.svg) **iOS**").html
     src = ActionController::Base.helpers.asset_path("platform_ios.svg")

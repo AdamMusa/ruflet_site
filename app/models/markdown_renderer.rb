@@ -182,6 +182,13 @@ class MarkdownRenderer
     # text, so they must not escape their captures again (that turns `<column>`
     # into a literal `&lt;column&gt;`).
     html = ERB::Util.html_escape(text)
+    # Set code spans aside first, so `**props` inside one cannot pair with the
+    # ** of a bold phrase elsewhere on the line.
+    code_spans = []
+    html = html.gsub(/`([^`]+)`/) do
+      code_spans << Regexp.last_match(1)
+      "\u0000#{code_spans.length - 1}\u0000"
+    end
     html = html.gsub(/!\[([^\]]*)\]\(([^)]+)\)/) do
       alt = Regexp.last_match(1)
       src = resolve_image_src(Regexp.last_match(2))
@@ -195,8 +202,7 @@ class MarkdownRenderer
       %(<a href="#{href}"#{attrs}>#{label}</a>)
     end
     html = html.gsub(/\*\*([^*]+)\*\*/) { "<strong>#{Regexp.last_match(1)}</strong>" }
-    html = html.gsub(/`([^`]+)`/) { "<code>#{Regexp.last_match(1)}</code>" }
-    html
+    html.gsub(/\u0000(\d+)\u0000/) { "<code>#{code_spans[Regexp.last_match(1).to_i]}</code>" }
   end
 
   def resolve_image_src(src)
