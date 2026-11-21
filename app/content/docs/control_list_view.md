@@ -6,11 +6,19 @@ scrolling `column` when the list is long.
 ## Example
 
 ```ruby
-list_view(
-  expand: true,
-  spacing: 4,
-  padding: 8,
-  children: messages.map { |m| list_tile(title: text(m.subject), subtitle: text(m.preview)) }
+messages = [
+  { subject: "Welcome to Ruflet", preview: "Here is how to build your first page." },
+  { subject: "Your invoice", preview: "The November invoice is ready." },
+  { subject: "Team update", preview: "Standup moves to 10:00 tomorrow." }
+]
+
+page.add(
+  list_view(
+    expand: true,
+    spacing: 4,
+    padding: 8,
+    children: messages.map { |m| list_tile(title: text(m[:subject]), subtitle: text(m[:preview])) }
+  )
 )
 ```
 

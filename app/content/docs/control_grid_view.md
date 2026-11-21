@@ -32,6 +32,8 @@ grid_view(
 ## Usage
 
 ```ruby
+items = [{ name: "Apples" }, { name: "Bread" }, { name: "Cheese" }, { name: "Dates" }, { name: "Eggs" }]
+
 grid_view(
   runs_count: 3,
   spacing: 12,

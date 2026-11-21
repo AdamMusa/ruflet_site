@@ -56,8 +56,8 @@
     "width": "Fixed width, in logical pixels.",
     "height": "Fixed height, in logical pixels.",
     "padding": "Inner spacing between the border and the content.",
-    "margin": "Space around the control, in logical pixels: one number for every side, or `{ left:, top:, right:, bottom: }`.",
-    "align": "Aligns the control in the space its parent gives it, as `{ x:, y: }` from -1 to 1 (`{ x: 0, y: 0 }` is the center).",
+    "margin": "Space around the control, in logical pixels: one number for every side, or `{ left:, top:, right:, bottom: }`, where a side you leave out is 0. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
+    "align": "Aligns the control in the space its parent gives it, as `{ x:, y: }` from -1 to 1 (`{ x: 0, y: 0 }` is the center). [Option values](/docs/controls-and-layout#option-values) lists the names Ruflet main adds, such as `\"top_left\"`.",
     "alignment": "Alignment of the content within the control.",
     "aspect_ratio": "Keeps the control at this width-to-height ratio, for example `16 / 9.0`.",
     "col": "Columns the control spans in its parent `responsive_row`: a number, or a hash per breakpoint such as `{ \"xs\" => 12, \"md\" => 6 }` (default: all of them). Other parents ignore it.",
@@ -1044,10 +1044,10 @@
       "on_scroll": "Fired as the content scrolls, at most once per `scroll_interval`. `event.data` is a hash with the keys `:event_type` (`\"start\"`, `\"update\"`, `\"end\"`, `\"user\"` or `\"overscroll\"`), `:pixels`, `:min_scroll_extent`, `:max_scroll_extent` and `:viewport_dimension`, plus `:scroll_delta` on updates, `:direction` on user events, and `:overscroll` and `:velocity` on overscroll."
     },
     "container": {
-      "alignment": "Where the content sits inside the container, as `{ x:, y: }` from -1 to 1; `\"center\"` is also accepted.",
+      "alignment": "Where the content sits inside the container, as `{ x:, y: }` from -1 to 1; `\"center\"` is also accepted. [Option values](/docs/controls-and-layout#option-values) lists the other names Ruflet main adds, such as `\"top_left\"`.",
       "animate": "Animates the container's size, padding, colors, border and other decoration when they change: `true` (1000 ms, linear), a duration in milliseconds, or `{ duration: 300, curve: \"easeOut\" }`.",
       "blur": "Blurs what is behind the container (frosted glass): a sigma such as `10`, `[x, y]`, or `{ sigma_x:, sigma_y: }`.",
-      "border_radius": "Corner radius, in logical pixels: one number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`. It also clips the content.",
+      "border_radius": "Corner radius, in logical pixels: one number, or `{ top_left:, top_right:, bottom_left:, bottom_right: }`, where a corner you leave out stays square. It also clips the content. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
       "color_filter": "Tints the container and its content: `{ color:, blend_mode: }`, for example `{ color: \"#80000000\", blend_mode: \"darken\" }`.",
       "dark_theme": "Theme for the controls inside the container while the app is in dark mode, in the same form as `page.dark_theme`.",
       "ignore_interactions": "Makes the container and its content ignore taps and other pointer input.",
@@ -1055,7 +1055,7 @@
       "ink": "Shows touch feedback on a clickable container: an ink ripple on Android, web, Windows and Linux, and a fade to `opacity_on_click` on iOS and macOS.",
       "ink_color": "Color of the ink ripple when `ink: true`. Android, web, Windows and Linux only.",
       "opacity_on_click": "Opacity, from 0.0 to 1.0, a clickable container with `ink: true` fades to while it is pressed (default 0.4). iOS and macOS only.",
-      "padding": "Space between the container's edge and its content, in logical pixels: one number, or `{ left:, top:, right:, bottom: }`.",
+      "padding": "Space between the container's edge and its content, in logical pixels: one number, or `{ left:, top:, right:, bottom: }`, where a side you leave out is 0. [Option values](/docs/controls-and-layout#option-values) lists the `all:` shorthand Ruflet main adds.",
       "shadow": "Drop shadow, or a list of them: `{ color:, offset: { x:, y: }, blur_radius:, spread_radius: }`.",
       "shape": "Shape of the container: `\"rectangle\"` (default) or `\"circle\"`.",
       "theme": "Theme for the controls inside the container, in the same form as `page.theme`.",
@@ -1115,13 +1115,13 @@
       "content": "The control to fade; the first positional argument sets it."
     },
     "fittedbox": {
-      "alignment": "Where the scaled content sits in the box, as `{ x:, y: }` from -1 to 1 (default the center).",
+      "alignment": "Where the scaled content sits in the box, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
       "clip_behavior": "How content that does not fit is clipped: `\"none\"` (default), `\"hardEdge\"`, `\"antiAlias\"` or `\"antiAliasWithSaveLayer\"`.",
       "content": "The control to scale; the first positional argument sets it.",
       "fit": "How the content is scaled into the box: `\"contain\"` (default), `\"cover\"`, `\"fill\"`, `\"fitWidth\"`, `\"fitHeight\"`, `\"scaleDown\"` or `\"none\"`."
     },
     "fractionallysizedbox": {
-      "alignment": "Where the sized content sits in the available space, as `{ x:, y: }` from -1 to 1 (default the center).",
+      "alignment": "Where the sized content sits in the available space, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
       "content": "The control to size; the first positional argument sets it.",
       "height_factor": "Height as a fraction of the height the parent offers, such as `0.5`; leave it out to let the content choose. The parent must bound the height.",
       "width_factor": "Width as a fraction of the width the parent offers, such as `0.5`; leave it out to let the content choose. The parent must bound the width."
@@ -1245,7 +1245,7 @@
       "y": "Top edge of the image, in logical pixels, when it is a shape inside a `canvas`. An image on the page ignores it."
     },
     "indexedstack": {
-      "alignment": "Where a child smaller than the stack sits, as `{ x:, y: }` from -1 to 1 (default the top left).",
+      "alignment": "Where a child smaller than the stack sits, as `{ x:, y: }` from -1 to 1 or a name such as `\"center\"` (default the top left).",
       "fit": "How the shown child is sized: `\"loose\"` (default, its own size), `\"expand\"` (the stack's size) or `\"passThrough\"`.",
       "index": "Index of the one child shown, starting at 0 (default 0). Every child stays built, so each keeps its state while hidden."
     },
@@ -1350,7 +1350,7 @@
       "repeat": "Loops the animation when true.",
       "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
       "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
-      "alignment": "Point the content turns around, as `{ x:, y: }` from -1 to 1 (default the center).",
+      "alignment": "Point the content turns around, as `{ x:, y: }` from -1 to 1 or a name such as `\"top_left\"` (default the center).",
       "begin": "Rotation the animation starts from, in full turns (default 0).",
       "end": "Rotation the animation ends at, in full turns (default 1, one full turn).",
       "content": "The control to rotate; the first positional argument sets it."
@@ -1392,7 +1392,7 @@
       "repeat": "Loops the animation when true.",
       "reverse": "With `repeat: true`, plays back and forth instead of restarting from `begin`.",
       "on_animation_end": "Fired when a run that does not repeat finishes; `event.data` is `\"transition\"`. An `animate_*` animation on the same control reports its own name, as on other controls.",
-      "alignment": "Point the content scales around, as `{ x:, y: }` from -1 to 1 (default the center).",
+      "alignment": "Point the content scales around, as `{ x:, y: }` from -1 to 1 or a name such as `\"bottom_center\"` (default the center).",
       "begin": "Scale the animation starts from (default 0).",
       "end": "Scale the animation ends at (default 1, the normal size).",
       "content": "The control to scale; the first positional argument sets it."
@@ -1463,7 +1463,7 @@
       "controls": "The cells; the first positional argument sets them.",
       "header": "Control shown above the cells.",
       "max_extent": "Largest width of a cell, in logical pixels; the grid fits as many columns as it can. It wins over `runs_count`.",
-      "padding": "Space around the grid, in logical pixels: one number or `{ left:, top:, right:, bottom: }`.",
+      "padding": "Space around the grid, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
       "run_spacing": "Space between the columns of cells, in logical pixels (default 10).",
       "runs_count": "Number of columns (default 1).",
       "spacing": "Space between the rows of cells, in logical pixels (default 10).",
@@ -1475,20 +1475,20 @@
       "divider_thickness": "Draws a line of this thickness, in logical pixels, in the `spacing` between items (default 0, none); without `spacing` there is no room for it.",
       "header": "Control shown above the items.",
       "item_extent": "Height of every item, in logical pixels, which speeds up long lists.",
-      "padding": "Space around the list, in logical pixels: one number or `{ left:, top:, right:, bottom: }`.",
+      "padding": "Space around the list, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
       "spacing": "Space between items, in logical pixels (default 0).",
       "sticky_header": "Keeps the `header` at the top while the items scroll under it, until the list scrolls away (default `false`)."
     },
     "sliverpadding": {
       "controls": "The slivers, when they are given in a block; prefer `slivers`.",
-      "padding": "Space around the slivers, in logical pixels: one number or `{ left:, top:, right:, bottom: }`.",
+      "padding": "Space around the slivers, in logical pixels: one number, `{ left:, top:, right:, bottom: }`, or `{ all: n }` with the sides it names overriding `all`.",
       "slivers": "The slivers to inset, in order; a plain control among them scrolls as one box. The first positional argument sets them."
     },
     "slivertoboxadapter": {
       "content": "The control that scrolls as one box among the slivers; the first positional argument sets it."
     },
     "stack": {
-      "alignment": "Where children without `left`, `top`, `right` or `bottom` sit, as `{ x:, y: }` from -1 to 1 (default the top left).",
+      "alignment": "Where children without `left`, `top`, `right` or `bottom` sit, as `{ x:, y: }` from -1 to 1 (default the top left). [Option values](/docs/controls-and-layout#option-values) lists the names Ruflet main adds, such as `\"center\"`.",
       "clip_behavior": "How children that reach outside the stack are clipped: `\"hardEdge\"` (default), `\"antiAlias\"`, `\"antiAliasWithSaveLayer\"` or `\"none\"`.",
       "fit": "How children without a position are sized: `\"loose\"` (default, their own size), `\"expand\"` (the stack's size) or `\"passThrough\"`."
     },

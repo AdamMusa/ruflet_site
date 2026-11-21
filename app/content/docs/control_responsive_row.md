@@ -68,7 +68,10 @@ Override them by passing your own map:
 ```ruby
 responsive_row(
   breakpoints: { "xs" => 0, "sm" => 600, "md" => 900 },
-  children: responsive_children
+  children: [
+    container(col: { "xs" => 12, "md" => 8 }, content: text("Article")),
+    container(col: { "xs" => 12, "md" => 4 }, content: text("Related"))
+  ]
 )
 ```
 
@@ -91,8 +94,10 @@ responsive_row(
 
 ## Events
 
-- `on_size_change` — the control's size changed.
-- `on_animation_end` — an `animate_*` transition finished.
+- `on_size_change` — the row's size changed; `event.data` is
+  `{ w: width, h: height }` in logical pixels.
+- `on_animation_end` — an `animate_*` animation finished; `event.data` names
+  it, such as `"opacity"` or `"scale"`.
 
 ## Reference
 

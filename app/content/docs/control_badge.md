@@ -10,7 +10,7 @@ of the control it decorates.
 icon_button(
   "notifications",
   badge: badge("3"),
-  on_click: ->(_e) { open_inbox }
+  on_click: ->(_e) { page.go("/inbox") }
 )
 ```
 

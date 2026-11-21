@@ -468,6 +468,23 @@ end
     %w[opacity rotation scale offset align margin position container].each do |name|
       assert_includes events.fetch("on_animation_end"), "`\"#{name}\"`"
     end
+    assert_includes properties.fetch("margin"), "`all:`", "engine #119 reads { all: n } margins on main"
+    assert_includes properties.fetch("align"), "`\"top_left\"`", "engine #119 reads named alignments on main"
+    assert_includes descriptions.dig("widget_overrides", "container", "padding"), "`all:`"
+    assert_includes descriptions.dig("widget_overrides", "container", "border_radius"), "`all:`"
+  end
+
+  # A generated line carries the marker only when its key needs the next
+  # release (the test above), so a description that names a shape only Ruflet
+  # main reads points to the guide section that carries the marker instead.
+  test "descriptions that name main-only shapes link to the marked guide section" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    texts = %w[properties events].flat_map { |kind| descriptions.fetch(kind).map { |name, text| [ "#{kind}.#{name}", text ] } }
+    texts += descriptions.fetch("widget_overrides").flat_map { |widget, names| names.map { |name, text| [ "#{widget}.#{name}", text ] } }
+
+    unlinked = texts.select { |_name, text| text.include?("Ruflet main") && !text.include?("](/docs/controls-and-layout#option-values)") }.map(&:first)
+
+    assert_empty unlinked, "Link these to [Option values](/docs/controls-and-layout#option-values), which marks the main-only shapes: #{unlinked.join(', ')}"
   end
 
   # Wording true for one wire type of this group. A shared entry would also
@@ -502,10 +519,15 @@ end
     "controls-and-layout" => [
       "Snake case, such as `\"space_between\"`, also works on Ruflet main",
       "On Ruflet main these alignments also take a name",
+      "On Ruflet main such a hash can also give `all:`",
       "lays out its children like a `column`, so `expand` works inside it too"
     ],
     "control-row" => [ "`on_end_reached`, `end_reached_threshold` and `keyboard_dismiss_behavior` work on a scrolling row too" ],
-    "control-container" => [ "`opacity_on_click` — the opacity an `ink: true` container fades to" ],
+    "control-container" => [
+      "`opacity_on_click` — the opacity an `ink: true` container fades to",
+      "On Ruflet main `alignment` also takes other names",
+      "On Ruflet main those hashes can also give `all:`"
+    ],
     "control-image" => [ "`src_base64:` is the same data under its own name" ],
     "control-semantics" => [ "Drawing the wrapped `content` needs the next release" ],
     "control-screenshot" => [ "An Integer `pixel_ratio:` needs the next release" ]

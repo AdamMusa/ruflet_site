@@ -88,7 +88,26 @@ Alignments of a single child, such as `align:` or a stack's `alignment:`, are
 `container(alignment: "center")` is the one String shortcut.
 
 On Ruflet main these alignments also take a name, such as `"center"`,
-`"top_left"` or `"bottomRight"`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+`"top_left"` or `"bottomRight"`. A 0.0.23 client shows an error in place of
+the control for any other String. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+`padding:` and `margin:` take one number for every side, or a hash of the
+sides you name, such as `padding: { left: 16, right: 16 }`; a side you leave
+out is 0. `border_radius:` takes one number, or a hash of corners:
+`{ top_left:, top_right:, bottom_left:, bottom_right: }`.
+
+```ruby
+container(
+  padding: { left: 16, top: 8, right: 16, bottom: 8 },
+  border_radius: { top_left: 12, top_right: 12 },
+  bgcolor: "#e8f0fe",
+  content: text("Shipping")
+)
+```
+
+On Ruflet main such a hash can also give `all:`, which fills every side or
+corner the hash does not name: `padding: { all: 16, bottom: 0 }`. A 0.0.23
+client reads `all:` as 0, so `{ all: 16 }` gives no padding. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ## Text styling
 

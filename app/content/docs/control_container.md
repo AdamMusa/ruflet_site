@@ -109,3 +109,6 @@ their own theme, in the same form as the page's.
 
 - `container` takes one nested child through `content:`
 - `alignment: "center"` is normalized by Ruflet for convenience; other alignments are `{ x:, y: }` hashes from -1 to 1
+- On Ruflet main `alignment` also takes other names, such as `"top_left"` or `"bottom_right"`. A 0.0.23 client shows an error in place of the container for them. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+- `padding` and `margin` take one number or a hash of sides, `{ left:, top:, right:, bottom: }`; `border_radius` takes one number or a hash of corners, `{ top_left:, top_right:, bottom_left:, bottom_right: }`. A side or corner you leave out is 0.
+- On Ruflet main those hashes can also give `all:` for every side or corner they do not name, such as `padding: { all: 16, bottom: 0 }`. A 0.0.23 client reads `all:` as 0. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
