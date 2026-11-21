@@ -52,6 +52,16 @@ class RufletApiSyncTest < ActiveSupport::TestCase
     assert_empty %w[on_page_started on_page_ended on_url_change] - web_view.fetch(:events)
   end
 
+  test "a renderer file shared by several controls reads only this control's keys" do
+    entries = DocsCatalog.control_catalog.index_by { |entry| entry.fetch(:title) }
+
+    # utils/charts.dart holds the axis renderer and chart-level helpers that
+    # read the chart's own `tooltip` (see the ChartAxis `skip:` list).
+    refute_includes entries.fetch("ChartAxis").fetch(:properties), "tooltip"
+    assert_includes entries.fetch("ChartAxis").fetch(:properties), "show_labels"
+    assert_includes entries.fetch("BarChart").fetch(:properties), "group_spacing"
+  end
+
   test "control methods leave out runtime plumbing and common Control overrides" do
     entries = DocsCatalog.control_catalog.index_by { |entry| entry.fetch(:title) }
     method_names = ->(title) { entries.fetch(title).fetch(:methods).map { |method| method[:name] || method["name"] } }

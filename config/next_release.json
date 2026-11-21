@@ -410,6 +410,11 @@
         "surface_tint_color"
       ]
     },
+    "control-bar-chart": {
+      "properties": [
+        "group_spacing"
+      ]
+    },
     "control-chip": {
       "properties": [
         "delete_icon_tooltip"
