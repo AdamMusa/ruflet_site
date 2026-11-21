@@ -195,7 +195,7 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
   test "the extensions page still shows the generic control builder" do
     prose = DocsCatalog::SOURCE_ROOT.join("extensions.md").read.squish
 
-    assert_includes prose, '`control(type, **props)` builds an extension control from its wire name'
+    assert_includes prose, "`control(type, **props)` builds an extension control from its wire name"
     assert_includes prose, '`control("ColorPicker", color: "#2563eb")` sends the same `ColorPicker` control'
   end
 
