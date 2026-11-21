@@ -541,7 +541,7 @@
     "on_action": "Fired when the user taps the button of a string `action`.",
     "on_complete": "Fired when playback finishes.",
     "on_delete": "Fired when the user taps the delete button. The chip shows the button only when this handler is set; remove the chip yourself in the handler.",
-    "on_text_change": "Fired as the user types in an `editable` dropdown; `event.data` is the text."
+    "on_text_change": "Fired as the user types in an `editable` dropdown; `event.data` is the text; with 0.0.23, text such as `42` arrives parsed, as the Integer 42."
   },
   "widget_overrides": {
     "aboutdialog": {
@@ -595,7 +595,7 @@
       "on_select": "Fired when the user picks a suggestion. `event.data` is `{ index: 0, selection: { key: ..., value: ... } }`, with Symbol keys, so read `event.data[:index]`; `event.value` is the suggestion's value and `event.selection` its `\"key\"` and `\"value\"`, with String keys.",
       "value": "Text in the field; the client keeps it up to date as the user types. On iOS and macOS, in a browser too, only the starting text: a later `page.update` of `value` does not change the field there.",
       "suggestions": "The `auto_complete_suggestion` entries the user can pick from; the first positional argument sets them.",
-      "on_change": "Fired as the user types; `event.data` is the text."
+      "on_change": "Fired as the user types; `event.data` is the text; with 0.0.23, text such as `42` arrives parsed, as the Integer 42."
     },
     "autocompletesuggestion": {
       "key": "Text the user's typing is matched against, ignoring case; defaults to `value`. iOS and macOS also put it in the field after a pick, in a browser too.",
@@ -841,8 +841,8 @@
       "gradient": "Gradient that fills the field's background. Android, Windows and Linux ignore it, in a browser too.",
       "image": "Image painted behind the text, for example `{ src: \"assets/paper.png\", fit: \"cover\", opacity: 0.3 }`. Android, Windows and Linux ignore it, in a browser too.",
       "shadows": "Drop shadows painted behind the field. Android, Windows and Linux ignore it, in a browser too.",
-      "on_change": "Fired as the user types; `event.data` is the text, which the client also writes to `value`.",
-      "on_submit": "Fired when the user submits the field, for example with the keyboard's done key; `event.data` is the text. With `shift_enter`, Enter sends it without data: read `event.control.props[\"value\"]`.",
+      "on_change": "Fired as the user types; `event.data` is the text, which the client also writes to `value`; with 0.0.23, text such as `42` arrives parsed, as the Integer 42.",
+      "on_submit": "Fired when the user submits the field, for example with the keyboard's done key; `event.data` is the text; with 0.0.23, text such as `42` arrives parsed, as the Integer 42. With `shift_enter`, Enter sends it without data: read `event.control.props[\"value\"]`.",
       "on_selection_change": "Fired when the user moves the cursor or changes the selection. `event.data` has Symbol keys: `event.data[:selected_text]` is the selected text and `event.data[:selection]` its range, with `:base_offset`, `:extent_offset`, `:affinity` and `:directional`. While this handler is set, the client also writes the range to `selection`.",
       "on_click": "Fired when the user taps the field.",
       "on_tap_outside": "Fired when the user taps outside the field while it has focus.",
@@ -1255,8 +1255,8 @@
       "view_shape": "Shape of the open search view. iOS and macOS ignore it, in a browser too.",
       "view_side": "Outline of the open search view. iOS and macOS ignore it, in a browser too.",
       "view_size_constraints": "Size limits of the open search view. iOS and macOS ignore it, in a browser too.",
-      "on_change": "Fired as the user types; `event.data` is the query.",
-      "on_submit": "Fired when the user submits the query with the keyboard; `event.data` is the query.",
+      "on_change": "Fired as the user types; `event.data` is the query; with 0.0.23, a query such as `42` arrives parsed, as the Integer 42.",
+      "on_submit": "Fired when the user submits the query with the keyboard; `event.data` is the query; with 0.0.23, a query such as `42` arrives parsed, as the Integer 42.",
       "on_tap": "Fired when the user taps the bar. To open the search view, call `open_view` here."
     },
     "segment": {
@@ -1390,8 +1390,8 @@
       "gradient": "Gradient that fills the field's background. Android, Windows and Linux ignore it, in a browser too.",
       "image": "Image painted behind the text, for example `{ src: \"assets/paper.png\", fit: \"cover\", opacity: 0.3 }`. Android, Windows and Linux ignore it, in a browser too.",
       "shadows": "Drop shadows painted behind the field. Android, Windows and Linux ignore it, in a browser too.",
-      "on_change": "Fired as the user types; `event.data` is the text, which the client also writes to `value`.",
-      "on_submit": "Fired when the user submits the field, for example with the keyboard's done key; `event.data` is the text. With `shift_enter`, Enter sends it without data: read `event.control.props[\"value\"]`.",
+      "on_change": "Fired as the user types; `event.data` is the text, which the client also writes to `value`; with 0.0.23, text such as `42` arrives parsed, as the Integer 42.",
+      "on_submit": "Fired when the user submits the field, for example with the keyboard's done key; `event.data` is the text; with 0.0.23, text such as `42` arrives parsed, as the Integer 42. With `shift_enter`, Enter sends it without data: read `event.control.props[\"value\"]`.",
       "on_selection_change": "Fired when the user moves the cursor or changes the selection. `event.data` has Symbol keys: `event.data[:selected_text]` is the selected text and `event.data[:selection]` its range, with `:base_offset`, `:extent_offset`, `:affinity` and `:directional`. While this handler is set, the client also writes the range to `selection`.",
       "on_click": "Fired when the user taps the field.",
       "on_tap_outside": "Fired when the user taps outside the field while it has focus.",

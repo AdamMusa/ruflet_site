@@ -589,16 +589,41 @@ end
   end
 
   # A list item that calls event.data the typed text or query is true on main
-  # only (ruflet #103); with 0.0.23 typed "42" arrives as 42. The item says so
-  # and points to the marked paragraph.
+  # only (ruflet #103); with 0.0.23 typed "42" arrives as 42. The item says so,
+  # and so does each generated event line that says it.
   test "input list items that call event.data the typed text name the 0.0.23 parsing" do
     items = INPUT_PAGES.flat_map do |slug|
-      prose_chunks(slug).grep(/\A- .*`event\.data` is the (text|query)\b/).map { |item| [ slug, item ] }
+      lines = prose_chunks(slug).grep(/\A- /) + generated_api_lines(page(slug).content).map(&:last)
+      lines.grep(/`event\.data` is the (text|query)\b/).map { |item| [ slug, item ] }
     end
 
-    assert_operator items.size, :>=, 3
+    assert_operator items.size, :>=, 11
     items.each do |slug, item|
       assert_includes item, "with 0.0.23", "#{slug}: 0.0.23 parses typed text such as 42: #{item}"
+    end
+  end
+
+  # With 0.0.23 Ruflet copies parsed event data to `value` only on a change
+  # event, and the client sends one only while the control has `on_change`
+  # (ruflet_backend.dart checks `on_<event>`). Otherwise `update_control` keeps
+  # the String, and a Material search bar writes it again before `on_submit`.
+  PROPS_VALUE_EITHER = "`props[\"value\"]` can then be the Integer 42 or the String `\"42\"`".freeze
+
+  test "input pages say that with 0.0.23 props value can stay the typed String" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    %w[control-auto-complete control-cupertino-text-field control-search-bar control-text-field].each do |slug|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(PROPS_VALUE_EITHER) }
+
+      assert paragraph, "#{slug}: with 0.0.23 props[\"value\"] is the Integer only after a change event"
+      assert_match(/only on a change event, which the client sends only while the (field|bar|control) has `on_change`/, paragraph)
+      assert_includes paragraph, marker
+    end
+    assert_includes prose_chunks("control-search-bar").join("\n"), "on Android, Windows and Linux the bar writes the String again just before `on_submit`"
+    INPUT_PAGES.each do |slug|
+      text = (prose_chunks(slug) + generated_api_lines(page(slug).content).map(&:last)).join("\n")
+
+      refute_match(/Integer 42 in `event\.data` and in `props\["value"\]`/, text, "#{slug}: with 0.0.23 props[\"value\"] keeps the String without a change event")
     end
   end
 
@@ -633,6 +658,73 @@ end
 
     assert_includes range, "and not from `event.data`: on Android, Windows and Linux it is an empty String."
     refute_match(/`event\.data` holds them/, range, "on Android, Windows and Linux the range picker's event.data is an empty String")
+    assert_includes prose_chunks("control-chip").join("\n"), "a bare icon name such as `\"star\"` draws nothing"
+    assert_includes generated_line("control-chip", "properties", "leading"), "A bare icon name such as `\"star\"` draws nothing."
+    form_change = generated_line("control-form", "events", "on_change")
+
+    assert_includes form_change, "once the field's own handler has run", "Form on_change lost its own description"
+    assert_includes form_change, "`event.control` is the form"
+    timer = prose_chunks("control-cupertino-timer-picker").join("\n")
+
+    assert_includes timer, "and so they are when you leave `value` out, because this helper sends `value: 0`"
+    refute_includes timer, "Without one they are both", "cupertino_timer_picker sends value: 0, so leaving it out still reports seconds"
+  end
+
+  # What 0.0.23 rejects (ruflet #109) and the shapes its client misreads
+  # (ruflet-engine #119). Each hand-written note carries the marker.
+  INPUT_RELEASE_PROSE = {
+    "control-segmented-button" => "with 0.0.23, `page.update(button, show_selected_icon: false)` raises ArgumentError",
+    "control-cupertino-timer-picker" => "the 0.0.23 client cannot read the `alignment: \"center\"` this helper sends by default",
+    "control-cupertino-text-field" => "the 0.0.23 client reads the `{ all: 7 }` padding this helper sends, and any `{ all: n }` map, as no padding",
+    "control-timer-picker" => "With 0.0.23 a named alignment such as `\"center\"` shows Flutter's error box"
+  }.freeze
+
+  # Generated lines whose per-name note in config/next_release.json says what
+  # works with 0.0.23 first, so the sentence right before the marker is the
+  # one that needs the next release.
+  INPUT_RELEASE_NOTE_ENDINGS = {
+    [ "control-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
+    [ "control-cupertino-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
+    [ "control-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too.",
+    [ "control-cupertino-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too."
+  }.freeze
+
+  test "input pages keep their 0.0.23 notes on rejected keys and misread shapes" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    INPUT_RELEASE_PROSE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+      assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+    end
+    INPUT_RELEASE_NOTE_ENDINGS.each do |(slug, name), ending|
+      line = generated_line(slug, "properties", name)
+
+      assert_includes line, "#{ending} #{marker}.", "#{slug} #{name}: end the note with what the next release does"
+      refute_match(/works there\. \*\*Requires/, line, "#{slug} #{name}: the marker must follow the main-only sentence")
+    end
+    show_icon = generated_line("control-segmented-button", "properties", "show_selected_icon")
+
+    assert_includes show_icon, "with 0.0.23 `page.update` of this key raises ArgumentError", "ruflet #109"
+    refute_includes show_icon, marker, "setting show_selected_icon when building the button works on 0.0.23"
+  end
+
+  # A hand-written list item carries the marker only for names that
+  # config/next_release.json lists for its page: the other names work on 0.0.23.
+  test "input list items carry the marker only for names next_release.json lists" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    listed = next_release_lists(config).group_by { |_list, slug, _kind, _name| slug }.transform_values { |rows| rows.map(&:last) }
+
+    wrong = (INPUT_PAGES - config.fetch("controls")).flat_map do |slug|
+      prose_chunks(slug).grep(/\A- `/).select { |item| item.include?(marker) }.filter_map do |item|
+        names = item[/\A- ((?:`[a-z_0-9]+`(?: \/ | and |, )?)+)/, 1].to_s.scan(/`([a-z_0-9]+)`/).flatten
+        "#{slug}: #{item}" if names.empty? || (names - listed.fetch(slug, [])).any?
+      end
+    end
+
+    assert_empty wrong, "List these names in config/next_release.json, or drop the marker:\n#{wrong.join("\n")}"
   end
 
   # A Ruby example that forgets to define a name still compiles: Ruby parses

@@ -723,12 +723,12 @@
           "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
           "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
           "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
-          "padding": "On iOS and macOS the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding; a number such as `7` works there."
+          "padding": "On iOS and macOS a number such as `7` works with 0.0.23 too, but the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding. In the next release it reads `{ all: n }` there as n on every side."
         }
       },
       "control-cupertino-timer-picker": {
         "properties": {
-          "alignment": "On iOS and macOS the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels; an `{ x:, y: }` map works there."
+          "alignment": "On iOS and macOS an `{ x:, y: }` map works with 0.0.23 too, but the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels. In the next release it reads named alignments such as `\"center\"` there too."
         }
       },
       "control-data-row": {
@@ -874,12 +874,12 @@
           "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
           "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
           "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
-          "padding": "On iOS and macOS the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding; a number such as `7` works there."
+          "padding": "On iOS and macOS a number such as `7` works with 0.0.23 too, but the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding. In the next release it reads `{ all: n }` there as n on every side."
         }
       },
       "control-timer-picker": {
         "properties": {
-          "alignment": "On iOS and macOS the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels; an `{ x:, y: }` map works there."
+          "alignment": "On iOS and macOS an `{ x:, y: }` map works with 0.0.23 too, but the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels. In the next release it reads named alignments such as `\"center\"` there too."
         }
       }
     },

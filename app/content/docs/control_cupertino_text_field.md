@@ -49,10 +49,11 @@ selected text and `event.data[:selection]` its range (the keys are Symbols). Rea
 the field's `props["value"]`.
 
 With 0.0.23, Ruflet parses `on_change` and `on_submit` data as JSON when it
-can, and copies it to `value`, so typed `42` arrives as the Integer 42 in
-`event.data` and in `props["value"]`, and typed `null` as `nil` in
-`event.data`; call `.to_s` when you need the text. In the next release the
-typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+can, so typed `42` arrives as the Integer 42 in `event.data`, and typed `null`
+as `nil`. `props["value"]` can then be the Integer 42 or the String `"42"`:
+Ruflet copies the parsed data to `value` only on a change event, which the
+client sends only while the field has `on_change`. Call `.to_s` when you need
+the text. In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `event.control.value` returns the same text as `props["value"]`, and
 `event.control.selection` the same range as `props["selection"]`; with 0.0.23

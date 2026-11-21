@@ -45,8 +45,10 @@ with the `key`. A web app follows the device: in a browser on an iPhone, iPad or
 The client writes the typed text to `value` as the user types, so read it
 later from the control's `props["value"]`. With 0.0.23, Ruflet parses
 `on_change` data as JSON when it can, so typed `42` arrives as the Integer 42
-in `event.data` and in `props["value"]`; call `.to_s` when you need the text.
-In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+in `event.data`. `props["value"]` can then be the Integer 42 or the String
+`"42"`: Ruflet copies the parsed data to `value` only on a change event, which
+the client sends only while the control has `on_change`. Call `.to_s` when you
+need the text. In the next release the typed text stays a String in both. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 `event.control.value` returns the same text as `props["value"]`; with 0.0.23 it
 raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
