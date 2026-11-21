@@ -9,31 +9,28 @@ class DocsCoverageTest < ActiveSupport::TestCase
   # remove it here. A listed control that gains docs does not fail the test,
   # so pages can land in any order.
   PENDING_CONTROLS = %w[
-    control-arc control-audio control-auto-complete-suggestion control-autofill-group
-    control-banner-ad control-bar-chart control-bar-chart-group control-bar-chart-rod
-    control-bar-chart-rod-stack-item control-block-picker control-candlestick-chart
-    control-candlestick-chart-spot control-canvas control-chart-axis control-chart-axis-label
-    control-circle control-circle-layer control-circle-marker control-color control-color-picker
-    control-context-menu control-context-menu-action control-cupertino-app-bar
-    control-cupertino-checkbox control-cupertino-context-menu control-cupertino-context-menu-action
+    control-arc control-audio control-banner-ad control-bar-chart control-bar-chart-group
+    control-bar-chart-rod control-bar-chart-rod-stack-item control-block-picker
+    control-candlestick-chart control-candlestick-chart-spot control-canvas control-chart-axis
+    control-chart-axis-label control-circle control-circle-layer control-circle-marker control-color
+    control-color-picker control-context-menu control-context-menu-action control-cupertino-app-bar
+    control-cupertino-context-menu control-cupertino-context-menu-action
     control-cupertino-dialog-action control-cupertino-filled-button control-cupertino-navigation-bar
-    control-cupertino-picker control-cupertino-radio control-cupertino-slider
-    control-cupertino-timer-picker control-cupertino-tinted-button control-dropdown-option
-    control-fill control-filled-icon-button control-filled-tonal-icon-button control-form
-    control-form-row control-hue-ring-picker control-image-source-attribution
+    control-cupertino-tinted-button control-fill control-filled-icon-button
+    control-filled-tonal-icon-button control-hue-ring-picker control-image-source-attribution
     control-interstitial-ad control-line control-line-chart control-line-chart-data
     control-line-chart-data-point control-lottie control-map control-marker control-marker-layer
     control-material-picker control-menu-bar control-menu-item-button
     control-multiple-choice-block-picker control-native-ad control-navigation-bar-destination
-    control-navigation-drawer-destination control-navigation-rail-destination control-option
-    control-outlined-icon-button control-oval control-path control-picker control-pie-chart
+    control-navigation-drawer-destination control-navigation-rail-destination
+    control-outlined-icon-button control-oval control-path control-pie-chart
     control-pie-chart-section control-points control-polygon-layer control-polygon-marker
     control-polyline-layer control-polyline-marker control-radar-chart control-radar-chart-title
     control-radar-data-set control-radar-data-set-entry control-rect control-rich-attribution
     control-scatter-chart control-scatter-chart-spot control-shadow control-simple-attribution
     control-slide-picker control-step control-stepper control-submenu-button control-tab
     control-tab-bar control-tab-bar-view control-text-source-attribution control-tile-layer
-    control-timer-picker control-video
+    control-video
   ].freeze
 
   GENERIC_SERVICE_SUMMARY = /\AComplete `page\.\w+` service reference\.\z/
@@ -195,7 +192,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     [ "control-bottom-sheet", "properties", "fullscreen", "On iOS and macOS, the 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "year_2023", "The 0.0.23 client ignores it." ],
     [ "control-progress-ring", "properties", "semantics_label", "On iOS and macOS, the 0.0.23 client ignores it." ],
-    [ "control-checkbox", "properties", "spacing", "On Android, web, Windows and Linux, the 0.0.23 client ignores it." ],
+    [ "control-checkbox", "properties", "spacing", "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it." ],
     [ "control-context-menu", "events", "on_select", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-popup-menu-button", "events", "on_cancel", "On iOS and macOS, the 0.0.23 client never sends it." ],
     [ "control-search-bar", "events", "on_tap_outside_bar", "On iOS and macOS, the 0.0.23 client never sends it." ],
@@ -292,7 +289,7 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-expansion-tile" => [ "On iOS and macOS it is redrawn only when Ruby sets `expanded`" ],
     "control-expansion-panel-list" => [ "On iOS and macOS it is redrawn only when Ruby updates the list" ],
     "control-progress-ring" => [ "`stroke_align` — Android, web, Windows and Linux only; iOS and macOS draw an activity indicator" ],
-    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, web, Windows and Linux only" ],
+    "control-range-slider" => [ "`label`, `round`, `inactive_color` and `overlay_color` apply on Android, Windows and Linux only" ],
     "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
   }.freeze
 
@@ -425,6 +422,459 @@ test "examples a review fixed keep their fix" do
   assert_includes sheet, "page.close_bottom_sheet(sheet)"
   refute_includes sheet, "copy_link", "The BottomSheet example must run as written"
 end
+
+  # The input controls' state readers (`event.control.value` and friends) are
+  # on main only; each page that teaches `props[...]` names its reader once,
+  # with the marker.
+  STATE_READER_PROSE = {
+    "control-auto-complete" => "`event.control.value` returns the same text",
+    "control-checkbox" => "`event.control.value` (and `terms.value`)",
+    "control-chip" => "`event.control.selected`",
+    "control-cupertino-checkbox" => "`event.control.value` returns",
+    "control-cupertino-date-picker" => "`event.control.value` returns the same moment",
+    "control-cupertino-picker" => "`event.control.selected_index` returns",
+    "control-cupertino-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-slider" => "`event.control.value` returns",
+    "control-cupertino-sliding-segmented-button" => "`event.control.selected_index` returns",
+    "control-cupertino-switch" => "`event.control.value` returns",
+    "control-cupertino-text-field" => "`event.control.selection` the same range",
+    "control-cupertino-timer-picker" => "`event.control.value` returns",
+    "control-date-picker" => "`event.control.entry_mode` return",
+    "control-date-range-picker" => "`event.control.start_value` and `event.control.end_value`",
+    "control-dropdown" => "`event.control.value` and `field.value`",
+    "control-picker" => "`event.control.selected_index` returns",
+    "control-radio-group" => "`event.control.value` and `choice.value`",
+    "control-range-slider" => "`event.control.start_value` and `event.control.end_value`",
+    "control-search-bar" => "`event.control.value` and `search.value`",
+    "control-segmented-button" => "`event.control.selected` returns",
+    "control-slider" => "`event.control.value` returns",
+    "control-switch" => "`event.control.value` and `toggle.value`",
+    "control-text-field" => "`field.selection` the same range",
+    "control-time-picker" => "`event.control.entry_mode` return",
+    "control-timer-picker" => "`event.control.value` returns"
+  }.freeze
+
+  # Generated lines of input controls that one design ignores, and the note
+  # each must keep. Clients draw iOS and macOS with Cupertino widgets and
+  # other platforms with Material ones, whichever helper built the control.
+  # A web app follows the device the browser runs on (Flutter maps a browser
+  # on an iPhone, iPad or Mac to iOS or macOS), so each note says so.
+  PLATFORM_NOTES = {
+    "material" => { "properties" => "iOS and macOS ignore it, in a browser too", "events" => "iOS and macOS never send it, in a browser too" },
+    "cupertino" => { "properties" => "Android, Windows and Linux ignore it, in a browser too" }
+  }.freeze
+  PLATFORM_ONLY_LINES = {
+    "control-checkbox" => { "material" => %w[hover_color overlay_color splash_radius visual_density] },
+    "control-chip" => { "material" => %w[border_side check_color clip_behavior delete_drawer_animation_style delete_icon_color delete_icon_size_constraints elevation elevation_on_click enable_animation_style label_padding label_text_style leading_drawer_animation_style leading_size_constraints mouse_cursor select_animation_style selected_shadow_color shadow_color visual_density] },
+    "control-cupertino-date-picker" => { "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-cupertino-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-cupertino-radio" => { "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-cupertino-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-cupertino-switch" => { "cupertino" => %w[off_label_color on_label_color] },
+    "control-cupertino-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-cupertino-timer-picker" => { "cupertino" => %w[item_extent] },
+    "control-date-picker" => { "material" => %w[barrier_color entry_mode error_format_text error_invalid_text field_hint_text field_label_text inset_padding keyboard_type on_entry_mode_change switch_to_calendar_icon switch_to_input_icon], "cupertino" => %w[date_order item_extent maximum_year minimum_year minute_interval show_day_of_week use_24h_format] },
+    "control-date-range-picker" => { "material" => %w[barrier_color current_date entry_mode error_format_text error_invalid_range_text error_invalid_text field_end_hint_text field_end_label_text field_start_hint_text field_start_label_text keyboard_type locale save_text switch_to_calendar_icon switch_to_input_icon] },
+    "control-dropdown" => { "material" => %w[border_color border_width capitalization dense elevation enable_filter enable_search error_style error_text expanded_insets fill_color filled focused_border_color focused_border_width helper_style helper_text hint_style hover_color input_filter label_style menu_height menu_style menu_width selected_trailing_icon text_align text_size] },
+    "control-picker" => { "cupertino" => %w[default_selection_overlay_bgcolor diameter_ratio item_extent looping magnification off_axis_fraction selection_overlay squeeze use_magnifier] },
+    "control-radio" => { "material" => %w[hover_color overlay_color splash_radius visual_density], "cupertino" => %w[inactive_color use_checkmark_style] },
+    "control-range-slider" => { "material" => %w[inactive_color mouse_cursor overlay_color round] },
+    "control-search-bar" => { "material" => %w[bar_border_side bar_elevation bar_hint_text_style bar_overlay_color bar_padding bar_scroll_padding bar_shadow_color bar_shape bar_size_constraints bar_text_style capitalization divider_color full_screen keyboard_type shrink_wrap view_bar_padding view_bgcolor view_elevation view_header_height view_header_text_style view_hint_text view_hint_text_style view_leading view_padding view_shape view_side view_size_constraints view_trailing] },
+    "control-segmented-button" => { "cupertino" => %w[border_color click_color disabled_color disabled_text_color selected_color unselected_color] },
+    "control-slider" => { "material" => %w[inactive_color interaction mouse_cursor overlay_color round secondary_active_color secondary_track_value] },
+    "control-switch" => { "material" => %w[active_color hover_color overlay_color padding splash_radius track_color], "cupertino" => %w[off_label_color on_label_color] },
+    "control-text-field" => { "material" => %w[align_label_with_hint always_call_on_tap can_request_focus collapsed counter counter_style cursor_error_color dense focus_color helper helper_max_lines helper_style hint_fade_duration hint_max_lines hover_color icon ignore_pointers mouse_cursor prefix_icon prefix_icon_size_constraints prefix_style suffix_icon suffix_icon_size_constraints suffix_style], "cupertino" => %w[clear_button_semantics_label clear_button_visibility_mode placeholder_style prefix_visibility_mode suffix_visibility_mode] },
+    "control-time-picker" => { "material" => %w[barrier_color entry_mode error_invalid_text help_text hour_label_text locale minute_label_text on_entry_mode_change orientation switch_to_input_icon switch_to_timer_icon] },
+    "control-timer-picker" => { "cupertino" => %w[item_extent] }
+  }.freeze
+
+  test "input pages name their main-only state reader with the marker" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    STATE_READER_PROSE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer names its state reader (#{phrase.inspect})"
+      assert_includes paragraph, marker, "#{slug}: the state reader needs the next-release marker"
+      assert_includes paragraph, "with 0.0.23", "#{slug}: say what the reader does with 0.0.23"
+    end
+  end
+
+  test "input lines one design ignores say so" do
+    PLATFORM_ONLY_LINES.each do |slug, designs|
+      lines = generated_api_lines(page(slug).content).to_h { |kind, name, line| [ name, [ kind, line ] ] }
+      designs.each do |design, names|
+        names.each do |name|
+          kind, line = lines[name]
+
+          assert line, "#{slug} renders no line for #{name}"
+          assert_includes line, PLATFORM_NOTES.dig(design, kind), "#{slug} #{name} lost its platform note"
+        end
+      end
+    end
+  end
+
+  # The input and form pages. Their hand-written text must not put "web" on
+  # the Material side, and a page that splits by platform says once that a
+  # web app follows the device it runs on.
+  INPUT_PAGES = %w[
+    control-auto-complete control-auto-complete-suggestion control-autofill-group control-checkbox
+    control-chip control-cupertino-checkbox control-cupertino-date-picker control-cupertino-picker
+    control-cupertino-radio control-cupertino-segmented-button control-cupertino-slider
+    control-cupertino-sliding-segmented-button control-cupertino-switch control-cupertino-text-field
+    control-cupertino-timer-picker control-date-picker control-date-range-picker control-dropdown
+    control-dropdown-option control-form control-form-row control-option control-picker control-radio
+    control-radio-group control-range-slider control-search-bar control-segment
+    control-segmented-button control-slider control-switch control-text-field control-time-picker
+    control-timer-picker
+  ].freeze
+  BROWSER_FOLLOWS_DEVICE = "A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.".freeze
+
+  test "input pages say that a web app follows the device" do
+    INPUT_PAGES.each do |slug|
+      prose = prose_chunks(slug).join("\n")
+
+      refute_match(/Android, web,|\bweb, Windows/, prose, "#{slug}: a browser on an Apple device draws the iOS design")
+      next unless prose.match?(/iOS and macOS|Android, Windows and Linux/)
+
+      assert_includes prose, BROWSER_FOLLOWS_DEVICE, "#{slug} splits by platform without saying what a browser gets"
+    end
+  end
+
+  # Event data that is a Hash reaches Ruby with Symbol keys (the server runs
+  # it through normalize_event_data), so `event.data["key"]` is always nil.
+  test "input pages read Hash event data with Symbol keys" do
+    INPUT_PAGES.each do |slug|
+      text = page(slug).content
+
+      refute_match(/event\.data\[\s*"/, text, "#{slug} reads event.data with a String key")
+      refute_match(/`event\.data` is `\{ "/, text, "#{slug} shows event.data with String keys")
+    end
+  end
+
+  # 0.0.23 parses String event data as JSON, so typed "42", a String key "1"
+  # and a radio value "2" arrive as Integers, and so do a timer picker's
+  # microseconds. Ruflet main (ruflet #103) keeps them Strings. Each page
+  # scopes the parsing to 0.0.23 and says, with the marker, what main does.
+  INPUT_PAYLOAD_NEXT_RELEASE = {
+    "control-auto-complete" => "In the next release the typed text stays a String in both.",
+    "control-cupertino-date-picker" => "In the next release the client reads `\"date_and_time\"` too",
+    "control-cupertino-text-field" => "In the next release the typed text stays a String in both.",
+    "control-cupertino-timer-picker" => "In the next release both are the String `\"90000000\"`.",
+    "control-dropdown" => [
+      "In the next release a String key stays a String, and an Integer key such as `1` still arrives as the Integer 1.",
+      "Ruflet parses `on_text_change` data as JSON when it can"
+    ],
+    "control-radio-group" => "In the next release a String `value` stays a String, and an Integer `value` such as `2` still arrives as the Integer 2.",
+    "control-search-bar" => "In the next release the query stays a String in both.",
+    "control-text-field" => "In the next release the typed text stays a String in both.",
+    "control-timer-picker" => "In the next release both are the String `\"90000000\"`."
+  }.freeze
+
+  test "input pages scope parsed event data to 0.0.23 and mark what main does" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    INPUT_PAGES.each do |slug|
+      prose_chunks(slug).grep(/as JSON|arrives as the Integer|both the Integer|the Integer 90000000/).each do |chunk|
+        assert_match(/with 0\.0\.23/i, chunk, "#{slug}: say that 0.0.23 parses this event data, not main: #{chunk}")
+        assert_includes chunk, marker, "#{slug}: say what the next release sends instead: #{chunk}"
+      end
+    end
+    INPUT_PAYLOAD_NEXT_RELEASE.each do |slug, phrases|
+      Array(phrases).each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    %w[control-timer-picker control-cupertino-timer-picker].each do |slug|
+      line = generated_line(slug, "events", "on_change")
+
+      refute_includes line, "also an Integer", "#{slug} on_change: main sends the microseconds as a String"
+      assert_includes line, "`.to_i` gives the number", "#{slug} on_change lost its .to_i advice"
+    end
+  end
+
+  # A list item that calls event.data the typed text or query is true on main
+  # only (ruflet #103); with 0.0.23 typed "42" arrives as 42. The item says so,
+  # and so does each generated event line that says it.
+  test "input list items that call event.data the typed text name the 0.0.23 parsing" do
+    items = INPUT_PAGES.flat_map do |slug|
+      lines = prose_chunks(slug).grep(/\A- /) + generated_api_lines(page(slug).content).map(&:last)
+      lines.grep(/`event\.data` is the (text|query)\b/).map { |item| [ slug, item ] }
+    end
+
+    assert_operator items.size, :>=, 11
+    items.each do |slug, item|
+      assert_includes item, "with 0.0.23", "#{slug}: 0.0.23 parses typed text such as 42: #{item}"
+    end
+  end
+
+  # With 0.0.23 Ruflet copies parsed event data to `value` only on a change
+  # event, and the client sends one only while the control has `on_change`
+  # (ruflet_backend.dart checks `on_<event>`). Otherwise `update_control` keeps
+  # the String, and a Material search bar writes it again before `on_submit`.
+  PROPS_VALUE_EITHER = "`props[\"value\"]` can then be the Integer 42 or the String `\"42\"`".freeze
+
+  test "input pages say that with 0.0.23 props value can stay the typed String" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    %w[control-auto-complete control-cupertino-text-field control-search-bar control-text-field].each do |slug|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(PROPS_VALUE_EITHER) }
+
+      assert paragraph, "#{slug}: with 0.0.23 props[\"value\"] is the Integer only after a change event"
+      assert_match(/only on a change event, which the client sends only while the (field|bar|control) has `on_change`/, paragraph)
+      assert_includes paragraph, marker
+    end
+    assert_includes prose_chunks("control-search-bar").join("\n"), "on Android, Windows and Linux the bar writes the String again just before `on_submit`"
+    INPUT_PAGES.each do |slug|
+      text = (prose_chunks(slug) + generated_api_lines(page(slug).content).map(&:last)).join("\n")
+
+      refute_match(/Integer 42 in `event\.data` and in `props\["value"\]`/, text, "#{slug}: with 0.0.23 props[\"value\"] keeps the String without a change event")
+    end
+  end
+
+  # The 0.0.23 client reads an `{ all: n }` padding map as 0 and throws on a
+  # named alignment such as "center" (ruflet-engine #119 reads both on the
+  # engine branch). Input page examples use numbers and `{ x:, y: }` maps, and
+  # every line that shows those shapes names the 0.0.23 behavior.
+  test "input pages show all-maps and named alignments only with their 0.0.23 caveat" do
+    INPUT_PAGES.each do |slug|
+      content = page(slug).content
+      content.scan(/^```ruby\n(.*?)^```/m).flatten.each_with_index do |code, index|
+        refute_match(/\ball:\s/, code, "#{slug} Ruby block #{index + 1}: the 0.0.23 client reads { all: n } as 0")
+        refute_match(/alignment:\s*[":]/, code, "#{slug} Ruby block #{index + 1}: the 0.0.23 client cannot read a named alignment")
+      end
+      (prose_chunks(slug) + generated_api_lines(content).map(&:last)).grep(/\{ all: \d+ \}|alignment: "/).each do |chunk|
+        assert_includes chunk, "0.0.23", "#{slug}: say what 0.0.23 does with this shape: #{chunk}"
+      end
+    end
+    example = page("control-cupertino-timer-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
+
+    assert_includes example, "alignment: { x: 0, y: 0 }", "0.0.23 shows an error box for the helper's default alignment on iOS and macOS"
+  end
+
+  # Earlier statements a review found wrong on both releases.
+  test "input pages keep the payload and option fixes a review made" do
+    disabled = generated_line("control-dropdown-option", "properties", "disabled")
+
+    refute_includes disabled, "still offer", "the next release dims a disabled option on iOS and macOS"
+    assert_includes disabled, "the 0.0.23 client still lets the user pick it."
+    assert_includes generated_line("control-dropdown", "events", "on_change"), "the same `event.data`, the option's key"
+    range = prose_chunks("control-date-range-picker").join("\n")
+
+    assert_includes range, "and not from `event.data`: on Android, Windows and Linux it is an empty String."
+    refute_match(/`event\.data` holds them/, range, "on Android, Windows and Linux the range picker's event.data is an empty String")
+    assert_includes prose_chunks("control-chip").join("\n"), "a bare icon name such as `\"star\"` draws nothing"
+    assert_includes generated_line("control-chip", "properties", "leading"), "A bare icon name such as `\"star\"` draws nothing."
+    form_change = generated_line("control-form", "events", "on_change")
+
+    assert_includes form_change, "once the field's own handler has run", "Form on_change lost its own description"
+    assert_includes form_change, "`event.control` is the form"
+    timer = prose_chunks("control-cupertino-timer-picker").join("\n")
+
+    assert_includes timer, "and so they are when you leave `value` out, because this helper sends `value: 0`"
+    refute_includes timer, "Without one they are both", "cupertino_timer_picker sends value: 0, so leaving it out still reports seconds"
+    plain_timer = prose_chunks("control-timer-picker")
+
+    assert_includes plain_timer.join("\n"), "Without an Integer `value` (also when you leave it out) the client sends the duration in microseconds", "timer_picker sends no value, so the client reports microseconds"
+    assert_includes plain_timer.find { |chunk| chunk.start_with?("- `value`") }.to_s, "left out, the picker starts at 0 and reports microseconds", "timer_picker sends no value: leaving it out does not give seconds"
+  end
+
+  # What 0.0.23 rejects (ruflet #109) and the shapes its client misreads
+  # (ruflet-engine #119). Each hand-written note carries the marker.
+  INPUT_RELEASE_PROSE = {
+    "control-segmented-button" => "with 0.0.23, `page.update(button, show_selected_icon: false)` raises ArgumentError",
+    "control-cupertino-timer-picker" => "the 0.0.23 client cannot read the `alignment: \"center\"` this helper sends by default",
+    "control-cupertino-text-field" => "the 0.0.23 client reads the `{ all: 7 }` padding this helper sends, and any `{ all: n }` map, as no padding",
+    "control-timer-picker" => "With 0.0.23 a named alignment such as `\"center\"` shows Flutter's error box"
+  }.freeze
+
+  # Generated lines whose per-name note in config/next_release.json says what
+  # works with 0.0.23 first, so the sentence right before the marker is the
+  # one that needs the next release.
+  INPUT_RELEASE_NOTE_ENDINGS = {
+    [ "control-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
+    [ "control-cupertino-text-field", "padding" ] => "In the next release it reads `{ all: n }` there as n on every side.",
+    [ "control-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too.",
+    [ "control-cupertino-timer-picker", "alignment" ] => "In the next release it reads named alignments such as `\"center\"` there too.",
+    [ "control-dropdown-option", "disabled" ] => "In the next release the wheel there dims it and Done stays off while the wheel rests on it.",
+    [ "control-option", "disabled" ] => "In the next release the wheel there dims it and Done stays off while the wheel rests on it."
+  }.freeze
+
+  test "input pages keep their 0.0.23 notes on rejected keys and misread shapes" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    INPUT_RELEASE_PROSE.each do |slug, phrase|
+      paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+      assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+      assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+    end
+    INPUT_RELEASE_NOTE_ENDINGS.each do |(slug, name), ending|
+      line = generated_line(slug, "properties", name)
+
+      assert_includes line, "#{ending} #{marker}.", "#{slug} #{name}: end the note with what the next release does"
+      refute_match(/works there\. \*\*Requires/, line, "#{slug} #{name}: the marker must follow the main-only sentence")
+    end
+    show_icon = generated_line("control-segmented-button", "properties", "show_selected_icon")
+
+    assert_includes show_icon, "with 0.0.23 `page.update` of this key raises ArgumentError", "ruflet #109"
+    refute_includes show_icon, marker, "setting show_selected_icon when building the button works on 0.0.23"
+  end
+
+  # Like FULLY_DESCRIBED_CONTROLS, for the input and form controls: every
+  # property and event line has its own description.
+  test "input controls describe every property and event" do
+    descriptions = JSON.parse(Rails.root.join("config/property_descriptions.json").read)
+    catalog = DocsCatalog.control_catalog.index_by { |control| control[:slug] }
+
+    missing = INPUT_PAGES.flat_map do |slug|
+      control = catalog[slug]
+      next [ "#{slug}: not in the catalog" ] unless control
+
+      %w[properties events].flat_map do |kind|
+        Array(control[kind.to_sym]).map(&:to_s).reject do |name|
+          descriptions.dig("widget_overrides", control[:widget_type].to_s, name) || descriptions.dig(kind, name)
+        end.map { |name| "#{slug} #{kind} #{name}" }
+      end
+    end
+
+    assert_empty missing, "Describe these in config/property_descriptions.json:\n#{missing.join("\n")}"
+  end
+
+  # A hand-written list item carries the marker only for names that
+  # config/next_release.json lists for its page: the other names work on 0.0.23.
+  test "input list items carry the marker only for names next_release.json lists" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    listed = next_release_lists(config).group_by { |_list, slug, _kind, _name| slug }.transform_values { |rows| rows.map(&:last) }
+
+    wrong = (INPUT_PAGES - config.fetch("controls")).flat_map do |slug|
+      prose_chunks(slug).grep(/\A- `/).select { |item| item.include?(marker) }.filter_map do |item|
+        names = item[/\A- ((?:`[a-z_0-9]+`(?: \/ | and |, )?)+)/, 1].to_s.scan(/`([a-z_0-9]+)`/).flatten
+        "#{slug}: #{item}" if names.empty? || (names - listed.fetch(slug, [])).any?
+      end
+    end
+
+    assert_empty wrong, "List these names in config/next_release.json, or drop the marker:\n#{wrong.join("\n")}"
+  end
+
+  # The other direction: a hand-written list item that names a key or event
+  # 0.0.23 does not have, or that its client ignores everywhere ("members" and
+  # "client_ignored" of config/next_release.json), carries the marker.
+  test "input list items of main-only names carry the marker" do
+    config = JSON.parse(Rails.root.join("config/next_release.json").read)
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    main_only = %w[members client_ignored].flat_map do |list|
+      config.fetch(list).flat_map { |slug, kinds| kinds.values.flat_map { |names| names.is_a?(Hash) ? names.keys : names }.map { |name| [ slug, name ] } }
+    end.group_by(&:first).transform_values { |rows| rows.map(&:last) }
+
+    checked = 0
+    missing = (INPUT_PAGES - config.fetch("controls")).flat_map do |slug|
+      prose_chunks(slug).grep(/\A- `/).filter_map do |item|
+        names = item[/\A- ((?:`[a-z_0-9]+`(?: \/ | and |, )?)+)/, 1].to_s.scan(/`([a-z_0-9]+)`/).flatten
+        next if (names & main_only.fetch(slug, [])).empty?
+
+        checked += 1
+        "#{slug}: #{item}" unless item.include?(marker)
+      end
+    end
+
+    assert_operator checked, :>=, 4
+    assert_empty missing, "These items name main-only keys or events; add the marker:\n#{missing.join("\n")}"
+  end
+
+  # Hand-written sentences about main-only behavior that the pins above do not
+  # cover. Each must keep the marker.
+  DISABLED_OPTION_NOTE = "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it.".freeze
+  INPUT_PROSE_MARKERS = {
+    "control-cupertino-checkbox" => [ "On Android, Windows and Linux, the 0.0.23 client ignores `spacing`." ],
+    "control-cupertino-date-picker" => [ "drawing it in place with `page.add` (the wheel on iOS and macOS, a calendar elsewhere) needs the next release" ],
+    "control-cupertino-slider" => [ "On iOS and macOS, the 0.0.23 client never sends `on_focus` or `on_blur`." ],
+    "control-cupertino-sliding-segmented-button" => [ "The sliding look on iOS and macOS comes from the `sliding` flag this helper sends." ],
+    "control-dropdown" => [ DISABLED_OPTION_NOTE ],
+    "control-dropdown-option" => [ DISABLED_OPTION_NOTE ],
+    "control-radio" => [ "On iOS and macOS, the 0.0.23 client ignores `label_style`." ],
+    "control-search-bar" => [ "with 0.0.23 both do nothing there" ],
+    "control-segmented-button" => [ "`sliding: true` draws the iOS sliding segmented control on iOS and macOS" ],
+    "control-text-field" => [ "need the next release; with 0.0.23 the iOS field ignores them" ]
+  }.freeze
+  # What 0.0.23 does with the two main-only form controls, in the callout
+  # under their H1 (without it the page would get the generic callout).
+  INPUT_CALLOUTS = {
+    "control-form" => "On 0.0.23 `validator:` raises ArgumentError (unknown keyword).",
+    "control-form-row" => "With 0.0.23 the client shows \"Unknown control\"."
+  }.freeze
+
+  # A marker on an input page sits in the callout under the H1 of a
+  # config/next_release.json page, in a list item (the tests above check its
+  # names), or right after a pinned sentence: the text since the previous
+  # marker must hold one of the page's pinned phrases. So a sentence that works
+  # on 0.0.23 cannot gain a marker unnoticed, not even inside a paragraph that
+  # has one.
+  test "input pages carry the marker only after a pinned sentence" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+    next_release_pages = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("controls")
+
+    INPUT_CALLOUTS.each do |slug, consequence|
+      assert_includes page(slug).content.split(/^## /).first, "> #{marker}. #{consequence}", "#{slug}: the callout under the H1 says what 0.0.23 does"
+    end
+    INPUT_PROSE_MARKERS.each do |slug, phrases|
+      phrases.each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
+      end
+    end
+    unexpected = INPUT_PAGES.flat_map do |slug|
+      pinned = [ INPUT_PAYLOAD_NEXT_RELEASE, INPUT_RELEASE_PROSE, STATE_READER_PROSE, INPUT_PROSE_MARKERS ].flat_map { |pins| Array(pins[slug]) }
+      hand_written(page_text(slug)).split(/^(?=## )/).flat_map do |section|
+        heading = section[/\A## (.+)$/, 1]
+        section.split(/\n(?=- |\n)/).map(&:squish).select { |chunk| chunk.include?(marker) }.flat_map do |chunk|
+          next [] if chunk.start_with?("- `")
+          next [] if chunk.start_with?("> #{marker}") && heading.nil? && next_release_pages.include?(slug)
+
+          chunk.split(marker, -1)[0...-1].reject { |before| pinned.any? { |phrase| before.include?(phrase) } }
+               .map { |before| "#{slug} (#{heading || 'intro'}): ...#{before.last(120)}#{marker}" }
+        end
+      end
+    end
+
+    assert_empty unexpected, "Only main-only behavior gets the next-release marker. Remove it, or pin the sentence in INPUT_PROSE_MARKERS after checking that it fails on 0.0.23:\n#{unexpected.join("\n")}"
+  end
+
+  # With 0.0.23 `props["value"]` of a text input holds the Integer only after a
+  # change event, so a sentence there that calls it the Integer says "can".
+  test "text input pages never say props value is always the Integer" do
+    %w[control-auto-complete control-cupertino-text-field control-search-bar control-text-field].each do |slug|
+      text = [ hand_written(page_text(slug)).gsub(/^```.*?^```$/m, ""), *generated_api_lines(page(slug).content).map(&:last) ].join(" ")
+      wrong = text.squish.split(/(?<=[.:;])\s+/).select { |sentence| sentence.include?("props[\"value\"]") && sentence.include?("Integer") && !sentence.include?(" can ") }
+
+      assert_empty wrong, "#{slug}: with 0.0.23 props[\"value\"] is the Integer only after a change event:\n#{wrong.join("\n")}"
+    end
+  end
+
+  # A Ruby example that forgets to define a name still compiles: Ruby parses
+  # the name as a method call. Every receiverless call in these examples must
+  # be a Ruflet helper or one of the Kernel methods below.
+  EXAMPLE_KERNEL_CALLS = %w[page lambda proc format puts raise Integer Float String Array].freeze
+
+  test "input page examples define every name they use" do
+    require "prism"
+    helpers = DocsCatalog.control_catalog.flat_map { |control| Array(control[:helpers]) }
+    allowed = (helpers + EXAMPLE_KERNEL_CALLS).to_set
+
+    INPUT_PAGES.each do |slug|
+      page(slug).content.scan(/^```ruby\n(.*?)^```/m).flatten.each_with_index do |code, index|
+        unknown = receiverless_calls(Prism.parse(code).value).reject { |name| allowed.include?(name) }
+
+        assert_empty unknown.uniq, "#{slug} Ruby block #{index + 1} uses names it never defines"
+      end
+    end
+  end
 
   test "the curated Cupertino date picker example opens the picker as a dialog" do
     example = page("control-cupertino-date-picker").content[/^## Example\n\n```ruby\n(.*?)^```/m, 1]
@@ -822,6 +1272,13 @@ end
     slugs = DocsCatalog.control_catalog.map { |control| control[:slug] } +
       DocsCatalog.service_catalog.fetch(:services).map { |service| "service-#{service[:helper].tr('_', '-')}" }
     slugs.map { |slug| page(slug) }
+  end
+
+  # Names called without a receiver anywhere in a Prism tree.
+  def receiverless_calls(node)
+    calls = node.is_a?(Prism::CallNode) && node.receiver.nil? ? [ node.name.to_s ] : []
+    node.compact_child_nodes.each { |child| calls.concat(receiverless_calls(child)) }
+    calls
   end
 
   # A page's Markdown, generated or read from its source file.

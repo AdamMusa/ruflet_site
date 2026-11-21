@@ -607,6 +607,13 @@
         "badge"
       ]
     },
+    "control-segmented-button": {
+      "properties": [
+        "bgcolor",
+        "proportional_width",
+        "thumb_color"
+      ]
+    },
     "control-selection-area": {
       "properties": [
         "badge"
@@ -707,16 +714,22 @@
         ]
       },
       "control-cupertino-text-field": {
-        "properties": [
-          "error",
-          "error_max_lines",
-          "error_style",
-          "fill_color",
-          "filled",
-          "focused_bgcolor",
-          "focused_border_color",
-          "focused_border_width"
-        ]
+        "properties": {
+          "error": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_max_lines": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_style": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "fill_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "filled": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "padding": "On iOS and macOS a number such as `7` works with 0.0.23 too, but the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding. In the next release it reads `{ all: n }` there as n on every side."
+        }
+      },
+      "control-cupertino-timer-picker": {
+        "properties": {
+          "alignment": "On iOS and macOS an `{ x:, y: }` map works with 0.0.23 too, but the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels. In the next release it reads named alignments such as `\"center\"` there too."
+        }
       },
       "control-data-row": {
         "events": {
@@ -731,6 +744,11 @@
         "events": [
           "on_select_all"
         ]
+      },
+      "control-dropdown-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it."
+        }
       },
       "control-filled-icon-button": {
         "properties": [
@@ -774,6 +792,11 @@
           "on_focus",
           "on_hover"
         ]
+      },
+      "control-option": {
+        "properties": {
+          "disabled": "On iOS and macOS the 0.0.23 client still lets the user pick it. In the next release the wheel there dims it and Done stays off while the wheel rests on it."
+        }
       },
       "control-outlined-icon-button": {
         "properties": [
@@ -842,16 +865,22 @@
         ]
       },
       "control-text-field": {
-        "properties": [
-          "error",
-          "error_max_lines",
-          "error_style",
-          "fill_color",
-          "filled",
-          "focused_bgcolor",
-          "focused_border_color",
-          "focused_border_width"
-        ]
+        "properties": {
+          "error": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_max_lines": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "error_style": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "fill_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "filled": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_bgcolor": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_color": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "focused_border_width": "On iOS and macOS, the 0.0.23 client ignores it.",
+          "padding": "On iOS and macOS a number such as `7` works with 0.0.23 too, but the 0.0.23 client reads an `{ all: n }` map, such as the `{ all: 7 }` that `cupertino_text_field` sends, as no padding. In the next release it reads `{ all: n }` there as n on every side."
+        }
+      },
+      "control-timer-picker": {
+        "properties": {
+          "alignment": "On iOS and macOS an `{ x:, y: }` map works with 0.0.23 too, but the 0.0.23 client cannot read a named alignment such as `\"center\"` and shows Flutter's error box in place of the wheels. In the next release it reads named alignments such as `\"center\"` there too."
+        }
       }
     },
     "material": {
@@ -862,9 +891,9 @@
         ]
       },
       "control-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-activity-indicator": {
         "properties": [
@@ -878,18 +907,18 @@
         ]
       },
       "control-cupertino-checkbox": {
-        "properties": [
-          "spacing"
-        ]
+        "properties": {
+          "spacing": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        }
       },
       "control-cupertino-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       },
       "control-filled-icon-button": {
         "properties": [
@@ -917,13 +946,13 @@
         ]
       },
       "control-switch": {
-        "properties": [
-          "active_thumb_image_src",
-          "inactive_thumb_image_src"
-        ],
-        "events": [
-          "on_image_error"
-        ]
+        "properties": {
+          "active_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it.",
+          "inactive_thumb_image_src": "On Android, Windows and Linux, in a browser too, the 0.0.23 client ignores it."
+        },
+        "events": {
+          "on_image_error": "On Android, Windows and Linux, in a browser too, the 0.0.23 client never sends it."
+        }
       }
     }
   }

@@ -2,7 +2,7 @@
 
 A segmented control whose selection slides from segment to segment, as in iOS
 settings screens. It builds a `SegmentedButton` control; elsewhere than iOS and
-macOS the client draws a Material segmented button.
+macOS the client draws a Material segmented button. A web app follows the device: in a browser on an iPhone, iPad or Mac it gets the iOS design.
 
 ## Example
 
@@ -32,6 +32,11 @@ page.add(
 - `on_change` — `event.data` is the index of the chosen segment
 
 ## Usage
+
+The client writes the chosen index to `selected_index` before it sends
+`on_change`, so `event.data` and `event.control.props["selected_index"]` hold
+the same Integer. `event.control.selected_index` returns it too; with 0.0.23 it
+raises NoMethodError. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 Like `cupertino_segmented_button`, it needs at least two visible segments and
 an in-range `selected_index`. The sliding look on iOS and macOS comes from the
