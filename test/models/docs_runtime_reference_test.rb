@@ -217,8 +217,10 @@ class DocsRuntimeReferenceTest < ActiveSupport::TestCase
   CORRECTED_CLAIMS = [
     # ruflet_backend.dart updatePageSize sends {"type": "resized"} on desktop;
     # services/window.dart onWindowEvent drops window_manager's "resize",
-    # "resized" and "move", and window_manager reports "close" only while
-    # prevent_close is set.
+    # "resized" and "move". window_manager emits "close" and then closes the
+    # window unless prevent_close is set, and the client forwards an event
+    # only after an asynchronous getWindowState(), so the page promises
+    # "close" only with prevent_close: true.
     [ "page-reference", "`page.window.on(:event)", [ '`"resized"`', '`"close"` (only with `prevent_close: true`)' ],
       [ "no window event", '`"resize"`', '`"move"`' ] ],
     # ruflet_backend.dart _registerClient: these flags, and no client_ip,
