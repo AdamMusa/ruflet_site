@@ -34,7 +34,7 @@ page.add(column(children: [status, inbox]))
 - `dismiss_thresholds` — how far the control must travel before it is dismissed
 - `movement_duration` / `resize_duration` — slide and close times, in milliseconds; the 0.0.23 client ignores them. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `on_dismiss` — `event.direction` is the swipe direction, such as `"startToEnd"`
-- `on_update` — reports drag progress while the user swipes
+- `on_update` — reports drag progress while the user swipes: `event.direction`, `event.progress` (0.0 to 1.0) and `event.reached`, true once the control is past the dismiss threshold
 - `on_confirm_dismiss` — asks before the control goes; reply with `page.invoke(event.control, "confirm_dismiss", args: { dismiss: true })`, or `dismiss: false` to keep it. Without a reply the client cancels the dismissal after five minutes
 
 ## Usage
