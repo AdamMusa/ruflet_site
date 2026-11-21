@@ -57,6 +57,30 @@ class Extension extends RufletExtension {
 }
 ```
 
+To pick the wire type yourself, set a `WIRE` constant on the control class,
+for example `WIRE = "Rating"`; the client then receives exactly that name.
+`register_control` also takes `helpers:` when the DSL helper names differ from
+the registered name, for example `helpers: %i[rating star_rating]`.
+
+### Extension hooks
+
+`RufletExtension` has four methods; override the ones your package needs:
+
+- `createWidget(key, control)` returns the widget for a visual control, or
+  `null` for types the extension does not handle.
+- `createService(control)` returns a `RufletService` for a control that draws
+  nothing, such as an audio player. The service's `init`, `update` and
+  `dispose` run when Ruby registers it, changes its properties and removes it.
+  In Ruby, register such a control with `page.add_service(control)` instead of
+  `page.add`.
+- `ensureInitialized()` runs once when the client starts, for SDK setup.
+- `createIconData(iconCode)` maps icon codes to an icon font the package
+  ships.
+
+To run a method on a mounted control from Ruby, register a listener in Dart
+with `control.addInvokeMethodListener` and return the result from it; the Ruby
+side calls `runtime_page.invoke(self, "method_name", args: { ... }, timeout:, on_result:)`.
+
 Keep Ruby and Dart property names and defaults identical. Flutter events check
 the matching `on_<event>` flag and call `control.triggerEvent` with JSON-safe
 data. Mounted Ruby methods call `runtime_page.invoke` and should accept

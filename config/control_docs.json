@@ -19,6 +19,373 @@
       "page.add(column(children: [status, button(\"Remove\", on_click: ->(_event) { page.show_bottom_sheet(sheet) })]))"
     ]
   },
+  "control-arc": {
+    "summary": "Part of an ellipse, from `start_angle` for `sweep_angle` radians, drawn as a curve or, with `use_center`, a pie slice. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "progress = 0.7",
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      arc(x: 10, y: 10, width: 100, height: 100, start_angle: 0, sweep_angle: 2 * Math::PI,",
+      "          paint: paint(color: \"#e5e7eb\", style: \"stroke\", stroke_width: 12)),",
+      "      arc(x: 10, y: 10, width: 100, height: 100, start_angle: -Math::PI / 2, sweep_angle: 2 * Math::PI * progress,",
+      "          paint: paint(color: \"#2563eb\", style: \"stroke\", stroke_width: 12, stroke_cap: \"round\")),",
+      "      arc(x: 140, y: 10, width: 100, height: 100, start_angle: 0, sweep_angle: Math::PI / 2, use_center: true,",
+      "          paint: paint(color: \"#f59e0b\"))",
+      "    ],",
+      "    width: 260,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-audio": {
+    "summary": "Plays a sound or a music track from a URL, an asset or base64 data. It is a page service, not a visible control: create it with `page.audio(...)`, keep the object and call `play`, `pause` or `seek` on it; build your own buttons and read the position and state from its events. It works on Android, iOS, macOS, Windows, Linux and the web. Part of the [`audio` extension](/docs/extension-audio): add `audio` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "status = text(value: \"Stopped\")",
+      "player = page.audio(",
+      "  src: \"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3\",",
+      "  volume: 0.8,",
+      "  release_mode: \"loop\",",
+      "  on_loaded: ->(_event) { page.update(status, value: \"Ready\") },",
+      "  on_state_change: ->(event) { page.update(status, value: \"State: #{event.data[:state]}\") },",
+      "  on_position_change: ->(event) { page.update(status, value: \"At #{event.data[:position] / 1000} s\") }",
+      ")",
+      "page.add(",
+      "  row(children: [",
+      "    button(\"Play\", on_click: ->(_event) { player.play }),",
+      "    button(\"Pause\", on_click: ->(_event) { player.pause }),",
+      "    button(\"Resume\", on_click: ->(_event) { player.resume }),",
+      "    button(\"Back 10 s\", on_click: ->(_event) {",
+      "      player.get_current_position(on_result: ->(position, error) {",
+      "        next if error || position.nil?",
+      "",
+      "        player.seek([(position.to_i / 1000) - 10_000, 0].max)",
+      "      })",
+      "    }),",
+      "    status",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-banner-ad": {
+    "summary": "A Google Mobile Ads (AdMob) banner, 320 by 50 logical pixels, on Android and iOS. Always set `unit_id`: without it the client falls back to Google's interstitial test ids (a client bug), so no test banner shows. Google's banner test units are `ca-app-pub-3940256099942544/6300978111` on Android and `ca-app-pub-3940256099942544/2934735716` on iOS; use your own unit id, and your own AdMob app, before you ship. On other platforms the ad does not load. Part of the [`ads` extension](/docs/extension-ads): add `ads` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "# Google's banner test units. Use your own unit ids before you ship.",
+      "test_units = {",
+      "  android: \"ca-app-pub-3940256099942544/6300978111\",",
+      "  ios: \"ca-app-pub-3940256099942544/2934735716\"",
+      "}",
+      "status = text(value: \"Loading ad\")",
+      "banner = banner_ad(",
+      "  unit_id: test_units[:android], # test_units[:ios] in an iOS build",
+      "  request: { keywords: [\"cooking\", \"recipes\"] },",
+      "  width: 320,",
+      "  height: 50,",
+      "  on_load: ->(_event) { page.update(status, value: \"Ad loaded\") },",
+      "  on_error: ->(event) { page.update(status, value: \"No ad: #{event.data}\") }",
+      ")",
+      "page.add(column(children: [banner, status]))"
+    ]
+  },
+  "control-bar-chart": {
+    "summary": "A bar chart drawn with fl_chart. Put one [`bar_chart_group`](/docs/control-bar-chart-group) per x position in `groups`, and the bars of each group in its `rods`. Add [`chart_axis`](/docs/control-chart-axis) for labels and `on_event` to react to touches. It looks the same on every platform. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "months = %w[Jan Feb Mar Apr]",
+      "sales = [42, 68, 55, 81]",
+      "summary = text(value: \"Tap a bar\")",
+      "chart = bar_chart(",
+      "  height: 240,",
+      "  min_y: 0,",
+      "  max_y: 100,",
+      "  groups: sales.each_with_index.map { |amount, index|",
+      "    bar_chart_group(x: index, rods: [bar_chart_rod(to_y: amount, width: 22, color: \"#2563eb\", border_radius: 4)])",
+      "  },",
+      "  bottom_axis: chart_axis(labels: months.each_with_index.map { |name, index| chart_axis_label(value: index, label: name) }),",
+      "  left_axis: chart_axis(label_size: 36, label_spacing: 20),",
+      "  horizontal_grid_lines: { interval: 20, color: \"#e5e7eb\", width: 1 },",
+      "  on_event: ->(event) {",
+      "    index = event.data[:group_index]",
+      "    page.update(summary, value: \"#{months[index]}: #{sales[index]}\") if index && event.data[:type] == \"tapUp\"",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, summary]))"
+    ]
+  },
+  "control-bar-chart-group": {
+    "summary": "The bars at one x position of a [`bar_chart`](/docs/control-bar-chart), side by side or, with `group_vertically: true`, on top of each other. It is not drawn on its own: put it in the chart's `groups`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  bar_chart(",
+      "    height: 220,",
+      "    max_y: 50,",
+      "    groups: [",
+      "      bar_chart_group(",
+      "        x: 0,",
+      "        spacing: 6,",
+      "        rods: [",
+      "          bar_chart_rod(to_y: 31, width: 14, color: \"#2563eb\"),",
+      "          bar_chart_rod(to_y: 24, width: 14, color: \"#f59e0b\")",
+      "        ]",
+      "      ),",
+      "      bar_chart_group(",
+      "        x: 1,",
+      "        spacing: 6,",
+      "        rods: [",
+      "          bar_chart_rod(to_y: 40, width: 14, color: \"#2563eb\"),",
+      "          bar_chart_rod(to_y: 35, width: 14, color: \"#f59e0b\")",
+      "        ]",
+      "      )",
+      "    ],",
+      "    bottom_axis: chart_axis(labels: [chart_axis_label(value: 0, label: \"2025\"), chart_axis_label(value: 1, label: \"2026\")])",
+      "  )",
+      ")"
+    ]
+  },
+  "control-bar-chart-rod": {
+    "summary": "One bar of a [`bar_chart_group`](/docs/control-bar-chart-group), from `from_y` to `to_y`, with an optional track behind it and stacked segments inside it. Update it like any control, for example `page.update(rod, to_y: 80)`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) replaces the value in the bar's touch bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "progress = bar_chart_rod(",
+      "  from_y: 0,",
+      "  to_y: 72,",
+      "  width: 28,",
+      "  gradient: { _type: \"linear\", begin: { x: 0, y: 1 }, end: { x: 0, y: -1 }, colors: [\"#93c5fd\", \"#1d4ed8\"] },",
+      "  border_radius: { top_left: 6, top_right: 6 },",
+      "  bg_to_y: 100,",
+      "  bgcolor: \"#e5e7eb\"",
+      ")",
+      "page.add(",
+      "  bar_chart(",
+      "    height: 220,",
+      "    min_y: 0,",
+      "    max_y: 100,",
+      "    groups: [bar_chart_group(x: 0, rods: [progress])],",
+      "    on_event: ->(event) { page.update(progress, color: \"#dc2626\") if event.data[:type] == \"tapUp\" }",
+      "  )",
+      ")"
+    ]
+  },
+  "control-bar-chart-rod-stack-item": {
+    "summary": "A segment inside a [`bar_chart_rod`](/docs/control-bar-chart-rod), for stacked bars. Give every segment `from_y`, `to_y` and `color`, and make them cover the rod's range. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "energy = bar_chart_rod(",
+      "  to_y: 90,",
+      "  width: 32,",
+      "  stack_items: [",
+      "    bar_chart_rod_stack_item(from_y: 0, to_y: 40, color: \"#16a34a\"),",
+      "    bar_chart_rod_stack_item(from_y: 40, to_y: 70, color: \"#f59e0b\"),",
+      "    bar_chart_rod_stack_item(from_y: 70, to_y: 90, color: \"#dc2626\", border_side: { color: \"#7f1d1d\", width: 1 })",
+      "  ]",
+      ")",
+      "page.add(bar_chart(height: 220, min_y: 0, max_y: 100, groups: [bar_chart_group(x: 0, rods: [energy])]))"
+    ]
+  },
+  "control-block-picker": {
+    "summary": "A grid of color swatches; the user taps one to pick it. iOS and macOS draw Cupertino-styled swatches. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. Changing `color` from Ruby after the picker is shown moves the selection only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "choice = text(value: \"Pick a label color\")",
+      "page.add(",
+      "  column(children: [",
+      "    block_picker(",
+      "      color: \"#ef4444\",",
+      "      available_colors: [\"#ef4444\", \"#f59e0b\", \"#22c55e\", \"#3b82f6\", \"#a855f7\", \"#64748b\"],",
+      "      on_color_change: ->(event) { page.update(choice, value: \"Label color #{event.data}\") }",
+      "    ),",
+      "    choice",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-candlestick-chart": {
+    "summary": "A candlestick (OHLC) chart for prices drawn with fl_chart: one candle per [`candlestick_chart_spot`](/docs/control-candlestick-chart-spot). With 0.0.23 it shows no touch bubble, so use `on_event` to show the touched candle. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release a candle with its own `tooltip:` text shows it in a bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "prices = [",
+      "  [0, 24.8, 28.6, 23.9, 27.2],",
+      "  [1, 27.2, 30.1, 25.8, 28.4],",
+      "  [2, 28.4, 29.0, 24.1, 25.0],",
+      "  [3, 25.0, 31.5, 24.6, 30.9]",
+      "]",
+      "status = text(value: \"Tap a candle\")",
+      "chart = candlestick_chart(",
+      "  height: 240,",
+      "  min_x: -0.5, max_x: 3.5, min_y: 22, max_y: 33,",
+      "  spots: prices.map { |x, open, high, low, close| candlestick_chart_spot(x: x, open: open, high: high, low: low, close: close) },",
+      "  left_axis: chart_axis(label_spacing: 2, label_size: 32),",
+      "  bottom_axis: chart_axis(label_spacing: 1),",
+      "  on_event: ->(event) {",
+      "    index = event.data[:spot_index]",
+      "    page.update(status, value: \"Day #{index}: closed at #{prices[index][4]}\") if index",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, status]))"
+    ]
+  },
+  "control-candlestick-chart-spot": {
+    "summary": "One candle of a [`candlestick_chart`](/docs/control-candlestick-chart): the `open`, `high`, `low` and `close` prices at `x`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) gives the candle a touch bubble; with 0.0.23 candlestick charts show none. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "page.add(",
+      "  candlestick_chart(",
+      "    height: 220,",
+      "    interactive: false,",
+      "    min_x: -0.5, max_x: 1.5, min_y: 90, max_y: 120,",
+      "    spots: [",
+      "      candlestick_chart_spot(x: 0, open: 100, high: 112, low: 96, close: 108),",
+      "      candlestick_chart_spot(x: 1, open: 108, high: 115, low: 99, close: 101)",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-canvas": {
+    "summary": "A drawing surface that paints a list of shapes: lines, circles, arcs, ovals, rectangles, paths, points and shadows. Change a shape with `page.update(shape, ...)`, or replace them all with `page.update(canvas, shapes: [...])`. Put a `gesture_detector` in `content` to draw with the finger. It is core Ruflet and looks the same on every platform.",
+    "example": [
+      "size_label = text(value: \"Canvas size unknown\")",
+      "sky = rect(x: 0, y: 0, width: 320, height: 200, paint: paint(color: \"#bfdbfe\"))",
+      "sun = circle(x: 260, y: 50, radius: 28, paint: paint(color: \"#facc15\"))",
+      "hill = path(",
+      "  elements: [path_move_to(0, 200), path_quadratic_to(cp1x: 160, cp1y: 60, x: 320, y: 200, w: 1), path_close],",
+      "  paint: paint(color: \"#16a34a\")",
+      ")",
+      "scene = canvas(",
+      "  [sky, sun, hill],",
+      "  width: 320,",
+      "  height: 200,",
+      "  on_resize: ->(event) { page.update(size_label, value: \"Canvas is #{event.data[:w].round} x #{event.data[:h].round}\") }",
+      ")",
+      "page.add(column(children: [scene, size_label]))",
+      "page.add(button(\"Sunset\", on_click: ->(_event) { page.update(sun, y: 150, paint: paint(color: \"#f97316\")) }))"
+    ]
+  },
+  "control-chart-axis": {
+    "summary": "The labels and title along one side of a bar, line, scatter or candlestick chart. Pass it as `left_axis`, `right_axis`, `top_axis` or `bottom_axis`; a side without an axis shows no labels. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  line_chart(",
+      "    height: 220,",
+      "    min_x: 0, max_x: 6, min_y: 0, max_y: 30,",
+      "    left_axis: chart_axis(title: text(value: \"Temperature (C)\"), title_size: 24, label_size: 32, label_spacing: 10),",
+      "    bottom_axis: chart_axis(label_spacing: 1, show_min: false, show_max: false),",
+      "    right_axis: chart_axis(show_labels: false),",
+      "    top_axis: chart_axis(show_labels: false),",
+      "    data_series: [",
+      "      line_chart_data(",
+      "        color: \"#ea580c\",",
+      "        points: [[1, 12], [2, 17], [3, 21], [4, 19], [5, 24]].map { |x, y| line_chart_data_point(x: x, y: y) }",
+      "      )",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-chart-axis-label": {
+    "summary": "A custom label at one value of a [`chart_axis`](/docs/control-chart-axis), such as a month name under a bar. The label is drawn only when its `value` is one of the axis ticks. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "days = %w[Mon Tue Wed Thu Fri]",
+      "page.add(",
+      "  bar_chart(",
+      "    height: 220,",
+      "    max_y: 10,",
+      "    groups: [6, 8, 5, 9, 7].each_with_index.map { |hours, x| bar_chart_group(x: x, rods: [bar_chart_rod(to_y: hours, width: 16)]) },",
+      "    bottom_axis: chart_axis(",
+      "      label_size: 32,",
+      "      labels: days.each_with_index.map { |day, x|",
+      "        chart_axis_label(value: x, label: x == 3 ? text(value: day, weight: \"bold\", color: \"#dc2626\") : day)",
+      "      }",
+      "    )",
+      "  )",
+      ")"
+    ]
+  },
+  "control-circle": {
+    "summary": "A circle around the point `x`, `y`. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      circle(x: 60, y: 60, radius: 50, paint: paint(color: \"#fde68a\")),",
+      "      circle(x: 60, y: 60, radius: 50, paint: paint(color: \"#b45309\", style: \"stroke\", stroke_width: 3, stroke_dash_pattern: [8, 4]))",
+      "    ],",
+      "    width: 120,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-circle-layer": {
+    "summary": "The layer of a [`map`](/docs/control-map) that draws [`circle_marker`](/docs/control-circle-marker) controls. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "stations = [[51.5072, -0.1276, 12], [51.515, -0.09, 8], [51.5, -0.15, 15]]",
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      circle_layer(",
+      "        stations.map { |lat, lng, bikes|",
+      "          circle_marker(coordinates: [lat, lng], radius: bikes, color: \"#16a34a,0.6\", border_color: \"#14532d\", border_stroke_width: 1)",
+      "        }",
+      "      )",
+      "    ],",
+      "    initial_center: [51.5072, -0.1276],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-circle-marker": {
+    "summary": "A circle on the map, sized in pixels or, with `use_radius_in_meter`, in meters on the ground, for example a coverage area. Put it in a [`circle_layer`](/docs/control-circle-layer). Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "coverage = circle_marker(",
+      "  coordinates: [37.7749, -122.4194],",
+      "  radius: 1500,",
+      "  use_radius_in_meter: true,",
+      "  color: \"#2563eb,0.2\",",
+      "  border_color: \"#2563eb\",",
+      "  border_stroke_width: 2",
+      ")",
+      "page.add(",
+      "  map(",
+      "    [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"), circle_layer([coverage])],",
+      "    initial_center: [37.7749, -122.4194],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-color": {
+    "summary": "Fills the whole canvas with one color, for a background or a tint. Build it with `canvas_color(...)` or `color(...)`. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      canvas_color(color: \"#0f172a\"),",
+      "      circle(x: 80, y: 60, radius: 30, paint: paint(color: \"#38bdf8\"))",
+      "    ],",
+      "    width: 160,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-color-picker": {
+    "summary": "A full color picker: a color area with hue and transparency sliders, value fields and an optional history of recent colors. `on_color_change` reports the pick. iOS and macOS draw it with Cupertino-styled parts. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release the client also writes the pick back to `color`, so `event.control.props[\"color\"]` stays current; with 0.0.23 read it from `event.data`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "swatch = container(width: 48, height: 48, bgcolor: \"#2563eb\", border_radius: 8)",
+      "picked = text(value: \"#ff2563eb\")",
+      "picker = color_picker(",
+      "  color: \"#2563eb\",",
+      "  enable_alpha: false,",
+      "  label_types: [\"hex\", \"rgb\"],",
+      "  picker_area_height_percent: 0.7,",
+      "  on_color_change: ->(event) {",
+      "    page.update(swatch, bgcolor: event.data)",
+      "    page.update(picked, value: event.data)",
+      "  }",
+      ")",
+      "page.add(column(children: [picker, row(children: [swatch, picked])]))"
+    ]
+  },
   "control-cupertino-action-sheet": {
     "summary": "The `cupertino_action_sheet` spelling of [`action_sheet`](/docs/control-action-sheet): a title, a message, a list of choices and a separate Cancel choice. It sends the same `ActionSheet` control, so the client draws it by platform: an iOS action sheet on iOS and macOS, and a column of list rows on Android, web, Windows and Linux. Present it in a bottom sheet with `page.show_bottom_sheet`, and build its choices with [`cupertino_action_sheet_action`](/docs/control-cupertino-action-sheet-action). With 0.0.23 the iOS action sheet floats over the dimmed page; with the next release the bottom sheet draws it on its own panel with rounded top corners, in the sheet's `bgcolor`. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
@@ -294,6 +661,497 @@
       "page.add(list)"
     ]
   },
+  "control-fill": {
+    "summary": "Fills the whole canvas with a `paint`, for example a gradient background. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      fill(paint: paint(gradient: { _type: \"linear\", begin: [0, 0], end: [0, 120], colors: [\"#1e3a8a\", \"#60a5fa\"] })),",
+      "      rect(x: 40, y: 40, width: 80, height: 40, border_radius: 8, paint: paint(color: \"#ffffff\"))",
+      "    ],",
+      "    width: 160,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-hue-ring-picker": {
+    "summary": "A ring of hues around a saturation and brightness square, a compact color picker. iOS and macOS draw it with Cupertino-styled parts. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "preview = container(width: 64, height: 64, bgcolor: \"#f97316\", border_radius: 32)",
+      "page.add(",
+      "  row(children: [",
+      "    hue_ring_picker(",
+      "      color: \"#f97316\",",
+      "      color_picker_height: 220,",
+      "      hue_ring_stroke_width: 18,",
+      "      on_color_change: ->(event) { page.update(preview, bgcolor: event.data) }",
+      "    ),",
+      "    preview",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-image-source-attribution": {
+    "summary": "A logo in a [`rich_attribution`](/docs/control-rich-attribution) that stays visible next to its button. It is drawn only there. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      rich_attribution([",
+      "        image_source_attribution(",
+      "          image(\"https://www.openstreetmap.org/favicon.ico\"),",
+      "          height: 20,",
+      "          tooltip: \"OpenStreetMap\",",
+      "          on_click: ->(_event) { page.launch_url(\"https://www.openstreetmap.org\") }",
+      "        )",
+      "      ])",
+      "    ],",
+      "    initial_center: [59.3293, 18.0686],",
+      "    initial_zoom: 11,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-interstitial-ad": {
+    "summary": "A full-screen Google Mobile Ads (AdMob) interstitial on Android and iOS. It is a page service, not a visible control: register it with `page.add_service(ad)`, wait for `on_load`, then call `ad.show`. A loaded ad can be shown once; register a new one for the next break. Without `unit_id` the client loads Google's test unit. Part of the [`ads` extension](/docs/extension-ads): add `ads` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "status = text(value: \"Loading ad\")",
+      "ad = interstitial_ad(",
+      "  unit_id: \"ca-app-pub-3940256099942544/1033173712\",",
+      "  on_load: ->(_event) { page.update(status, value: \"Ad ready\") },",
+      "  on_error: ->(event) { page.update(status, value: \"No ad: #{event.data}\") },",
+      "  on_close: ->(_event) { page.update(status, value: \"Thanks for watching\") }",
+      ")",
+      "page.add_service(ad)",
+      "page.add(column(children: [status, button(\"Show ad\", on_click: ->(_event) { ad.show })]))"
+    ]
+  },
+  "control-line": {
+    "summary": "A straight line from `x1`, `y1` to `x2`, `y2`. Give it a `paint` with `stroke_width`, or it is a hairline. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "grid = (0..4).flat_map do |step|",
+      "  offset = step * 40",
+      "  [",
+      "    line(x1: offset, y1: 0, x2: offset, y2: 160, paint: paint(color: \"#d1d5db\", stroke_width: 1)),",
+      "    line(x1: 0, y1: offset, x2: 160, y2: offset, paint: paint(color: \"#d1d5db\", stroke_width: 1))",
+      "  ]",
+      "end",
+      "diagonal = line(x1: 0, y1: 160, x2: 160, y2: 0, paint: paint(color: \"#dc2626\", stroke_width: 3, stroke_dash_pattern: [10, 5]))",
+      "page.add(canvas(grid + [diagonal], width: 160, height: 160))"
+    ]
+  },
+  "control-line-chart": {
+    "summary": "A line or area chart drawn with fl_chart. Each [`line_chart_data`](/docs/control-line-chart-data) in `data_series` is one line through its points. Touching shows the values under the finger, and `on_event` reports the touch. It looks the same on every platform. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release `event.data[:spots]` also says which points were touched; with 0.0.23 each of its entries is an empty String. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "readings = [[0, 3.1], [1, 3.4], [2, 2.9], [3, 4.2], [4, 4.8], [5, 4.4]]",
+      "status = text(value: \"Touch the line\")",
+      "chart = line_chart(",
+      "  height: 240,",
+      "  min_x: 0, max_x: 5, min_y: 0, max_y: 6,",
+      "  data_series: [",
+      "    line_chart_data(",
+      "      color: \"#16a34a\",",
+      "      stroke_width: 3,",
+      "      curved: true,",
+      "      below_line_bgcolor: \"#16a34a,0.15\",",
+      "      points: readings.map { |x, y| line_chart_data_point(x: x, y: y) }",
+      "    )",
+      "  ],",
+      "  bottom_axis: chart_axis(label_spacing: 1),",
+      "  left_axis: chart_axis(label_spacing: 2, label_size: 32),",
+      "  horizontal_grid_lines: { interval: 1, color: \"#e5e7eb\", width: 1 },",
+      "  on_event: ->(event) {",
+      "    # With 0.0.23 the spots arrive as empty Strings, so only hashes are read.",
+      "    spot = Array(event.data[:spots]).find { |touched| touched.is_a?(Hash) }",
+      "    page.update(status, value: \"Day #{spot[:spot_index]}: #{readings[spot[:spot_index]][1]} kWh\") if spot",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, status]))"
+    ]
+  },
+  "control-line-chart-data": {
+    "summary": "One line of a [`line_chart`](/docs/control-line-chart): its points, color, thickness and the optional fill above or below it. Points have no dots unless you set `point`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "planned = [[0, 2], [1, 3], [2, 4], [3, 5]].map { |x, y| line_chart_data_point(x: x, y: y) }",
+      "actual = [[0, 1.5], [1, 3.2], [2, 3.6], [3, 5.4]].map { |x, y| line_chart_data_point(x: x, y: y) }",
+      "page.add(",
+      "  line_chart(",
+      "    height: 220,",
+      "    min_x: 0, max_x: 3, min_y: 0, max_y: 6,",
+      "    data_series: [",
+      "      line_chart_data(points: planned, color: \"#9ca3af\", stroke_width: 2, dash_pattern: [6, 4]),",
+      "      line_chart_data(",
+      "        points: actual,",
+      "        color: \"#2563eb\",",
+      "        stroke_width: 4,",
+      "        curved: true,",
+      "        rounded_stroke_cap: true,",
+      "        point: true,",
+      "        below_line_gradient: { _type: \"linear\", begin: { x: 0, y: -1 }, end: { x: 0, y: 1 }, colors: [\"#2563eb,0.3\", \"#2563eb,0.0\"] }",
+      "      )",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-line-chart-data-point": {
+    "summary": "One point of a [`line_chart_data`](/docs/control-line-chart-data) line, at `x` and `y`. Mark it `selected` to highlight it on a chart with `interactive: false`. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) replaces the value in the point's touch bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "points = [[0, 4], [1, 7], [2, 5], [3, 9]].map do |x, y|",
+      "  line_chart_data_point(x: x, y: y, selected: y == 9)",
+      "end",
+      "page.add(",
+      "  line_chart(",
+      "    height: 220,",
+      "    interactive: false,",
+      "    min_x: 0, max_x: 3, min_y: 0, max_y: 10,",
+      "    data_series: [line_chart_data(points: points, color: \"#7c3aed\", point: true)]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-lottie": {
+    "summary": "Plays a Lottie animation (an After Effects export in JSON) from a URL, an asset or base64 data. It loops by default; update `animate` to stop and start it. It looks the same on every platform. Part of the [`lottie` extension](/docs/extension-lottie): add `lottie` under `extensions:` in `ruflet.yaml` and rebuild the client. With 0.0.23 a base64 `src` is decoded again on every update of the control, such as `animate: false`, so the animation loads again from its first frame and `on_load` fires again; the next release only applies the change. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "status = text(value: \"Loading animation\")",
+      "animation = lottie(",
+      "  \"https://raw.githubusercontent.com/airbnb/lottie-web/master/demo/adrock/data.json\",",
+      "  width: 200,",
+      "  height: 200,",
+      "  repeat: true,",
+      "  fit: \"contain\",",
+      "  error_content: text(value: \"Animation unavailable\"),",
+      "  on_load: ->(_event) { page.update(status, value: \"Playing\") },",
+      "  on_error: ->(event) { page.update(status, value: \"Lottie error: #{event.data}\") }",
+      ")",
+      "page.add(column(children: [animation, status]))",
+      "page.add(button(\"Pause\", on_click: ->(_event) { page.update(animation, animate: false) }))"
+    ]
+  },
+  "control-map": {
+    "summary": "An interactive map drawn with flutter_map. It shows its `layers` bottom to top: tiles from a [`tile_layer`](/docs/control-tile-layer), then markers, circles, lines, areas and an attribution. The user can pan, zoom and rotate it; tap events report map coordinates, and methods such as `move_to` and `zoom_in` move it from Ruby once it is on the page. It works the same on every platform. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "paris = [48.8566, 2.3522]",
+      "status = text(value: \"Tap the map\")",
+      "pins = marker_layer([])",
+      "city_map = map(",
+      "  [",
+      "    tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\", user_agent_package_name: \"com.example.cityguide\"),",
+      "    pins,",
+      "    rich_attribution([text_source_attribution(\"OpenStreetMap contributors\")])",
+      "  ],",
+      "  initial_center: paris,",
+      "  initial_zoom: 12,",
+      "  min_zoom: 3,",
+      "  max_zoom: 18,",
+      "  expand: true,",
+      "  on_tap: ->(event) {",
+      "    point = event.data[:coordinates]",
+      "    page.update(status, value: format(\"%.4f, %.4f\", point[:latitude], point[:longitude]))",
+      "    page.update(pins, markers: [marker(icon(\"location_on\", color: \"#dc2626\"), coordinates: point)])",
+      "  }",
+      ")",
+      "page.add(column(expand: true, children: [city_map, status]))",
+      "page.add(",
+      "  row(children: [",
+      "    button(\"Zoom in\", on_click: ->(_event) { city_map.zoom_in }),",
+      "    button(\"Back to Paris\", on_click: ->(_event) { city_map.move_to(destination: paris, zoom: 12) })",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-marker": {
+    "summary": "A control pinned to a point of the map, such as an icon or a label. It moves with the map and keeps its size. Put it in a [`marker_layer`](/docs/control-marker-layer). Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "office = marker(",
+      "  container(content: text(value: \"HQ\", color: \"#ffffff\"), bgcolor: \"#1d4ed8\", padding: 6, border_radius: 6),",
+      "  coordinates: { latitude: 40.7128, longitude: -74.006 },",
+      "  width: 48,",
+      "  height: 30,",
+      "  alignment: { x: 0, y: -1 }",
+      ")",
+      "page.add(",
+      "  map(",
+      "    [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"), marker_layer([office])],",
+      "    initial_center: [40.7128, -74.006],",
+      "    initial_zoom: 14,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-marker-layer": {
+    "summary": "The layer of a [`map`](/docs/control-map) that draws [`marker`](/docs/control-marker) controls. Update its `markers` to add or remove pins. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "selected = text(value: \"Tap a store\")",
+      "pin = ->(name, point) {",
+      "  marker(",
+      "    icon_button(\"storefront\", icon_color: \"#dc2626\", on_click: ->(_event) { page.update(selected, value: name) }),",
+      "    coordinates: point,",
+      "    width: 40,",
+      "    height: 40",
+      "  )",
+      "}",
+      "page.add(",
+      "  column(expand: true, children: [",
+      "    map(",
+      "      [",
+      "        tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "        marker_layer([",
+      "          pin.call(\"Soho\", [51.5136, -0.1365]),",
+      "          pin.call(\"Camden\", [51.539, -0.1426]),",
+      "          pin.call(\"Greenwich\", [51.4826, -0.0077])",
+      "        ], rotate: true)",
+      "      ],",
+      "      initial_center: [51.51, -0.1],",
+      "      initial_zoom: 11,",
+      "      expand: true",
+      "    ),",
+      "    selected",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-material-picker": {
+    "summary": "Picks a color from the Material Design palette: first a hue, then one of its shades. iOS and macOS draw it with Cupertino-styled parts. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. Changing `color` from Ruby after the picker is shown moves the selection only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "theme = text(value: \"Accent: #ff2196f3\")",
+      "page.add(",
+      "  column(children: [",
+      "    material_picker(",
+      "      color: \"#2196f3\",",
+      "      enable_label: true,",
+      "      on_color_change: ->(event) { page.update(theme, value: \"Accent: #{event.data}\") },",
+      "      on_primary_change: ->(event) { page.update(theme, value: \"Palette: #{event.data}\") }",
+      "    ),",
+      "    theme",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-multiple-choice-block-picker": {
+    "summary": "A grid of color swatches where the user can select several. iOS and macOS draw Cupertino-styled swatches. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client. Changing `colors` from Ruby after the picker is shown updates the selection only with the next release. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "tags = text(value: \"2 colors selected\")",
+      "page.add(",
+      "  column(children: [",
+      "    multiple_choice_block_picker(",
+      "      colors: [\"#ef4444\", \"#3b82f6\"],",
+      "      available_colors: [\"#ef4444\", \"#f59e0b\", \"#22c55e\", \"#3b82f6\", \"#a855f7\"],",
+      "      on_colors_change: ->(event) { page.update(tags, value: \"#{Array(event.data).size} colors selected\") }",
+      "    ),",
+      "    tags",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-native-ad": {
+    "summary": "A Google Mobile Ads native ad styled with a template or a native factory. The Ruby helper exists, but neither the 0.0.23 client nor the next release draws it yet: the `ads` extension does not register NativeAd, so the page shows an \"Unknown control: NativeAd\" box where you add it. Use [`banner_ad`](/docs/control-banner-ad) for now. Part of the [`ads` extension](/docs/extension-ads): add `ads` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  native_ad(",
+      "    unit_id: \"ca-app-pub-3940256099942544/2247696110\",",
+      "    template_style: { template_type: \"medium\", main_bgcolor: \"#ffffff\", corner_radius: 8 },",
+      "    height: 320",
+      "  )",
+      ")"
+    ]
+  },
+  "control-oval": {
+    "summary": "An ellipse that fills the box at `x`, `y` of `width` by `height`. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      oval(x: 10, y: 20, width: 140, height: 80, paint: paint(color: \"#c7d2fe\")),",
+      "      oval(x: 10, y: 20, width: 140, height: 80, paint: paint(color: \"#4338ca\", style: \"stroke\", stroke_width: 2))",
+      "    ],",
+      "    width: 160,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-path": {
+    "summary": "A free-form outline built from drawing steps such as `path_move_to`, `path_line_to`, curves and `path_close`, then filled or stroked. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "star = path(",
+      "  elements: [",
+      "    path_move_to(60, 5),",
+      "    path_line_to(75, 45),",
+      "    path_line_to(115, 45),",
+      "    path_line_to(82, 70),",
+      "    path_line_to(95, 110),",
+      "    path_line_to(60, 85),",
+      "    path_line_to(25, 110),",
+      "    path_line_to(38, 70),",
+      "    path_line_to(5, 45),",
+      "    path_line_to(45, 45),",
+      "    path_close",
+      "  ],",
+      "  paint: paint(color: \"#eab308\", style: \"fill\")",
+      ")",
+      "wave = path(",
+      "  elements: [path_move_to(130, 60), path_cubic_to(cp1x: 160, cp1y: 0, cp2x: 190, cp2y: 120, x: 220, y: 60)],",
+      "  paint: paint(color: \"#0ea5e9\", style: \"stroke\", stroke_width: 4, stroke_cap: \"round\")",
+      ")",
+      "page.add(canvas([star, wave], width: 230, height: 120))"
+    ]
+  },
+  "control-pie-chart": {
+    "summary": "A pie or donut chart drawn with fl_chart. Each [`pie_chart_section`](/docs/control-pie-chart-section) is a slice sized by its `value`. Unset, `center_space_radius` leaves a large hole: set `0` for a full pie. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "budget = { \"Rent\" => 45, \"Food\" => 25, \"Transport\" => 15, \"Savings\" => 15 }",
+      "colors = [\"#2563eb\", \"#16a34a\", \"#f59e0b\", \"#7c3aed\"]",
+      "status = text(value: \"Tap a slice\")",
+      "chart = pie_chart(",
+      "  height: 240,",
+      "  sections_space: 2,",
+      "  center_space_radius: 48,",
+      "  sections: budget.each_with_index.map { |(name, share), index|",
+      "    pie_chart_section(value: share, title: \"#{share}%\", color: colors[index], radius: 60,",
+      "                      title_style: { size: 12, color: \"#ffffff\", weight: \"bold\" })",
+      "  },",
+      "  on_event: ->(event) {",
+      "    index = event.data[:section_index]",
+      "    page.update(status, value: \"#{budget.keys[index]}: #{budget.values[index]}%\") if index && event.data[:type] == \"tapUp\"",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, status]))"
+    ]
+  },
+  "control-pie-chart-section": {
+    "summary": "One slice of a [`pie_chart`](/docs/control-pie-chart), sized by `value` in proportion to the other slices, with an optional title and badge. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  pie_chart(",
+      "    height: 220,",
+      "    center_space_radius: 0,",
+      "    sections: [",
+      "      pie_chart_section(",
+      "        value: 70,",
+      "        color: \"#16a34a\",",
+      "        radius: 90,",
+      "        title: \"Done\",",
+      "        title_position: 0.6,",
+      "        badge: icon(\"check_circle\", color: \"#ffffff\"),",
+      "        badge_position: 0.95",
+      "      ),",
+      "      pie_chart_section(value: 30, color: \"#d1d5db\", radius: 80, title: \"Left\", border_side: { color: \"#ffffff\", width: 2 })",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-points": {
+    "summary": "A set of points drawn as dots, as line pairs or as one connected outline. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "samples = [[10, 80], [40, 30], [70, 60], [100, 20], [130, 70]]",
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      points(points: samples, point_mode: \"polygon\", paint: paint(color: \"#94a3b8\", stroke_width: 2)),",
+      "      points(points: samples, point_mode: \"points\", paint: paint(color: \"#0f172a\", stroke_width: 8, stroke_cap: \"round\"))",
+      "    ],",
+      "    width: 140,",
+      "    height: 100",
+      "  )",
+      ")"
+    ]
+  },
+  "control-polygon-layer": {
+    "summary": "The layer of a [`map`](/docs/control-map) that draws [`polygon_marker`](/docs/control-polygon-marker) areas. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "zones = {",
+      "  \"Zone A\" => [[51.51, -0.12], [51.52, -0.08], [51.5, -0.07]],",
+      "  \"Zone B\" => [[51.49, -0.13], [51.5, -0.1], [51.48, -0.09]]",
+      "}",
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      polygon_layer(",
+      "        zones.map { |name, corners|",
+      "          polygon_marker(coordinates: corners, label: name, color: \"#7c3aed,0.25\", border_color: \"#7c3aed\", border_stroke_width: 2)",
+      "        },",
+      "        draw_labels_last: true",
+      "      )",
+      "    ],",
+      "    initial_center: [51.5, -0.1],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-polygon-marker": {
+    "summary": "A filled area on the map, such as a delivery zone, with an optional outline and label. Put it in a [`polygon_layer`](/docs/control-polygon-layer). Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "service_area = polygon_marker(",
+      "  coordinates: [[51.51, -0.12], [51.5, -0.06], [51.48, -0.09]],",
+      "  color: \"#3b82f6,0.2\",",
+      "  border_color: \"#2563eb\",",
+      "  border_stroke_width: 2,",
+      "  label: \"Service area\",",
+      "  label_text_style: { size: 14, weight: \"bold\", color: \"#1e3a8a\" }",
+      ")",
+      "page.add(",
+      "  map(",
+      "    [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"), polygon_layer([service_area])],",
+      "    initial_center: [51.5, -0.09],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-polyline-layer": {
+    "summary": "The layer of a [`map`](/docs/control-map) that draws [`polyline_marker`](/docs/control-polyline-marker) lines. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "trail = polyline_marker(",
+      "  coordinates: [[46.0207, 7.7491], [46.0, 7.73], [45.9763, 7.6586]],",
+      "  stroke_width: 6,",
+      "  gradient_colors: [\"#22c55e\", \"#eab308\", \"#dc2626\"],",
+      "  colors_stop: [0.0, 0.5, 1.0]",
+      ")",
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      polyline_layer([trail], simplification_tolerance: 0.5, culling_margin: 20)",
+      "    ],",
+      "    initial_center: [46.0, 7.71],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-polyline-marker": {
+    "summary": "A line through points on the map, such as a route or a border, solid, dotted, dashed or in a gradient. Put it in a [`polyline_layer`](/docs/control-polyline-layer). Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "route = polyline_marker(",
+      "  coordinates: [[48.8584, 2.2945], [48.8606, 2.3376], [48.853, 2.3499]],",
+      "  stroke_width: 5,",
+      "  color: \"#dc2626\",",
+      "  border_color: \"#7f1d1d\",",
+      "  border_stroke_width: 1,",
+      "  stroke_pattern: { _type: \"dotted\", spacing_factor: 2 }",
+      ")",
+      "page.add(",
+      "  map(",
+      "    [tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"), polyline_layer([route])],",
+      "    initial_center: [48.857, 2.32],",
+      "    initial_zoom: 13,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
   "control-popup-menu-item": {
     "summary": "One entry in a [`popup_menu_button`](/docs/control-popup-menu-button) menu, with text, an icon, or both. Set `checked` for a check mark. The client does not change it, so keep the state yourself and update `checked` in `on_click`: `event.data` is `true` or `nil`, never `false`, and the 0.0.23 client on iOS and macOS sends none. Leave out both text and icon for a divider. Icons, check marks and dividers show on Android, web, Windows and Linux only: on iOS and macOS the menu shows each item's text and nothing else, and an item without text draws an error box.",
     "example": [
@@ -324,6 +1182,156 @@
       ")"
     ]
   },
+  "control-radar-chart": {
+    "summary": "A radar (spider) chart drawn with fl_chart that compares values along several spokes. Each [`radar_data_set`](/docs/control-radar-data-set) is one shape, and [`radar_chart_title`](/docs/control-radar-chart-title) labels the spokes. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "skills = %w[Ruby Dart SQL Design Writing]",
+      "status = text(value: \"Tap a point\")",
+      "chart = radar_chart(",
+      "  height: 280,",
+      "  tick_count: 4,",
+      "  radar_shape: \"circle\",",
+      "  titles: skills.map { |name| radar_chart_title(text: name) },",
+      "  data_sets: [",
+      "    radar_data_set(fill_color: \"#2563eb,0.25\", border_color: \"#2563eb\",",
+      "                   entries: [5, 3, 4, 2, 3].map { |level| radar_data_set_entry(value: level) }),",
+      "    radar_data_set(fill_color: \"#f59e0b,0.25\", border_color: \"#f59e0b\",",
+      "                   entries: [2, 4, 3, 5, 4].map { |level| radar_data_set_entry(value: level) })",
+      "  ],",
+      "  on_event: ->(event) {",
+      "    entry = event.data[:entry_index]",
+      "    page.update(status, value: \"#{skills[entry]}: #{event.data[:entry_value]}\") if entry",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, status]))"
+    ]
+  },
+  "control-radar-chart-title": {
+    "summary": "The label of one spoke of a [`radar_chart`](/docs/control-radar-chart). Titles are matched to spokes by position. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  radar_chart(",
+      "    height: 260,",
+      "    title_position_percentage_offset: 0.15,",
+      "    titles: [",
+      "      radar_chart_title(text: \"Speed\"),",
+      "      radar_chart_title(text: \"Range\", angle: 0),",
+      "      radar_chart_title(text: \"Comfort\", position_percentage_offset: 0.3)",
+      "    ],",
+      "    data_sets: [radar_data_set(entries: [8, 6, 7].map { |score| radar_data_set_entry(value: score) })]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-radar-data-set": {
+    "summary": "One shape on a [`radar_chart`](/docs/control-radar-chart): one value per spoke, with its fill and outline. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  radar_chart(",
+      "    height: 260,",
+      "    titles: %w[Mon Tue Wed Thu Fri].map { |day| radar_chart_title(text: day) },",
+      "    data_sets: [",
+      "      radar_data_set(",
+      "        border_color: \"#dc2626\",",
+      "        border_width: 3,",
+      "        entry_radius: 4,",
+      "        fill_gradient: { _type: \"radial\", colors: [\"#dc2626,0.05\", \"#dc2626,0.4\"] },",
+      "        entries: [3, 5, 2, 4, 5].map { |value| radar_data_set_entry(value: value) }",
+      "      )",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-radar-data-set-entry": {
+    "summary": "One value of a [`radar_data_set`](/docs/control-radar-data-set), on the spoke at the same position. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "scores = { \"Taste\" => 4, \"Price\" => 2, \"Service\" => 5 }",
+      "page.add(",
+      "  radar_chart(",
+      "    height: 240,",
+      "    titles: scores.keys.map { |name| radar_chart_title(text: name) },",
+      "    data_sets: [radar_data_set(entries: scores.values.map { |score| radar_data_set_entry(value: score) })]",
+      "  )",
+      ")"
+    ]
+  },
+  "control-rect": {
+    "summary": "A rectangle at `x`, `y`, optionally with rounded corners. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      rect(x: 10, y: 10, width: 140, height: 80, border_radius: 12, paint: paint(color: \"#dcfce7\")),",
+      "      rect(x: 10, y: 10, width: 140, height: 80, border_radius: { top_left: 12, bottom_right: 12 },",
+      "           paint: paint(color: \"#15803d\", style: \"stroke\", stroke_width: 2))",
+      "    ],",
+      "    width: 160,",
+      "    height: 100",
+      "  )",
+      ")"
+    ]
+  },
+  "control-rich-attribution": {
+    "summary": "An attribution button for a [`map`](/docs/control-map) that opens a popup listing every data source, with logos that stay visible. List the sources with [`text_source_attribution`](/docs/control-text-source-attribution) and [`image_source_attribution`](/docs/control-image-source-attribution). iOS and macOS draw a Cupertino popup. Put it last in the map's `layers`. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      rich_attribution(",
+      "        [",
+      "          text_source_attribution(\"OpenStreetMap contributors\",",
+      "                                  on_click: ->(_event) { page.launch_url(\"https://www.openstreetmap.org/copyright\") }),",
+      "          image_source_attribution(image(\"https://www.openstreetmap.org/favicon.ico\"), tooltip: \"OpenStreetMap\")",
+      "        ],",
+      "        popup_initial_display_duration: 3000,",
+      "        show_flutter_map_attribution: false",
+      "      )",
+      "    ],",
+      "    initial_center: [-33.8688, 151.2093],",
+      "    initial_zoom: 11,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-scatter-chart": {
+    "summary": "A scatter chart drawn with fl_chart: one dot per [`scatter_chart_spot`](/docs/control-scatter-chart-spot), with optional labels. With 0.0.23 it shows no touch bubble, so use `on_event` to show the touched spot. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release a spot with its own `tooltip:` text shows it in a bubble. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "cities = [[\"Oslo\", 10, 4], [\"Rome\", 25, 16], [\"Cairo\", 35, 22], [\"Lima\", 20, 19]]",
+      "status = text(value: \"Tap a point\")",
+      "chart = scatter_chart(",
+      "  height: 240,",
+      "  min_x: 0, max_x: 40, min_y: 0, max_y: 25,",
+      "  spots: cities.map { |name, x, y| scatter_chart_spot(x: x, y: y, radius: 8, color: \"#0891b2\", label_text: name) },",
+      "  left_axis: chart_axis(label_spacing: 5, label_size: 28),",
+      "  bottom_axis: chart_axis(label_spacing: 10),",
+      "  on_event: ->(event) {",
+      "    index = event.data[:spot_index]",
+      "    page.update(status, value: cities[index][0]) if index",
+      "  }",
+      ")",
+      "page.add(column(children: [chart, status]))"
+    ]
+  },
+  "control-scatter-chart-spot": {
+    "summary": "One dot of a [`scatter_chart`](/docs/control-scatter-chart), at `x` and `y`, with its own size, color, label and drawing order. Part of the [`charts` extension](/docs/extension-charts): add `charts` under `extensions:` in `ruflet.yaml` and rebuild the client. With the next release, `tooltip:` (a text, or a hash with `text` and `text_style`) gives the spot a touch bubble; with 0.0.23 scatter charts show none. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
+    "example": [
+      "page.add(",
+      "  scatter_chart(",
+      "    height: 220,",
+      "    min_x: 0, max_x: 10, min_y: 0, max_y: 10,",
+      "    spots: [",
+      "      scatter_chart_spot(x: 2, y: 3, radius: 6, color: \"#2563eb\"),",
+      "      scatter_chart_spot(x: 5, y: 7, radius: 12, color: \"#dc2626\", label_text: \"Outlier\",",
+      "                         label_text_style: { size: 12, weight: \"bold\" }, render_priority: 1),",
+      "      scatter_chart_spot(x: 8, y: 4, point: { _type: \"ChartSquarePoint\", size: 10, color: \"#16a34a\" })",
+      "    ]",
+      "  )",
+      ")"
+    ]
+  },
   "control-segment": {
     "summary": "One option of a [`segmented_button`](/docs/control-segmented-button). `value` is required, and is what the button reports in `selected` and `on_change`; `label` and `icon` are what the user sees.",
     "example": [
@@ -340,6 +1348,62 @@
       "  )",
       ")",
       "page.add(layout)"
+    ]
+  },
+  "control-shadow": {
+    "summary": "A Material-style shadow cast by an outline, drawn before the shape that sits on it. It is drawn only inside a [`canvas`](/docs/control-canvas), in the order of its `shapes`; positions are logical pixels from the canvas's top-left corner. It is core Ruflet, no extension needed, and looks the same on every platform.",
+    "example": [
+      "card = [path_rect(x: 20, y: 20, width: 120, height: 70, border_radius: 10)]",
+      "page.add(",
+      "  canvas(",
+      "    [",
+      "      shadow(path: card, color: \"#000000\", elevation: 8),",
+      "      path(elements: card, paint: paint(color: \"#ffffff\"))",
+      "    ],",
+      "    width: 160,",
+      "    height: 120",
+      "  )",
+      ")"
+    ]
+  },
+  "control-simple-attribution": {
+    "summary": "A small badge in a corner of the map that credits the tile provider, as most providers require. On iOS and macOS it is a Cupertino button whose text starts with \"flutter_map |\" and a copyright sign; elsewhere it shows just your text. Put it last in the map's `layers`. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      simple_attribution(",
+      "        text: \"OpenStreetMap contributors\",",
+      "        alignment: { x: -1, y: 1 },",
+      "        on_click: ->(_event) { page.launch_url(\"https://www.openstreetmap.org/copyright\") }",
+      "      )",
+      "    ],",
+      "    initial_center: [35.6762, 139.6503],",
+      "    initial_zoom: 11,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-slide-picker": {
+    "summary": "Picks a color with one slider per channel, in RGB, HSV or HSL, with an optional preview bar. iOS and macOS draw it with Cupertino-styled sliders. Part of the [`color_pickers` extension](/docs/extension-color-pickers): add `color_pickers` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "value = text(value: \"#ff10b981\")",
+      "page.add(",
+      "  column(children: [",
+      "    slide_picker(",
+      "      color: \"#10b981\",",
+      "      color_model: \"hsv\",",
+      "      enable_alpha: false,",
+      "      show_indicator: true,",
+      "      label_types: [\"hex\"],",
+      "      slider_size: { width: 280, height: 40 },",
+      "      on_color_change: ->(event) { page.update(value, value: event.data) }",
+      "    ),",
+      "    value",
+      "  ])",
+      ")"
     ]
   },
   "control-snack-bar-action": {
@@ -372,6 +1436,79 @@
       "    border_color: :outlinevariant,",
       "    cell_padding: 8",
       "  )",
+      ")"
+    ]
+  },
+  "control-text-source-attribution": {
+    "summary": "One text line in a [`rich_attribution`](/docs/control-rich-attribution) popup, such as the name of a data source. It is drawn only there. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "page.add(",
+      "  map(",
+      "    [",
+      "      tile_layer(url_template: \"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"),",
+      "      rich_attribution([",
+      "        text_source_attribution(\"OpenStreetMap contributors\", text_style: { size: 12 }),",
+      "        text_source_attribution(\"Data: city open data portal\", prepend_copyright: false)",
+      "      ])",
+      "    ],",
+      "    initial_center: [41.3874, 2.1686],",
+      "    initial_zoom: 12,",
+      "    expand: true",
+      "  )",
+      ")"
+    ]
+  },
+  "control-tile-layer": {
+    "summary": "The base imagery of a [`map`](/docs/control-map), loaded as tiles from a server such as OpenStreetMap. Put it first in `layers`, set `user_agent_package_name` to your app id, and respect the provider's usage policy and attribution rules. Part of the [`map` extension](/docs/extension-map): add `map` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "status = text(value: \"Loading tiles\")",
+      "page.add(",
+      "  column(expand: true, children: [",
+      "    map(",
+      "      [",
+      "        tile_layer(",
+      "          url_template: \"https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png\",",
+      "          subdomains: %w[a b c],",
+      "          user_agent_package_name: \"com.example.fieldnotes\",",
+      "          max_native_zoom: 19,",
+      "          keep_buffer: 4,",
+      "          display_mode: { _type: \"fadein\", duration: 250 },",
+      "          on_image_error: ->(event) { page.update(status, value: \"Tile failed: #{event.data}\") }",
+      "        )",
+      "      ],",
+      "      initial_center: [52.52, 13.405],",
+      "      initial_zoom: 11,",
+      "      expand: true",
+      "    ),",
+      "    status",
+      "  ])",
+      ")"
+    ]
+  },
+  "control-video": {
+    "summary": "A video player with a playlist, drawn with media_kit. It shows playback controls (Cupertino-style on iOS and macOS, Material elsewhere) unless `show_controls` is false, and methods such as `play_or_pause`, `seek` and `next` control it from Ruby once it is on the page. Most settings, the playlist included, are read when the player is created. Part of the [`video` extension](/docs/extension-video): add `video` under `extensions:` in `ruflet.yaml` and rebuild the client.",
+    "example": [
+      "status = text(value: \"Loading video\")",
+      "player = video(",
+      "  playlist: [",
+      "    { resource: \"https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4\" },",
+      "    { resource: \"https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4\" }",
+      "  ],",
+      "  playlist_mode: \"loop\",",
+      "  aspect_ratio: 16 / 9.0,",
+      "  autoplay: false,",
+      "  volume: 80,",
+      "  on_loaded: ->(_event) { page.update(status, value: \"Ready\") },",
+      "  on_track_change: ->(event) { page.update(status, value: \"Playing clip #{event.data.to_i + 1}\") },",
+      "  on_error: ->(event) { page.update(status, value: \"Video error: #{event.data}\") }",
+      ")",
+      "page.add(column(children: [player, status]))",
+      "page.add(",
+      "  row(children: [",
+      "    button(\"Play or pause\", on_click: ->(_event) { player.play_or_pause }),",
+      "    button(\"Next clip\", on_click: ->(_event) { player.next }),",
+      "    button(\"Restart\", on_click: ->(_event) { player.seek(0) })",
+      "  ])",
       ")"
     ]
   }
