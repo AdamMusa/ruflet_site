@@ -559,6 +559,11 @@
         "padding"
       ]
     },
+    "control-map": {
+      "properties": {
+        "interaction_configuration": "With the next release a missing `pinch_move_threshold` defaults to 40, and `cursor_keyboard_rotation_configuration` takes `trigger_keys`, one key name such as `\"Shift Left\"` or `:shift_left`, or a list of them."
+      }
+    },
     "control-menu-item-button": {
       "properties": [
         "semantic_label",

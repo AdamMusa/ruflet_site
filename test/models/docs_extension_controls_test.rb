@@ -33,8 +33,10 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
       "With the next release a chart `tooltip` styles the bubble",
       "With the next release `spots` is a list of `{ bar_index:, spot_index: }` hashes",
       "release `group_spacing` also sets the space between groups",
-      "With the next release `selected` keeps the bubble of a candle"
+      "With the next release `selected` keeps the bubble of a candle",
+      "fill the rod's `rod_stack_items`, which only the next release draws"
     ],
+    "maps" => [ "a missing `pinch_move_threshold` defaults to 40", "`trigger_keys` names the keys by label" ],
     "control-line-chart" => [ "With the next release `event.data[:spots]` also says which points were touched" ],
     "control-scatter-chart" => [ "With the next release a spot with its own `tooltip:` text shows it in a bubble." ],
     "control-candlestick-chart" => [ "With the next release a candle with its own `tooltip:` text shows it in a bubble." ],
@@ -56,7 +58,8 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     [ "control-scatter-chart", "properties", "tooltip", "On 0.0.23 scatter charts show no bubble", "a spot with its own `tooltip` text shows it in this bubble." ],
     [ "control-candlestick-chart", "properties", "tooltip", "On 0.0.23 candlestick charts show no bubble", "a candle with its own `tooltip` text shows it in this bubble." ],
     [ "control-scatter-chart-spot", "properties", "selected", "On 0.0.23 scatter charts show no bubble", "a selected spot with its own `tooltip` text shows it permanently." ],
-    [ "control-candlestick-chart-spot", "properties", "selected", "On 0.0.23 candlestick charts show no bubble", "a selected candle with its own `tooltip` text shows it permanently." ]
+    [ "control-candlestick-chart-spot", "properties", "selected", "On 0.0.23 candlestick charts show no bubble", "a selected candle with its own `tooltip` text shows it permanently." ],
+    [ "control-map", "properties", "interaction_configuration", "on 0.0.23 the map fails to draw without it", "a missing `pinch_move_threshold` defaults to 40, and `cursor_keyboard_rotation_configuration` takes `trigger_keys`, one key name such as `\"Shift Left\"` or `:shift_left`, or a list of them." ]
   ].freeze
 
   # Pages of the group with hand-written Ruby: every event payload hash the
@@ -172,7 +175,7 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     guide = DocsCatalog::SOURCE_ROOT.join("charts_and_canvas.md").read
     web_view = DocsCatalog::SOURCE_ROOT.join("control_web_view.md").read
 
-    refute_includes guide, "rod_stack_items", "0.0.23 reads a rod's segments from `stack_items` only"
+    refute_includes guide, "rod_stack_items:", "0.0.23 reads a rod's segments from `stack_items` only"
     guide.scan(/path_quadratic_to\([^)]*\)/).each do |call|
       assert_includes call, "w:", "Without `w:` the client draws #{call} as a straight line"
     end
@@ -225,6 +228,28 @@ class DocsExtensionControlsTest < ActiveSupport::TestCase
     assert_includes line, "0.0.23 decodes text that is valid JSON"
     assert_includes line, "`event.data` is always the text, and only the user's edits fire it. #{DocsCatalog::NEXT_RELEASE_MARKER}."
     assert_includes page("control-code-editor").content, 'event.control.props["value"].to_s.length'
+  end
+
+  # Every key the map clients read from `interaction_configuration`
+  # (parseInteractionOptions, parseKeyboardOptions and
+  # parseCursorKeyboardRotationOptions in ruflet_map's utils/map.dart).
+  MAP_INTERACTION_KEYS = %w[
+    flags pinch_move_threshold pinch_zoom_threshold rotation_threshold scroll_wheel_velocity
+    enable_multi_finger_gesture_race pinch_move_win_gestures pinch_zoom_win_gestures rotation_win_gestures
+    keyboard_configuration autofocus enable_arrow_keys_panning enable_wasd_panning enable_qe_rotating
+    enable_rf_zooming max_zoom_velocity max_rotate_velocity pan_leap_velocity_multiplier
+    zoom_leap_velocity_multiplier rotate_leap_velocity_multiplier perform_leap_trigger_duration
+    leap_max_of_curve_component animation_curve_duration animation_curve_reverse_duration animation_curve_curve
+    cursor_keyboard_rotation_configuration trigger_keys behaviour set_north_on_click
+  ].freeze
+
+  test "the maps page describes every interaction option" do
+    section = DocsCatalog::SOURCE_ROOT.join("maps.md").read.split(/^### Gestures and keyboard$/, 2).last.split(/^### /, 2).first
+
+    assert section.present?, "maps.md lost its Gestures and keyboard section"
+    missing = MAP_INTERACTION_KEYS.reject { |key| section.include?("`#{key}`") }
+    assert_empty missing, "maps.md must describe these interaction_configuration keys"
+    assert_includes page("control-map").content, "(/docs/maps#gestures-and-keyboard)"
   end
 
   # Ruflet main's client reads BarChart `group_spacing` and 0.0.23's does not.

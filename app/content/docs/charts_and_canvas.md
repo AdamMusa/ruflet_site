@@ -94,7 +94,9 @@ bar_chart(
   behind it (`bg_from_y`, `bg_to_y`, `bgcolor`) and `stack_items`.
 - [`bar_chart_rod_stack_item`](/docs/control-bar-chart-rod-stack-item) — a
   segment of a stacked bar: `from_y`, `to_y` and `color` (all three required)
-  and `border_side`.
+  and `border_side`. In Rails HTML markup, `<bar-chart-rod-stack-item>` tags
+  nested in a `<bar-chart-rod>` fill the rod's `rod_stack_items`, which only
+  the next release draws. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ---
 

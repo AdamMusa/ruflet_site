@@ -59,11 +59,11 @@ The layer helpers also take their list as the first argument:
 - `initial_camera_fit` — fit the initial camera to an area:
   `{ bounds: { corner_1:, corner_2: } }` or `{ coordinates: [...] }`, with
   `{ latitude:, longitude: }` hashes, plus optional `padding` and zoom limits.
-- `interaction_configuration` — which gestures move the map:
-  `{ flags:, pinch_move_threshold: 40, ... }`, where `flags` adds up 1 drag,
-  2 fling, 4 pinch-move, 8 pinch-zoom, 16 double-tap zoom, 32 double-tap-drag
-  zoom, 64 scroll-wheel zoom and 128 rotate (default 255, all; `0` for a static
-  map). Always include `pinch_move_threshold`: without it the map fails to draw.
+- `interaction_configuration` — which gestures and keys move the map, as a
+  hash such as `{ flags: 1 | 8, pinch_move_threshold: 40 }`. Unset, every
+  gesture is on. Always include `pinch_move_threshold`: on 0.0.23 the map fails
+  to draw without it. See [Gestures and keyboard](#gestures-and-keyboard) for
+  every key.
 - `animation_curve` / `animation_duration` — defaults for the animated map
   methods (`"fastOutSlowIn"` and 500 ms).
 - `keep_alive` — keep the map state alive when it scrolls offscreen.
@@ -96,6 +96,74 @@ The methods are `move_to(destination:, zoom:, rotation:, offset:)`,
 `rotate_from(degrees)` and `reset_rotation`. Each animates and takes
 `animation_curve:`, `animation_duration:` (milliseconds),
 `cancel_ongoing_animations:`, `timeout:` and `on_result:`.
+
+### Gestures and keyboard
+
+`interaction_configuration` takes a hash. Every key is optional, but always
+include `pinch_move_threshold`: a 0.0.23 client fails to draw a map whose hash
+lacks it. With the next release a missing `pinch_move_threshold` defaults to
+40. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
+```ruby
+map(
+  [tile_layer(url_template: "https://tile.openstreetmap.org/{z}/{x}/{y}.png")],
+  initial_center: [52.52, 13.405],
+  initial_zoom: 11,
+  expand: true,
+  interaction_configuration: {
+    flags: 1 | 2 | 8 | 16 | 64, # drag, fling, pinch-zoom, double-tap and wheel zoom; no rotation
+    pinch_move_threshold: 40,
+    scroll_wheel_velocity: 0.01,
+    keyboard_configuration: { enable_qe_rotating: false }
+  }
+)
+```
+
+- `flags` — the gestures that move the map, added up: 1 drag, 2 fling (the map
+  keeps moving after a quick drag), 4 pinch-move (two fingers pan), 8
+  pinch-zoom, 16 double-tap zoom, 32 double-tap-drag zoom, 64 scroll-wheel zoom
+  and 128 rotate. The default, 255, turns all of them on; `0` makes the map
+  static. The methods such as `move_to` still move it.
+- `scroll_wheel_velocity` — how fast the mouse wheel zooms (default 0.005).
+- `enable_multi_finger_gesture_race` — let two-finger rotation, pinch-zoom and
+  pinch-move compete (default false). The first gesture past its threshold
+  wins and turns on the gestures its `*_win_gestures` value lists, added up
+  from 1 pinch-move, 2 pinch-zoom and 4 rotate:
+  - `pinch_move_threshold` (in logical pixels, flutter_map's default 40) with
+    `pinch_move_win_gestures` (default 3, pinch-move and pinch-zoom);
+  - `pinch_zoom_threshold` (default 0.5) with `pinch_zoom_win_gestures`
+    (default 3);
+  - `rotation_threshold` (in degrees, default 20) with `rotation_win_gestures`
+    (default 4, rotation only).
+- `keyboard_configuration` — how keys move a focused map, on desktop and the
+  web. Without it the arrow keys pan the map. Once you send the hash, every
+  key set below is on unless you turn it off: `enable_arrow_keys_panning`,
+  `enable_wasd_panning` (W, A, S, D pan), `enable_qe_rotating` (Q and E
+  rotate) and `enable_rf_zooming` (R zooms in, F out), plus `autofocus`
+  (default true, the map takes the keyboard focus when it appears). The speeds
+  are `max_zoom_velocity` (zoom levels per frame, default 0.03) and
+  `max_rotate_velocity` (degrees per frame, default 3). A quick key press
+  "leaps" only when you set `perform_leap_trigger_duration` (milliseconds,
+  flutter_map uses 100); `pan_leap_velocity_multiplier` (default 5),
+  `zoom_leap_velocity_multiplier` and `rotate_leap_velocity_multiplier`
+  (default 3) and `leap_max_of_curve_component` (default 0.6) shape the leap.
+  `animation_curve_duration` (milliseconds, default 450) and
+  `animation_curve_curve` (default `"easeInOut"`) shape how a held key speeds
+  up, and `animation_curve_reverse_duration` how it slows down after the key
+  is released (unset, the same as `animation_curve_duration`).
+- `cursor_keyboard_rotation_configuration` — on desktop and the web, rotate
+  the map by holding a key and moving the mouse. Without this hash any Control
+  key does it. On 0.0.23 leave the hash out: with it that client never starts
+  the rotation, and every key press raises an error in the client when
+  `trigger_keys` is missing or a single name. The hash takes `behaviour`,
+  `"offset"` (the default, turn the map by the angle you drag) or `"setNorth"`
+  (point north where the cursor is), and `set_north_on_click` (default true: a
+  click with the key held and no drag points north at the cursor). With the
+  next release
+  `trigger_keys` names the keys by label, as one name or a list:
+  `"Shift Left"`, `:shift_left` and `"SHIFT_LEFT"` are the same key, `[]`
+  turns the rotation off, and without `trigger_keys` the Control keys start
+  it. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 
 ### Map events
 
