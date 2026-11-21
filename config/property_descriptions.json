@@ -559,7 +559,7 @@
     },
     "cupertinobottomsheet": {
       "dismissible": "When false, tapping outside the sheet does not close it (default true).",
-      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it; `dismissible` wins when both are set. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control.",
+      "modal": "On iOS and macOS, when true, tapping outside the sheet does not close it. Android, web, Windows and Linux ignore it. To keep a sheet open on every platform, build it with `bottom_sheet(..., dismissible: false)`: both helpers send the same `BottomSheet` control, and `dismissible` wins when both are set.",
       "content": "The control shown in the sheet; required (the first positional argument).",
       "bgcolor": "Background color of the sheet. On iOS and macOS the default is the system background color.",
       "barrier_color": "Color of the dimmed backdrop behind the sheet. A `fullscreen` sheet on iOS and macOS has none.",

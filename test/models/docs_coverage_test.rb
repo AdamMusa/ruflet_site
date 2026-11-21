@@ -261,14 +261,26 @@ class DocsCoverageTest < ActiveSupport::TestCase
       "With 0.0.23 other content is shown without a panel or background"
     ],
     "control-progress-ring" => [ "`false` gives the newer Material look", "the iOS name for `value`" ],
-    "control-expansion-panel-list" => [ "`expand_icon_color` — the color of the arrow icons", "`scroll`, `auto_scroll`, `scroll_interval` and `on_scroll`" ],
+    "control-expansion-panel-list" => [
+      "`expand_icon_color` — the color of the arrow icons",
+      "`scroll`, `auto_scroll`, `scroll_interval` and `on_scroll`",
+      "With the next release `panel.expanded` reads the same value"
+    ],
+    "control-expansion-tile" => [ "With the next release `event.control.expanded` reads the same value" ],
+    "control-data-table-2" => [
+      "which `size: :medium` sends, work only with the next release",
+      "The next release turns it in 150 ms on every platform",
+      "`empty` keeps its own height and is centered there"
+    ],
+    "control-data-column-2" => [ "which `size: :medium` sends, as `\"s\"` columns" ],
     "control-popup-menu-button" => [ "fires `on_cancel` when the sheet closes" ],
     "control-search-bar" => [ "On iOS and macOS, `open_view` focuses the bar", "with 0.0.23 both do nothing there" ],
     "control-list-tile" => [
       "there `selected` only tells screen readers",
       "toggles a `switch` or `checkbox` in the row, but not a `radio`",
       "`on_long_press` fires on iOS and macOS only with the next release",
-      "its `padding` keyword takes effect only with the next release"
+      "its `padding` keyword takes effect only with the next release",
+      "`focus_color` — the background while the row has keyboard focus"
     ],
     "control-cupertino-list-tile" => [ "`padding` takes effect only with the next release" ],
     "control-cupertino-activity-indicator" => [ "there the 0.0.23 client also ignores `progress` and always spins" ],
@@ -312,6 +324,15 @@ class DocsCoverageTest < ActiveSupport::TestCase
     "control-cupertino-date-picker" => [ "Open it with `page.show_dialog(picker)`", "With 0.0.23 a picker added to the page shows nothing" ]
   }.freeze
 
+  # Hand-written sentences that hold on 0.0.23 and must not carry the marker,
+  # although a marked sentence about the same property sits next to them.
+  PINNED_RELEASED_PROSE = {
+    "control-expansion-tile" => [ "`event.control.props[\"expanded\"]` is the new state too" ],
+    "control-expansion-panel-list" => [ "Read the new state from `panel.props[\"expanded\"]`" ],
+    "control-list-tile" => [ "`icon_color`, `text_color`, `selected_color`, `selected_tile_color` and `splash_color`" ],
+    "control-data-table-2" => [ "`size` is `\"s\"` (default), `\"m\"` or `\"l\"`", "on iOS and macOS its checkboxes are iOS checkboxes" ]
+  }.freeze
+
   test "lines a review fixed keep their next-release state" do
     marker = DocsCatalog::NEXT_RELEASE_MARKER
 
@@ -337,6 +358,40 @@ class DocsCoverageTest < ActiveSupport::TestCase
         assert_includes paragraph, marker, "#{slug}: #{phrase.inspect} needs the next-release marker"
       end
     end
+  end
+
+  test "hand-written sentences that hold on 0.0.23 stay unmarked" do
+    marker = DocsCatalog::NEXT_RELEASE_MARKER
+
+    PINNED_RELEASED_PROSE.each do |slug, phrases|
+      phrases.each do |phrase|
+        paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
+
+        assert paragraph, "#{slug} no longer says #{phrase.inspect}"
+        refute_includes paragraph, marker, "#{slug}: #{phrase.inspect} works on 0.0.23, so it must not carry the next-release marker"
+      end
+    end
+  end
+
+  # config/next_release.json "members" lists the keywords, events and methods
+  # 0.0.23 Ruby rejects (ArgumentError or NoMethodError). Hand-written text on
+  # the fully described pages that names one must say so: the marker sits in
+  # the same paragraph or list item, or in a callout under the page or section
+  # heading.
+  test "fully described pages mark every keyword 0.0.23 rejects" do
+    members = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("members")
+
+    unmarked = FULLY_DESCRIBED_CONTROLS.flat_map do |slug|
+      names = members.fetch(slug, {}).values.flatten
+      next [] if names.empty?
+
+      unmarked_prose_chunks(slug).filter_map do |chunk|
+        named = names.select { |name| names_member?(chunk, name) }
+        "#{slug} (#{named.join(', ')}): #{chunk.truncate(160)}" if named.any?
+      end
+    end
+
+    assert_empty unmarked, "Add the next-release marker to these, which name keywords 0.0.23 rejects:\n#{unmarked.join("\n")}"
   end
 
   test "hand-written platform qualifications a review added stay on their pages" do
@@ -436,6 +491,36 @@ end
   # API appendix), split into paragraphs and list items, each on one line.
   def prose_chunks(slug)
     page(slug).content.split("\n## Complete API\n", 2).first.split(/\n(?=- |\n)/).map(&:squish)
+  end
+
+  # The chunks of a control's hand-written text (its prose page above the
+  # Complete API appendix, or its curated summary), code blocks left out, that
+  # carry no next-release marker themselves and sit under no callout: one
+  # under the H1 covers the page, one under a "## " heading covers that section.
+  def unmarked_prose_chunks(slug)
+    callout = "> #{DocsCatalog::NEXT_RELEASE_MARKER}"
+    prose = if DocsCatalog::SOURCE_ROOT.join("#{slug.tr('-', '_')}.md").exist?
+      page(slug).content.split("\n## Complete API\n", 2).first
+    else
+      DocsCatalog.control_docs.dig(slug, "summary").to_s
+    end
+    prose = prose.gsub(/^```.*?^```\n?/m, "")
+    sections = prose.split(/^(?=## )/)
+    return [] if sections.first.sub(/\A# .*\n+/, "").start_with?(callout)
+
+    sections.flat_map do |section|
+      next [] if section.start_with?("## ") && section.sub(/\A## .*\n+/, "").start_with?(callout)
+
+      section.split(/\n(?=- |\n)/).map(&:squish).reject { |chunk| chunk.include?(DocsCatalog::NEXT_RELEASE_MARKER) }
+    end
+  end
+
+  # Whether one of a chunk's code spans names the member: `name`, `name:`,
+  # `name(...)` or a call that passes `name:`.
+  def names_member?(chunk, name)
+    chunk.scan(/`([^`]+)`/).flatten.any? do |code|
+      code == name || code.match?(/\A#{Regexp.escape(name)}[(:]/) || code.match?(/[(, ]#{Regexp.escape(name)}:/)
+    end
   end
 
   # The one generated "- `name` ..." line of a kind on a control page.

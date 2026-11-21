@@ -86,7 +86,8 @@ These apply on iOS and macOS only:
 These apply on Android, web, Windows and Linux only:
 
 - `horizontal_spacing`, `min_leading_width`, `min_vertical_padding`, `min_height`, `visual_density`, `style` and `title_alignment` — the Material row layout
-- `icon_color`, `text_color`, `selected_color`, `selected_tile_color`, `splash_color` and `focus_color`
+- `icon_color`, `text_color`, `selected_color`, `selected_tile_color` and `splash_color`
+- `focus_color` — the background while the row has keyboard focus. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
 - `title_text_style`, `subtitle_text_style` and `leading_and_trailing_text_style`
 - `autofocus`, `enable_feedback` and `mouse_cursor`
 

@@ -220,7 +220,7 @@
     ]
   },
   "control-data-column-2": {
-    "summary": "A column heading of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_column2(label, size:, fixed_width:, numeric:, on_sort:)`. The table shares its width between the columns by `size`: `\"s\"` (default), `\"m\"` or `\"l\"`, weighted by the table's `sm_ratio` and `lm_ratio`. `fixed_width` gives a column an exact width instead. `on_sort` gets the column index in `event.data[:ci]` and the new direction in `event.data[:asc]` on every platform.",
+    "summary": "A column heading of a [`data_table2`](/docs/control-data-table-2) table, from the `datatable2` extension: `data_column2(label, size:, fixed_width:, numeric:, on_sort:)`. The table shares its width between the columns by `size`: `\"s\"` (default), `\"m\"` or `\"l\"`, weighted by the table's `sm_ratio` and `lm_ratio`. `fixed_width` gives a column an exact width instead. `on_sort` gets the column index in `event.data[:ci]` and the new direction in `event.data[:asc]` on every platform. With 0.0.23 the client draws `\"small\"`, `\"medium\"` and `\"large\"`, which `size: :medium` sends, as `\"s\"` columns. **Requires the next Ruflet release** (on `main`, not in 0.0.23).",
     "example": [
       "page.add(",
       "  data_table2(",

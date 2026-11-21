@@ -60,6 +60,10 @@ sideways while `fixed_left_columns` stay in place.
 - `data_row2(cells, selected:, specific_row_height:, decoration:)` — one `data_cell` per column. A row can have its own height and box decoration, and it fires `on_tap`, `on_double_tap`, `on_long_press`, `on_secondary_tap`, `on_secondary_tap_down` and `on_select_change`.
 - `data_cell(content)` — give the content as a control, such as `text(...)`, not as a bare string.
 
+With 0.0.23 write `size` as `"s"`, `"m"` or `"l"`. The names `"small"`,
+`"medium"` and `"large"`, which `size: :medium` sends, work only with the next
+release; the 0.0.23 client draws them as `"s"` columns. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Common properties
 
 - `fixed_top_rows` — rows at the top that stay in place while the table scrolls, the heading row included (default 1)
@@ -74,6 +78,12 @@ sideways while `fixed_left_columns` stay in place.
 - `visible_horizontal_scroll_bar` / `visible_vertical_scroll_bar`
 - `border` / `border_radius` / `horizontal_lines` / `vertical_lines` / `divider_thickness` / `bgcolor` / `gradient`
 
+`sort_arrow_animation_duration` is in milliseconds. Without it, the 0.0.23
+client turns the sort arrow in 150 ms on iOS and macOS, but on Android, web,
+Windows and Linux its default is 150 microseconds, so the arrow flips at once;
+pass `sort_arrow_animation_duration: 150` to animate it there. The next release
+turns it in 150 ms on every platform. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
+
 ## Usage
 
 Sorting and selection work as in [`data_table`](/docs/control-data-table): the
@@ -86,3 +96,9 @@ when the row is selected and `nil` when it is cleared; set `selected` with
 
 The table is drawn the same way on Android, web, Windows, Linux, iOS and
 macOS; on iOS and macOS its checkboxes are iOS checkboxes.
+
+On iOS and macOS, the 0.0.23 client lays out a table whose rows do not fill
+its height differently: the rows sit in the middle of the space under the
+heading instead of right under it, and `empty` keeps its own height and is
+centered there instead of filling that space. The next release lays both out
+as Android, web, Windows and Linux do. **Requires the next Ruflet release** (on `main`, not in 0.0.23).
