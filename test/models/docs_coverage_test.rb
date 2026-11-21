@@ -801,6 +801,12 @@ end
     "control-segmented-button" => [ "`sliding: true` draws the iOS sliding segmented control on iOS and macOS" ],
     "control-text-field" => [ "need the next release; with 0.0.23 the iOS field ignores them" ]
   }.freeze
+  # What 0.0.23 does with the two main-only form controls, in the callout
+  # under their H1 (without it the page would get the generic callout).
+  INPUT_CALLOUTS = {
+    "control-form" => "On 0.0.23 `validator:` raises ArgumentError (unknown keyword).",
+    "control-form-row" => "With 0.0.23 the client shows \"Unknown control\"."
+  }.freeze
 
   # A marker on an input page sits in the callout under the H1 of a
   # config/next_release.json page, in a list item (the tests above check its
@@ -812,6 +818,9 @@ end
     marker = DocsCatalog::NEXT_RELEASE_MARKER
     next_release_pages = JSON.parse(Rails.root.join("config/next_release.json").read).fetch("controls")
 
+    INPUT_CALLOUTS.each do |slug, consequence|
+      assert_includes page(slug).content.split(/^## /).first, "> #{marker}. #{consequence}", "#{slug}: the callout under the H1 says what 0.0.23 does"
+    end
     INPUT_PROSE_MARKERS.each do |slug, phrases|
       phrases.each do |phrase|
         paragraph = prose_chunks(slug).find { |chunk| chunk.include?(phrase) }
