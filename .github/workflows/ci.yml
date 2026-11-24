@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -45,7 +45,7 @@ jobs:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -76,7 +76,7 @@ jobs:
     #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -88,7 +88,7 @@ jobs:
       # script/sync_ruflet_api, update both refs to the commits you synced from.
       # The docs tests also read Ruflet's config schema from it.
       - name: Check out Ruflet source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: AdamMusa/ruflet
           ref: 4ca7634de549ce05270585521959aafa7783b383
@@ -99,7 +99,7 @@ jobs:
             packages/ruflet/lib/ruflet/cli/build/config_schema
 
       - name: Check out ruflet-engine source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: AdamMusa/ruflet-engine
           ref: 98e418571d817fba1ffe2ab9f637e12ad8f066b6
@@ -109,7 +109,7 @@ jobs:
       # unmarked examples also run against this commit, which set
       # ruflet_record's VERSION to 0.0.23.
       - name: Check out RufletRecord 0.0.23 source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: AdamMusa/ruflet
           ref: b34072be854ec713184a4b7772f5e0645d830022
@@ -121,7 +121,7 @@ jobs:
       # the RufletRecord examples run against ruflet_record from this main
       # commit instead. Move it forward when ruflet_record changes on main.
       - name: Check out RufletRecord main source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: AdamMusa/ruflet
           ref: c061df08c843f04ed19cb88f7a5b8e1cc7ca5ef4
@@ -151,7 +151,7 @@ jobs:
     #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
